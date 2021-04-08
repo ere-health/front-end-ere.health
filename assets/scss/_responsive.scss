@@ -1,29 +1,29 @@
 
 @media only screen and (max-width: 1440px) {
-    .recipe-body {
+    // .recipe-body {
 
-        .recipe-wrapper {
+    //     .recipe-wrapper {
 
-            .art-info-form {
+    //         .art-info-form {
 
-                .art {
+    //             .art {
 
-                    .collect-information {
+    //                 .collect-information {
 
-                        .form-group {
+    //                     .form-group {
 
-                            .input-wrapper {
+    //                         .input-wrapper {
 
-                                span {
-                                    left: 60%;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
+    //                             span {
+    //                                 left: 60%;
+    //                             }
+    //                         }
+    //                     }
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
 }
 
 
@@ -47,7 +47,6 @@
                 .art {
                     
                     .collect-information {
-                        padding: 10px 0;
                         
                         .form-group {
                             
@@ -89,6 +88,77 @@
     }
 }
 
+@media only screen and (max-width: 1280px) {
+    .recipe-body {
+
+        .recipe-wrapper {
+
+            .art-info-form {
+
+                .art {
+
+                    .collect-information {
+
+                        .column-2 {
+
+                            &.col-reverse {
+
+                                .form-group {
+
+                                    &:nth-child(1) {
+                                        flex: 0 0 33.4%;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+@media only screen and (max-width: 1090px) {
+    .recipe-body {
+
+        .recipe-wrapper {
+
+            .art-info-form {
+
+                .art {
+
+                    .art-form {
+                        flex-wrap: wrap;
+
+                        .zet-check-list {
+                            max-width: 100%;
+                            display: flex;
+                            flex-wrap: wrap;
+                            
+                            .zet-title {
+                                flex: 0 0 100%;
+                            }
+                            
+                            .art-list-item {
+                                width: 33.3333%;
+                            }
+                        }
+                    }
+                }
+
+                .drug-area {
+                
+                    input {
+                        
+                        &.drug-name {
+                            margin-left: 30px;
+                            flex: 0 0 50%;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
 @media only screen and (max-width: 1024px) {
     .recipe-body {
         
@@ -99,16 +169,49 @@
                 .art {
                     
                     .collect-information {
-                        
-                        .form-group {
-                            
-                            .input-wrapper {
-                                
-                                span {
-                                    left: 75%;
+
+                        .column-2 {
+
+                            &.col-reverse {
+
+                                .form-group{
+
+                                    &:nth-child(1) {
+                                        flex: 0 0 33.3%;
+                                    }
                                 }
                             }
                         }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 985px) {
+    .recipe-body {
+
+        .recipe-wrapper {
+
+            .drug-area {
+
+                input {
+
+                    &.drug-name {
+                        margin-left: 50px;
+                        flex: 0 0 50%;
+                    }
+                }
+                
+                .inline {
+                    
+                    .first-col {
+                        flex: 0 0 16.15%;
+                    }
+
+                    .second-col {
+                        flex: 0 0 60.5%;
                     }
                 }
             }
@@ -134,58 +237,6 @@
             
             .generated-pdf {
                 padding: 35px 0;
-            }
-        }
-    }
-    
-    .recipe-body {
-        
-        .recipe-wrapper {
-            
-            .art-info-form {
-                
-                .art {
-                    
-                    .art-form {
-                        flex-wrap: wrap;
-                        
-                        .zet-check-list {
-                            max-width: 100%;
-                            display: flex;
-                            flex-wrap: wrap;
-                            
-                            .zet-title {
-                                flex: 0 0 100%;
-                            }
-                            
-                            .art-list-item {
-                                width: 33.3333%;
-                            }
-                        }
-                    }
-                }
-            }
-            
-            .drug-area {
-                
-                input {
-                    
-                    &.drug-name {
-                        margin-left: 30px;
-                        flex: 0 0 50%;
-                    }
-                }
-                
-                .inline {
-                    
-                    .first-col {
-                        flex: 0 0 14.15%;
-                    }
-                    
-                    .second-col {
-                        flex: 0 0 62.1%;
-                    }
-                }
             }
         }
     }
@@ -349,6 +400,37 @@
     }
 }
 
+@media only screen and (max-width: 575px) {
+    .recipe-body {
+
+        .recipe-wrapper {
+
+            .art-info-form {
+
+                .art {
+
+                    .collect-information {
+                        border-bottom: 0;
+
+                        .form-group {
+                            width: 100% !important;
+                            flex: 0 0 100% !important;
+                            border-bottom: 2px solid $secondary-color;
+
+                            span {
+                                display: none;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .border-bottom {
+        border-bottom: 0;
+    }
+}
 
 @media only screen and (max-width: 480px) {
     
@@ -398,7 +480,6 @@
                 .art {
 
                     .collect-information {
-                        padding: 0;
                         border-bottom: 0;
 
                         .border-bottom {
@@ -429,34 +510,69 @@
     //======================= Popup ==========================
 
     .popup {
+
         .modal {
+
             padding: 30px 20px;
 
             .modal-title {
+
                 p {
                     @include em(18px, 25px);
                 }
             }
+        }
+    }
 
+    button {
+
+        img {
+            margin-right: 5px !important;
         }
     }
 }
 
 @media only screen and (max-width: 419px) {
     .popup {
-
+        
         .modal {
-
+            
             .modal-buttons {
                 display: block;
-
+                
                 button {
                     margin: 0 auto 10px;
-
+                    
                     &.ok-next {
                         margin: 0 auto;
                     }
+                    
+                }
+            }
+        }
+    }
+}
 
+
+@media only screen and (max-width: 410px) {
+    .recipe-body {
+
+        .recipe-wrapper {
+
+            .drug-area {
+
+                input {
+
+                    &.drug-name {
+                        margin-left: 5px;
+                    }
+                }
+
+                .art-list-item {
+
+                    .checkmark {
+                        top: calc(50% - 12px) !important;
+                    }
                 }
             }
         }

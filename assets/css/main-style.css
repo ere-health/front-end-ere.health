@@ -228,25 +228,11 @@ button.active, button:hover, button:focus {
 .recipe-body .recipe-wrapper .art-info-form .art .collect-information {
   display: flex;
   flex-wrap: wrap;
-  padding: 30px 0;
   background: #fff;
   border: 2px solid #D35846;
 }
 .recipe-body .recipe-wrapper .art-info-form .art .collect-information .form-group {
-  width: 50%;
-}
-.recipe-body .recipe-wrapper .art-info-form .art .collect-information .form-group.border-right-content {
-  position: relative;
-}
-.recipe-body .recipe-wrapper .art-info-form .art .collect-information .form-group.border-right-content:after {
-  content: "";
-  display: block;
-  height: 120%;
-  width: 2px;
-  background: #D35846;
-  top: -30px;
-  right: 0;
-  position: absolute;
+  width: 100%;
 }
 .recipe-body .recipe-wrapper .art-info-form .art .collect-information .form-group .input-wrapper {
   padding: 10px 50px;
@@ -254,10 +240,14 @@ button.active, button:hover, button:focus {
 }
 .recipe-body .recipe-wrapper .art-info-form .art .collect-information .form-group .input-wrapper span {
   background: #D35846;
+  position: absolute;
   height: 20px;
   width: 2px;
-  display: inline-block;
-  margin-bottom: -16px;
+  bottom: 0;
+  right: 0;
+}
+.recipe-body .recipe-wrapper .art-info-form .art .collect-information .form-group .input-wrapper span.long-border {
+  height: 100%;
 }
 .recipe-body .recipe-wrapper .art-info-form .art .collect-information .form-group .item:not(:last-child) {
   padding-bottom: 10px;
@@ -288,6 +278,7 @@ button.active, button:hover, button:focus {
   color: #11142D;
   width: 100%;
   border: 0;
+  max-width: 100%;
 }
 .recipe-body .recipe-wrapper .art-info-form .art .collect-information .form-group input::-webkit-input-placeholder, .recipe-body .recipe-wrapper .art-info-form .art .collect-information .form-group textarea::-webkit-input-placeholder {
   color: #004046;
@@ -317,10 +308,29 @@ button.active, button:hover, button:focus {
   width: auto;
   display: inline-block;
 }
-.recipe-body .recipe-wrapper .art-info-form .art .collect-information .coloumn-2 {
+.recipe-body .recipe-wrapper .art-info-form .art .collect-information .column-2 {
   display: flex;
   flex-wrap: wrap;
   width: 100%;
+}
+.recipe-body .recipe-wrapper .art-info-form .art .collect-information .column-2 .form-group:nth-child(1) {
+  flex: 0 0 62%;
+}
+.recipe-body .recipe-wrapper .art-info-form .art .collect-information .column-2 .form-group:nth-child(2) {
+  flex: 0 0 28%;
+}
+.recipe-body .recipe-wrapper .art-info-form .art .collect-information .column-2.col-reverse .form-group:nth-child(1) {
+  flex: 0 0 33.2%;
+}
+.recipe-body .recipe-wrapper .art-info-form .art .collect-information .column-2.col-reverse .form-group:nth-child(2) {
+  flex: 0 0 66%;
+}
+.recipe-body .recipe-wrapper .art-info-form .art .collect-information .column-3 {
+  display: flex;
+  flex-wrap: wrap;
+}
+.recipe-body .recipe-wrapper .art-info-form .art .collect-information .column-3 .form-group {
+  width: 33.333333%;
 }
 .recipe-body .recipe-wrapper .drug-area {
   padding: 40px 0;
@@ -505,20 +515,12 @@ button.active, button:hover, button:focus {
   line-height: 1.5;
 }
 
-@media only screen and (max-width: 1440px) {
-  .recipe-body .recipe-wrapper .art-info-form .art .collect-information .form-group .input-wrapper span {
-    left: 60%;
-  }
-}
 @media only screen and (max-width: 1394px) {
   .header-wrapper .header {
     padding: 30px 40px;
   }
 }
 @media only screen and (max-width: 1347px) {
-  .recipe-body .recipe-wrapper .art-info-form .art .collect-information {
-    padding: 10px 0;
-  }
   .recipe-body .recipe-wrapper .art-info-form .art .collect-information .form-group .input-wrapper {
     padding: 10px 25px;
   }
@@ -539,9 +541,46 @@ button.active, button:hover, button:focus {
     margin-bottom: 10px;
   }
 }
+@media only screen and (max-width: 1280px) {
+  .recipe-body .recipe-wrapper .art-info-form .art .collect-information .column-2.col-reverse .form-group:nth-child(1) {
+    flex: 0 0 33.4%;
+  }
+}
+@media only screen and (max-width: 1090px) {
+  .recipe-body .recipe-wrapper .art-info-form .art .art-form {
+    flex-wrap: wrap;
+  }
+  .recipe-body .recipe-wrapper .art-info-form .art .art-form .zet-check-list {
+    max-width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .recipe-body .recipe-wrapper .art-info-form .art .art-form .zet-check-list .zet-title {
+    flex: 0 0 100%;
+  }
+  .recipe-body .recipe-wrapper .art-info-form .art .art-form .zet-check-list .art-list-item {
+    width: 33.3333%;
+  }
+  .recipe-body .recipe-wrapper .art-info-form .drug-area input.drug-name {
+    margin-left: 30px;
+    flex: 0 0 50%;
+  }
+}
 @media only screen and (max-width: 1024px) {
-  .recipe-body .recipe-wrapper .art-info-form .art .collect-information .form-group .input-wrapper span {
-    left: 75%;
+  .recipe-body .recipe-wrapper .art-info-form .art .collect-information .column-2.col-reverse .form-group:nth-child(1) {
+    flex: 0 0 33.3%;
+  }
+}
+@media only screen and (max-width: 985px) {
+  .recipe-body .recipe-wrapper .drug-area input.drug-name {
+    margin-left: 50px;
+    flex: 0 0 50%;
+  }
+  .recipe-body .recipe-wrapper .drug-area .inline .first-col {
+    flex: 0 0 16.15%;
+  }
+  .recipe-body .recipe-wrapper .drug-area .inline .second-col {
+    flex: 0 0 60.5%;
   }
 }
 @media only screen and (max-width: 992px) {
@@ -557,31 +596,6 @@ button.active, button:hover, button:focus {
 
   .header-wrapper .header .generated-pdf {
     padding: 35px 0;
-  }
-
-  .recipe-body .recipe-wrapper .art-info-form .art .art-form {
-    flex-wrap: wrap;
-  }
-  .recipe-body .recipe-wrapper .art-info-form .art .art-form .zet-check-list {
-    max-width: 100%;
-    display: flex;
-    flex-wrap: wrap;
-  }
-  .recipe-body .recipe-wrapper .art-info-form .art .art-form .zet-check-list .zet-title {
-    flex: 0 0 100%;
-  }
-  .recipe-body .recipe-wrapper .art-info-form .art .art-form .zet-check-list .art-list-item {
-    width: 33.3333%;
-  }
-  .recipe-body .recipe-wrapper .drug-area input.drug-name {
-    margin-left: 30px;
-    flex: 0 0 50%;
-  }
-  .recipe-body .recipe-wrapper .drug-area .inline .first-col {
-    flex: 0 0 14.15%;
-  }
-  .recipe-body .recipe-wrapper .drug-area .inline .second-col {
-    flex: 0 0 62.1%;
   }
 }
 @media only screen and (max-width: 768px) {
@@ -702,6 +716,23 @@ button.active, button:hover, button:focus {
     margin: 30px 0 50px;
   }
 }
+@media only screen and (max-width: 575px) {
+  .recipe-body .recipe-wrapper .art-info-form .art .collect-information {
+    border-bottom: 0;
+  }
+  .recipe-body .recipe-wrapper .art-info-form .art .collect-information .form-group {
+    width: 100% !important;
+    flex: 0 0 100% !important;
+    border-bottom: 2px solid #D35846;
+  }
+  .recipe-body .recipe-wrapper .art-info-form .art .collect-information .form-group span {
+    display: none;
+  }
+
+  .border-bottom {
+    border-bottom: 0;
+  }
+}
 @media only screen and (max-width: 480px) {
   .header-wrapper .header * {
     text-align: center;
@@ -724,7 +755,6 @@ button.active, button:hover, button:focus {
     margin-bottom: 10px;
   }
   .recipe-body .recipe-wrapper .art-info-form .art .collect-information {
-    padding: 0;
     border-bottom: 0;
   }
   .recipe-body .recipe-wrapper .art-info-form .art .collect-information .border-bottom {
@@ -748,6 +778,10 @@ button.active, button:hover, button:focus {
     font-size: 1.125rem;
     line-height: 1.3888888889;
   }
+
+  button img {
+    margin-right: 5px !important;
+  }
 }
 @media only screen and (max-width: 419px) {
   .popup .modal .modal-buttons {
@@ -758,5 +792,13 @@ button.active, button:hover, button:focus {
   }
   .popup .modal .modal-buttons button.ok-next {
     margin: 0 auto;
+  }
+}
+@media only screen and (max-width: 410px) {
+  .recipe-body .recipe-wrapper .drug-area input.drug-name {
+    margin-left: 5px;
+  }
+  .recipe-body .recipe-wrapper .drug-area .art-list-item .checkmark {
+    top: calc(50% - 12px) !important;
   }
 }

@@ -276,27 +276,11 @@ button {
                .collect-information {
                    display: flex;
                    flex-wrap: wrap;
-                   padding: 30px 0;
                    background: #fff;
                    border: 2px solid $secondary-color;
 
                    .form-group {
-                       width: 50%;
-
-                       &.border-right-content {
-                           position: relative;
-
-                           &:after {
-                                content: "";
-                                display: block;
-                                height: 120%;
-                                width: 2px;
-                                background: #D35846;
-                                top: -30px;
-                                right: 0;
-                                position: absolute;
-                           }
-                       }
+                       width: 100%;
 
                        .input-wrapper {
                            padding: 10px 50px;
@@ -304,11 +288,15 @@ button {
 
                            span {
                                 background: $secondary-color;
+                                position: absolute;
                                 height: 20px;
                                 width: 2px;
-                                display: inline-block;
-                                margin-bottom: -16px;
-                                
+                                bottom: 0;
+                                right: 0;
+
+                                &.long-border {
+                                    height: 100%;
+                                }
                            }
                        }
 
@@ -342,10 +330,13 @@ button {
                             color: $primary-color;
                             width: 100%;
                             border: 0;
+                            max-width: 100%;
                             @include placeholder(#004046, 16px, 700);
                             
                         }
+
                         input {
+
                             &.bright {
                                 width: auto;
                                 display: inline-block;
@@ -353,12 +344,46 @@ button {
                         }
                    }
 
-                   .coloumn-2 {
+                   .column-2 {
+                       display: flex;
+                       flex-wrap: wrap;
+                       width: 100%;
+                       
+                       .form-group {
+                           
+                           &:nth-child(1) {
+                               flex: 0 0 62%;
+                            }
+                            
+                            &:nth-child(2) {
+                                flex: 0 0 28%;
+                            }
+                        }
+
+                        &.col-reverse {
+
+                            .form-group {
+
+                                &:nth-child(1) {
+                                    flex: 0 0 33.2%
+                                }
+                                
+                                &:nth-child(2) {
+                                    flex: 0 0 66%;
+                                }
+                            }
+                        }
+                    }
+
+                    .column-3 {
                         display: flex;
                         flex-wrap: wrap;
-                        width: 100%;
-                   }
-               }
+
+                        .form-group {
+                            width: 33.333333%;
+                        }
+                    }
+                }
             }
         }
 
