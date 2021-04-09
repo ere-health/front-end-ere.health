@@ -618,19 +618,42 @@ button {
                     .zet-check-list {
 
                         .art-list-item {
+                            display: flex;
+                            flex-wrap: wrap;
+                            justify-content: flex-start;
+                            align-items: center;
+                            margin-bottom: 20px;
+
+                            input[type=checkbox] {
+                                display: none;
+                                &:checked {
+                                
+                                    ~.checkmark {
+                                        border-color: #004046;
+                                        background-color: #fff;
+                                    }
+                                    ~label {
+                                        color: #004046;
+                                    }
+                                }
+                            }
+
+                            label {
+                                color: #E4E4E4;
+                            }
 
                             .checkmark {
                                 height: 20px;
                                 width: 20px;
                                 border-radius: 500px;
                                 background-color: #E4E4E4;
-                            }
-                            
-                            input {
-                                
-                                &:checked ~ .checkmark:after, &:checked ~ .checkmark:before {
-                                    border-color: $primary-color !important;
-                                    display: block;
+                                border: 5px solid #E4E4E4;
+                                box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.033927);
+                                box-sizing: border-box;
+
+
+                                &:after,&:before {
+                                    content: inherit;
                                 }
                             }
                         }
@@ -677,6 +700,93 @@ button {
 
                             .form-group {
                                 width: 25%;
+                            }
+                        }
+                    }
+                }
+            }
+
+            .drug-area {
+                padding: 25px 25px 45px;
+                max-width: 848px;
+                box-sizing: border-box;
+                background: #FFFFFF;
+                box-shadow: 0px 18px 48px -8px rgba(0, 0, 0, 0.25);
+                border-radius: 12px;
+                margin-top: 100px;
+    
+                .inline {
+    
+                    .first-col {
+                        flex: 0 0 11.15%;
+                    }
+    
+                    .second-col {
+                        flex: 0 0 71%;
+                    }
+    
+                    .third-col {
+    
+                    }
+                }
+
+                .drug-list {
+
+                    .drug-item {
+                        margin-bottom: 20px;
+
+                        .drug-item-img {
+                        }
+
+                        .drug-item-name {
+                            color: #004046;
+
+                        }
+                        .drug-item-uses {
+                            color: #004046;
+                        }
+                    }
+                }
+    
+                .art-list-item {
+                    display: flex;
+                    flex-wrap: wrap;
+                    justify-content: space-evenly;
+                    margin: 0;
+    
+                    .checkmark {
+                        top: calc(50% - 17px) !important;
+                    }
+                }
+    
+                input {
+                    width: 100%;
+                    font-weight: 700;
+                    @include em(16px, 24px);
+                    color: $primary-color;
+                    width: 100%;
+                    border: 2px solid transparent;
+                    background-color: transparent;
+                    padding: 12px 15px;
+                    @include placeholder(#004046, 16px, 700);
+    
+                    &.drug-name {
+                        margin-left: 60px;
+                        flex: 0 0 65%;
+                    }
+    
+                    &.duration {
+                        flex: 0 0 15%;
+                    }
+    
+                    &:focus {
+                        background-color: #fff;
+                        border-color: $secondary-color;
+    
+                        ~ .checkmark {
+    
+                            &:before, &:after {
+                                display: block;
                             }
                         }
                     }
