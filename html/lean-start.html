@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lean start | er.health</title>
+    <title>Lean start | ere.health</title>
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../assets/css/main-style.css">
@@ -267,30 +267,33 @@
                             </ul>
 
                             <div class="collect-information">
-                                <div class="form-group border-right-content">
-                                    <div class="item">
+
+                                <div class="column-2">
+                                    <div class="form-group">
+                                        <div class="input-wrapper">
+                                            <label for="address">Name, Vorname des Versicherten</label>
+                                            <textarea style="max-width: 160px; min-height: 75px;" name="address" id="address" cols="10" placeholder="Isabella Bowers, Heidestraße 17, 51147 Köln"></textarea>
+                                            <span></span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
                                         <div class="input-wrapper">
                                             <label for="name">Krankenkasse bzw. Kostenträger</label>
                                             <input type="text" name="name" id="name" placeholder="AOK Rheinland-Pfalz">
                                         </div>
                                     </div>
+                                </div>
 
-                                    <div class="item border-bottom">
+                                <div class="column-4">
+                                    <div class="form-group">
                                         <div class="input-wrapper">
-                                            <label for="number">Kassen-Nr:</label>
-                                            <input type="text" name="number" id="number" placeholder="106494399">
+                                            <label for="Kostenträgerkennung">Kostenträgerkennung</label>
+                                            <input type="text" name="Kostenträgerkennung" id="Kostenträgerkennung" class="bright" placeholder="100038825">
+                                            <span></span>
                                         </div>
                                     </div>
-                                </div>
 
-                                <div class="form-group border-bottom">
-                                    <div class="input-wrapper">
-                                        <label for="address">Name, Vorname des Versicherten</label>
-                                        <textarea name="addres" id="address" placeholder="Isabella Bowers, Heidestraße 17, 51147 Köln"></textarea>
-                                    </div>
-                                </div>
-
-                                <div class="column-2 border-bottom">
                                     <div class="form-group">
                                         <div class="input-wrapper">
                                             <label for="person">Versicherten-Nr.</label>
@@ -301,18 +304,24 @@
 
                                     <div class="form-group">
                                         <div class="input-wrapper">
-                                            <label for="birthday">geb. am</label>
-                                            <input type="text" id="birthday" class="bright" name="birthday" placeholder="12.08.1964">
-                                            <span></span>
+                                            <label for="Status">Status</label>
+                                            <input type="text" name="Status" id="Status" class="bright" placeholder="1000 1">
                                         </div>
                                     </div>
-                                </div>
 
-                                <div class="column-2 border-bottom">
                                     <div class="form-group">
                                         <div class="input-wrapper">
                                             <label for="Status">Status</label>
                                             <input type="text" name="Status" id="Status" class="bright" placeholder="1000 1">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="column-4">
+                                    <div class="form-group">
+                                        <div class="input-wrapper">
+                                            <label for="Status">Betriebsstätten-Nr.</label>
+                                            <input type="text" name="Betriebsstätten-Nr." id="Betriebsstätten-Nr." class="bright" placeholder="Betriebsstätten-Nr.">
                                             <span></span>
                                         </div>
                                     </div>
@@ -320,26 +329,15 @@
                                     <div class="form-group">
                                         <div class="input-wrapper">
                                             <label for="doctor-no">Arzt-Nr.</label>
-                                            <input type="text" name="doctor-no" id="doctor-no" class="bright" placeholder="74982992">
+                                            <input type="text" name="doctor-no" id="doctor-no" class="bright" placeholder="LANR1234">
                                             <span></span>
                                         </div>
                                     </div>
-                                </div>
 
-                                <div class="column-2 border-bottom">
-                                    <div class="form-group">
-                                        <div class="input-wrapper">
-                                            <label for="Establishment">Betriebsstätten-Nr.</label>
-                                            <input type="text" name="Establishment" id="Establishment" class="bright" placeholder="27839993">
-                                            <span></span>
-                                        </div>
-                                    </div>
-                                    
                                     <div class="form-group">
                                         <div class="input-wrapper">
                                             <label for="date">Datum</label>
                                             <input type="text" id="date" class="bright" name="date" placeholder="10.07.2021">
-                                            <span></span>
                                         </div>
                                     </div>
                                 </div>
@@ -349,6 +347,7 @@
                                         <div class="input-wrapper">
                                             <label for="Unfalltag">Unfalltag</label>
                                             <input type="text" name="Unfalltag" id="Unfalltag" placeholder="-">
+                                            <span class="long-border"></span>
                                         </div>
                                     </div>
                                     
@@ -369,35 +368,32 @@
                     </div>
                 </div>
 
-                <div class="drug-area">
+                 <div class="drug-area">
                     <div class="inline">
                         <div class="zet-title first-col">Aut idem</div>
                         <div class="zet-title second-col">Medikament</div>
                         <div class="zet-title third-col">Dosierung</div>
                     </div>
 
-                    <form action="" class="art-form">
-                        <ul class="zet-check-list">
-                            <li class="art-list-item">
-                                <input type="text" class="drug-name" name="drug-1" id="drug-1" placeholder="Krankenkasse bzw. Kostenträger">
-                                <input type="text" class="duration" placeholder="1 / 1 / 1">
-                                <span class="checkmark"></span>
-                            </li>
+                    <div class="drug-list">
 
-                            <li class="art-list-item">
-                                <input type="text" class="drug-name" name="drug-1" id="drug-1" placeholder="Methionin AL 500 Filmtabletten">
-                                <input type="text" class="duration" placeholder="1 / 0 / 0">
-                                <span class="checkmark"></span>
-                            </li>
+                            <div class="drug-item inline">
+                                <div class="drug-item-img first-col"><img src="../assets/images/checked.png" alt="checked"></div>
+                                <div class="drug-item-name second-col">Crataegutt 450 mg Herz-Kreislauf-Tabletten</div>
+                                <div class="drug-item-uses third-col">1 / 1 / 1</div>
+                            </div>
+                            <div class="drug-item inline">
+                                <div class="drug-item-img first-col"><img src="../assets/images/checked.png" alt="checked"></div>
+                                <div class="drug-item-name second-col">Methionin AL 500 Filmtabletten</div>
+                                <div class="drug-item-uses third-col">1 / 0 / 0</div>
+                            </div>
+                            <div class="drug-item inline">
+                                <div class="drug-item-img first-col"><img src="../assets/images/checked.png" alt="checked"></div>
+                                <div class="drug-item-name second-col">Ibuprofen Heumann Schmerztabletten 600 m</div>
+                                <div class="drug-item-uses third-col">2 / 0 / 1</div>
+                            </div>
 
-                            <li class="art-list-item">
-                                <input type="text" class="drug-name" name="drug-1" id="drug-1" placeholder="Ibuprofen Heumann Schmerztabletten 600 m">
-                                <input type="text" class="duration" placeholder="2 / 0 / 1">
-                                <span class="checkmark"></span>
-                            </li>
-
-                        </ul>
-                    </form>
+                    </div>
                 </div>
 
             </div> <!-- / Each patient item -->
@@ -405,7 +401,7 @@
             <div class="recipe-wrapper" id="unsigned_3">
                 
                 <div class="title-rezept-button">
-                    <h2>Rezept für <strong>Sigrid Maria Juliane von Ros ...</strong></h2>
+                    <h2>Rezept für <strong>Sigrid Maria Juliane von Rosenberg.</strong></h2>
                     <button data-modal-target="#modal" class="jet-btn">Rezept jetzt signieren</button>
                 </div>
 
@@ -447,30 +443,33 @@
                             </ul>
 
                             <div class="collect-information">
-                                <div class="form-group border-right-content">
-                                    <div class="item">
+
+                                <div class="column-2">
+                                    <div class="form-group">
+                                        <div class="input-wrapper">
+                                            <label for="address">Name, Vorname des Versicherten</label>
+                                            <textarea style="max-width: 160px; min-height: 75px;" name="address" id="address" cols="10" placeholder="Isabella Bowers, Heidestraße 17, 51147 Köln"></textarea>
+                                            <span></span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
                                         <div class="input-wrapper">
                                             <label for="name">Krankenkasse bzw. Kostenträger</label>
                                             <input type="text" name="name" id="name" placeholder="AOK Rheinland-Pfalz">
                                         </div>
                                     </div>
+                                </div>
 
-                                    <div class="item border-bottom">
+                                <div class="column-4">
+                                    <div class="form-group">
                                         <div class="input-wrapper">
-                                            <label for="number">Kassen-Nr:</label>
-                                            <input type="text" name="number" id="number" placeholder="106494399">
+                                            <label for="Kostenträgerkennung">Kostenträgerkennung</label>
+                                            <input type="text" name="Kostenträgerkennung" id="Kostenträgerkennung" class="bright" placeholder="100038825">
+                                            <span></span>
                                         </div>
                                     </div>
-                                </div>
 
-                                <div class="form-group border-bottom">
-                                    <div class="input-wrapper">
-                                        <label for="address">Name, Vorname des Versicherten</label>
-                                        <textarea name="addres" id="address" placeholder="Isabella Bowers, Heidestraße 17, 51147 Köln"></textarea>
-                                    </div>
-                                </div>
-
-                                <div class="coloumn-2 border-bottom">
                                     <div class="form-group">
                                         <div class="input-wrapper">
                                             <label for="person">Versicherten-Nr.</label>
@@ -481,18 +480,24 @@
 
                                     <div class="form-group">
                                         <div class="input-wrapper">
-                                            <label for="birthday">geb. am</label>
-                                            <input type="text" id="birthday" class="bright" name="birthday" placeholder="12.08.1964">
-                                            <span></span>
+                                            <label for="Status">Status</label>
+                                            <input type="text" name="Status" id="Status" class="bright" placeholder="1000 1">
                                         </div>
                                     </div>
-                                </div>
 
-                                <div class="coloumn-2 border-bottom">
                                     <div class="form-group">
                                         <div class="input-wrapper">
                                             <label for="Status">Status</label>
                                             <input type="text" name="Status" id="Status" class="bright" placeholder="1000 1">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="column-4">
+                                    <div class="form-group">
+                                        <div class="input-wrapper">
+                                            <label for="Status">Betriebsstätten-Nr.</label>
+                                            <input type="text" name="Betriebsstätten-Nr." id="Betriebsstätten-Nr." class="bright" placeholder="Betriebsstätten-Nr.">
                                             <span></span>
                                         </div>
                                     </div>
@@ -500,35 +505,25 @@
                                     <div class="form-group">
                                         <div class="input-wrapper">
                                             <label for="doctor-no">Arzt-Nr.</label>
-                                            <input type="text" name="doctor-no" id="doctor-no" class="bright" placeholder="74982992">
+                                            <input type="text" name="doctor-no" id="doctor-no" class="bright" placeholder="LANR1234">
                                             <span></span>
                                         </div>
                                     </div>
-                                </div>
 
-                                <div class="coloumn-2 border-bottom">
-                                    <div class="form-group">
-                                        <div class="input-wrapper">
-                                            <label for="Establishment">Betriebsstätten-Nr.</label>
-                                            <input type="text" name="Establishment" id="Establishment" class="bright" placeholder="27839993">
-                                            <span></span>
-                                        </div>
-                                    </div>
-                                    
                                     <div class="form-group">
                                         <div class="input-wrapper">
                                             <label for="date">Datum</label>
-                                            <input type="text" id="date" name="date" class="bright" placeholder="10.07.2021">
-                                            <span></span>
+                                            <input type="text" id="date" class="bright" name="date" placeholder="10.07.2021">
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="coloumn-2">
+                                <div class="column-2">
                                     <div class="form-group">
                                         <div class="input-wrapper">
                                             <label for="Unfalltag">Unfalltag</label>
                                             <input type="text" name="Unfalltag" id="Unfalltag" placeholder="-">
+                                            <span class="long-border"></span>
                                         </div>
                                     </div>
                                     
@@ -539,34 +534,39 @@
                                         </div>
                                     </div>
                                 </div>
+
+
                             </div>
                         </form>
                     </div>
                 </div>
 
-                <div class="drug-area">
+                 <div class="drug-area">
                     <div class="inline">
                         <div class="zet-title first-col">Aut idem</div>
                         <div class="zet-title second-col">Medikament</div>
                         <div class="zet-title third-col">Dosierung</div>
                     </div>
 
-                    <form action="" class="art-form">
-                        <ul class="zet-check-list">
-                            <li class="art-list-item">
-                                <input type="text" class="drug-name" name="drug-1" id="drug-1" placeholder="Krankenkasse bzw. Kostenträger">
-                                <input type="text" class="duration" placeholder="1 / 1 / 1">
-                                <span class="checkmark"></span>
-                            </li>
+                    <div class="drug-list">
 
-                            <li class="art-list-item">
-                                <input type="text" class="drug-name" name="drug-1" id="drug-1" placeholder="Ibuprofen Heumann Schmerztabletten 600 m">
-                                <input type="text" class="duration" placeholder="2 / 0 / 1">
-                                <span class="checkmark"></span>
-                            </li>
+                            <div class="drug-item inline">
+                                <div class="drug-item-img first-col"><img src="../assets/images/checked.png" alt="checked"></div>
+                                <div class="drug-item-name second-col">Crataegutt 450 mg Herz-Kreislauf-Tabletten</div>
+                                <div class="drug-item-uses third-col">1 / 1 / 1</div>
+                            </div>
+                            <div class="drug-item inline">
+                                <div class="drug-item-img first-col"><img src="../assets/images/checked.png" alt="checked"></div>
+                                <div class="drug-item-name second-col">Methionin AL 500 Filmtabletten</div>
+                                <div class="drug-item-uses third-col">1 / 0 / 0</div>
+                            </div>
+                            <div class="drug-item inline">
+                                <div class="drug-item-img first-col"><img src="../assets/images/checked.png" alt="checked"></div>
+                                <div class="drug-item-name second-col">Ibuprofen Heumann Schmerztabletten 600 m</div>
+                                <div class="drug-item-uses third-col">2 / 0 / 1</div>
+                            </div>
 
-                        </ul>
-                    </form>
+                    </div>
                 </div>
 
             </div> <!-- / Each patient item -->
