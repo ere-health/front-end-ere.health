@@ -85,6 +85,15 @@ button {
     background: #EDD767;
     box-shadow: 0px 12px 24px -6px rgba(0, 0, 0, 0.2);
 
+    &.btn-inactive {
+        background: #E4E4E4 !important;
+        color: #fff !important;
+
+        &:hover, &:focus {
+            cursor: none;
+        }
+    }
+
     &.active, &:hover, &:focus {
         color: #fff;
         background: rgba(53, 158, 173, 1);
@@ -378,6 +387,7 @@ button {
                     .column-3 {
                         display: flex;
                         flex-wrap: wrap;
+                        width: 100%;
 
                         .form-group {
                             width: 33.333333%;

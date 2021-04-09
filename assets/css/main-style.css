@@ -74,6 +74,13 @@ button.active, button:hover, button:focus {
   background: #EDD767;
   box-shadow: 0px 12px 24px -6px rgba(0, 0, 0, 0.2);
 }
+.jet-btn.btn-inactive {
+  background: #E4E4E4 !important;
+  color: #fff !important;
+}
+.jet-btn.btn-inactive:hover, .jet-btn.btn-inactive:focus {
+  cursor: none;
+}
 .jet-btn.active, .jet-btn:hover, .jet-btn:focus {
   color: #fff;
   background: #359ead;
@@ -328,6 +335,7 @@ button.active, button:hover, button:focus {
 .recipe-body .recipe-wrapper .art-info-form .art .collect-information .column-3 {
   display: flex;
   flex-wrap: wrap;
+  width: 100%;
 }
 .recipe-body .recipe-wrapper .art-info-form .art .collect-information .column-3 .form-group {
   width: 33.333333%;
