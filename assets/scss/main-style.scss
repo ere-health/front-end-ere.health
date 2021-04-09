@@ -601,4 +601,89 @@ button {
 }
 
 
+/****************************************************************************
+                            Lean Start Page
+****************************************************************************/ 
+.lean-start-page {
+
+    .recipe-body {
+
+        .recipe-wrapper {
+            background: #fff;
+
+            .art-info-form {
+
+                .art {
+
+                    .zet-check-list {
+
+                        .art-list-item {
+
+                            .checkmark {
+                                height: 20px;
+                                width: 20px;
+                                border-radius: 500px;
+                                background-color: #E4E4E4;
+                            }
+                            
+                            input {
+                                
+                                &:checked ~ .checkmark:after, &:checked ~ .checkmark:before {
+                                    border-color: $primary-color !important;
+                                    display: block;
+                                }
+                            }
+                        }
+                    }
+
+                    .collect-information {
+                        border: 0;
+
+                        .border-bottom {
+                            border: 0;
+                        }
+
+                        .form-group {
+
+                            label {
+                                color: #000;
+                            }
+
+                            input {
+                                color: #004046;
+                                @include placeholder(#004046, 16px, 700);
+                            }
+
+                            .input-wrapper {
+
+                                span {
+                                    display: none;
+                                }
+                            }
+                        }
+
+                        .column-2 {
+
+                            .form-group{
+                                flex: inherit;
+                                width: 50%;
+                            }
+                        }
+
+                        .column-4 {
+                            width: 100%;
+                            display: flex;
+                            flex-wrap: wrap;
+
+                            .form-group {
+                                width: 25%;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
 @import "responsive";
