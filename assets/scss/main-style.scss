@@ -193,14 +193,14 @@ button {
                 .file {
                     display: flex;
                     flex-wrap: wrap;
-                    justify-content: flex-start;
                     align-items: center;
+                    justify-content: flex-start;
 
                     p {
-                        margin: 0 0 0 15px;
                         @include em(16px, 20px);
-                        font-weight: 500;
+                        margin: 0 0 0 15px;
                         color: #BFBFBE;
+                        font-weight: 500;
                     }
                 }
                 
@@ -413,10 +413,6 @@ button {
                 .second-col {
                     flex: 0 0 71%;
                 }
-
-                .third-col {
-
-                }
             }
 
             .art-list-item {
@@ -492,6 +488,7 @@ button {
         }
     
         .modal-title {
+
             p {
                 text-align: center;
                 font-family: $primary-font;
@@ -504,10 +501,12 @@ button {
                 }
             }
         }
+
         .modal-image {
             margin: 52px 0 105px;
     
         }
+
         .modal-buttons {
             display: flex;
             justify-content: center;
@@ -555,7 +554,6 @@ button {
             pointer-events: all;
     
         }
-    
     }
 }
 
@@ -567,7 +565,6 @@ button {
     .header-wrapper {
         box-sizing: border-box;
         border-right: 1px solid #E4E4E4;
-
     }
 
     .recipe-body {
@@ -587,7 +584,6 @@ button {
                 font-weight: 700;
                 font-family: $primary-font;
                 @include em(24px, 36px);
-
             }
             p {
                 font-weight: 400;
@@ -632,6 +628,7 @@ button {
                                         border-color: #004046;
                                         background-color: #fff;
                                     }
+
                                     ~label {
                                         color: #004046;
                                     }
@@ -724,19 +721,12 @@ button {
                     .second-col {
                         flex: 0 0 71%;
                     }
-    
-                    .third-col {
-    
-                    }
                 }
 
                 .drug-list {
 
                     .drug-item {
                         margin-bottom: 20px;
-
-                        .drug-item-img {
-                        }
 
                         .drug-item-name {
                             color: #004046;

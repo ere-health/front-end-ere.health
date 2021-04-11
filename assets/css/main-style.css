@@ -164,15 +164,15 @@ button.active, button:hover, button:focus {
 .header-wrapper .header .unsigned-prescription .unsignierte-list .file {
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-start;
   align-items: center;
+  justify-content: flex-start;
 }
 .header-wrapper .header .unsigned-prescription .unsignierte-list .file p {
-  margin: 0 0 0 15px;
   font-size: 1rem;
   line-height: 1.25;
-  font-weight: 500;
+  margin: 0 0 0 15px;
   color: #BFBFBE;
+  font-weight: 500;
 }
 .header-wrapper .header .generated-pdf {
   padding: 70px 0;
