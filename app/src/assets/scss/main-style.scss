@@ -56,7 +56,7 @@ ul {
     height: 100%;
 }
 
-button {
+button, .link-button {
     margin: 0;
     border: 0;
     display: flex;
@@ -77,6 +77,12 @@ button {
         background: #59BAC3;
         color: #fff;
     }
+}
+
+.link-button {
+    text-decoration: none;
+    text-align: left;
+    color: #11142D;
 }
 
 .jet-btn {
@@ -560,39 +566,31 @@ button {
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
                                         Printing page
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/ 
-.print-page{
+.recipe-body {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
 
-    .header-wrapper {
-        box-sizing: border-box;
-        border-right: 1px solid #E4E4E4;
-    }
+    .print-wrapper {
+        text-align: center;
 
-    .recipe-body {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        align-items: center;
+        img { 
+            margin-bottom: 10px;
+        }
 
-        .print-wrapper {
-            text-align: center;
-
-            img { 
-                margin-bottom: 10px;
-            }
-
-            h3 {
-                font-weight: 700;
-                font-family: $primary-font;
-                @include em(24px, 36px);
-            }
-            p {
-                font-weight: 400;
-                font-family: $primary-font;
-                @include em(24px, 36px)
-
-            }
+        h3 {
+            font-weight: 700;
+            font-family: $primary-font;
+            @include em(24px, 36px);
+        }
+        p {
+            font-weight: 400;
+            font-family: $primary-font;
+            @include em(24px, 36px)
 
         }
+
     }
 }
 

@@ -47,7 +47,7 @@ ul li {
   height: 100%;
 }
 
-button {
+button, .link-button {
   margin: 0;
   border: 0;
   display: flex;
@@ -60,12 +60,18 @@ button {
   transition: all 0.3s ease;
   background-color: #fff;
 }
-button img {
+button img, .link-button img {
   margin-right: 10px;
 }
-button.active, button:hover, button:focus {
+button.active, button:hover, button:focus, .link-button.active, .link-button:hover, .link-button:focus {
   background: #59BAC3;
   color: #fff;
+}
+
+.link-button {
+  text-decoration: none;
+  text-align: left;
+  color: #11142D;
 }
 
 .jet-btn {
@@ -494,29 +500,25 @@ button.active, button:hover, button:focus {
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
                                         Printing page
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-.print-page .header-wrapper {
-  box-sizing: border-box;
-  border-right: 1px solid #E4E4E4;
-}
-.print-page .recipe-body {
+.recipe-body {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
 }
-.print-page .recipe-body .print-wrapper {
+.recipe-body .print-wrapper {
   text-align: center;
 }
-.print-page .recipe-body .print-wrapper img {
+.recipe-body .print-wrapper img {
   margin-bottom: 10px;
 }
-.print-page .recipe-body .print-wrapper h3 {
+.recipe-body .print-wrapper h3 {
   font-weight: 700;
   font-family: "Quicksand", sans-serif;
   font-size: 1.5rem;
   line-height: 1.5;
 }
-.print-page .recipe-body .print-wrapper p {
+.recipe-body .print-wrapper p {
   font-weight: 400;
   font-family: "Quicksand", sans-serif;
   font-size: 1.5rem;

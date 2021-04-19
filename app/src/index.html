@@ -1,27 +1,90 @@
+
 <!DOCTYPE html>
-<html>
+<html lang="de">
 <head>
-  <title>[BCE template]</title>
-  <link rel="stylesheet" href="bulma.css">
-  <link rel="stylesheet" href="style.css">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>ere.health E-Rezept signieren, hinterlegen und drucken</title>
+    <link rel="stylesheet" href="assets/css/main-style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
-<body>
-  <main>
-    <header>
-      <h1 class="title">bookmarks</h1>
-    </header>
-    <nav>
-      <ul>
-      <li><a href="/add" class="button is-text">add bookmark</a></li>
-      <li><a href="/" class="button is-text">list</a></li>
-    </ul>
-    </nav>
-    <section class="view">
-      <h2 class="subtitle">>>magic-less, minimalistic, opinionated, standard-based, quickstarter</h2>
-    </section>
-    <footer>powered by: <a href="https://airhacks.live">airhacks.live</a></footer>
-  </main>
+<body class="home-page">  
+
+    <div class="main-content-wrapper">
+        <header class="header-wrapper">
+
+            <div class="header">
+                <div class="logo">
+                    <a href="/html"><img src="assets/images/ere.health-logo.svg" alt="Taleclinic Logo"></a>
+                </div>
+                <div>
+                  <unsigned-prescription-list />
+                </div>
+
+                <div class="generated-pdf">
+
+                    <p>Erzeugte PDF’s</p>
+                    <div class="generated-list">
+                        <button> <img src="assets/images/tik-.svg"> Joy Heather</button>
+                        <button> <img src="assets/images/tik-.svg"> Mathias Robben</button>
+                    </div>
+                </div>
+
+                <div class="jetzt-area">
+                    <p> <img src="assets/images/arrow-down.svg" alt=""> Rezepte signieren und für Patienten direkt ausstellen.</p>
+                    <button data-modal-target="#modal" class="jet-btn">Jetzt alle Rezepte signieren</button>
+                </div>
+                <div>
+                  <load-examples />
+                </div>
+            </div>
+
+        </header>
+
+        
+        <section class="recipe-body">
+
+      
+        </section> <!-- / Each patient items wrapper -->
+
+        <section class="popup">
+            <div class="modal" id="modal">
+                <div class="modal-title">
+                    <p>Bitte legen Sie jetzt Ihren <strong>digitalen Arztausweis auf das Kartenlesegerät</strong> und geben Sie ihre Pin ein.</p>
+                </div>
+                <div class="modal-image"><img src="assets/images/popup-icon.png" alt="popup"></div>
+                <div class="modal-buttons">
+                    <button data-close-button class="cancel">Abbrechen</button>
+                    <button data-modal-target-processing="#processing" class="ok-next">Ok, Weiter</button>
+                </div>
+            </div>
+
+            <div class="modal" id="processing">
+                <div class="modal-title">
+                    <p>Arztausweis erkannt. <strong>Rezepte werden erzeugt. </strong>Bitte warten.</p>
+                </div>
+                <div class="modal-image"><img src="assets/images/popup-icon2.png" alt="popup"></div>
+                <div class="modal-buttons">
+                    <button data-modal-target-fatig="#fatig" class="grow-in-wealth">Bitte warten</button>
+                </div>
+            </div>
+
+            <div class="modal" id="fatig">
+                <div class="modal-title">
+                    <p>Rezept erzeugt und <strong>an Patient versandt</strong></p>
+                </div>
+                <div class="modal-image"><img src="assets/images/popup-icon3.png" alt="popup"></div>
+                <div class="modal-buttons">
+                    <a href="./print.html" class="grow-in-wealth"> Fertig</a>
+                </div>
+            </div>
+            <div id="overlay"></div>
+        </section>
+
+    </div>
+    
   <script src="init.js"></script>
   <script src="app.js" type="module"></script>
 </body>

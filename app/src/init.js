@@ -6,6 +6,3 @@ window.process = {
         NODE_ENV: 'development'
     }
 }
-
-
-
