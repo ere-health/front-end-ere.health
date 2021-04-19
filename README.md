@@ -1,4 +1,4 @@
-# bce.design
+# front-end-ere.health
 
 minimal tooling, essential dependencies, high productivity, no migrations, web component starter for non-trivial web applications
 

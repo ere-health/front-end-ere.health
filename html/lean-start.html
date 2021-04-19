@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lean start | ere.health</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/main-style.css">
+</head>
+<body class="home-page lean-start-page">  
+
+    <div class="main-content-wrapper">
+        <header class="header-wrapper">
+
+            <div class="header">
+                <div class="logo">
+                    <a href="/html"><img src="../assets/images/ere.health-logo.svg" alt="Taleclinic Logo"></a>
+                </div>
+
+                <div class="unsigned-prescription">
+                    <p>Unsignierte Rezepte</p>
+                    <div class="unsignierte-list">
+                        <button class="unsigned-button active" class="active" data-id="#unsigned_1"> <img src="../assets/images/pending-icon.svg" alt=""> Isabella Bowers</button>
+                        <button class="unsigned-button" data-id="#unsigned_2"> <img src="../assets/images/pending-icon.svg" alt=""> Joseph Rosch</button>
+                        <button class="unsigned-button" data-id="#unsigned_3"> <img src="../assets/images/pending-icon.svg" alt=""> Sigrid Maria Juliane von Ros ...</button>
+                    </div>
+                </div>
+
+                <div class="generated-pdf">
+
+                    <p>Erzeugte PDF’s</p>
+                    <div class="generated-list">
+                        <button> <img src="../assets/images/tik-.svg"> Joy Heather</button>
+                        <button> <img src="../assets/images/tik-.svg"> Mathias Robben</button>
+                    </div>
+                </div>
+
+                <div class="jetzt-area">
+                    <p> <img src="../assets/images/arrow-down.svg" alt=""> Rezepte signieren und für Patienten direkt ausstellen.</p>
+                    <button data-modal-target="#modal" class="jet-btn">Jetzt alle Rezepte signieren</button>
+                </div>
+            </div>
+
+        </header>
+
+        
+        <section class="recipe-body">
+
+            <div class="recipe-wrapper active" id="unsigned_1">
+                
+                <div class="title-rezept-button">
+                    <h2>Rezept für <strong>Isabella Bowers </strong></h2>
+                    <button data-modal-target="#modal" class="open-modal jet-btn">Rezept jetzt signieren</button>
+                </div>
+
+                <div class="art-info-form">
+                    <div class="art">
+                        <form action="" class="art-form">
+                            <ul class="zet-check-list">
+                                <div class="zet-title">Art</div>
+                                <li class="art-list-item">
+                                    <input type="checkbox" id="gebührenfrei" checked="checked" value="Gebührenfrei">
+                                    <label for="gebührenfrei">Gebührenfrei</label>
+                                    <span class="checkmark"></span>
+                                </li>
+                                <li class="art-list-item">
+                                    <input type="checkbox" id="geb-pfl" value="Geb. -pfl.">
+                                    <label for="geb-pfl">Geb. -pfl.</label>
+                                    <span class="checkmark"></span>
+                                </li>
+                                <li class="art-list-item">
+                                    <input type="checkbox" id="noctu" value="noctu">
+                                    <label for="noctu">noctu</label>
+                                    <span class="checkmark"></span>
+                                </li>
+                                <li class="art-list-item">
+                                    <input type="checkbox" id="sonstige" value="Sonstige">
+                                    <label for="sonstige">Sonstige</label>
+                                    <span class="checkmark"></span>
+                                </li>
+                                <li class="art-list-item">
+                                    <input type="checkbox" id="unfall"value="Unfall">
+                                    <label for="unfall">Unfall</label>
+                                    <span class="checkmark"></span>
+                                </li>
+                                <li class="art-list-item">
+                                    <input type="checkbox" id="arbeitsunfall"value="Arbeitsunfall">
+                                    <label for="arbeitsunfall">Arbeitsunfall</label>
+                                    <span class="checkmark"></span>
+                                </li>
+                            </ul>
+
+                            <div class="collect-information">
+
+                                <div class="column-2">
+                                    <div class="form-group">
+                                        <div class="input-wrapper">
+                                            <label for="address">Name, Vorname des Versicherten</label>
+                                            <textarea style="max-width: 160px; min-height: 75px;" name="address" id="address" cols="10" placeholder="Isabella Bowers, Heidestraße 17, 51147 Köln"></textarea>
+                                            <span></span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <div class="input-wrapper">
+                                            <label for="name">Krankenkasse bzw. Kostenträger</label>
+                                            <input type="text" name="name" id="name" placeholder="AOK Rheinland-Pfalz">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="column-4">
+                                    <div class="form-group">
+                                        <div class="input-wrapper">
+                                            <label for="Kostenträgerkennung">Kostenträgerkennung</label>
+                                            <input type="text" name="Kostenträgerkennung" id="Kostenträgerkennung" class="bright" placeholder="100038825">
+                                            <span></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="input-wrapper">
+                                            <label for="person">Versicherten-Nr.</label>
+                                            <input type="text" name="person" id="address" class="bright" placeholder="Versicherten-Nr.">
+                                            <span></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="input-wrapper">
+                                            <label for="Status">Status</label>
+                                            <input type="text" name="Status" id="Status" class="bright" placeholder="1000 1">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="input-wrapper">
+                                            <label for="Status">Status</label>
+                                            <input type="text" name="Status" id="Status" class="bright" placeholder="1000 1">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="column-4">
+                                    <div class="form-group">
+                                        <div class="input-wrapper">
+                                            <label for="Status">Betriebsstätten-Nr.</label>
+                                            <input type="text" name="Betriebsstätten-Nr." id="Betriebsstätten-Nr." class="bright" placeholder="Betriebsstätten-Nr.">
+                                            <span></span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <div class="input-wrapper">
+                                            <label for="doctor-no">Arzt-Nr.</label>
+                                            <input type="text" name="doctor-no" id="doctor-no" class="bright" placeholder="LANR1234">
+                                            <span></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="input-wrapper">
+                                            <label for="date">Datum</label>
+                                            <input type="text" id="date" class="bright" name="date" placeholder="10.07.2021">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="column-2">
+                                    <div class="form-group">
+                                        <div class="input-wrapper">
+                                            <label for="Unfalltag">Unfalltag</label>
+                                            <input type="text" name="Unfalltag" id="Unfalltag" placeholder="-">
+                                            <span class="long-border"></span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <div class="input-wrapper">
+                                            <label for="Unfallbetrieb">Unfallbetrieb oder Arbeitgebernr.</label>
+                                            <input type="text" id="Unfallbetrieb" name="date" placeholder="-">
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="drug-area">
+                    <div class="inline">
+                        <div class="zet-title first-col">Aut idem</div>
+                        <div class="zet-title second-col">Medikament</div>
+                        <div class="zet-title third-col">Dosierung</div>
+                    </div>
+
+                    <div class="drug-list">
+
+                            <div class="drug-item inline">
+                                <div class="drug-item-img first-col"><img src="../assets/images/checked.png" alt="checked"></div>
+                                <div class="drug-item-name second-col">Crataegutt 450 mg Herz-Kreislauf-Tabletten</div>
+                                <div class="drug-item-uses third-col">1 / 1 / 1</div>
+                            </div>
+                            <div class="drug-item inline">
+                                <div class="drug-item-img first-col"><img src="../assets/images/checked.png" alt="checked"></div>
+                                <div class="drug-item-name second-col">Methionin AL 500 Filmtabletten</div>
+                                <div class="drug-item-uses third-col">1 / 0 / 0</div>
+                            </div>
+                            <div class="drug-item inline">
+                                <div class="drug-item-img first-col"><img src="../assets/images/checked.png" alt="checked"></div>
+                                <div class="drug-item-name second-col">Ibuprofen Heumann Schmerztabletten 600 m</div>
+                                <div class="drug-item-uses third-col">2 / 0 / 1</div>
+                            </div>
+
+                    </div>
+                </div>
+
+            </div> <!-- / Each patient item -->
+
+
+            <div class="recipe-wrapper" id="unsigned_2">
+                
+                <div class="title-rezept-button">
+                    <h2>Rezept für <strong> Joseph Rosch</strong></h2>
+                    <button data-modal-target="#modal" class="jet-btn">Rezept jetzt signieren</button>
+                </div>
+
+                <div class="art-info-form">
+                    <div class="art">
+                        <form action="" class="art-form">
+                            <ul class="zet-check-list">
+                                <div class="zet-title">Art</div>
+                                <li class="art-list-item">
+                                    <input type="checkbox" id="gebührenfrei2" checked="checked" value="Gebührenfrei">
+                                    <label for="gebührenfrei2">Gebührenfrei</label>
+                                    <span class="checkmark"></span>
+                                </li>
+                                <li class="art-list-item">
+                                    <input type="checkbox" id="geb-pfl2" value="Geb. -pfl.">
+                                    <label for="geb-pfl2">Geb. -pfl.</label>
+                                    <span class="checkmark"></span>
+                                </li>
+                                <li class="art-list-item">
+                                    <input type="checkbox" id="noctu2" value="noctu">
+                                    <label for="noctu2">noctu</label>
+                                    <span class="checkmark"></span>
+                                </li>
+                                <li class="art-list-item">
+                                    <input type="checkbox" id="unfall2"value="Unfall">
+                                    <label for="unfall2">Unfall</label>
+                                    <span class="checkmark"></span>
+                                </li>
+                                <li class="art-list-item">
+                                    <input type="checkbox" id="sonstige2" value="Sonstige">
+                                    <label for="sonstige2">Sonstige</label>
+                                    <span class="checkmark"></span>
+                                </li>
+                                <li class="art-list-item">
+                                    <input type="checkbox" id="arbeitsunfall2"value="Arbeitsunfall">
+                                    <label for="arbeitsunfall2">Arbeitsunfall</label>
+                                    <span class="checkmark"></span>
+                                </li>
+                            </ul>
+
+                            <div class="collect-information">
+
+                                <div class="column-2">
+                                    <div class="form-group">
+                                        <div class="input-wrapper">
+                                            <label for="address">Name, Vorname des Versicherten</label>
+                                            <textarea style="max-width: 160px; min-height: 75px;" name="address" id="address" cols="10" placeholder="Isabella Bowers, Heidestraße 17, 51147 Köln"></textarea>
+                                            <span></span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <div class="input-wrapper">
+                                            <label for="name">Krankenkasse bzw. Kostenträger</label>
+                                            <input type="text" name="name" id="name" placeholder="AOK Rheinland-Pfalz">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="column-4">
+                                    <div class="form-group">
+                                        <div class="input-wrapper">
+                                            <label for="Kostenträgerkennung">Kostenträgerkennung</label>
+                                            <input type="text" name="Kostenträgerkennung" id="Kostenträgerkennung" class="bright" placeholder="100038825">
+                                            <span></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="input-wrapper">
+                                            <label for="person">Versicherten-Nr.</label>
+                                            <input type="text" name="person" id="address" class="bright" placeholder="Versicherten-Nr.">
+                                            <span></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="input-wrapper">
+                                            <label for="Status">Status</label>
+                                            <input type="text" name="Status" id="Status" class="bright" placeholder="1000 1">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="input-wrapper">
+                                            <label for="Status">Status</label>
+                                            <input type="text" name="Status" id="Status" class="bright" placeholder="1000 1">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="column-4">
+                                    <div class="form-group">
+                                        <div class="input-wrapper">
+                                            <label for="Status">Betriebsstätten-Nr.</label>
+                                            <input type="text" name="Betriebsstätten-Nr." id="Betriebsstätten-Nr." class="bright" placeholder="Betriebsstätten-Nr.">
+                                            <span></span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <div class="input-wrapper">
+                                            <label for="doctor-no">Arzt-Nr.</label>
+                                            <input type="text" name="doctor-no" id="doctor-no" class="bright" placeholder="LANR1234">
+                                            <span></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="input-wrapper">
+                                            <label for="date">Datum</label>
+                                            <input type="text" id="date" class="bright" name="date" placeholder="10.07.2021">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="column-2">
+                                    <div class="form-group">
+                                        <div class="input-wrapper">
+                                            <label for="Unfalltag">Unfalltag</label>
+                                            <input type="text" name="Unfalltag" id="Unfalltag" placeholder="-">
+                                            <span class="long-border"></span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <div class="input-wrapper">
+                                            <label for="Unfallbetrieb">Unfallbetrieb oder Arbeitgebernr.</label>
+                                            <input type="text" id="Unfallbetrieb" name="date" placeholder="-">
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </form>
+                    </div>
+                    <div class="user-info-box">
+                        
+                    </div>
+                </div>
+
+                 <div class="drug-area">
+                    <div class="inline">
+                        <div class="zet-title first-col">Aut idem</div>
+                        <div class="zet-title second-col">Medikament</div>
+                        <div class="zet-title third-col">Dosierung</div>
+                    </div>
+
+                    <div class="drug-list">
+
+                            <div class="drug-item inline">
+                                <div class="drug-item-img first-col"><img src="../assets/images/checked.png" alt="checked"></div>
+                                <div class="drug-item-name second-col">Crataegutt 450 mg Herz-Kreislauf-Tabletten</div>
+                                <div class="drug-item-uses third-col">1 / 1 / 1</div>
+                            </div>
+                            <div class="drug-item inline">
+                                <div class="drug-item-img first-col"><img src="../assets/images/checked.png" alt="checked"></div>
+                                <div class="drug-item-name second-col">Methionin AL 500 Filmtabletten</div>
+                                <div class="drug-item-uses third-col">1 / 0 / 0</div>
+                            </div>
+                            <div class="drug-item inline">
+                                <div class="drug-item-img first-col"><img src="../assets/images/checked.png" alt="checked"></div>
+                                <div class="drug-item-name second-col">Ibuprofen Heumann Schmerztabletten 600 m</div>
+                                <div class="drug-item-uses third-col">2 / 0 / 1</div>
+                            </div>
+
+                    </div>
+                </div>
+
+            </div> <!-- / Each patient item -->
+
+            <div class="recipe-wrapper" id="unsigned_3">
+                
+                <div class="title-rezept-button">
+                    <h2>Rezept für <strong>Sigrid Maria Juliane von Rosenberg.</strong></h2>
+                    <button data-modal-target="#modal" class="jet-btn">Rezept jetzt signieren</button>
+                </div>
+
+                <div class="art-info-form">
+                    <div class="art">
+                        <form action="" class="art-form">
+                            <ul class="zet-check-list">
+                                <div class="zet-title">Art</div>
+                                <li class="art-list-item">
+                                    <input type="checkbox" id="gebührenfrei3" checked="checked" value="Gebührenfrei">
+                                    <label for="gebührenfrei3">Gebührenfrei</label>
+                                    <span class="checkmark"></span>
+                                </li>
+                                <li class="art-list-item">
+                                    <input type="checkbox" id="geb-pfl3" value="Geb. -pfl.">
+                                    <label for="geb-pfl3">Geb. -pfl.</label>
+                                    <span class="checkmark"></span>
+                                </li>
+                                <li class="art-list-item">
+                                    <input type="checkbox" id="noctu3" value="noctu">
+                                    <label for="noctu3">noctu</label>
+                                    <span class="checkmark"></span>
+                                </li>
+                                <li class="art-list-item">
+                                    <input type="checkbox" id="sonstige3" value="Sonstige">
+                                    <label for="sonstige3">Sonstige</label>
+                                    <span class="checkmark"></span>
+                                </li>
+                                <li class="art-list-item">
+                                    <input type="checkbox" id="unfall3"value="Unfall">
+                                    <label for="unfall3">Unfall</label>
+                                    <span class="checkmark"></span>
+                                </li>
+                                <li class="art-list-item">
+                                    <input type="checkbox" id="arbeitsunfall3"value="Arbeitsunfall">
+                                    <label for="arbeitsunfall3">Arbeitsunfall</label>
+                                    <span class="checkmark"></span>
+                                </li>
+                            </ul>
+
+                            <div class="collect-information">
+
+                                <div class="column-2">
+                                    <div class="form-group">
+                                        <div class="input-wrapper">
+                                            <label for="address">Name, Vorname des Versicherten</label>
+                                            <textarea style="max-width: 160px; min-height: 75px;" name="address" id="address" cols="10" placeholder="Isabella Bowers, Heidestraße 17, 51147 Köln"></textarea>
+                                            <span></span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <div class="input-wrapper">
+                                            <label for="name">Krankenkasse bzw. Kostenträger</label>
+                                            <input type="text" name="name" id="name" placeholder="AOK Rheinland-Pfalz">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="column-4">
+                                    <div class="form-group">
+                                        <div class="input-wrapper">
+                                            <label for="Kostenträgerkennung">Kostenträgerkennung</label>
+                                            <input type="text" name="Kostenträgerkennung" id="Kostenträgerkennung" class="bright" placeholder="100038825">
+                                            <span></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="input-wrapper">
+                                            <label for="person">Versicherten-Nr.</label>
+                                            <input type="text" name="person" id="address" class="bright" placeholder="Versicherten-Nr.">
+                                            <span></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="input-wrapper">
+                                            <label for="Status">Status</label>
+                                            <input type="text" name="Status" id="Status" class="bright" placeholder="1000 1">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="input-wrapper">
+                                            <label for="Status">Status</label>
+                                            <input type="text" name="Status" id="Status" class="bright" placeholder="1000 1">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="column-4">
+                                    <div class="form-group">
+                                        <div class="input-wrapper">
+                                            <label for="Status">Betriebsstätten-Nr.</label>
+                                            <input type="text" name="Betriebsstätten-Nr." id="Betriebsstätten-Nr." class="bright" placeholder="Betriebsstätten-Nr.">
+                                            <span></span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <div class="input-wrapper">
+                                            <label for="doctor-no">Arzt-Nr.</label>
+                                            <input type="text" name="doctor-no" id="doctor-no" class="bright" placeholder="LANR1234">
+                                            <span></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="input-wrapper">
+                                            <label for="date">Datum</label>
+                                            <input type="text" id="date" class="bright" name="date" placeholder="10.07.2021">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="column-2">
+                                    <div class="form-group">
+                                        <div class="input-wrapper">
+                                            <label for="Unfalltag">Unfalltag</label>
+                                            <input type="text" name="Unfalltag" id="Unfalltag" placeholder="-">
+                                            <span class="long-border"></span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <div class="input-wrapper">
+                                            <label for="Unfallbetrieb">Unfallbetrieb oder Arbeitgebernr.</label>
+                                            <input type="text" id="Unfallbetrieb" name="date" placeholder="-">
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                 <div class="drug-area">
+                    <div class="inline">
+                        <div class="zet-title first-col">Aut idem</div>
+                        <div class="zet-title second-col">Medikament</div>
+                        <div class="zet-title third-col">Dosierung</div>
+                    </div>
+
+                    <div class="drug-list">
+
+                            <div class="drug-item inline">
+                                <div class="drug-item-img first-col"><img src="../assets/images/checked.png" alt="checked"></div>
+                                <div class="drug-item-name second-col">Crataegutt 450 mg Herz-Kreislauf-Tabletten</div>
+                                <div class="drug-item-uses third-col">1 / 1 / 1</div>
+                            </div>
+                            <div class="drug-item inline">
+                                <div class="drug-item-img first-col"><img src="../assets/images/checked.png" alt="checked"></div>
+                                <div class="drug-item-name second-col">Methionin AL 500 Filmtabletten</div>
+                                <div class="drug-item-uses third-col">1 / 0 / 0</div>
+                            </div>
+                            <div class="drug-item inline">
+                                <div class="drug-item-img first-col"><img src="../assets/images/checked.png" alt="checked"></div>
+                                <div class="drug-item-name second-col">Ibuprofen Heumann Schmerztabletten 600 m</div>
+                                <div class="drug-item-uses third-col">2 / 0 / 1</div>
+                            </div>
+
+                    </div>
+                </div>
+
+            </div> <!-- / Each patient item -->
+
+        </section> <!-- / Each patient items wrapper -->
+
+        <section class="popup">
+            <div class="modal" id="modal">
+                <div class="modal-title">
+                    <p>Bitte legen Sie jetzt Ihren <strong>digitalen Arztausweis auf das Kartenlesegerät</strong> und geben Sie ihre Pin ein.</p>
+                </div>
+                <div class="modal-image"><img src="../assets/images/popup-icon.png" alt="popup"></div>
+                <div class="modal-buttons">
+                    <button data-close-button class="cancel">Abbrechen</button>
+                    <button data-modal-target-processing="#processing" class="ok-next">Ok, Weiter</button>
+                </div>
+            </div>
+
+            <div class="modal" id="processing">
+                <div class="modal-title">
+                    <p>Arztausweis erkannt. <strong>Rezepte werden erzeugt. </strong>Bitte warten.</p>
+                </div>
+                <div class="modal-image"><img src="../assets/images/popup-icon2.png" alt="popup"></div>
+                <div class="modal-buttons">
+                    <button data-modal-target-fatig="#fatig" class="grow-in-wealth">Bitte warten</button>
+                </div>
+            </div>
+
+            <div class="modal" id="fatig">
+                <div class="modal-title">
+                    <p>Rezept erzeugt und <strong>an Patient versandt</strong></p>
+                </div>
+                <div class="modal-image"><img src="../assets/images/popup-icon3.png" alt="popup"></div>
+                <div class="modal-buttons">
+                    <a href="./print.html" class="grow-in-wealth"> Fertig</a>
+                </div>
+            </div>
+            <div id="overlay"></div>
+        </section>
+
+    </div>
+    
+    <script src="../assets/js/main-scripts.js"></script>
+</body>
+</html>

@@ -1,0 +1,789 @@
+
+/* =========== Import Mixin =============*/
+@import "mixin";
+
+* {
+    margin: 0;
+    padding: 0;
+    outline: 0;
+}
+
+$primary-color: #11142D;
+$secondary-color: #D35846;
+$primary-font: 'Quicksand', sans-serif;
+
+body {
+    font-weight: 700;
+    color: $primary-color;
+    @include em(16px, 20px);
+    font-family: $primary-font;
+    height: 100%;
+}
+
+html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-size: 100%;
+    scroll-behavior: smooth;
+}
+
+button, input, span, label, textarea {
+    font-family: $primary-font;
+    font-weight: 700;
+    color: $primary-color;
+    @include em(16px, 20px);
+}
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                                        Common Style
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+button {
+    cursor: pointer;
+}
+
+ul {
+
+    li {
+        list-style: none;
+    }
+}
+
+.main-content-wrapper {
+    flex-wrap: wrap;
+    display: flex;
+    height: 100%;
+}
+
+button {
+    margin: 0;
+    border: 0;
+    display: flex;
+    border-radius: 4px;
+    text-align: center;
+    padding: 12px 22px;
+    align-items: center;
+    margin-bottom: 15px;
+    justify-content: center;
+    transition: all .3s ease;
+    background-color: #fff;
+    
+    img {
+        margin-right: 10px;
+    }
+    
+    &.active, &:hover, &:focus {
+        background: #59BAC3;
+        color: #fff;
+    }
+}
+
+.jet-btn {
+    color: #000;
+    padding: 12px 24px;
+    background: #EDD767;
+    box-shadow: 0px 12px 24px -6px rgba(0, 0, 0, 0.2);
+
+    &.btn-inactive {
+        background: #E4E4E4 !important;
+        color: #fff !important;
+
+        &:hover, &:focus {
+            cursor: none;
+        }
+    }
+
+    &.active, &:hover, &:focus {
+        color: #fff;
+        background: rgba(53, 158, 173, 1);
+    }
+}
+
+.zet-title {
+    color: #000;
+    display: block;
+    font-weight: 500;
+    margin-bottom: 15px;
+    @include em(14px, 17px);
+}
+
+.zet-check-list {
+
+    .art-list-item {
+        color:  #11142D;
+        position: relative;
+        line-height: 30px;
+        margin-bottom: 16px;
+
+        .checkmark {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 30px;
+            width: 30px;
+            background-color: #fff;
+            border: 2px solid $secondary-color;
+
+            &:after {
+                content: "";
+                left: 0;
+                top: 0;
+                width: 2px;
+                height: 20px;
+                background: #000;
+                transform: translate(15px, -15px) rotate(45deg)
+            }
+
+            &:before {
+                content: "";
+                left: 0;
+                bottom: 0;
+                width: 2px;
+                height: 20px;
+                background: #000;
+                transform: translate(15px, 5px) rotate(-45deg);
+            }
+        }
+
+        label {
+            padding-left: 30px
+        }
+
+        input {
+
+            &:checked ~ .checkmark:after, &:checked ~ .checkmark:before {
+                display: block;
+            }
+        }
+    }
+}
+
+.border-bottom {
+    border-bottom: 2px solid $secondary-color;
+}
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                                        Sidebar Header
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/ 
+.header-wrapper {
+    width: 30%;
+    height: 100%;
+    background: #fff;
+    height: 100%;
+    
+    .header {
+        padding: 30px 30px 30px 80px;
+
+        p {
+            color: #808191;
+            font-weight: 500;
+            margin-bottom: 24px;
+            @include em(15px, 19px);
+        }
+
+        .logo {
+            margin-bottom: 45px;
+        }
+
+        .unsigned-prescription {
+
+            .unsignierte-list {
+
+                .file {
+                    display: flex;
+                    flex-wrap: wrap;
+                    align-items: center;
+                    justify-content: flex-start;
+
+                    p {
+                        @include em(16px, 20px);
+                        margin: 0 0 0 15px;
+                        color: #BFBFBE;
+                        font-weight: 500;
+                    }
+                }
+                
+            }
+        }
+
+        .generated-pdf {
+            padding: 70px 0;
+        }
+
+        .jetzt-area {
+
+            p {
+                display: flex;
+                font-weight: 700;
+                max-width: 260px;
+                align-items: center;
+                margin-bottom: 35px;
+                color: $primary-color;
+                @include em(16px, 20px);
+
+                img {
+                    margin-right: 18px;
+                    position: relative;
+                    bottom: -15px;
+                }
+            }
+
+            .jet-btn {
+                @include em(18px, 22px);
+            }
+        }
+    }
+}
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                                        Custom Tab
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/ 
+
+.recipe-body .recipe-wrapper {
+    display: none;
+    
+    &.active {
+        display: block;
+    }
+}
+
+
+.recipe-body {
+    width: 70%;
+
+    .recipe-wrapper {
+        height: 100%;
+        padding: 30px 55px;
+        background: #f8c6c687;
+
+        .title-rezept-button {
+            display: flex;
+            margin-bottom: 25px;
+            align-items: center;
+            justify-content: space-between;
+
+            h2 {
+                font-weight: 500;
+            }
+        }
+
+        .art-info-form {
+
+            .art {
+
+                .art-form {
+                    display: flex;
+                    align-items: center;
+
+                    .zet-check-list {
+                        max-width: 200px;
+                        width: 100%;
+                    }
+                }
+
+               .collect-information {
+                   display: flex;
+                   flex-wrap: wrap;
+                   background: #fff;
+                   border: 2px solid $secondary-color;
+
+                   .form-group {
+                       width: 100%;
+
+                       .input-wrapper {
+                           padding: 10px 50px;
+                           position: relative;
+
+                           span {
+                                background: $secondary-color;
+                                position: absolute;
+                                height: 20px;
+                                width: 2px;
+                                bottom: 0;
+                                right: 0;
+
+                                &.long-border {
+                                    height: 100%;
+                                }
+                           }
+                       }
+
+                       .item:not(:last-child) {
+                           padding-bottom: 10px;
+                           margin-bottom: 10px;
+                           position: relative;
+
+                           &:after {
+                               background: $secondary-color;
+                               position: absolute;
+                               height: 2px;
+                               width: 100%;
+                               content: "";
+                               bottom: 0;
+                               left: 0;
+                            }
+                       }
+
+                        label {
+                            color: $secondary-color;
+                            @include em(14px, 17px);
+                            font-weight: 500;
+                            display: block;
+                            margin-bottom: 1px;
+                        }
+                        
+                        input, textarea {
+                            font-weight: 700;
+                            @include em(16px, 24px);
+                            color: $primary-color;
+                            width: 100%;
+                            border: 0;
+                            max-width: 100%;
+                            @include placeholder(#004046, 16px, 700);
+                            
+                        }
+
+                        input {
+
+                            &.bright {
+                                width: auto;
+                                display: inline-block;
+                            }
+                        }
+                   }
+
+                   .column-2 {
+                       display: flex;
+                       flex-wrap: wrap;
+                       width: 100%;
+                       
+                       .form-group {
+                           
+                           &:nth-child(1) {
+                               flex: 0 0 62%;
+                            }
+                            
+                            &:nth-child(2) {
+                                flex: 0 0 28%;
+                            }
+                        }
+
+                        &.col-reverse {
+
+                            .form-group {
+
+                                &:nth-child(1) {
+                                    flex: 0 0 33.2%
+                                }
+                                
+                                &:nth-child(2) {
+                                    flex: 0 0 66%;
+                                }
+                            }
+                        }
+                    }
+
+                    .column-3 {
+                        display: flex;
+                        flex-wrap: wrap;
+                        width: 100%;
+
+                        .form-group {
+                            width: 33.333333%;
+                        }
+                    }
+                }
+            }
+        }
+
+        .drug-area {
+            padding: 40px 0;
+            max-width: 700px;
+
+            .inline {
+                display: flex;
+                align-items: center;
+                flex-wrap: wrap;
+
+                .first-col {
+                    flex: 0 0 11.15%;
+                }
+
+                .second-col {
+                    flex: 0 0 71%;
+                }
+            }
+
+            .art-list-item {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-evenly;
+                margin: 0;
+
+                .checkmark {
+                    top: calc(50% - 17px) !important;
+                }
+            }
+
+            input {
+                width: 100%;
+                font-weight: 700;
+                @include em(16px, 24px);
+                color: $primary-color;
+                width: 100%;
+                border: 2px solid transparent;
+                background-color: transparent;
+                padding: 12px 15px;
+                @include placeholder(#004046, 16px, 700);
+
+                &.drug-name {
+                    margin-left: 60px;
+                    flex: 0 0 65%;
+                }
+
+                &.duration {
+                    flex: 0 0 15%;
+                }
+
+                &:focus {
+                    background-color: #fff;
+                    border-color: $secondary-color;
+
+                    ~ .checkmark {
+
+                        &:before, &:after {
+                            display: block;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                                        Custom Popup
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/ 
+.popup {
+
+    .modal {
+        max-width: 524px;
+        width: 80%;
+        background-color: #fff;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(0);
+        transition: 200ms ease-in-out;
+        z-index: 9999999;
+        padding: 49px 69px 33px;
+        text-align: center;
+        box-shadow: 0px 4px 16px rgba(16, 24, 32, 0.1);
+        border-radius: 20px;
+        box-sizing: border-box;
+    
+        &.active {
+            transform: translate(-50%, -50%) scale(1);
+        }
+    
+        .modal-title {
+
+            p {
+                text-align: center;
+                font-family: $primary-font;
+                @include em(21px, 31px);
+                font-weight: 400;
+                color: $primary-color;
+    
+                strong {
+                    font-weight: 700;
+                }
+            }
+        }
+
+        .modal-image {
+            margin: 52px 0 105px;
+    
+        }
+
+        .modal-buttons {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+    
+            button, a {
+                background: $primary-color;
+                padding: 12px 24px;
+                @include em(18px, 22px);
+                box-shadow: 0px 24px 32px -6px rgba(0, 0, 0, 0.2);
+                border-radius: 4px;
+                color: #fff;
+                font-weight: 700;
+                transition: all 0.3s ease;
+                text-decoration: none;
+    
+                &.active, &:hover, &:focus {
+                    background: #E4E4E4;
+                    color: $primary-color;
+                }
+    
+    
+                &.ok-next {
+                    margin-left: 16px;
+        
+                }
+            }
+        }
+    }
+    
+    #overlay {
+        position: fixed;
+        opacity: 0;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: rgba(0, 64, 70, 0.3);
+        pointer-events: none;
+        transition: 200ms ease-in-out;
+        z-index: 99999;
+    
+        &.active {
+            opacity: 1;
+            pointer-events: all;
+    
+        }
+    }
+}
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                                        Printing page
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/ 
+.print-page{
+
+    .header-wrapper {
+        box-sizing: border-box;
+        border-right: 1px solid #E4E4E4;
+    }
+
+    .recipe-body {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+
+        .print-wrapper {
+            text-align: center;
+
+            img { 
+                margin-bottom: 10px;
+            }
+
+            h3 {
+                font-weight: 700;
+                font-family: $primary-font;
+                @include em(24px, 36px);
+            }
+            p {
+                font-weight: 400;
+                font-family: $primary-font;
+                @include em(24px, 36px)
+
+            }
+
+        }
+    }
+}
+
+
+/****************************************************************************
+                            Lean Start Page
+****************************************************************************/ 
+.lean-start-page {
+
+    .recipe-body {
+
+        .recipe-wrapper {
+            background: #fff;
+
+            .art-info-form {
+
+                .art {
+
+                    .zet-check-list {
+
+                        .art-list-item {
+                            display: flex;
+                            flex-wrap: wrap;
+                            justify-content: flex-start;
+                            align-items: center;
+                            margin-bottom: 20px;
+
+                            input[type=checkbox] {
+                                display: none;
+                                &:checked {
+                                
+                                    ~.checkmark {
+                                        border-color: #004046;
+                                        background-color: #fff;
+                                    }
+
+                                    ~label {
+                                        color: #004046;
+                                    }
+                                }
+                            }
+
+                            label {
+                                color: #E4E4E4;
+                            }
+
+                            .checkmark {
+                                height: 20px;
+                                width: 20px;
+                                border-radius: 500px;
+                                background-color: #E4E4E4;
+                                border: 5px solid #E4E4E4;
+                                box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.033927);
+                                box-sizing: border-box;
+
+
+                                &:after,&:before {
+                                    content: inherit;
+                                }
+                            }
+                        }
+                    }
+
+                    .collect-information {
+                        border: 0;
+
+                        .border-bottom {
+                            border: 0;
+                        }
+
+                        .form-group {
+
+                            label {
+                                color: #000;
+                            }
+
+                            input {
+                                color: #004046;
+                                @include placeholder(#004046, 16px, 700);
+                            }
+
+                            .input-wrapper {
+
+                                span {
+                                    display: none;
+                                }
+                            }
+                        }
+
+                        .column-2 {
+
+                            .form-group{
+                                flex: inherit;
+                                width: 50%;
+                            }
+                        }
+
+                        .column-4 {
+                            width: 100%;
+                            display: flex;
+                            flex-wrap: wrap;
+
+                            .form-group {
+                                width: 25%;
+                            }
+                        }
+                    }
+                }
+            }
+
+            .drug-area {
+                padding: 25px 25px 45px;
+                max-width: 848px;
+                box-sizing: border-box;
+                background: #FFFFFF;
+                box-shadow: 0px 18px 48px -8px rgba(0, 0, 0, 0.25);
+                border-radius: 12px;
+                margin-top: 100px;
+    
+                .inline {
+    
+                    .first-col {
+                        flex: 0 0 11.15%;
+                    }
+    
+                    .second-col {
+                        flex: 0 0 71%;
+                    }
+                }
+
+                .drug-list {
+
+                    .drug-item {
+                        margin-bottom: 20px;
+
+                        .drug-item-name {
+                            color: #004046;
+
+                        }
+                        .drug-item-uses {
+                            color: #004046;
+                        }
+                    }
+                }
+    
+                .art-list-item {
+                    display: flex;
+                    flex-wrap: wrap;
+                    justify-content: space-evenly;
+                    margin: 0;
+    
+                    .checkmark {
+                        top: calc(50% - 17px) !important;
+                    }
+                }
+    
+                input {
+                    width: 100%;
+                    font-weight: 700;
+                    @include em(16px, 24px);
+                    color: $primary-color;
+                    width: 100%;
+                    border: 2px solid transparent;
+                    background-color: transparent;
+                    padding: 12px 15px;
+                    @include placeholder(#004046, 16px, 700);
+    
+                    &.drug-name {
+                        margin-left: 60px;
+                        flex: 0 0 65%;
+                    }
+    
+                    &.duration {
+                        flex: 0 0 15%;
+                    }
+    
+                    &:focus {
+                        background-color: #fff;
+                        border-color: $secondary-color;
+    
+                        ~ .checkmark {
+    
+                            &:before, &:after {
+                                display: block;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@import "responsive";

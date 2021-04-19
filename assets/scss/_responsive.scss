@@ -1,0 +1,580 @@
+
+@media only screen and (max-width: 1440px) {
+    // .recipe-body {
+
+    //     .recipe-wrapper {
+
+    //         .art-info-form {
+
+    //             .art {
+
+    //                 .collect-information {
+
+    //                     .form-group {
+
+    //                         .input-wrapper {
+
+    //                             span {
+    //                                 left: 60%;
+    //                             }
+    //                         }
+    //                     }
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
+}
+
+
+@media only screen and (max-width: 1394px) {
+    .header-wrapper {
+
+        .header {
+            padding: 30px 40px;
+        }
+    }
+}
+
+
+@media only screen and (max-width: 1347px) {
+    .recipe-body {
+        
+        .recipe-wrapper {
+            
+            .art-info-form {
+                
+                .art {
+                    
+                    .collect-information {
+                        
+                        .form-group {
+                            
+                            .input-wrapper {
+                                padding: 10px 25px;
+                            }
+                            
+                            &.border-right-content:after {
+                                height: 106%;
+                                top: -11px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+
+@media only screen and (max-width: 1310px) {
+    .header-wrapper {
+        
+        .header {
+            padding: 25px;
+        }
+    }
+    
+    .recipe-body {
+
+        .recipe-wrapper {
+            padding: 25px;
+            
+            .title-rezept-button {
+                margin-bottom: 10px;
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 1280px) {
+    .recipe-body {
+
+        .recipe-wrapper {
+
+            .art-info-form {
+
+                .art {
+
+                    .collect-information {
+
+                        .column-2 {
+
+                            &.col-reverse {
+
+                                .form-group {
+
+                                    &:nth-child(1) {
+                                        flex: 0 0 33.4%;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+@media only screen and (max-width: 1090px) {
+    .recipe-body {
+
+        .recipe-wrapper {
+
+            .art-info-form {
+
+                .art {
+
+                    .art-form {
+                        flex-wrap: wrap;
+
+                        .zet-check-list {
+                            max-width: 100%;
+                            display: flex;
+                            flex-wrap: wrap;
+                            
+                            .zet-title {
+                                flex: 0 0 100%;
+                            }
+                            
+                            .art-list-item {
+                                width: 33.3333%;
+                            }
+                        }
+                    }
+                }
+
+                .drug-area {
+                
+                    input {
+                        
+                        &.drug-name {
+                            margin-left: 30px;
+                            flex: 0 0 50%;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+@media only screen and (max-width: 1024px) {
+    .recipe-body {
+        
+        .recipe-wrapper {
+            
+            .art-info-form {
+                
+                .art {
+                    
+                    .collect-information {
+
+                        .column-2 {
+
+                            &.col-reverse {
+
+                                .form-group{
+
+                                    &:nth-child(1) {
+                                        flex: 0 0 33.3%;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 985px) {
+    .recipe-body {
+
+        .recipe-wrapper {
+
+            .drug-area {
+
+                input {
+
+                    &.drug-name {
+                        margin-left: 50px;
+                        flex: 0 0 50%;
+                    }
+                }
+                
+                .inline {
+                    
+                    .first-col {
+                        flex: 0 0 16.15%;
+                    }
+
+                    .second-col {
+                        flex: 0 0 60.5%;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 992px) {
+    
+    button {
+        padding: 10px 15px;
+        font-size: 15px;
+    }
+    
+    .jet-btn {
+        font-size: 14px;
+        padding: 10px 15px;
+    }
+    
+    .header-wrapper {
+        
+        .header {
+            
+            .generated-pdf {
+                padding: 35px 0;
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    
+    body, label {
+        font-size: 14px;
+    }
+    
+    button {
+        margin-bottom: 6px;
+        
+        img {
+            margin-right: 5px;
+        }
+    }
+    
+    .zet-check-list {
+        
+        .art-list-item {
+            line-height: 20px;
+            
+            label {
+                padding-left: 20px;
+            }
+            
+            .checkmark {
+                height: 20px;
+                width: 20px;
+                
+                &:before {
+                    height: 16px;
+                    transform: translate(10px, 2px) rotate(-45deg);
+                }
+                
+                &:after {
+                    height: 16px;
+                    transform: translate(10px, -14px) rotate(45deg);
+                }
+            }
+        }
+    }
+    
+    .header-wrapper {
+        width: 100%;
+        height: auto;
+        
+        .header {
+            display: flex;
+            padding: 25px;
+            flex-wrap: wrap;
+            
+            .logo {
+                margin-bottom: 20px;
+                flex: 0 0 100%;
+            }
+            
+            .unsigned-prescription, generated-pdf {
+                width: 50%;
+            }
+            
+            .jetzt-area {
+                width: 100%;
+                
+                * {
+                    margin: 0 auto;
+                }
+                
+                .jet-btn {
+                    font-size: 15px;
+                }
+            }
+        }
+    }
+    
+    .recipe-body {
+        width: 100%;
+        height: auto;
+        
+        .zet-check-list {
+            
+            .art-list-item {
+                line-height: 20px;
+                
+                label {
+                    padding-left: 20px;
+                }
+                
+                .checkmark {
+                    height: 20px;
+                    width: 20px;
+                    top: calc(50% - 12px) !important;
+                }
+            }
+        }
+        
+        .recipe-wrapper {
+            height: 100%;
+            
+            .art-info-form {
+                
+                .art {
+                    
+                    .collect-information {
+                        
+                        .form-group {
+                            
+                            input, textarea {
+                                @include placeholder(#004046, 14px, 500);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    //======================= Print Page ====================
+    .print-page {
+
+        .header-wrapper {
+
+            .header { 
+
+                .unsigned-prescription {
+
+                    .unsignierte-list {
+                        
+                        .file {
+                            display: block;
+        
+                            img, p {
+                                display: inline-block;
+                            }
+                            
+                        }
+                    }
+                }
+
+            }
+        }
+    }
+
+    //======================= Popup ==========================
+    .popup {
+        .modal {
+            padding: 50px 35px 30px;
+
+            .modal-title {
+                p {
+                    @include em(18px, 25px);
+                }
+            }
+            .modal-image {
+                margin: 30px 0 50px;
+            }
+
+        }
+    }
+}
+
+@media only screen and (max-width: 575px) {
+    .recipe-body {
+
+        .recipe-wrapper {
+
+            .art-info-form {
+
+                .art {
+
+                    .collect-information {
+                        border-bottom: 0;
+
+                        .form-group {
+                            width: 100% !important;
+                            flex: 0 0 100% !important;
+                            border-bottom: 2px solid $secondary-color;
+
+                            span {
+                                display: none;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .border-bottom {
+        border-bottom: 0;
+    }
+}
+
+@media only screen and (max-width: 480px) {
+    
+    .header-wrapper {
+        
+        .header {
+            
+            * {
+                text-align: center;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            
+            .unsigned-prescription, generated-pdf {
+                width: 100%;
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 480px) {
+
+    .header-wrapper {
+        
+        .header {
+
+            .generated-pdf {
+                padding: 15px 0;
+            }
+        }
+    }
+
+    .recipe-body {
+
+        .recipe-wrapper {
+
+            .title-rezept-button {
+                flex-wrap: wrap;
+
+                h2 {
+                    margin-bottom: 10px;
+                }
+            }
+
+            .art-info-form {
+
+                .art {
+
+                    .collect-information {
+                        border-bottom: 0;
+
+                        .border-bottom {
+                            border-bottom: 0 !important;
+                        }
+
+                        .form-group {
+                            width: 100%;
+                            border-bottom: 2px solid $secondary-color !important;
+
+                            &.border-right-content:after {
+                                display: none;
+                            }
+                        }
+                    }
+
+                    .art-form {
+
+                        .zet-check-list .art-list-item {
+                            width: 50%;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    //======================= Popup ==========================
+
+    .popup {
+
+        .modal {
+
+            padding: 30px 20px;
+
+            .modal-title {
+
+                p {
+                    @include em(18px, 25px);
+                }
+            }
+        }
+    }
+
+    button {
+
+        img {
+            margin-right: 5px !important;
+        }
+    }
+}
+
+@media only screen and (max-width: 419px) {
+    .popup {
+        
+        .modal {
+            
+            .modal-buttons {
+                display: block;
+                
+                button {
+                    margin: 0 auto 10px;
+                    
+                    &.ok-next {
+                        margin: 0 auto;
+                    }
+                    
+                }
+            }
+        }
+    }
+}
+
+
+@media only screen and (max-width: 410px) {
+    .recipe-body {
+
+        .recipe-wrapper {
+
+            .drug-area {
+
+                input {
+
+                    &.drug-name {
+                        margin-left: 5px;
+                    }
+                }
+
+                .art-list-item {
+
+                    .checkmark {
+                        top: calc(50% - 12px) !important;
+                    }
+                }
+            }
+        }
+    }
+}
