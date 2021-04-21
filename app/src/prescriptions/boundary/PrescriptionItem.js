@@ -9,7 +9,8 @@ class Prescription extends BElement {
 
     view() {
         const prescription = this.state;
-        let name = prescription.entry.filter(oEntry => oEntry.resource.resourceType === "Patient")[0].resource.name[0];
+        let patient = prescription.entry.filter(oEntry => oEntry.resource.resourceType === "Patient")[0];
+        let name = patient.resource && patient.resource.name ? patient.resource.name[0] : {"given": [], "family": ""};
         let displayName = name.given.join(" ")+" "+name.family;
         
         return html`

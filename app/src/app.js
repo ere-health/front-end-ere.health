@@ -1,9 +1,10 @@
 import { Router } from "./libs/vaadin-router.js";
+import store from "./store.js";
+import './prescriptions/boundary/websocket/ServerWebSocketActionForwarder.js';
 import './prescriptions/boundary/PrescriptionEmpty.js';
 import './prescriptions/boundary/PrescriptionItem.js';
 import './prescriptions/boundary/LoadExamples.js';
 import './prescriptions/boundary/UnsignedPrescriptionList.js';
-import store from "./store.js";
 import { save } from "./localstorage/control/StorageControl.js";
 
 store.subscribe(_ => { 

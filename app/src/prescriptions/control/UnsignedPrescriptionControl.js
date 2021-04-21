@@ -1,6 +1,11 @@
 import { createAction } from "../../libs/redux-toolkit.esm.js";
 import store from "../../store.js";
 
+export const addPrescriptionAction = createAction("addPrescriptionAction");
+export const addPrescription = (prescription) => {
+    store.dispatch(addPrescriptionAction(prescription));
+}
+
 export const selectPrescriptionAction = createAction("selectPrescriptionAction");
 export const selectPrescription = (name, value) => {
     store.dispatch(selectPrescriptionAction({name,value}));
