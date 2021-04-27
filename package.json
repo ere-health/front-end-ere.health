@@ -1,0 +1,23 @@
+{
+  "name": "front-end-ere.health",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ere-health/front-end-ere.health.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ere-health/front-end-ere.health/issues"
+  },
+  "homepage": "https://github.com/ere-health/front-end-ere.health#readme",
+  "devDependencies": {
+    "jest": "^26.6.3"
+  }
+}
