@@ -6,6 +6,7 @@
   "scripts": {
     "test": "jest"
   },
+  "type": "module",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ere-health/front-end-ere.health.git"
