@@ -34,4 +34,4 @@ jobs:
         run: npm i
 
       - name: Unit testing
-        run: NODE_OPTIONS=--experimental-vm-modules npx jest --coverage
+        run: NODE_OPTIONS=--experimental-vm-modules npx jest --config=jest.config.js --coverage
