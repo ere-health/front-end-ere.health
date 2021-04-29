@@ -1,0 +1,58 @@
+
+$rem-base-font: 16px;
+@function em($px, $base: $base-font-size) {
+    @return ($px / $base) * 1em;
+}
+
+
+@mixin em($font-size, $line-height: 0) {
+  font-size: ($font-size / $rem-base-font) * 1rem;
+  line-height: ($line-height / $font-size) * 1;
+}
+
+@mixin appearance {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+
+    &::-webkit-inner-spin-button { 
+      -webkit-appearance: none;
+      cursor:pointer;
+      display:block;
+      width:8px;
+      color: #333;
+      text-align:center;
+      position:relative;
+  }
+}
+
+@mixin placeholder($color,$font_size, $font_weight ) {
+  &::-webkit-input-placeholder {
+    color: $color;
+    font-size: $font_size;
+    font-weight: $font_weight;
+    font-family: $primary-font;
+  }
+  &::-moz-placeholder { 
+    color: $color;
+    font-size: $font_size;
+    font-weight: $font_weight;
+    font-family: $primary-font;
+  }
+  &:-ms-input-placeholder { 
+    color: $color;
+    font-size: $font_size;
+    font-weight: $font_weight;
+    font-family: $primary-font;
+  }
+  &:-moz-placeholder { 
+    color: $color;
+    font-size: $font_size;
+    font-weight: $font_weight;
+    font-family: $primary-font;
+  }
+}
+
+@mixin letter-spacing($letter-track, $font-size) {
+  letter-spacing: $letter-track * $font-size / 1000 + px;
+}
