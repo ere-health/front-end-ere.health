@@ -1,4 +1,4 @@
-import BElement from "../../BElement.js";
+import BElement from "../../models/BElement.js";
 import { html } from "../../libs/lit-html.js";
 import { loadExamples } from "../control/UnsignedPrescriptionControl.js";
 

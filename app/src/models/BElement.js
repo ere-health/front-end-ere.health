@@ -1,5 +1,5 @@
-import { render } from "./libs/lit-html.js";
-import store from "./store.js";
+import { render } from "../libs/lit-html.js";
+import store from "../store.js";
 
 export default class BElement extends HTMLElement { 
 
