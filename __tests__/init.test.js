@@ -2,7 +2,7 @@
  * Fake test to validate CI configuration
  */
 
-function sum(a, b) {
+ function sum(a, b) {
   return a + b;
 }
 
