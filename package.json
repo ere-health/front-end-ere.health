@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest --coverage"
+    "test": "jest"
   },
-  "type": "module",
+  "type": "commonjs",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ere-health/front-end-ere.health.git"
@@ -21,6 +21,9 @@
   "devDependencies": {
     "@testing-library/dom": "^7.30.4",
     "jest": "^26.6.3",
-    "jest-dom": "^4.0.0"
+    "jest-dom": "^4.0.0",
+    "jsdom": "^16.5.3",
+    "jsdom-global": "^3.0.2",
+    "lit-html": "^1.4.0"
   }
 }
