@@ -1,0 +1,13 @@
+export const de = {
+  "RecipeFor"       : "Rezept für",
+  "HealthInsurance" : "Krankenkasse bzw. Kostenträger",
+  "Patient.Name"    : "Name, Vorname des Versicherten",
+  "Patient.Birth"   : "geb. am",
+  "CostUnitId":"Kostenträgerkennung",
+  "InsuredPersNum" :"Versicherten-Nr.",
+  "OperatingSiteNum" :"Betriebsstätten-Nr",
+  "DoctorNum" :"Arzt-Nr.",
+  "Date" :"Datum",
+  "AccidentDay" :"Unfalltag",
+  "AccidentCompanyNum" :"Unfallbetrieb oder Arbeitgebernr.",
+}
