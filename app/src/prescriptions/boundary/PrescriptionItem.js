@@ -110,7 +110,7 @@ class Prescription extends BElement {
                                     <div class="form-group">
                                         <div class="input-wrapper">
                                             <label for="person1">${i18n("InsuredPersNum")}</label>
-                                            <input type="text" name="person1" id="address" class="bright" placeholder="${getFromRes(prescription, "Coverage", _ => _.payor[0].identifier.value)}">
+                                            <input type="text" name="person1" id="address" class="bright" placeholder="${getFromRes(prescription, "Patient", _ => _.identifier[0].value)}">
                                             <span></span>
                                         </div>
                                     </div>
