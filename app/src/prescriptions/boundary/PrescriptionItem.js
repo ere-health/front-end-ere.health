@@ -1,5 +1,15 @@
 import BElement from "../../models/BElement.js";
 import { html } from "../../libs/lit-html.js";
+import {i18n, setLocale} from "../../libs/i18n/i18n.js";
+
+function getFromRes(source, resourceType, key) {
+    const resource = (source.entry.filter(oEntry => oEntry.resource.resourceType === resourceType)[0]).resource;
+    if (typeof key === "string") {
+        return resource[key] ?? "";
+    }
+
+    return key(resource);
+}
 
 class Prescription extends BElement {
     
@@ -9,15 +19,20 @@ class Prescription extends BElement {
 
     view() {
         const prescription = this.state;
-        let patient = prescription.entry.filter(oEntry => oEntry.resource.resourceType === "Patient")[0];
-        let name = patient.resource && patient.resource.name ? patient.resource.name[0] : {"given": [], "family": ""};
-        let displayName = name.given.join(" ")+" "+name.family;
+        console.log("prescription", prescription)
+        /*let patient = prescription.entry.filter(oEntry => oEntry.resource.resourceType === "Patient")[0];
+        let name = patient.resource && patient.resource.name ? patient.resource.name[0] : {"given": [], "family": ""};*/
+        
+        let displayName = getFromRes(prescription, "Patient", _ => {
+            let name = _.name ? _.name[0] : {"given": [], "family": ""};
+            return name.given.join(" ")+" "+name.family;
+        })
         
         return html`
               <div class="recipe-wrapper active" id="unsigned_1">
                 
                 <div class="title-rezept-button">
-                    <h2>Rezept für <strong>${displayName}</strong></h2>
+                    <h2>${i18n("RecipeFor")} <strong>${displayName}</strong></h2>
                     <button data-modal-target="#modal" class="open-modal jet-btn">Rezept jetzt signieren</button>
                 </div>
 
@@ -61,24 +76,24 @@ class Prescription extends BElement {
                             <div class="collect-information">
                                 <div class="form-group border-bottom">
                                     <div class="input-wrapper">
-                                        <label for="name">Krankenkasse bzw. Kostenträger</label>
-                                        <input type="text" name="name" id="name" placeholder="AOK Rheinland-Pfalz">
+                                        <label for="name">${i18n("HealthInsurance")}</label>
+                                        <input type="text" name="name" id="name" placeholder="${getFromRes(prescription, "Coverage", _ => _.payor?.[0]?.display ?? "")}">
                                     </div>
                                 </div>
 
                                 <div class="column-2 border-bottom">
                                     <div class="form-group">
                                         <div class="input-wrapper">
-                                            <label for="address1">Name, Vorname des Versicherten</label>
-                                            <textarea style="max-width: 160px; min-height: 75px;" name="address" id="address1" cols="10" placeholder="Isabella Bowers, Heidestraße 17, 51147 Köln"></textarea>
+                                            <label for="address1">${i18n("Patient.Name")}</label>
+                                            <textarea style="max-width: 230px; min-height: 75px;" name="address" id="address1" cols="10" placeholder="${displayName}, ${getFromRes(prescription, "Patient", _ => _.address?.[0]?.line?.[0] ?? "")}, ${getFromRes(prescription, "Patient", _ => _.address?.[0]?.city ?? "")}"></textarea>
                                             <span></span>
                                         </div>
                                     </div>
                                     
                                     <div class="form-group">
                                         <div class="input-wrapper">
-                                            <label for="geb1">geb. am</label>
-                                            <input type="text" name="geb" id="geb1" placeholder="12.08.1964">
+                                            <label for="geb1">${i18n("Patient.Birth")}</label>
+                                            <input type="text" name="geb" id="geb1" placeholder="${getFromRes(prescription, "Patient", _ => _.birthDate ?? "")}">
                                         </div>
                                     </div>
                                 </div>
@@ -86,16 +101,16 @@ class Prescription extends BElement {
                                 <div class="column-3 border-bottom">
                                     <div class="form-group">
                                         <div class="input-wrapper">
-                                            <label for="Kostenträgerkennung1">Kostenträgerkennung</label>
-                                            <input type="text" name="Kostenträgerkennung" id="Kostenträgerkennung1" class="bright" placeholder="100038825">
+                                            <label for="Kostenträgerkennung1">${i18n("CostUnitId")}</label>
+                                            <input type="text" name="Kostenträgerkennung" id="Kostenträgerkennung1" class="bright" placeholder="${getFromRes(prescription, "Coverage", _ => _.payor[0].identifier.value)}">
                                             <span></span>
                                         </div>
                                     </div>
 
                                     <div class="form-group">
                                         <div class="input-wrapper">
-                                            <label for="person1">Versicherten-Nr.</label>
-                                            <input type="text" name="person1" id="address" class="bright" placeholder="Versicherten-Nr.">
+                                            <label for="person1">${i18n("InsuredPersNum")}</label>
+                                            <input type="text" name="person1" id="address" class="bright" placeholder="${getFromRes(prescription, "Coverage", _ => _.payor[0].identifier.value)}">
                                             <span></span>
                                         </div>
                                     </div>
@@ -111,24 +126,24 @@ class Prescription extends BElement {
                                 <div class="column-3 border-bottom">
                                     <div class="form-group">
                                         <div class="input-wrapper">
-                                            <label for="Betriebsstätten1">Betriebsstätten-Nr.</label>
-                                            <input type="text" name="Betriebsstätten-Nr." id="Betriebsstätten1" class="bright" placeholder="Betriebsstätten-Nr.">
+                                            <label for="Betriebsstätten1">${i18n("OperatingSiteNum")}</label>
+                                            <input type="text" name="Betriebsstätten-Nr." id="Betriebsstätten1" class="bright" placeholder="${getFromRes(prescription, "Organization", _ => _.identifier?.[0]?.value)}">
                                             <span></span>
                                         </div>
                                     </div>
                                     
                                     <div class="form-group">
                                         <div class="input-wrapper">
-                                            <label for="doctor1">Arzt-Nr.</label>
-                                            <input type="text" name="doctor-no" id="doctor1" class="bright" placeholder="LANR1234">
+                                            <label for="doctor1">${i18n("DoctorNum")}</label>
+                                            <input type="text" name="doctor-no" id="doctor1" class="bright" placeholder="${getFromRes(prescription, "Practitioner", _ => _.identifier?.[0]?.value)}">
                                             <span></span>
                                         </div>
                                     </div>
 
                                     <div class="form-group">
                                         <div class="input-wrapper">
-                                            <label for="date1">Datum</label>
-                                            <input type="text" id="date1" class="bright" name="date" placeholder="10.07.2021">
+                                            <label for="date1">${i18n("Date")}</label>
+                                            <input type="text" id="date1" class="bright" name="date" placeholder="${getFromRes(prescription, "Composition", _ => new Date(_.date).toLocaleDateString())}">
                                         </div>
                                     </div>
                                 </div>
@@ -136,7 +151,7 @@ class Prescription extends BElement {
                                 <div class="column-2 col-reverse">
                                     <div class="form-group">
                                         <div class="input-wrapper">
-                                            <label for="Unfalltag1">Unfalltag</label>
+                                            <label for="Unfalltag1">${i18n("AccidentDay")}</label>
                                             <input type="text" name="Unfalltag" id="Unfalltag1" placeholder="-">
                                             <span class="long-border"></span>
                                         </div>
@@ -144,7 +159,7 @@ class Prescription extends BElement {
                                     
                                     <div class="form-group">
                                         <div class="input-wrapper">
-                                            <label for="Unfallbetrieb1">Unfallbetrieb oder Arbeitgebernr.</label>
+                                            <label for="Unfallbetrieb1">${i18n("AccidentCompanyNum")}</label>
                                             <input type="text" id="Unfallbetrieb1" name="date" placeholder="-">
                                         </div>
                                     </div>
@@ -169,7 +184,7 @@ class Prescription extends BElement {
                     <form action="" class="art-form">
                         <ul class="zet-check-list">
                             <li class="art-list-item">
-                                <input type="text" class="drug-name" name="drug-1" id="drug-1" placeholder="Krankenkasse bzw. Kostenträger">
+                                <input type="text" class="drug-name" name="drug-1" id="drug-1" placeholder="${i18n("HealthInsurance")}">
                                 <input type="text" class="duration" placeholder="1 / 1 / 1">
                                 <span class="checkmark"></span>
                             </li>
