@@ -1,5 +1,6 @@
 import BElement from "../../models/BElement.js";
 import { html } from "../../libs/lit-html.js";
+import { i18n } from "../../libs/i18n/i18n.js";
 
 class UnsignedPrescriptionList extends BElement {
     
@@ -11,7 +12,7 @@ class UnsignedPrescriptionList extends BElement {
         let i = 0;
         return html`
         <div class="unsigned-prescription">
-            <p>Unsignierte Rezepte</p>
+            <p>${i18n("UnsignedRecipes")}</p>
             <div class="unsignierte-list">
                 ${this.state.map(unsignedPrescription => {
                     let patient = unsignedPrescription.entry.filter(oEntry => oEntry.resource.resourceType === "Patient")[0];

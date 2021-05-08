@@ -25,5 +25,10 @@
     "jsdom": "^16.5.3",
     "jsdom-global": "^3.0.2",
     "lit-html": "^1.4.0"
+  },
+  "dependencies": {
+    "@hapi/hapi": "^20.1.2",
+    "@hapi/inert": "^6.0.3",
+    "ws": "^7.4.5"
   }
 }
