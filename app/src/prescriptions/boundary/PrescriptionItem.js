@@ -18,11 +18,7 @@ class Prescription extends BElement {
     }
 
     view() {
-        const prescription = this.state;
-        console.log("prescription", prescription)
-        /*let patient = prescription.entry.filter(oEntry => oEntry.resource.resourceType === "Patient")[0];
-        let name = patient.resource && patient.resource.name ? patient.resource.name[0] : {"given": [], "family": ""};*/
-        
+        const prescription = this.state;       
         let displayName = getFromRes(prescription, "Patient", _ => {
             let name = _.name ? _.name[0] : {"given": [], "family": ""};
             return name.given.join(" ")+" "+name.family;
@@ -33,7 +29,7 @@ class Prescription extends BElement {
                 
                 <div class="title-rezept-button">
                     <h2>${i18n("RecipeFor")} <strong>${displayName}</strong></h2>
-                    <button data-modal-target="#modal" class="open-modal jet-btn">Rezept jetzt signieren</button>
+                    <button data-modal-target="#modal" class="open-modal jet-btn">${i18n("SignRecipe")}</button>
                 </div>
 
                 <div class="art-info-form">
@@ -102,7 +98,7 @@ class Prescription extends BElement {
                                     <div class="form-group">
                                         <div class="input-wrapper">
                                             <label for="Kostenträgerkennung1">${i18n("CostUnitId")}</label>
-                                            <input type="text" name="Kostenträgerkennung" id="Kostenträgerkennung1" class="bright" placeholder="${getFromRes(prescription, "Coverage", _ => _.payor[0].identifier.value)}">
+                                            <input type="text" name="Kostenträgerkennung" id="Kostenträgerkennung1" class="bright" placeholder="${getFromRes(prescription, "Coverage", _ => _.payor?.[0]?.identifier?.value ?? "")}">
                                             <span></span>
                                         </div>
                                     </div>
@@ -110,7 +106,7 @@ class Prescription extends BElement {
                                     <div class="form-group">
                                         <div class="input-wrapper">
                                             <label for="person1">${i18n("InsuredPersNum")}</label>
-                                            <input type="text" name="person1" id="address" class="bright" placeholder="${getFromRes(prescription, "Patient", _ => _.identifier[0].value)}">
+                                            <input type="text" name="person1" id="address" class="bright" placeholder="${getFromRes(prescription, "Patient", _ => _.identifier?.[0]?.value ?? "")}">
                                             <span></span>
                                         </div>
                                     </div>
@@ -127,7 +123,7 @@ class Prescription extends BElement {
                                     <div class="form-group">
                                         <div class="input-wrapper">
                                             <label for="Betriebsstätten1">${i18n("OperatingSiteNum")}</label>
-                                            <input type="text" name="Betriebsstätten-Nr." id="Betriebsstätten1" class="bright" placeholder="${getFromRes(prescription, "Organization", _ => _.identifier?.[0]?.value)}">
+                                            <input type="text" name="Betriebsstätten-Nr." id="Betriebsstätten1" class="bright" placeholder="${getFromRes(prescription, "Organization", _ => _.identifier?.[0]?.value ?? "")}">
                                             <span></span>
                                         </div>
                                     </div>
@@ -135,7 +131,7 @@ class Prescription extends BElement {
                                     <div class="form-group">
                                         <div class="input-wrapper">
                                             <label for="doctor1">${i18n("DoctorNum")}</label>
-                                            <input type="text" name="doctor-no" id="doctor1" class="bright" placeholder="${getFromRes(prescription, "Practitioner", _ => _.identifier?.[0]?.value)}">
+                                            <input type="text" name="doctor-no" id="doctor1" class="bright" placeholder="${getFromRes(prescription, "Practitioner", _ => _.identifier?.[0]?.value ?? "")}">
                                             <span></span>
                                         </div>
                                     </div>
