@@ -757,7 +757,7 @@ export const json02 = {
                 "name":  [
                     {
                         "use": "official",
-                        "family": "Erbprinzessin von und zu der Schimmelpfennig-Hammerschmidt Federmannssohn",
+                        "family": "Erbprinzessin",
                         "_family": {
                             "extension":  [
                                 {

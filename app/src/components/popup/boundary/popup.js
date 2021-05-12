@@ -4,7 +4,7 @@ import {
   addActiveClass,
   removeActiveClass,
 } from "../../../libs/helper/helper.js";
-import { i18n, setLocale } from "../../../libs/i18n/i18n.js";
+import { i18n } from "../../../libs/i18n/i18n.js";
 import { signedPrescription } from "../../../prescriptions/control/UnsignedPrescriptionControl.js";
 import { _hidePopup } from "../control/PopupControl.js";
 
@@ -86,27 +86,22 @@ class Popup extends BElement {
         <div class="modal" id="id">
           <div class="modal-title">
             <p>
-              Bitte legen Sie jetzt Ihren
-              <strong>digitalen Arztausweis auf das Kartenlesegerät</strong> und
-              geben Sie ihre Pin ein.
+              ${i18n("popupLoginText")[0]}<strong>${i18n("popupLoginText")[1]}</strong>${i18n("popupLoginText")[2]}
             </p>
           </div>
           <div class="modal-image">
             <img src="../assets/images/popup-icon.png" alt="popup" />
           </div>
           <div class="modal-buttons">
-            <button data-close-button class="cancel">Abbrechen</button>
-            <button data-modal-target-processing="#processing" class="ok-next">
-              Ok, Weiter
-            </button>
+            <button data-close-button class="cancel">${i18n("popupLoginBtnCancel")}</button>
+            <button data-modal-target-processing="#processing" class="ok-next">${i18n("popupLoginBtnNext")}</button>
           </div>
         </div>
 
         <div class="modal" id="processing">
           <div class="modal-title">
             <p>
-              Arztausweis erkannt.
-              <strong>Rezepte werden erzeugt. </strong>Bitte warten.
+            ${i18n("popupProcessingText")[0]}<strong>${i18n("popupProcessingText")[1]}</strong>${i18n("popupProcessingText")[2]}
             </p>
           </div>
           <div class="modal-image">
@@ -114,20 +109,20 @@ class Popup extends BElement {
           </div>
           <div class="modal-buttons">
             <button data-modal-target-fatig="#fatig" class="grow-in-wealth">
-              Bitte warten
+            ${i18n("popupProcessingBtnWait")}
             </button>
           </div>
         </div>
 
         <div class="modal" id="fatig">
           <div class="modal-title">
-            <p>Rezept erzeugt und <strong>an Patient versandt</strong></p>
+            <p>${i18n("popupGenerateText")[0]}<strong>${i18n("popupGenerateText")[1]}</strong></p>
           </div>
           <div class="modal-image">
             <img src="../assets/images/popup-icon3.png" alt="popup" />
           </div>
           <div class="modal-buttons">
-            <a href="/print.html" id="print" class="grow-in-wealth"> Fertig</a>
+            <a href="/print.html" id="print" class="grow-in-wealth"> ${i18n("popupGenerateBtnReady")}</a>
           </div>
         </div>
         <div id="overlay"></div>
