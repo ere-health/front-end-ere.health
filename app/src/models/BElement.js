@@ -12,12 +12,23 @@ export default class BElement extends HTMLElement {
         return `${this.constructor.name}.${methodName}`;
     }
 
+    getProp(name, defaultValue) {
+        return this.getAttribute(name) ?? defaultValue ?? void 0;
+    }
+
+    setProp(name, value) {
+        this.setAttribute(name, value);
+    }
+
+    onMount() {}
+
     connectedCallback() { 
         console.group(this.log('connectedCallback'));
         this.unsubscribe = store.subscribe(_ => this.triggerViewUpdate());
         console.log('subscribed for redux changes');
         this.triggerViewUpdate();
         console.groupEnd(this.log('connectedCallback'));
+        this.onMount();
     }
 
     disconnectedCallback() { 
@@ -37,13 +48,9 @@ export default class BElement extends HTMLElement {
         render(template, this.getRenderTarget());
         console.log('View rendered');
         console.groupEnd(this.log('triggerViewUpdate'));
-        this.onRendered();
-        this.onRendered = () => void 0;
     }
 
-    onRendered() {
-
-    }
+    firstUpdated() { }
 
     getRenderTarget() { 
         return this;
