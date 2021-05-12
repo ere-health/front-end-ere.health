@@ -1,6 +1,7 @@
 import BElement from "../../models/BElement.js";
 import { html } from "../../libs/lit-html.js";
 import {i18n, setLocale} from "../../libs/i18n/i18n.js";
+import {showPopupId} from "../../components/popup/control/PopupControl.js";
 
 function getFromRes(source, resourceType, key) {
     const resource = (source.entry.filter(oEntry => oEntry.resource.resourceType === resourceType)[0]).resource;
@@ -17,6 +18,14 @@ class Prescription extends BElement {
         return list[window.location.pathname.split("/").pop()];
     }
 
+    doClickId() {
+        showPopupId();
+    }
+
+    onRendered() {
+        document.getElementById("pid").onclick = () => this.doClickId();
+    }
+
     view() {
         const prescription = this.state;       
         let displayName = getFromRes(prescription, "Patient", _ => {
@@ -29,7 +38,7 @@ class Prescription extends BElement {
                 
                 <div class="title-rezept-button">
                     <h2>${i18n("RecipeFor")} <strong>${displayName}</strong></h2>
-                    <button data-modal-target="#modal" class="open-modal jet-btn">${i18n("SignRecipe")}</button>
+                    <button id="pid" class="open-modal jet-btn">${i18n("SignRecipe")}</button>
                 </div>
 
                 <div class="art-info-form">
