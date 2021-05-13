@@ -6,10 +6,15 @@ import {
 } from "../../../libs/helper/helper.js";
 import { i18n } from "../../../libs/i18n/i18n.js";
 import { signedPrescription } from "../../../prescriptions/control/UnsignedPrescriptionControl.js";
-import { _hidePopup } from "../control/PopupControl.js";
+import { _hidePopup, showPopupId, showPopupFatig, showPopupProgress } from "../control/PopupControl.js";
+
 
 class Popup extends BElement {
   showPopup(key) {
+    //Close all popup before
+    this.hideAll();
+
+    // Open selected popup
     const overlay = document.getElementById("overlay");
     const modal = document.querySelector("#" + key);
     addActiveClass(modal);
@@ -23,59 +28,29 @@ class Popup extends BElement {
     removeActiveClass(overlay);
   }
 
+  hideAll() {
+    ["id", "processing", "fatig"].forEach(_ => this.hidePopup(_));
+  }
+
+  doSign() {
+    if (this.state.popupReducer.all) {
+      const all = this.state.prescriptions.list.map((_) => _);
+      all.forEach((_) => {
+        signedPrescription(_);
+      });
+    } else {
+      signedPrescription(
+        this.state.prescriptions.list[window.location.pathname.split("/").pop()]
+      );
+    }
+    this.hideAll();
+  }
+
   onRendered() {
     const _this = this;
     const hidePopup = () => _this.hidePopup();
 
-    document
-      .querySelectorAll("[data-close-button]")
-      .forEach((_) => _?.removeEventListener("click", hidePopup));
-    document
-      .querySelectorAll("[data-close-button]")
-      .forEach((_) => _.addEventListener("click", hidePopup));
-
-    const clickProcess = () => {
-      this.hidePopup("id");
-      this.showPopup("processing");
-    };
-    document
-      .querySelector("[data-modal-target-processing]")
-      ?.removeEventListener("click", clickProcess);
-    document
-      .querySelector("[data-modal-target-processing]")
-      .addEventListener("click", clickProcess);
-    const clickFatig = () => {
-      this.hidePopup("processing");
-      this.showPopup("fatig");
-      const clickPrint = () => {
-        this.hidePopup("fatig");
-        _hidePopup();
-        
-        if (this.state.popupReducer.all) {
-          const all = this.state.prescriptions.list.map(_ => _);
-          all.forEach(_ => {
-            
-            signedPrescription(_);
-          })
-        } else {
-          signedPrescription(
-            this.state.prescriptions.list[
-              window.location.pathname.split("/").pop()
-            ]
-            );
-          }
-      };
-      document
-        .querySelector("#print")
-        ?.removeEventListener("click", clickPrint);
-      document.querySelector("#print").addEventListener("click", clickPrint);
-    };
-    document
-      .querySelector("[data-modal-target-fatig]")
-      ?.removeEventListener("click", clickFatig);
-    document
-      .querySelector("[data-modal-target-fatig]")
-      .addEventListener("click", clickFatig);
+    
   }
 
   view() {
@@ -94,7 +69,7 @@ class Popup extends BElement {
           </div>
           <div class="modal-buttons">
             <button data-close-button class="cancel">${i18n("popupLoginBtnCancel")}</button>
-            <button data-modal-target-processing="#processing" class="ok-next">${i18n("popupLoginBtnNext")}</button>
+            <button data-modal-target-processing="#processing" @click="${() => showPopupProgress()}" class="ok-next">${i18n("popupLoginBtnNext")}</button>
           </div>
         </div>
 
@@ -108,7 +83,7 @@ class Popup extends BElement {
             <img src="../assets/images/popup-icon2.png" alt="popup" />
           </div>
           <div class="modal-buttons">
-            <button data-modal-target-fatig="#fatig" class="grow-in-wealth">
+            <button data-modal-target-fatig="#fatig" @click="${() => showPopupFatig()}" class="grow-in-wealth">
             ${i18n("popupProcessingBtnWait")}
             </button>
           </div>
@@ -122,7 +97,7 @@ class Popup extends BElement {
             <img src="../assets/images/popup-icon3.png" alt="popup" />
           </div>
           <div class="modal-buttons">
-            <a href="/print.html" id="print" class="grow-in-wealth"> ${i18n("popupGenerateBtnReady")}</a>
+            <a href="/print.html" id="print" @click="${() => this.doSign()}"class="grow-in-wealth"> ${i18n("popupGenerateBtnReady")}</a>
           </div>
         </div>
         <div id="overlay"></div>

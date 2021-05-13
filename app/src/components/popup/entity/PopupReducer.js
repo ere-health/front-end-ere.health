@@ -12,7 +12,7 @@ export const popupReducer = createReducer(initialState, (builder) => {
         state.all = false;
     });
     builder.addCase(showPopupProgressAction, (state) => {
-        state.showPopup = "progress";
+        state.showPopup = "processing";
     });
     builder.addCase(showPopupFatigAction, (state) => {
         state.showPopup = "fatig";

@@ -1,7 +1,7 @@
 import BElement from "../../models/BElement.js";
 import { html } from "../../libs/lit-html.js";
 import { i18n, setLocale } from "../../libs/i18n/i18n.js";
-import { showPopupId } from "../../components/popup/control/PopupControl.js";
+import { showPopupId, showPopupFatig, showPopupProgress } from "../../components/popup/control/PopupControl.js";
 
 function getFromRes(source, resourceType, key) {
   const resource = source.entry.filter(
