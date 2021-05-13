@@ -17,6 +17,17 @@ async function startServer() {
   // Serve the main directory
   server.route({
     method: "GET",
+    path: "/previous",
+    handler: (r, h) => {
+      return [json01, json02, json03].map(_ => _.entry
+        .filter(__ => __.resource.resourceType === "Patient")
+        )
+      }
+  });
+
+
+  server.route({
+    method: "GET",
     path: "/{param*}",
     handler: {
       directory: {
