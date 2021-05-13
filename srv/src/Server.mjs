@@ -25,6 +25,21 @@ async function startServer() {
       }
   });
 
+  server.route({
+    method: "GET",
+    path: "/previous/{id}",
+    handler: (r, h) => {
+      const list = [json01, json02, json03].map(_ => _.entry .filter(__ => __.resource.resourceType === "Patient")[0]);
+      let selectedIdx = 0;
+
+      list.forEach((_, idx) => _.resource.id === r.params.id && (selectedIdx = idx));
+
+
+      return [json01, json02, json03][selectedIdx];
+    }
+  });
+
+
 
   server.route({
     method: "GET",
