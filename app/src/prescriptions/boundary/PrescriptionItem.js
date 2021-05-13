@@ -46,7 +46,7 @@ class Prescription extends BElement {
 	}
 
   view() {
-    const prescription = this.state;
+    const prescription = this.state[0];
     let displayName = getFromRes(prescription, "Patient", (_) => {
       let name = _.name ? _.name[0] : { given: [], family: "" };
       return name.given.join(" ") + " " + name.family;

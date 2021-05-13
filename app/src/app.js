@@ -13,7 +13,8 @@ import { save } from "./localstorage/control/StorageControl.js";
 
 store.subscribe(_ => { 
     const state = store.getState();
-    //save(state);
+    // Disable saving of state for testing purposes
+    // save(state);
 })
 const outlet = document.querySelector('.recipe-body');
 const router = new Router(outlet);

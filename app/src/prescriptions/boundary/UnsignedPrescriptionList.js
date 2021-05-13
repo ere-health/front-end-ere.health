@@ -15,7 +15,7 @@ class UnsignedPrescriptionList extends BElement {
             <p>${i18n("UnsignedRecipes")}</p>
             <div class="unsignierte-list" style="display: flex;flex-direction: column;align-items: flex-start;">
                 ${this.state.map(unsignedPrescription => {
-                    let patient = unsignedPrescription.entry.filter(oEntry => oEntry.resource.resourceType === "Patient")[0];
+                    let patient = unsignedPrescription[0].entry.filter(oEntry => oEntry.resource.resourceType === "Patient")[0];
                     let name = patient.resource && patient.resource.name ? patient.resource.name[0] : {"given": [], "family": ""};
                     let displayName = name.given.join(" ")+" "+name.family;
                     return html`<a href="/prescription/${i++}" class="unsigned-button link-button" data-id="#unsigned_1"> <img src="assets/images/pending-icon.svg" alt="" />${displayName}</button>`
