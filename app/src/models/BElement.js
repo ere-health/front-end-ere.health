@@ -1,5 +1,5 @@
 import { render } from "../libs/lit-html.js";
-import store from "../store.js";
+import store      from "../store.js";        
 
 export default class BElement extends HTMLElement { 
 
@@ -9,22 +9,33 @@ export default class BElement extends HTMLElement {
     }
 
     log(methodName) { 
-        return `${this.constructor.name}.${methodName}`
+        return `${this.constructor.name}.${methodName}`;
     }
 
+    getProp(name, defaultValue) {
+        return this.getAttribute(name) ?? defaultValue ?? void 0;
+    }
+
+    setProp(name, value) {
+        this.setAttribute(name, value);
+    }
+
+    onMount() {}
+
     connectedCallback() { 
-        console.group(this.log('connectedCallback'))
+        console.group(this.log('connectedCallback'));
         this.unsubscribe = store.subscribe(_ => this.triggerViewUpdate());
         console.log('subscribed for redux changes');
         this.triggerViewUpdate();
         console.groupEnd(this.log('connectedCallback'));
+        this.onMount();
     }
 
     disconnectedCallback() { 
-        console.group(this.log('disconnectedCallback'))
+        console.group(this.log('disconnectedCallback'));
         this.unsubscribe();
         console.log('unsubscribe called');
-        console.groupEnd(this.log('disconnectedCallback'))
+        console.groupEnd(this.log('disconnectedCallback'));
     }
 
     triggerViewUpdate() { 
