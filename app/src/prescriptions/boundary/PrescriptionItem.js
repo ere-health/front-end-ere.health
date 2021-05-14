@@ -1,6 +1,6 @@
 import BElement            from "../../models/BElement.js";
-import { html }            from "../../libs/lit-html.js";  
-import { i18n, setLocale } from "../../libs/i18n/i18n.js"; 
+import { html }            from "../../libs/lit-html.js";
+import { i18n, setLocale } from "../../libs/i18n/i18n.js";
 import {
   showPopupId,
   showPopupFatig,
@@ -54,9 +54,9 @@ class Prescription extends BElement {
         <div class="title-rezept-button">
           <h2>${i18n("RecipeFor")} <strong>${displayName}</strong></h2>
           <button
-            id     = "pid"                   
+            id     = "pid"
             @click = "${() => showPopupId()}"
-            class  = "open-modal jet-btn"    
+            class  = "open-modal jet-btn"
           >
             ${i18n("SignRecipe")}
           </button>
@@ -69,73 +69,73 @@ class Prescription extends BElement {
                 <div class="zet-title">Art</div>
                 <li class="art-list-item">
                   <input
-                    type     = "checkbox"                                     
-                    id       = "gebührenfrei"                                 
-                    name     = "tollFree"                                     
+                    type     = "checkbox"
+                    id       = "gebührenfrei"
+                    name     = "tollFree"
                     .checked = "${this.state.updatedProps?.tollFree ?? false}"
-                    @change  = "${(_) => this.onUserCheckArt(_)}"             
-                    value    = "Gebührenfrei"                                 
+                    @change  = "${(_) => this.onUserCheckArt(_)}"
+                    value    = "Gebührenfrei"
                   />
                   <label for="gebührenfrei">${i18n("TollFree")}</label>
                   <span class="checkmark"></span>
                 </li>
                 <li class="art-list-item">
                   <input
-                    type     = "checkbox"                                   
-                    id       = "geb-pfl"                                    
-                    name     = "gebpfl"                                     
-                    value    = "Geb. -pfl."                                 
-                    name     = "gebpfl"                                     
+                    type     = "checkbox"
+                    id       = "geb-pfl"
+                    name     = "gebpfl"
+                    value    = "Geb. -pfl."
+                    name     = "gebpfl"
                     .checked = "${this.state.updatedProps?.gebpfl ?? false}"
-                    @change  = "${(_) => this.onUserCheckArt(_)}"           
+                    @change  = "${(_) => this.onUserCheckArt(_)}"
                   />
                   <label for="geb-pfl">Geb. -pfl.</label>
                   <span class="checkmark"></span>
                 </li>
                 <li class="art-list-item">
                   <input
-                    type     = "checkbox"                                  
-                    id       = "noctu"                                     
-                    value    = "noctu"                                     
-                    name     = "noctu"                                     
+                    type     = "checkbox"
+                    id       = "noctu"
+                    value    = "noctu"
+                    name     = "noctu"
                     .checked = "${this.state.updatedProps?.noctu ?? false}"
-                    @change  = "${(_) => this.onUserCheckArt(_)}"          
+                    @change  = "${(_) => this.onUserCheckArt(_)}"
                   />
                   <label for="noctu">noctu</label>
                   <span class="checkmark"></span>
                 </li>
                 <li class="art-list-item">
                   <input
-                    type     = "checkbox"                                  
-                    id       = "sonstige"                                  
-                    value    = "Sonstige"                                  
-                    name     = "other"                                     
+                    type     = "checkbox"
+                    id       = "sonstige"
+                    value    = "Sonstige"
+                    name     = "other"
                     .checked = "${this.state.updatedProps?.other ?? false}"
-                    @change  = "${(_) => this.onUserCheckArt(_)}"          
+                    @change  = "${(_) => this.onUserCheckArt(_)}"
                   />
                   <label for="sonstige">${i18n("Other")}</label>
                   <span class="checkmark"></span>
                 </li>
                 <li class="art-list-item">
                   <input
-                    type     = "checkbox"                                     
-                    id       = "unfall"                                       
-                    value    = "Unfall"                                       
-                    name     = "accident"                                     
+                    type     = "checkbox"
+                    id       = "unfall"
+                    value    = "Unfall"
+                    name     = "accident"
                     .checked = "${this.state.updatedProps?.accident ?? false}"
-                    @change  = "${(_) => this.onUserCheckArt(_)}"             
+                    @change  = "${(_) => this.onUserCheckArt(_)}"
                   />
                   <label for="unfall">${i18n("Accident")}</label>
                   <span class="checkmark"></span>
                 </li>
                 <li class="art-list-item">
                   <input
-                    type     = "checkbox"                                                                                        
-                    id       = "arbeitsunfall"                                                                                   
-                    value    = "Arbeitsunfall"                                                                                   
-                    name     = "industrialAccident"                                                                              
+                    type     = "checkbox"
+                    id       = "arbeitsunfall"
+                    value    = "Arbeitsunfall"
+                    name     = "industrialAccident"
                     .checked = "${this.state.updatedProps?.industrialAccident ??false}"
-                    @change  = "${(_) => this.onUserCheckArt(_)}"                      
+                    @change  = "${(_) => this.onUserCheckArt(_)}"
                   />
                   <label for="arbeitsunfall"
                     >${i18n("IndustrialAccident")}</label
@@ -149,11 +149,11 @@ class Prescription extends BElement {
                   <div class="input-wrapper">
                     <label for="name">${i18n("HealthInsurance")}</label>
                     <input
-                      type   = "text"                                                                                                     
-                      name   = "name"                                                                                                     
-                      id     = "name"                                                                                                     
+                      type   = "text"
+                      name   = "name"
+                      id     = "name"
                       value  = "${this.state.updatedProps.name ?? getFromRes(prescription,"Coverage",(_) => _.payor?.[0]?.display ?? "")}"
-                      @keyup = "${_ => this.onUserInput(_)}"                                                                              
+                      @keyup = "${_ => this.onUserInput(_)}"
                     />
                   </div>
                 </div>
@@ -164,10 +164,10 @@ class Prescription extends BElement {
                       <label for="address1">${i18n("Patient.Name")}</label>
                       <textarea
                         style  = "max-width: 230px; min-height: 75px;"
-                        name   = "address"                            
-                        id     = "address1"                           
-                        cols   = "10"                                 
-                        @keyup = "${_ => this.onUserInput(_)}"        
+                        name   = "address"
+                        id     = "address1"
+                        cols   = "10"
+                        @keyup = "${_ => this.onUserInput(_)}"
                       >${(this.state.updatedProps.address ?? (displayName + ", " +
                           getFromRes(prescription,"Patient",(_) => _.address?.[0]?.line?.[0] ?? "") + ", " +
                           getFromRes(prescription,"Patient",(_) => _.address?.[0]?.city))).trim()}</textarea>
@@ -179,10 +179,10 @@ class Prescription extends BElement {
                     <div class="input-wrapper">
                       <label for="geb1">${i18n("Patient.Birth")}</label>
                       <input
-                        type   = "text"                                                                                         
-                        name   = "geb"                                                                                          
-                        id     = "geb1"                                                                                         
-                        @keyup = "${_ => this.onUserInput(_)}"                                                                  
+                        type   = "text"
+                        name   = "geb"
+                        id     = "geb1"
+                        @keyup = "${_ => this.onUserInput(_)}"
                         value  = "${this.state.updatedProps.geb ?? getFromRes(prescription,"Patient",(_) => _.birthDate ?? "")}"
                       />
                     </div>
@@ -196,12 +196,12 @@ class Prescription extends BElement {
                         >${i18n("CostUnitId")}</label
                       >
                       <input
-                        type   = "text"                                                                                                                                 
-                        name   = "Kostenträgerkennung"                                                                                                                  
-                        id     = "Kostenträgerkennung1"                                                                                                                 
-                        class  = "bright"                                                                                                                               
+                        type   = "text"
+                        name   = "Kostenträgerkennung"
+                        id     = "Kostenträgerkennung1"
+                        class  = "bright"
                         value  = "${this.state.updatedProps["Kostenträgerkennung"] ?? getFromRes(prescription,"Coverage",(_) => _.payor?.[0]?.identifier?.value ?? "")}"
-                        @keyup = "${_ => this.onUserInput(_)}"                                                                                                          
+                        @keyup = "${_ => this.onUserInput(_)}"
                       />
                       <span></span>
                     </div>
@@ -211,12 +211,12 @@ class Prescription extends BElement {
                     <div class="input-wrapper">
                       <label for="person1">${i18n("InsuredPersNum")}</label>
                       <input
-                        type   = "text"                                                                                                          
-                        name   = "person1"                                                                                                       
-                        id     = "address"                                                                                                       
-                        class  = "bright"                                                                                                        
+                        type   = "text"
+                        name   = "person1"
+                        id     = "address"
+                        class  = "bright"
                         value  = "${this.state.updatedProps.person1 ?? getFromRes(prescription,"Patient",(_) => _.identifier?.[0]?.value ?? "")}"
-                        @keyup = "${_ => this.onUserInput(_)}"                                                                                   
+                        @keyup = "${_ => this.onUserInput(_)}"
                       />
                       <span></span>
                     </div>
@@ -226,13 +226,13 @@ class Prescription extends BElement {
                     <div class="input-wrapper">
                       <label for="Status1">Status</label>
                       <input
-                        type        = "text"   
-                        name        = "Status" 
+                        type        = "text"
+                        name        = "Status"
                         id          = "Status1"
-                        class       = "bright" 
+                        class       = "bright"
                         placeholder = "1000 1"
                         value  = "${this.state.updatedProps.Status ?? "-"}"
-                        @keyup = "${_ => this.onUserInput(_)}" 
+                        @keyup = "${_ => this.onUserInput(_)}"
                       />
                     </div>
                   </div>
@@ -245,12 +245,12 @@ class Prescription extends BElement {
                         >${i18n("OperatingSiteNum")}</label
                       >
                       <input
-                        type   = "text"                                                                                                                              
-                        name   = "Betriebsstätten-Nr."                                                                                                               
-                        id     = "Betriebsstätten1"                                                                                                                  
-                        class  = "bright"                                                                                                                            
+                        type   = "text"
+                        name   = "Betriebsstätten-Nr."
+                        id     = "Betriebsstätten1"
+                        class  = "bright"
                         value  = "${this.state.updatedProps["Betriebsstätten-Nr."] ?? getFromRes(prescription,"Organization",(_) => _.identifier?.[0]?.value ?? "")}"
-                        @keyup = "${_ => this.onUserInput(_)}"                                                                                                       
+                        @keyup = "${_ => this.onUserInput(_)}"
                       />
                       <span></span>
                     </div>
@@ -260,12 +260,12 @@ class Prescription extends BElement {
                     <div class="input-wrapper">
                       <label for="doctor1">${i18n("DoctorNum")}</label>
                       <input
-                        type   = "text"                                                                                                                    
-                        name   = "doctor-no"                                                                                                               
-                        id     = "doctor1"                                                                                                                 
-                        class  = "bright"                                                                                                                  
+                        type   = "text"
+                        name   = "doctor-no"
+                        id     = "doctor1"
+                        class  = "bright"
                         value  = "${this.state.updatedProps["doctor-no"] ?? getFromRes(prescription,"Practitioner",(_) => _.identifier?.[0]?.value ?? "")}"
-                        @keyup = "${_ => this.onUserInput(_)}"                                                                                             
+                        @keyup = "${_ => this.onUserInput(_)}"
                       />
                       <span></span>
                     </div>
@@ -275,12 +275,12 @@ class Prescription extends BElement {
                     <div class="input-wrapper">
                       <label for="date1">${i18n("Date")}</label>
                       <input
-                        type   = "text"                                                                                                                     
-                        id     = "date1"                                                                                                                    
-                        class  = "bright"                                                                                                                   
-                        name   = "date"                                                                                                                     
+                        type   = "text"
+                        id     = "date1"
+                        class  = "bright"
+                        name   = "date"
                         value  = "${this.state.updatedProps["date"] ?? getFromRes(prescription,"Composition",(_) => new Date(_.date).toLocaleDateString())}"
-                        @keyup = "${_ => this.onUserInput(_)}"                                                                                              
+                        @keyup = "${_ => this.onUserInput(_)}"
                       />
                     </div>
                   </div>
@@ -291,11 +291,11 @@ class Prescription extends BElement {
                     <div class="input-wrapper">
                       <label for="Unfalltag1">${i18n("AccidentDay")}</label>
                       <input
-                        type   = "text"                                          
-                        name   = "Unfalltag"                                     
-                        id     = "Unfalltag1"                                    
+                        type   = "text"
+                        name   = "Unfalltag"
+                        id     = "Unfalltag1"
                         value  = "${this.state.updatedProps["Unfalltag"] ?? "-"}"
-                        @keyup = "${_ => this.onUserInput(_)}"                   
+                        @keyup = "${_ => this.onUserInput(_)}"
                       />
                       <span class="long-border"></span>
                     </div>
@@ -307,11 +307,11 @@ class Prescription extends BElement {
                         >${i18n("AccidentCompanyNum")}</label
                       >
                       <input
-                        type   = "text"                                              
-                        id     = "Unfallbetrieb1"                                    
-                        name   = "Unfallbetrieb"                                     
+                        type   = "text"
+                        id     = "Unfallbetrieb1"
+                        name   = "Unfallbetrieb"
                         value  = "${this.state.updatedProps["Unfallbetrieb"] ?? "-"}"
-                        @keyup = "${_ => this.onUserInput(_)}"                       
+                        @keyup = "${_ => this.onUserInput(_)}"
                       />
                     </div>
                   </div>
@@ -333,10 +333,10 @@ class Prescription extends BElement {
             <ul class="zet-check-list">
               <li class="art-list-item">
                 <input
-                  type        = "text"                      
-                  class       = "drug-name"                 
-                  name        = "drug-1"                    
-                  id          = "drug-1"                    
+                  type        = "text"
+                  class       = "drug-name"
+                  name        = "drug-1"
+                  id          = "drug-1"
                   placeholder = "${i18n("HealthInsurance")}"
                 />
                 <input type="text" class="duration" placeholder="1 / 1 / 1" />
@@ -345,10 +345,10 @@ class Prescription extends BElement {
 
               <li class="art-list-item">
                 <input
-                  type        = "text"                          
-                  class       = "drug-name"                     
-                  name        = "drug-1"                        
-                  id          = "drug-1"                        
+                  type        = "text"
+                  class       = "drug-name"
+                  name        = "drug-1"
+                  id          = "drug-1"
                   placeholder = "Methionin AL 500 Filmtabletten"
                 />
                 <input type="text" class="duration" placeholder="1 / 0 / 0" />
@@ -357,10 +357,10 @@ class Prescription extends BElement {
 
               <li class="art-list-item">
                 <input
-                  type        = "text"                                    
-                  class       = "drug-name"                               
-                  name        = "drug-1"                                  
-                  id          = "drug-1"                                  
+                  type        = "text"
+                  class       = "drug-name"
+                  name        = "drug-1"
+                  id          = "drug-1"
                   placeholder = "Ibuprofen Heumann Schmerztabletten 600 m"
                 />
                 <input type="text" class="duration" placeholder="2 / 0 / 1" />
