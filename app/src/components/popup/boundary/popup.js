@@ -50,7 +50,7 @@ class Popup extends BElement {
     const _this = this;
     const hidePopup = () => _this.hidePopup();
 
-    
+
   }
 
   view() {

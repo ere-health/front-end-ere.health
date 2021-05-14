@@ -1,4 +1,4 @@
-export const en = {                                         
+export const en = {
   RecipeFor          : "Recipe for"                             ,
   HealthInsurance    : "Health insurance fund or cost unit"     ,
   "Patient.Name"     : "Name, first name of the insured person" ,

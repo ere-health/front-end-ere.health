@@ -39,5 +39,5 @@ export const de = {
 
   //popup generate and send
   popupGenerateText     : ["Rezept erzeugt und ", "an Patient versandt"],
-  popupGenerateBtnReady : "Fertig",                                      
+  popupGenerateBtnReady : "Fertig",
 };

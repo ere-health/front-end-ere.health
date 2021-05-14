@@ -1,5 +1,5 @@
-import BElement         from "../../../models/BElement.js";                      
-import { html }         from "../../../libs/lit-html.js";                        
+import BElement         from "../../../models/BElement.js";
+import { html }         from "../../../libs/lit-html.js";
 import { showPopupAll } from "../../../components/popup/control/PopupControl.js";
 
 class MainLayout extends BElement {
@@ -19,7 +19,7 @@ class MainLayout extends BElement {
               <a href="/html"
                 ><img
                   src = "assets/images/ere.health-logo.svg"
-                  alt = "Taleclinic Logo"                  
+                  alt = "Taleclinic Logo"
               /></a>
             </div>
             <div>
