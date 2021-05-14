@@ -65,7 +65,7 @@ class Popup extends BElement {
             </p>
           </div>
           <div class="modal-image">
-            <img src="../assets/images/popup-icon.png" alt="popup" />
+            <img src="./assets/images/popup-icon.png" alt="popup" />
           </div>
           <div class="modal-buttons">
             <button data-close-button class="cancel">${i18n("popupLoginBtnCancel")}</button>
@@ -80,7 +80,7 @@ class Popup extends BElement {
             </p>
           </div>
           <div class="modal-image">
-            <img src="../assets/images/popup-icon2.png" alt="popup" />
+            <img src="./assets/images/popup-icon2.png" alt="popup" />
           </div>
           <div class="modal-buttons">
             <button data-modal-target-fatig="#fatig" @click="${() => showPopupFatig()}" class="grow-in-wealth">
@@ -94,10 +94,10 @@ class Popup extends BElement {
             <p>${i18n("popupGenerateText")[0]}<strong>${i18n("popupGenerateText")[1]}</strong></p>
           </div>
           <div class="modal-image">
-            <img src="../assets/images/popup-icon3.png" alt="popup" />
+            <img src="./assets/images/popup-icon3.png" alt="popup" />
           </div>
           <div class="modal-buttons">
-            <a href="/print.html" id="print" @click="${() => this.doSign()}"class="grow-in-wealth"> ${i18n("popupGenerateBtnReady")}</a>
+            <a href="/print" id="print" @click="${() => this.doSign()}"class="grow-in-wealth"> ${i18n("popupGenerateBtnReady")}</a>
           </div>
         </div>
         <div id="overlay"></div>
