@@ -24,7 +24,7 @@ export const prescriptions = createReducer(initialState, (builder) => {
     })
     // Define the current prescription
     .addCase(selectPrescriptionAction, (state, {payload: prescription}) => {
-        state.selectedPrescription = {...prescription};
+        state.selectedPrescription = {prescriptions: prescription};
         state.selectedPrescription.updatedProps = {}
     })
     .addCase(updatePrescriptionAction, (state, { payload: { name, value } }) => {

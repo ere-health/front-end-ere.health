@@ -42,8 +42,10 @@ class Prescription extends BElement {
   }
 
   view() {
-    const prescription = this.state[0];
-    let displayName = getFromRes(prescription, "Patient", (_) => {
+    // get the first prescription of the bundle array
+    const firstPrescription = this.state.prescriptions[0];
+    const prescriptions = this.state.prescriptions;
+    let displayName = getFromRes(firstPrescription, "Patient", (_) => {
       let name = _.name ? _.name[0] : { given: [], family: "" };
       return name.given.join(" ") + " " + name.family;
     });
@@ -152,7 +154,7 @@ class Prescription extends BElement {
                       type   = "text"
                       name   = "name"
                       id     = "name"
-                      value  = "${this.state.updatedProps.name ?? getFromRes(prescription,"Coverage",(_) => _.payor?.[0]?.display ?? "")}"
+                      value  = "${this.state.updatedProps.name ?? getFromRes(firstPrescription,"Coverage",(_) => _.payor?.[0]?.display ?? "")}"
                       @keyup = "${_ => this.onUserInput(_)}"
                     />
                   </div>
@@ -169,8 +171,8 @@ class Prescription extends BElement {
                         cols   = "10"
                         @keyup = "${_ => this.onUserInput(_)}"
                       >${(this.state.updatedProps.address ?? (displayName + ", " +
-                          getFromRes(prescription,"Patient",(_) => _.address?.[0]?.line?.[0] ?? "") + ", " +
-                          getFromRes(prescription,"Patient",(_) => _.address?.[0]?.city))).trim()}</textarea>
+                          getFromRes(firstPrescription,"Patient",(_) => _.address?.[0]?.line?.[0] ?? "") + ", " +
+                          getFromRes(firstPrescription,"Patient",(_) => _.address?.[0]?.city))).trim()}</textarea>
                       <span></span>
                     </div>
                   </div>
@@ -183,7 +185,7 @@ class Prescription extends BElement {
                         name   = "geb"
                         id     = "geb1"
                         @keyup = "${_ => this.onUserInput(_)}"
-                        value  = "${this.state.updatedProps.geb ?? getFromRes(prescription,"Patient",(_) => _.birthDate ?? "")}"
+                        value  = "${this.state.updatedProps.geb ?? getFromRes(firstPrescription,"Patient",(_) => _.birthDate ?? "")}"
                       />
                     </div>
                   </div>
@@ -200,7 +202,7 @@ class Prescription extends BElement {
                         name   = "Kostenträgerkennung"
                         id     = "Kostenträgerkennung1"
                         class  = "bright"
-                        value  = "${this.state.updatedProps["Kostenträgerkennung"] ?? getFromRes(prescription,"Coverage",(_) => _.payor?.[0]?.identifier?.value ?? "")}"
+                        value  = "${this.state.updatedProps["Kostenträgerkennung"] ?? getFromRes(firstPrescription,"Coverage",(_) => _.payor?.[0]?.identifier?.value ?? "")}"
                         @keyup = "${_ => this.onUserInput(_)}"
                       />
                       <span></span>
@@ -215,7 +217,7 @@ class Prescription extends BElement {
                         name   = "person1"
                         id     = "address"
                         class  = "bright"
-                        value  = "${this.state.updatedProps.person1 ?? getFromRes(prescription,"Patient",(_) => _.identifier?.[0]?.value ?? "")}"
+                        value  = "${this.state.updatedProps.person1 ?? getFromRes(firstPrescription,"Patient",(_) => _.identifier?.[0]?.value ?? "")}"
                         @keyup = "${_ => this.onUserInput(_)}"
                       />
                       <span></span>
@@ -249,7 +251,7 @@ class Prescription extends BElement {
                         name   = "Betriebsstätten-Nr."
                         id     = "Betriebsstätten1"
                         class  = "bright"
-                        value  = "${this.state.updatedProps["Betriebsstätten-Nr."] ?? getFromRes(prescription,"Organization",(_) => _.identifier?.[0]?.value ?? "")}"
+                        value  = "${this.state.updatedProps["Betriebsstätten-Nr."] ?? getFromRes(firstPrescription,"Organization",(_) => _.identifier?.[0]?.value ?? "")}"
                         @keyup = "${_ => this.onUserInput(_)}"
                       />
                       <span></span>
@@ -264,7 +266,7 @@ class Prescription extends BElement {
                         name   = "doctor-no"
                         id     = "doctor1"
                         class  = "bright"
-                        value  = "${this.state.updatedProps["doctor-no"] ?? getFromRes(prescription,"Practitioner",(_) => _.identifier?.[0]?.value ?? "")}"
+                        value  = "${this.state.updatedProps["doctor-no"] ?? getFromRes(firstPrescription,"Practitioner",(_) => _.identifier?.[0]?.value ?? "")}"
                         @keyup = "${_ => this.onUserInput(_)}"
                       />
                       <span></span>
@@ -279,7 +281,7 @@ class Prescription extends BElement {
                         id     = "date1"
                         class  = "bright"
                         name   = "date"
-                        value  = "${this.state.updatedProps["date"] ?? getFromRes(prescription,"Composition",(_) => new Date(_.date).toLocaleDateString())}"
+                        value  = "${this.state.updatedProps["date"] ?? getFromRes(firstPrescription,"Composition",(_) => new Date(_.date).toLocaleDateString())}"
                         @keyup = "${_ => this.onUserInput(_)}"
                       />
                     </div>
@@ -331,41 +333,28 @@ class Prescription extends BElement {
 
           <form action="" class="art-form">
             <ul class="zet-check-list">
-              <li class="art-list-item">
-                <input
-                  type        = "text"
-                  class       = "drug-name"
-                  name        = "drug-1"
-                  id          = "drug-1"
-                  placeholder = "${i18n("HealthInsurance")}"
-                />
-                <input type="text" class="duration" placeholder="1 / 1 / 1" />
-                <span class="checkmark"></span>
-              </li>
+              
+              ${prescriptions.map(medicationLine  => {
+                const medication =  medicationLine.entry.filter(
+                  (oEntry) => oEntry.resource.resourceType === "Medication"
+                )[0].resource;
+                const medicationRequest =  medicationLine.entry.filter(
+                  (oEntry) => oEntry.resource.resourceType === "MedicationRequest"
+                )[0].resource;
+                return html`
+                  <li class="art-list-item">
+                    <input
+                      type        = "text"
+                      class       = "drug-name"
+                      name        = "drug-1"
+                      value       = "${medication.code.text}" 
+                      placeholder = ""
+                    />
+                    <input type="text" class="duration" value="${medicationRequest.dosageInstruction.length > 0 ? medicationRequest.dosageInstruction[0].text : ""}" placeholder="" />
+                    <span class="checkmark"></span>
+                  </li>`;
+              })}
 
-              <li class="art-list-item">
-                <input
-                  type        = "text"
-                  class       = "drug-name"
-                  name        = "drug-1"
-                  id          = "drug-1"
-                  placeholder = "Methionin AL 500 Filmtabletten"
-                />
-                <input type="text" class="duration" placeholder="1 / 0 / 0" />
-                <span class="checkmark"></span>
-              </li>
-
-              <li class="art-list-item">
-                <input
-                  type        = "text"
-                  class       = "drug-name"
-                  name        = "drug-1"
-                  id          = "drug-1"
-                  placeholder = "Ibuprofen Heumann Schmerztabletten 600 m"
-                />
-                <input type="text" class="duration" placeholder="2 / 0 / 1" />
-                <span class="checkmark"></span>
-              </li>
             </ul>
           </form>
         </div>

@@ -66,18 +66,18 @@ async function startServer() {
   io.on('connection', function (socket) {
     console.log("connection")
     socket.send(JSON.stringify({
-      type    : "Bundle",
-      payload : json02   
+      type    : "Bundles",
+      payload : [json02]   
     }));
 
     socket.send(JSON.stringify({
-      type    : "Bundle",
-      payload : json01   
+      type    : "Bundles",
+      payload : [json01]   
     }));
 
     socket.send(JSON.stringify({
-      type    : "Bundle",
-      payload : json03   
+      type    : "Bundles",
+      payload : [json03]   
     }));
   });
   console.log('Server running at:', server.info.uri);
