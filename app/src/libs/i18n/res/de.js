@@ -38,6 +38,6 @@ export const de = {
   popupProcessingBtnWait: "Bitte warten",
 
   //popup generate and send
-  popupGenerateText: ["Rezept erzeugt und ", "an Patient versandt"],
-  popupGenerateBtnReady: "Fertig",
+  popupGenerateText     : ["Rezept erzeugt und ", "an Patient versandt"],
+  popupGenerateBtnReady : "Fertig",
 };

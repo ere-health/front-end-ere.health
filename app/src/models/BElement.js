@@ -1,5 +1,5 @@
 import { render } from "../libs/lit-html.js";
-import store from "../store.js";
+import store      from "../store.js";        
 
 export default class BElement extends HTMLElement { 
 
@@ -49,8 +49,6 @@ export default class BElement extends HTMLElement {
         console.log('View rendered');
         console.groupEnd(this.log('triggerViewUpdate'));
     }
-
-    firstUpdated() { }
 
     getRenderTarget() { 
         return this;

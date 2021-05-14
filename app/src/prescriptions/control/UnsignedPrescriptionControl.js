@@ -7,13 +7,18 @@ export const addPrescription = (prescription) => {
 }
 
 export const selectPrescriptionAction = createAction("selectPrescriptionAction");
-export const selectPrescription = (name, value) => {
-    store.dispatch(selectPrescriptionAction({name,value}));
+export const selectPrescription = (prescription) => {
+    store.dispatch(selectPrescriptionAction(prescription));
 }
 
 export const signedPrescriptionAction = createAction("signedPrescriptionAction");
 export const signedPrescription = (prescription) => {
     store.dispatch(signedPrescriptionAction(prescription));
+}
+
+export const updatePrescriptionAction = createAction("updatePrescriptionAction");
+export const updatePrescription = (name, value) => {
+    store.dispatch(updatePrescriptionAction({name, value}));
 }
 
 export const loadExamplesAction = createAction("loadExamplesAction");
