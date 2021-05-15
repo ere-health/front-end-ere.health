@@ -39,9 +39,7 @@ class Popup extends BElement {
         signedPrescription(_);
       });
     } else {
-      signedPrescription(
-        this.state.prescriptions.list[window.location.pathname.split("/").pop()]
-      );
+      signedPrescription(this.state.prescriptions.selectedPrescription.prescriptions[0]);
     }
     this.hideAll();
   }

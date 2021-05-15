@@ -19,12 +19,17 @@ export const prescriptions = createReducer(initialState, (builder) => {
     })
     //Move a prescription to the signed list
     .addCase(signedPrescriptionAction, (state, {payload: prescriptions}) => {
-        state.list       = state.list.filter(_ => _.id !== prescriptions.id) ;
-        state.signedList = state.signedList.concat([prescriptions])          ;
+        let currentPrescription = null;
+        state.list       = state.list.filter(_ => {
+          if (_[0].id !== prescriptions.id) return true;
+          currentPrescription = _;
+          return false;
+        });
+        state.signedList = state.signedList.concat(currentPrescription);
     })
     // Define the current prescription
-    .addCase(selectPrescriptionAction, (state, {payload: prescription}) => {
-        state.selectedPrescription = {prescriptions: prescription};
+    .addCase(selectPrescriptionAction, (state, {payload: prescriptions}) => {
+        state.selectedPrescription = {prescriptions};
         state.selectedPrescription.updatedProps = {}
     })
     .addCase(updatePrescriptionAction, (state, { payload: { name, value } }) => {
