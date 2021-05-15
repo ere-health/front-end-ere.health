@@ -2,6 +2,7 @@ import BElement             from "../../models/BElement.js";
 import { html }             from "../../libs/lit-html.js";
 import { i18n }             from "../../libs/i18n/i18n.js";
 import {selectPrescription} from "../control/UnsignedPrescriptionControl.js"
+import { initialPath } from "../../libs/helper/helper.js";
 
 class UnsignedPrescriptionList extends BElement {
 
@@ -22,7 +23,7 @@ class UnsignedPrescriptionList extends BElement {
                     let displayName = name.given.join(" ")+" "+name.family;
                     return html`
                         <a
-                            href    = "/prescription/${unsignedPrescription.id}"
+                            href    = "${initialPath}/prescription/${unsignedPrescription.id}"
                             @click  = "${() => selectPrescription(unsignedPrescriptionBundles)}"
                             class   = "unsigned-button link-button"
                             data-id = "#unsigned_1"><img src="assets/images/pending-icon.svg" alt="" />${displayName}</a>`

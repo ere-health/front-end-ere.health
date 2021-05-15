@@ -8,6 +8,7 @@ import './prescriptions/boundary/PrescriptionItem.js';
 import './prescriptions/boundary/UnsignedPrescriptionList.js';
 import './prescriptions/boundary/PreviousPresciptionList.js';
 import { save } from "./localstorage/control/StorageControl.js";
+import { initialPath } from "./libs/helper/helper.js";
 
 
 store.subscribe(_ => { 
@@ -19,8 +20,9 @@ const outlet = document.querySelector('.recipe-body');
 const router = new Router(outlet);
 
 router.setRoutes([
-  { path: '/'                           , component: 'prescription-empty' },
-  { path: '/print'                      , component: 'prescription-empty' },
-  { path: '/prescription/:prescription' , component: 'prescription-item'  }
+  { path: `${initialPath}/`                           , component: 'prescription-empty' },
+  { path: `${initialPath}/index.html`                 , component: 'prescription-empty' },
+  { path: `${initialPath}/print`                      , component: 'prescription-empty' },
+  { path: `${initialPath}/prescription/:prescription` , component: 'prescription-item'  }
 ]);
 console.log("router initialized");
