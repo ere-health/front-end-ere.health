@@ -6,7 +6,7 @@ import {
   showPopupFatig,
   showPopupProgress,
 } from "../../components/popup/control/PopupControl.js";
-import { updatePrescription } from "../../prescriptions/control/UnsignedPrescriptionControl.js";
+import { signAndUploadBundles, updatePrescription } from "../../prescriptions/control/UnsignedPrescriptionControl.js";
 
 function getFromRes(source, resourceType, key) {
   const resource = source.entry.filter(
@@ -41,6 +41,11 @@ class Prescription extends BElement {
     this.triggerViewUpdate();
   }
 
+  onClickSignRecipe(event) {
+    signAndUploadBundles(this.state.prescriptions);
+    showPopupId();
+  }
+
   view() {
     // get the first prescription of the bundle array
     const firstPrescription = this.state.prescriptions[0];
@@ -56,8 +61,8 @@ class Prescription extends BElement {
         <div class="title-rezept-button">
           <h2>${i18n("RecipeFor")} <strong>${displayName}</strong></h2>
           <button
-            id     = "pid"
-            @click = "${() => showPopupId()}"
+            id     = "sign-recipe"
+            @click = "${(_) => this.onClickSignRecipe(_)}"
             class  = "open-modal jet-btn"
           >
             ${i18n("SignRecipe")}

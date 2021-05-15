@@ -1,9 +1,11 @@
 import { createReducer } from "../../libs/redux-toolkit.esm.js"
+import serverWebSocketActionForwarder from "../../prescriptions/boundary/websocket/ServerWebSocketActionForwarder.js";
 import { 
     addPrescriptionAction, 
     signedPrescriptionAction, 
     updatePrescriptionAction,
-    selectPrescriptionAction
+    selectPrescriptionAction,
+    signAndUploadBundlesAction
 } from "../control/UnsignedPrescriptionControl.js";
 
 const initialState = {
@@ -34,5 +36,9 @@ export const prescriptions = createReducer(initialState, (builder) => {
     })
     .addCase(updatePrescriptionAction, (state, { payload: { name, value } }) => {
         state.selectedPrescription.updatedProps[name] = value;
+    })
+    .addCase(signAndUploadBundlesAction, (state, { payload: bundles }) => {
+        // Send a list of a list of a list
+        serverWebSocketActionForwarder.send({type: "SignAndUploadBundles", payload: [bundles]});
     });
 })
