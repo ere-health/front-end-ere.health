@@ -2,12 +2,18 @@ import BElement             from "../../models/BElement.js";
 import { html }             from "../../libs/lit-html.js";
 import { i18n }             from "../../libs/i18n/i18n.js";
 import {selectPrescription} from "../control/UnsignedPrescriptionControl.js"
+import {setMusterTheme} from "../../components/layout/control/MainControl.js"
 import { initialPath } from "../../libs/helper/helper.js";
 
 class UnsignedPrescriptionList extends BElement {
 
     extractState({prescriptions: {list}}) {
         return list;
+    }
+
+    onNavigate(unsignedPrescriptionBundles) {
+      setMusterTheme();
+      selectPrescription(unsignedPrescriptionBundles)
     }
 
     view() {
@@ -24,7 +30,7 @@ class UnsignedPrescriptionList extends BElement {
                     return html`
                         <a
                             href    = "${initialPath}/prescription/${unsignedPrescription.id}"
-                            @click  = "${() => selectPrescription(unsignedPrescriptionBundles)}"
+                            @click  = "${() => this.onNavigate(unsignedPrescriptionBundles)}"
                             class   = "unsigned-button link-button"
                             data-id = "#unsigned_1"><img src="assets/images/pending-icon.svg" alt="" />${displayName}</a>`
                     }

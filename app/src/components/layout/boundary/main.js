@@ -7,19 +7,22 @@ class MainLayout extends BElement {
     showPopupAll();
   }
 
-  onRendered() {
-    document.getElementById("pid2").onclick = () => this.doClickId();
-  }
   view() {
+    if (this.state.mainReducer.isMuster) {
+			document.body.setAttribute("class", "home-page");
+		} else {
+			document.body.setAttribute("class", "home-page lean-start-page");
+		}
+
     return html`
       <div class="main-content-wrapper">
         <header class="header-wrapper">
           <div class="header">
             <div class="logo">
-              <a href="/html"
-                ><img
-                  src = "assets/images/ere.health-logo.svg"
-                  alt = "Taleclinic Logo"
+              <a href="/html">
+              <img
+								src = "assets/images/ere.health-logo.svg"
+								alt = "Taleclinic Logo"
               /></a>
             </div>
             <div>
