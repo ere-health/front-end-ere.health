@@ -11,8 +11,11 @@ import {
 const initialState = {
     list                 : [] ,
     signedList           : [] ,
-    selectedPrescription : {}
+    selectedPrescription : {} ,
+    isPrevious           : false
 }
+
+var db = new PouchDB("Prescriptions");
 
 export const prescriptions = createReducer(initialState, (builder) => {
     //Add prescription to the unsigned list
@@ -22,16 +25,17 @@ export const prescriptions = createReducer(initialState, (builder) => {
     //Move a prescription to the signed list
     .addCase(signedPrescriptionAction, (state, {payload: prescriptions}) => {
         let currentPrescription = null;
-        state.list       = state.list.filter(_ => {
-          if (_[0].id !== prescriptions.id) return true;
+        state.list = state.list.filter(_ => {
+          if (_[0].id !== prescriptions[0].id) return true;
           currentPrescription = _;
           return false;
         });
-        state.signedList = state.signedList.concat(currentPrescription);
+        state.signedList = state.signedList.concat([currentPrescription]);
     })
     // Define the current prescription
-    .addCase(selectPrescriptionAction, (state, {payload: prescriptions}) => {
-        state.selectedPrescription = {prescriptions};
+    .addCase(selectPrescriptionAction, (state, {payload: {prescriptions, isPrevious}}) => {
+        state.selectedPrescription = {prescriptions: prescriptions};
+        state.isPrevious           = isPrevious;
         state.selectedPrescription.updatedProps = {}
     })
     .addCase(updatePrescriptionAction, (state, { payload: { name, value } }) => {
