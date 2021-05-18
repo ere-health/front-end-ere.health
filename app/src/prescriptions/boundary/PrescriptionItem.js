@@ -24,8 +24,8 @@ class Prescription extends BElement {
     super();
   }
 
-  extractState({ prescriptions: { selectedPrescription } }) {
-    return selectedPrescription;
+  extractState({ prescriptions: { selectedPrescription, isPrevious } }) {
+    return {selectedPrescription, isPrevious};
   }
 
   onUserCheckArt({ target: { name, checked } }) {
@@ -43,8 +43,8 @@ class Prescription extends BElement {
 
   view() {
     // get the first prescription of the bundle array
-    const firstPrescription = this.state.prescriptions[0];
-    const prescriptions = this.state.prescriptions;
+    const firstPrescription = this.state.selectedPrescription.prescriptions[0];
+    const prescriptions = this.state.selectedPrescription.prescriptions;
     let displayName = getFromRes(firstPrescription, "Patient", (_) => {
       let name = _.name ? _.name[0] : { given: [], family: "" };
       return name.given.join(" ") + " " + name.family;
@@ -59,6 +59,7 @@ class Prescription extends BElement {
             id     = "pid"
             @click = "${() => showPopupId()}"
             class  = "open-modal jet-btn"
+            style="${this.state.isPrevious ? "display:none" : ""}"
           >
             ${i18n("SignRecipe")}
           </button>
@@ -74,7 +75,7 @@ class Prescription extends BElement {
                     type     = "checkbox"
                     id       = "gebührenfrei"
                     name     = "tollFree"
-                    .checked = "${this.state.updatedProps?.tollFree ?? false}"
+                    .checked = "${this.state.selectedPrescription.updatedProps?.tollFree ?? false}"
                     @change  = "${(_) => this.onUserCheckArt(_)}"
                     value    = "Gebührenfrei"
                   />
@@ -88,7 +89,7 @@ class Prescription extends BElement {
                     name     = "gebpfl"
                     value    = "Geb. -pfl."
                     name     = "gebpfl"
-                    .checked = "${this.state.updatedProps?.gebpfl ?? false}"
+                    .checked = "${this.state.selectedPrescription.updatedProps?.gebpfl ?? false}"
                     @change  = "${(_) => this.onUserCheckArt(_)}"
                   />
                   <label for="geb-pfl">Geb. -pfl.</label>
@@ -100,7 +101,7 @@ class Prescription extends BElement {
                     id       = "noctu"
                     value    = "noctu"
                     name     = "noctu"
-                    .checked = "${this.state.updatedProps?.noctu ?? false}"
+                    .checked = "${this.state.selectedPrescription.updatedProps?.noctu ?? false}"
                     @change  = "${(_) => this.onUserCheckArt(_)}"
                   />
                   <label for="noctu">noctu</label>
@@ -112,7 +113,7 @@ class Prescription extends BElement {
                     id       = "sonstige"
                     value    = "Sonstige"
                     name     = "other"
-                    .checked = "${this.state.updatedProps?.other ?? false}"
+                    .checked = "${this.state.selectedPrescription.updatedProps?.other ?? false}"
                     @change  = "${(_) => this.onUserCheckArt(_)}"
                   />
                   <label for="sonstige">${i18n("Other")}</label>
@@ -124,7 +125,7 @@ class Prescription extends BElement {
                     id       = "unfall"
                     value    = "Unfall"
                     name     = "accident"
-                    .checked = "${this.state.updatedProps?.accident ?? false}"
+                    .checked = "${this.state.selectedPrescription.updatedProps?.accident ?? false}"
                     @change  = "${(_) => this.onUserCheckArt(_)}"
                   />
                   <label for="unfall">${i18n("Accident")}</label>
@@ -136,7 +137,7 @@ class Prescription extends BElement {
                     id       = "arbeitsunfall"
                     value    = "Arbeitsunfall"
                     name     = "industrialAccident"
-                    .checked = "${this.state.updatedProps?.industrialAccident ??false}"
+                    .checked = "${this.state.selectedPrescription.updatedProps?.industrialAccident ??false}"
                     @change  = "${(_) => this.onUserCheckArt(_)}"
                   />
                   <label for="arbeitsunfall"
@@ -154,7 +155,7 @@ class Prescription extends BElement {
                       type   = "text"
                       name   = "name"
                       id     = "name"
-                      value  = "${this.state.updatedProps.name ?? getFromRes(firstPrescription,"Coverage",(_) => _.payor?.[0]?.display ?? "")}"
+                      value  = "${this.state.selectedPrescription.updatedProps.name ?? getFromRes(firstPrescription,"Coverage",(_) => _.payor?.[0]?.display ?? "")}"
                       @keyup = "${_ => this.onUserInput(_)}"
                     />
                   </div>
@@ -170,7 +171,7 @@ class Prescription extends BElement {
                         id     = "address1"
                         cols   = "10"
                         @keyup = "${_ => this.onUserInput(_)}"
-                      >${(this.state.updatedProps.address ?? (displayName + ", " +
+                      >${(this.state.selectedPrescription.updatedProps.address ?? (displayName + ", " +
                           getFromRes(firstPrescription,"Patient",(_) => _.address?.[0]?.line?.[0] ?? "") + ", " +
                           getFromRes(firstPrescription,"Patient",(_) => _.address?.[0]?.city))).trim()}</textarea>
                       <span></span>
@@ -185,7 +186,7 @@ class Prescription extends BElement {
                         name   = "geb"
                         id     = "geb1"
                         @keyup = "${_ => this.onUserInput(_)}"
-                        value  = "${this.state.updatedProps.geb ?? getFromRes(firstPrescription,"Patient",(_) => _.birthDate ?? "")}"
+                        value  = "${this.state.selectedPrescription.updatedProps.geb ?? getFromRes(firstPrescription,"Patient",(_) => _.birthDate ?? "")}"
                       />
                     </div>
                   </div>
@@ -202,7 +203,7 @@ class Prescription extends BElement {
                         name   = "Kostenträgerkennung"
                         id     = "Kostenträgerkennung1"
                         class  = "bright"
-                        value  = "${this.state.updatedProps["Kostenträgerkennung"] ?? getFromRes(firstPrescription,"Coverage",(_) => _.payor?.[0]?.identifier?.value ?? "")}"
+                        value  = "${this.state.selectedPrescription.updatedProps["Kostenträgerkennung"] ?? getFromRes(firstPrescription,"Coverage",(_) => _.payor?.[0]?.identifier?.value ?? "")}"
                         @keyup = "${_ => this.onUserInput(_)}"
                       />
                       <span></span>
@@ -217,7 +218,7 @@ class Prescription extends BElement {
                         name   = "person1"
                         id     = "address"
                         class  = "bright"
-                        value  = "${this.state.updatedProps.person1 ?? getFromRes(firstPrescription,"Patient",(_) => _.identifier?.[0]?.value ?? "")}"
+                        value  = "${this.state.selectedPrescription.updatedProps.person1 ?? getFromRes(firstPrescription,"Patient",(_) => _.identifier?.[0]?.value ?? "")}"
                         @keyup = "${_ => this.onUserInput(_)}"
                       />
                       <span></span>
@@ -233,7 +234,7 @@ class Prescription extends BElement {
                         id          = "Status1"
                         class       = "bright"
                         placeholder = "1000 1"
-                        value  = "${this.state.updatedProps.Status ?? "-"}"
+                        value  = "${this.state.selectedPrescription.updatedProps.Status ?? "-"}"
                         @keyup = "${_ => this.onUserInput(_)}"
                       />
                     </div>
@@ -251,7 +252,7 @@ class Prescription extends BElement {
                         name   = "Betriebsstätten-Nr."
                         id     = "Betriebsstätten1"
                         class  = "bright"
-                        value  = "${this.state.updatedProps["Betriebsstätten-Nr."] ?? getFromRes(firstPrescription,"Organization",(_) => _.identifier?.[0]?.value ?? "")}"
+                        value  = "${this.state.selectedPrescription.updatedProps["Betriebsstätten-Nr."] ?? getFromRes(firstPrescription,"Organization",(_) => _.identifier?.[0]?.value ?? "")}"
                         @keyup = "${_ => this.onUserInput(_)}"
                       />
                       <span></span>
@@ -266,7 +267,7 @@ class Prescription extends BElement {
                         name   = "doctor-no"
                         id     = "doctor1"
                         class  = "bright"
-                        value  = "${this.state.updatedProps["doctor-no"] ?? getFromRes(firstPrescription,"Practitioner",(_) => _.identifier?.[0]?.value ?? "")}"
+                        value  = "${this.state.selectedPrescription.updatedProps["doctor-no"] ?? getFromRes(firstPrescription,"Practitioner",(_) => _.identifier?.[0]?.value ?? "")}"
                         @keyup = "${_ => this.onUserInput(_)}"
                       />
                       <span></span>
@@ -281,7 +282,7 @@ class Prescription extends BElement {
                         id     = "date1"
                         class  = "bright"
                         name   = "date"
-                        value  = "${this.state.updatedProps["date"] ?? getFromRes(firstPrescription,"Composition",(_) => new Date(_.date).toLocaleDateString())}"
+                        value  = "${this.state.selectedPrescription.updatedProps["date"] ?? getFromRes(firstPrescription,"Composition",(_) => new Date(_.date).toLocaleDateString())}"
                         @keyup = "${_ => this.onUserInput(_)}"
                       />
                     </div>
@@ -296,7 +297,7 @@ class Prescription extends BElement {
                         type   = "text"
                         name   = "Unfalltag"
                         id     = "Unfalltag1"
-                        value  = "${this.state.updatedProps["Unfalltag"] ?? "-"}"
+                        value  = "${this.state.selectedPrescription.updatedProps["Unfalltag"] ?? "-"}"
                         @keyup = "${_ => this.onUserInput(_)}"
                       />
                       <span class="long-border"></span>
@@ -312,7 +313,7 @@ class Prescription extends BElement {
                         type   = "text"
                         id     = "Unfallbetrieb1"
                         name   = "Unfallbetrieb"
-                        value  = "${this.state.updatedProps["Unfallbetrieb"] ?? "-"}"
+                        value  = "${this.state.selectedPrescription.updatedProps["Unfallbetrieb"] ?? "-"}"
                         @keyup = "${_ => this.onUserInput(_)}"
                       />
                     </div>

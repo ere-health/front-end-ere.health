@@ -13,7 +13,7 @@ class UnsignedPrescriptionList extends BElement {
 
     onNavigate(unsignedPrescriptionBundles) {
       setMusterTheme();
-      selectPrescription(unsignedPrescriptionBundles)
+      selectPrescription(unsignedPrescriptionBundles, false)
     }
 
     view() {

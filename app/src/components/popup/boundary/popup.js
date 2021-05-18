@@ -7,6 +7,7 @@ import {
 import { i18n } from "../../../libs/i18n/i18n.js";
 import { signedPrescription } from "../../../prescriptions/control/UnsignedPrescriptionControl.js";
 import { _hidePopup, showPopupId, showPopupFatig, showPopupProgress } from "../control/PopupControl.js";
+import { initialPath } from "../../../libs/helper/helper.js";
 
 
 class Popup extends BElement {
@@ -33,28 +34,22 @@ class Popup extends BElement {
   }
 
   doSign() {
+    _hidePopup();
     if (this.state.popupReducer.all) {
       const all = this.state.prescriptions.list.map((_) => _);
       all.forEach((_) => {
         signedPrescription(_);
       });
     } else {
-      signedPrescription(this.state.prescriptions.selectedPrescription.prescriptions[0]);
+      signedPrescription(this.state.prescriptions.selectedPrescription.prescriptions);
     }
-    this.hideAll();
-  }
-
-  onRendered() {
-    const _this = this;
-    const hidePopup = () => _this.hidePopup();
-
-
   }
 
   view() {
     return html`
-      ${this.state.popupReducer.showPopup &&
-      this.showPopup(this.state.popupReducer.showPopup)}
+      ${this.state.popupReducer.showPopup 
+        ? this.showPopup(this.state.popupReducer.showPopup)
+        : this.hideAll()}
       <section class="popup">
         <div class="modal" id="id">
           <div class="modal-title">
@@ -66,7 +61,7 @@ class Popup extends BElement {
             <img src="./assets/images/popup-icon.png" alt="popup" />
           </div>
           <div class="modal-buttons">
-            <button data-close-button class="cancel">${i18n("popupLoginBtnCancel")}</button>
+            <button data-close-button class="cancel" @click="${() => _hidePopup()}">${i18n("popupLoginBtnCancel")}</button>
             <button data-modal-target-processing="#processing" @click="${() => showPopupProgress()}" class="ok-next">${i18n("popupLoginBtnNext")}</button>
           </div>
         </div>
@@ -95,7 +90,7 @@ class Popup extends BElement {
             <img src="./assets/images/popup-icon3.png" alt="popup" />
           </div>
           <div class="modal-buttons">
-            <a href="/print" id="print" @click="${() => this.doSign()}"class="grow-in-wealth"> ${i18n("popupGenerateBtnReady")}</a>
+            <a href="${initialPath}/print" id="print" @click="${() => this.doSign()}"class="grow-in-wealth"> ${i18n("popupGenerateBtnReady")}</a>
           </div>
         </div>
         <div id="overlay"></div>

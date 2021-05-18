@@ -7,8 +7,8 @@ export const addPrescription = (prescription) => {
 }
 
 export const selectPrescriptionAction = createAction("selectPrescriptionAction");
-export const selectPrescription = (prescription) => {
-    store.dispatch(selectPrescriptionAction(prescription));
+export const selectPrescription = (prescriptions, isPrevious) => {
+    store.dispatch(selectPrescriptionAction({prescriptions, isPrevious}));
 }
 
 export const signedPrescriptionAction = createAction("signedPrescriptionAction");
