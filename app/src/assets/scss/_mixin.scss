@@ -11,45 +11,45 @@ $rem-base-font: 16px;
 }
 
 @mixin appearance {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
+  -webkit-appearance : none;
+  -moz-appearance    : none;
+  appearance         : none;
 
     &::-webkit-inner-spin-button { 
-      -webkit-appearance: none;
-      cursor:pointer;
-      display:block;
-      width:8px;
-      color: #333;
-      text-align:center;
-      position:relative;
+      -webkit-appearance : none;    
+      cursor             : pointer; 
+      display            : block;   
+      width              : 8px;     
+      color              : #333;    
+      text-align         : center;  
+      position           : relative;
   }
 }
 
 @mixin placeholder($color,$font_size, $font_weight ) {
   &::-webkit-input-placeholder {
-    color: $color;
-    font-size: $font_size;
-    font-weight: $font_weight;
-    font-family: $primary-font;
+    color       : $color;       
+    font-size   : $font_size;   
+    font-weight : $font_weight; 
+    font-family : $primary-font;
   }
   &::-moz-placeholder { 
-    color: $color;
-    font-size: $font_size;
-    font-weight: $font_weight;
-    font-family: $primary-font;
+    color       : $color;       
+    font-size   : $font_size;   
+    font-weight : $font_weight; 
+    font-family : $primary-font;
   }
   &:-ms-input-placeholder { 
-    color: $color;
-    font-size: $font_size;
-    font-weight: $font_weight;
-    font-family: $primary-font;
+    color       : $color;       
+    font-size   : $font_size;   
+    font-weight : $font_weight; 
+    font-family : $primary-font;
   }
   &:-moz-placeholder { 
-    color: $color;
-    font-size: $font_size;
-    font-weight: $font_weight;
-    font-family: $primary-font;
+    color       : $color;       
+    font-size   : $font_size;   
+    font-weight : $font_weight; 
+    font-family : $primary-font;
   }
 }
 
