@@ -3,35 +3,35 @@
 @import "mixin";
 
 * {
-    margin: 0;
-    padding: 0;
-    outline: 0;
+    margin  : 0;
+    padding : 0;
+    outline : 0;
 }
 
-$primary-color: #11142D;
-$secondary-color: #D35846;
-$primary-font: 'Quicksand', sans-serif;
+$primary-color   : #11142D;                
+$secondary-color : #D35846;                
+$primary-font    : 'Quicksand', sans-serif;
 
 body {
-    font-weight: 700;
-    color: $primary-color;
+    font-weight : 700;           
+    color       : $primary-color;
     @include em(16px, 20px);
-    font-family: $primary-font;
-    height: 100%;
+    font-family : $primary-font;
+    height      : 100%;         
 }
 
 html {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    font-size: 100%;
-    scroll-behavior: smooth;
+    margin          : 0;     
+    padding         : 0;     
+    height          : 100%;  
+    font-size       : 100%;  
+    scroll-behavior : smooth;
 }
 
 button, input, span, label, textarea {
-    font-family: $primary-font;
-    font-weight: 700;
-    color: $primary-color;
+    font-family : $primary-font; 
+    font-weight : 700;           
+    color       : $primary-color;
     @include em(16px, 20px);
 }
 
@@ -51,49 +51,49 @@ ul {
 }
 
 .main-content-wrapper {
-    flex-wrap: wrap;
-    display: flex;
-    height: 100%;
+    flex-wrap : wrap;
+    display   : flex;
+    height    : 100%;
 }
 
 button, .link-button {
-    margin: 0;
-    border: 0;
-    display: flex;
-    border-radius: 4px;
-    text-align: center;
-    padding: 12px 22px;
-    align-items: center;
-    margin-bottom: 15px;
-    justify-content: center;
-    transition: all .3s ease;
-    background-color: #fff;
+    margin           : 0;           
+    border           : 0;           
+    display          : flex;        
+    border-radius    : 4px;         
+    text-align       : center;      
+    padding          : 12px 22px;   
+    align-items      : center;      
+    margin-bottom    : 15px;        
+    justify-content  : center;      
+    transition       : all .3s ease;
+    background-color : #fff;        
     
     img {
         margin-right: 10px;
     }
     
     &.active, &:hover, &:focus {
-        background: #59BAC3;
-        color: #fff;
+        background : #59BAC3;
+        color      : #fff;   
     }
 }
 
 .link-button {
-    text-decoration: none;
-    text-align: left;
-    color: #11142D;
+    text-decoration : none;   
+    text-align      : left;   
+    color           : #11142D;
 }
 
 .jet-btn {
-    color: #000;
-    padding: 12px 24px;
-    background: #EDD767;
-    box-shadow: 0px 12px 24px -6px rgba(0, 0, 0, 0.2);
+    color      : #000;                                 
+    padding    : 12px 24px;                            
+    background : #EDD767;                              
+    box-shadow : 0px 12px 24px -6px rgba(0, 0, 0, 0.2);
 
     &.btn-inactive {
-        background: #E4E4E4 !important;
-        color: #fff !important;
+        background : #E4E4E4 !important;
+        color      : #fff !important;   
 
         &:hover, &:focus {
             cursor: none;
@@ -101,54 +101,54 @@ button, .link-button {
     }
 
     &.active, &:hover, &:focus {
-        color: #fff;
-        background: rgba(53, 158, 173, 1);
+        color      : #fff;                 
+        background : rgba(53, 158, 173, 1);
     }
 }
 
 .zet-title {
-    color: #000;
-    display: block;
-    font-weight: 500;
-    margin-bottom: 15px;
+    color         : #000; 
+    display       : block;
+    font-weight   : 500;  
+    margin-bottom : 15px; 
     @include em(14px, 17px);
 }
 
 .zet-check-list {
 
     .art-list-item {
-        color:  #11142D;
-        position: relative;
-        line-height: 30px;
-        margin-bottom: 16px;
+        color         : #11142D; 
+        position      : relative;
+        line-height   : 30px;    
+        margin-bottom : 16px;    
 
         .checkmark {
-            position: absolute;
-            top: 0;
-            left: 0;
-            height: 30px;
-            width: 30px;
-            background-color: #fff;
-            border: 2px solid $secondary-color;
+            position         : absolute;                  
+            top              : 0;                         
+            left             : 0;                         
+            height           : 30px;                      
+            width            : 30px;                      
+            background-color : #fff;                      
+            border           : 2px solid $secondary-color;
 
             &:after {
-                content: "";
-                left: 0;
-                top: 0;
-                width: 2px;
-                height: 20px;
-                background: #000;
-                transform: translate(15px, -15px) rotate(45deg)
+                content    : "";                                 
+                left       : 0;                                  
+                top        : 0;                                  
+                width      : 2px;                                
+                height     : 20px;                               
+                background : #000;                               
+                transform  : translate(15px, -15px) rotate(45deg)
             }
 
             &:before {
-                content: "";
-                left: 0;
-                bottom: 0;
-                width: 2px;
-                height: 20px;
-                background: #000;
-                transform: translate(15px, 5px) rotate(-45deg);
+                content    : "";                                 
+                left       : 0;                                  
+                bottom     : 0;                                  
+                width      : 2px;                                
+                height     : 20px;                               
+                background : #000;                               
+                transform  : translate(15px, 5px) rotate(-45deg);
             }
         }
 
@@ -173,18 +173,18 @@ button, .link-button {
                                         Sidebar Header
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/ 
 .header-wrapper {
-    width: 30%;
-    height: 100%;
-    background: #fff;
-    height: 100%;
+    width      : 30%; 
+    height     : 100%;
+    background : #fff;
+    height     : 100%;
     
     .header {
         padding: 30px 30px 30px 80px;
 
         p {
-            color: #808191;
-            font-weight: 500;
-            margin-bottom: 24px;
+            color         : #808191;
+            font-weight   : 500;    
+            margin-bottom : 24px;   
             @include em(15px, 19px);
         }
 
@@ -197,16 +197,16 @@ button, .link-button {
             .unsignierte-list {
 
                 .file {
-                    display: flex;
-                    flex-wrap: wrap;
-                    align-items: center;
-                    justify-content: flex-start;
+                    display         : flex;      
+                    flex-wrap       : wrap;      
+                    align-items     : center;    
+                    justify-content : flex-start;
 
                     p {
                         @include em(16px, 20px);
-                        margin: 0 0 0 15px;
-                        color: #BFBFBE;
-                        font-weight: 500;
+                        margin      : 0 0 0 15px;
+                        color       : #BFBFBE;   
+                        font-weight : 500;       
                     }
                 }
                 
@@ -220,18 +220,18 @@ button, .link-button {
         .jetzt-area {
 
             p {
-                display: flex;
-                font-weight: 700;
-                max-width: 260px;
-                align-items: center;
-                margin-bottom: 35px;
-                color: $primary-color;
+                display       : flex;          
+                font-weight   : 700;           
+                max-width     : 260px;         
+                align-items   : center;        
+                margin-bottom : 35px;          
+                color         : $primary-color;
                 @include em(16px, 20px);
 
                 img {
-                    margin-right: 18px;
-                    position: relative;
-                    bottom: -15px;
+                    margin-right : 18px;    
+                    position     : relative;
+                    bottom       : -15px;   
                 }
             }
 
@@ -474,20 +474,20 @@ button, .link-button {
 .popup {
 
     .modal {
-        max-width: 524px;
-        width: 80%;
-        background-color: #fff;
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%) scale(0);
-        transition: 200ms ease-in-out;
-        z-index: 9999999;
-        padding: 49px 69px 33px;
-        text-align: center;
-        box-shadow: 0px 4px 16px rgba(16, 24, 32, 0.1);
-        border-radius: 20px;
-        box-sizing: border-box;
+        max-width        : 524px;                             
+        width            : 80%;                               
+        background-color : #fff;                              
+        position         : fixed;                             
+        top              : 50%;                               
+        left             : 50%;                               
+        transform        : translate(-50%, -50%) scale(0);    
+        transition       : 200ms ease-in-out;                 
+        z-index          : 9999999;                           
+        padding          : 49px 69px 33px;                    
+        text-align       : center;                            
+        box-shadow       : 0px 4px 16px rgba(16, 24, 32, 0.1);
+        border-radius    : 20px;                              
+        box-sizing       : border-box;                        
     
         &.active {
             transform: translate(-50%, -50%) scale(1);
@@ -496,11 +496,11 @@ button, .link-button {
         .modal-title {
 
             p {
-                text-align: center;
-                font-family: $primary-font;
+                text-align  : center;       
+                font-family : $primary-font;
                 @include em(21px, 31px);
-                font-weight: 400;
-                color: $primary-color;
+                font-weight : 400;           
+                color       : $primary-color;
     
                 strong {
                     font-weight: 700;
@@ -514,24 +514,24 @@ button, .link-button {
         }
 
         .modal-buttons {
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            display         : flex;  
+            justify-content : center;
+            align-items     : center;
     
             button, a {
-                background: $primary-color;
-                padding: 12px 24px;
+                background : $primary-color;
+                padding    : 12px 24px;     
                 @include em(18px, 22px);
-                box-shadow: 0px 24px 32px -6px rgba(0, 0, 0, 0.2);
-                border-radius: 4px;
-                color: #fff;
-                font-weight: 700;
-                transition: all 0.3s ease;
-                text-decoration: none;
+                box-shadow      : 0px 24px 32px -6px rgba(0, 0, 0, 0.2);
+                border-radius   : 4px;                                  
+                color           : #fff;                                 
+                font-weight     : 700;                                  
+                transition      : all 0.3s ease;                        
+                text-decoration : none;                                 
     
                 &.active, &:hover, &:focus {
-                    background: #E4E4E4;
-                    color: $primary-color;
+                    background : #E4E4E4;       
+                    color      : $primary-color;
                 }
     
     
@@ -544,16 +544,16 @@ button, .link-button {
     }
     
     #overlay {
-        position: fixed;
-        opacity: 0;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        background-color: rgba(0, 64, 70, 0.3);
-        pointer-events: none;
-        transition: 200ms ease-in-out;
-        z-index: 99999;
+        position         : fixed;               
+        opacity          : 0;                   
+        top              : 0;                   
+        bottom           : 0;                   
+        left             : 0;                   
+        right            : 0;                   
+        background-color : rgba(0, 64, 70, 0.3);
+        pointer-events   : none;                
+        transition       : 200ms ease-in-out;   
+        z-index          : 99999;               
     
         &.active {
             opacity: 1;
@@ -566,31 +566,46 @@ button, .link-button {
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
                                         Printing page
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/ 
+
+
 .recipe-body {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
+    display         : flex;   
+    flex-wrap       : wrap;   
+    justify-content : center; 
+    align-items     : stretch;
+    overflow-y      : hidden;
+    
+    .prescription-empty {
+      height          : 100%;  
+      display         : flex;  
+      flex-direction  : column;
+      flex-wrap       : nowrap;
+      justify-content : center;
 
-    .print-wrapper {
-        text-align: center;
+      .print-wrapper {
+        display         : flex;        
+        flex-direction  : column;      
+        flex-wrap       : nowrap;      
+        justify-content : space-evenly;
+        align-content   : flex-end;    
+        align-items     : center;      
+          img { 
+              margin-bottom: 10px;
+          }
 
-        img { 
-            margin-bottom: 10px;
-        }
+          h3 {
+              font-weight : 700;          
+              font-family : $primary-font;
+              @include em(24px, 36px);
+          }
+          p {
+              font-weight : 400;          
+              font-family : $primary-font;
+              @include em(24px, 36px)
 
-        h3 {
-            font-weight: 700;
-            font-family: $primary-font;
-            @include em(24px, 36px);
-        }
-        p {
-            font-weight: 400;
-            font-family: $primary-font;
-            @include em(24px, 36px)
+          }
 
-        }
-
+      }
     }
 }
 
@@ -612,19 +627,19 @@ button, .link-button {
                     .zet-check-list {
 
                         .art-list-item {
-                            display: flex;
-                            flex-wrap: wrap;
-                            justify-content: flex-start;
-                            align-items: center;
-                            margin-bottom: 20px;
+                            display         : flex;      
+                            flex-wrap       : wrap;      
+                            justify-content : flex-start;
+                            align-items     : center;    
+                            margin-bottom   : 20px;      
 
                             input[type=checkbox] {
                                 display: none;
                                 &:checked {
                                 
                                     ~.checkmark {
-                                        border-color: #004046;
-                                        background-color: #fff;
+                                        border-color     : #004046;
+                                        background-color : #fff;   
                                     }
 
                                     ~label {
@@ -638,13 +653,13 @@ button, .link-button {
                             }
 
                             .checkmark {
-                                height: 20px;
-                                width: 20px;
-                                border-radius: 500px;
-                                background-color: #E4E4E4;
-                                border: 5px solid #E4E4E4;
-                                box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.033927);
-                                box-sizing: border-box;
+                                height           : 20px;                                     
+                                width            : 20px;                                     
+                                border-radius    : 500px;                                    
+                                background-color : #E4E4E4;                                  
+                                border           : 5px solid #E4E4E4;                        
+                                box-shadow       : inset 0px 1px 3px rgba(0, 0, 0, 0.033927);
+                                box-sizing       : border-box;                               
 
 
                                 &:after,&:before {
@@ -689,9 +704,9 @@ button, .link-button {
                         }
 
                         .column-4 {
-                            width: 100%;
-                            display: flex;
-                            flex-wrap: wrap;
+                            width     : 100%;
+                            display   : flex;
+                            flex-wrap : wrap;
 
                             .form-group {
                                 width: 25%;
@@ -702,13 +717,13 @@ button, .link-button {
             }
 
             .drug-area {
-                padding: 25px 25px 45px;
-                max-width: 848px;
-                box-sizing: border-box;
-                background: #FFFFFF;
-                box-shadow: 0px 18px 48px -8px rgba(0, 0, 0, 0.25);
-                border-radius: 12px;
-                margin-top: 100px;
+                padding       : 25px 25px 45px;                        
+                max-width     : 848px;                                 
+                box-sizing    : border-box;                            
+                background    : #FFFFFF;                               
+                box-shadow    : 0px 18px 48px -8px rgba(0, 0, 0, 0.25);
+                border-radius : 12px;                                  
+                margin-top    : 100px;                                 
     
                 .inline {
     
@@ -737,10 +752,10 @@ button, .link-button {
                 }
     
                 .art-list-item {
-                    display: flex;
-                    flex-wrap: wrap;
-                    justify-content: space-evenly;
-                    margin: 0;
+                    display         : flex;        
+                    flex-wrap       : wrap;        
+                    justify-content : space-evenly;
+                    margin          : 0;           
     
                     .checkmark {
                         top: calc(50% - 17px) !important;
@@ -748,14 +763,14 @@ button, .link-button {
                 }
     
                 input {
-                    width: 100%;
-                    font-weight: 700;
+                    width       : 100%;
+                    font-weight : 700; 
                     @include em(16px, 24px);
-                    color: $primary-color;
-                    width: 100%;
-                    border: 2px solid transparent;
-                    background-color: transparent;
-                    padding: 12px 15px;
+                    color            : $primary-color;       
+                    width            : 100%;                 
+                    border           : 2px solid transparent;
+                    background-color : transparent;          
+                    padding          : 12px 15px;            
                     @include placeholder(#004046, 16px, 700);
     
                     &.drug-name {
@@ -768,8 +783,8 @@ button, .link-button {
                     }
     
                     &:focus {
-                        background-color: #fff;
-                        border-color: $secondary-color;
+                        background-color : #fff;            
+                        border-color     : $secondary-color;
     
                         ~ .checkmark {
     

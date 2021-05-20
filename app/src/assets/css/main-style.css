@@ -504,21 +504,34 @@ button.active, button:hover, button:focus, .link-button.active, .link-button:hov
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  align-items: stretch;
+  overflow-y: hidden;
+}
+.recipe-body .prescription-empty {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+}
+.recipe-body .prescription-empty .print-wrapper {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: space-evenly;
+  align-content: flex-end;
   align-items: center;
 }
-.recipe-body .print-wrapper {
-  text-align: center;
-}
-.recipe-body .print-wrapper img {
+.recipe-body .prescription-empty .print-wrapper img {
   margin-bottom: 10px;
 }
-.recipe-body .print-wrapper h3 {
+.recipe-body .prescription-empty .print-wrapper h3 {
   font-weight: 700;
   font-family: "Quicksand", sans-serif;
   font-size: 1.5rem;
   line-height: 1.5;
 }
-.recipe-body .print-wrapper p {
+.recipe-body .prescription-empty .print-wrapper p {
   font-weight: 400;
   font-family: "Quicksand", sans-serif;
   font-size: 1.5rem;
@@ -984,3 +997,5 @@ button.active, button:hover, button:focus, .link-button.active, .link-button:hov
     top: calc(50% - 12px) !important;
   }
 }
+
+/*# sourceMappingURL=main-style.css.map */

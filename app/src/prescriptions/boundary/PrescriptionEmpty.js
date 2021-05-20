@@ -8,13 +8,15 @@ class Prescription extends BElement {
 
   view() {
     return html`
-      <div class="print-wrapper">
-        <img src="./assets/images/print.svg" alt="print" />
-        <h3>Keine Rezepte zum Signieren ausgewählt.</h3>
-        <p>
-          Bitte klicken auf ein Rezept oder drucken Sie neue Rezepte in ihrem
-          PVS.
-        </p>
+      <div class="prescription-empty">
+        <div class="print-wrapper">
+          <img src="./assets/images/print.svg" alt="print" />
+          <h3>Keine Rezepte zum Signieren ausgewählt.</h3>
+          <p>
+            Bitte klicken auf ein Rezept oder drucken Sie neue Rezepte in ihrem
+            PVS.
+          </p>
+        </div>
       </div>
     `;
   }
