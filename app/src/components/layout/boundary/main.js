@@ -1,6 +1,7 @@
 import BElement         from "../../../models/BElement.js";
 import { html }         from "../../../libs/lit-html.js";
 import { showPopupAll } from "../../../components/popup/control/PopupControl.js";
+import { initialPath } from "../../..//libs/helper/helper.js";
 
 class MainLayout extends BElement {
   doClickId() {
@@ -19,7 +20,7 @@ class MainLayout extends BElement {
         <header class="header-wrapper">
           <div class="header">
             <div class="logo">
-              <a href="/html">
+              <a href="${initialPath}/index.html">
               <img
 								src = "assets/images/ere.health-logo.svg"
 								alt = "Taleclinic Logo"
