@@ -42,7 +42,7 @@ class Prescription extends BElement {
   }
 
   onClickSignRecipe(event) {
-    signAndUploadBundles(this.state.prescriptions);
+    signAndUploadBundles(this.state.selectedPrescription.prescriptions);
     showPopupId();
   }
 
