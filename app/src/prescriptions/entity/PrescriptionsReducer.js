@@ -43,6 +43,6 @@ export const prescriptions = createReducer(initialState, (builder) => {
     })
     .addCase(signAndUploadBundlesAction, (state, { payload: bundles }) => {
         // Send a list of a list of a list
-        serverWebSocketActionForwarder.send({type: "SignAndUploadBundles", payload: [bundles]});
+        serverWebSocketActionForwarder.send({type: "SignAndUploadBundles", bearerToken: window.bearerToken, payload: [bundles]});
     });
 })
