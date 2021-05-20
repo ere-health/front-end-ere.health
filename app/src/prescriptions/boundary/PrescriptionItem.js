@@ -166,7 +166,6 @@ class Prescription extends BElement {
                     <div class="input-wrapper">
                       <label for="address1">${i18n("Patient.Name")}</label>
                       <textarea
-                        style  = "max-width: 230px; min-height: 75px;"
                         name   = "address"
                         id     = "address1"
                         cols   = "10"
