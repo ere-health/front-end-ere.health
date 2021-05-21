@@ -40,7 +40,11 @@ class MainLayout extends BElement {
                 <img src="assets/images/arrow-down.svg" alt="" /> Rezepte
                 signieren und für Patienten direkt ausstellen.
               </p>
-              <button data-modal-target="#modal" @click="${() => this.doClickId()}" class="jet-btn">
+              <button  
+                data-modal-target = "#modal"                                                                     
+                @click            = "${this.state.prescriptions.list.length ? () => this.doClickId() : void 0}"  
+                class             = "jet-btn"                                                                    
+                style             = "${this.state.prescriptions.list.length ? "" : "background-color: #d1d1d1"}">
                 Jetzt alle Rezepte signieren
               </button>
             </div>
