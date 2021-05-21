@@ -9,10 +9,38 @@ class _ServerWebSocketActionForwarder {
             const eventData = JSON.parse(event.data);
             if(eventData.type === "Bundles") {
                 this.processBundles(eventData.payload);
+            } else if(eventData.type === "ERezeptDocuments") {
+                if("pdfDocument" in eventData.payload[0]) {
+                    const blob = this.b64toBlob(eventData.payload[0].pdfDocument.content, "application/pdf");
+                    const blobUrl = URL.createObjectURL(blob);
+                    window.location = blobUrl;
+                } else {
+                    alert("Could not process e prescription");
+                }
             } else if(eventData.type === "Exception") {
                 alert(JSON.stringify(eventData.payload));
             }
         };
+    }
+
+    b64toBlob = (b64Data, contentType='', sliceSize=512) => {
+        const byteCharacters = atob(b64Data);
+        const byteArrays = [];
+      
+        for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+          const slice = byteCharacters.slice(offset, offset + sliceSize);
+      
+          const byteNumbers = new Array(slice.length);
+          for (let i = 0; i < slice.length; i++) {
+            byteNumbers[i] = slice.charCodeAt(i);
+          }
+      
+          const byteArray = new Uint8Array(byteNumbers);
+          byteArrays.push(byteArray);
+        }
+      
+        const blob = new Blob(byteArrays, {type: contentType});
+        return blob;
     }
 
     processBundles(bundles) {
