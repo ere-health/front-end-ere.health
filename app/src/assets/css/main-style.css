@@ -998,4 +998,8 @@ button.active, button:hover, button:focus, .link-button.active, .link-button:hov
   }
 }
 
+prescription-pdf {
+  width: 100%;
+}
+
 /*# sourceMappingURL=main-style.css.map */
