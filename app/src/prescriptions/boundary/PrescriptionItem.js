@@ -80,7 +80,7 @@ class Prescription extends BElement {
                     value    = "Gebührenfrei"
                   />
                   <label for="gebührenfrei">${i18n("TollFree")}</label>
-                  <span class="checkmark"></span>
+                  <span class="checkmark" @click="${() => document.getElementById("gebührenfrei").click()}"></span>
                 </li>
                 <li class="art-list-item">
                   <input
@@ -93,7 +93,7 @@ class Prescription extends BElement {
                     @change  = "${(_) => this.onUserCheckArt(_)}"
                   />
                   <label for="geb-pfl">Geb. -pfl.</label>
-                  <span class="checkmark"></span>
+                  <span class="checkmark" @click="${() => document.getElementById("geb-pfl").click()}"></span>
                 </li>
                 <li class="art-list-item">
                   <input
@@ -105,7 +105,7 @@ class Prescription extends BElement {
                     @change  = "${(_) => this.onUserCheckArt(_)}"
                   />
                   <label for="noctu">noctu</label>
-                  <span class="checkmark"></span>
+                  <span class="checkmark" @click="${() => document.getElementById("noctu").click()}"></span>
                 </li>
                 <li class="art-list-item">
                   <input
@@ -117,7 +117,7 @@ class Prescription extends BElement {
                     @change  = "${(_) => this.onUserCheckArt(_)}"
                   />
                   <label for="sonstige">${i18n("Other")}</label>
-                  <span class="checkmark"></span>
+                  <span class="checkmark" @click="${() => document.getElementById("sonstige").click()}"></span>
                 </li>
                 <li class="art-list-item">
                   <input
@@ -129,7 +129,7 @@ class Prescription extends BElement {
                     @change  = "${(_) => this.onUserCheckArt(_)}"
                   />
                   <label for="unfall">${i18n("Accident")}</label>
-                  <span class="checkmark"></span>
+                  <span class="checkmark" @click="${() => document.getElementById("unfall").click()}"></span>
                 </li>
                 <li class="art-list-item">
                   <input
@@ -143,7 +143,7 @@ class Prescription extends BElement {
                   <label for="arbeitsunfall"
                     >${i18n("IndustrialAccident")}</label
                   >
-                  <span class="checkmark"></span>
+                  <span class="checkmark" @click="${() => document.getElementById("arbeitsunfall").click()}"></span>
                 </li>
               </ul>
 
