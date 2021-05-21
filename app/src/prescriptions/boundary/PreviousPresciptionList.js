@@ -26,7 +26,7 @@ class PreviousPrescriptionList extends BElement {
                     let name        = patient.resource && patient.resource.name ? patient.resource.name[0] : {"given": [], "family": ""};
                     let displayName = name.given.join(" ")+" "+name.family;
                     return html`<a 
-                      href    = "${initialPath}/prescription/${previousPrescription.id}" 
+                      href    = "${initialPath}/previous/${previousPrescription.id}" 
                       class   = "unsigned-button link-button"
                       @click  = "${() => this.onNavigate(previousPrescriptionBundles)}"
                       data-id = "#unsigned_1"><img src="/assets/images/tik-.svg" alt="" />${displayName}</button>`

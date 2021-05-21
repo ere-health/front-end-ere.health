@@ -7,6 +7,7 @@ import './prescriptions/boundary/PrescriptionEmpty.js';
 import './prescriptions/boundary/PrescriptionItem.js';
 import './prescriptions/boundary/UnsignedPrescriptionList.js';
 import './prescriptions/boundary/PreviousPresciptionList.js';
+import './prescriptions/boundary/PrescriptionPdf.js';
 import { save } from "./localstorage/control/StorageControl.js";
 import { initialPath } from "./libs/helper/helper.js";
 
@@ -23,6 +24,7 @@ router.setRoutes([
   { path: `${initialPath}/`                           , component: 'prescription-empty' },
   { path: `${initialPath}/index.html`                 , component: 'prescription-empty' },
   { path: `${initialPath}/print`                      , component: 'prescription-empty' },
-  { path: `${initialPath}/prescription/:prescription` , component: 'prescription-item'  }
+  { path: `${initialPath}/prescription/:prescription` , component: 'prescription-item'  },
+  { path: `${initialPath}/previous/:prescription`     , component: 'prescription-pdf'  }
 ]);
 console.log("router initialized");
