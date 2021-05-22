@@ -22,6 +22,18 @@ class UnsignedPrescriptionList extends BElement {
         <div class="unsigned-prescription">
             <p>${i18n("UnsignedRecipes")}</p>
             <div class="unsignierte-list" style="display: flex;flex-direction: column;align-items: flex-start;">
+                ${
+                  (() => {
+                    if (!this.state.length) {
+                      return html`
+                        <div class="empty-prescription-folder">
+                          <img src="${initialPath}/assets/images/folder.svg"/>
+                          <span>Keine Rezepte vorhanden.</span>
+                        </div>
+                        `;
+                    }
+                  })()
+                }
                 ${this.state.map(unsignedPrescriptionBundles => {
                     const unsignedPrescription = unsignedPrescriptionBundles[0];
                     let patient     = unsignedPrescription.entry.filter(oEntry => oEntry.resource.resourceType === "Patient")[0];

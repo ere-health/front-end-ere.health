@@ -20,6 +20,18 @@ class PreviousPrescriptionList extends BElement {
         let i = 0;
         return html`
             <div class="generated-list" style="display: flex;flex-direction: column;align-items: flex-start;">
+                ${
+                  (() => {
+                    if (!this.state.length) {
+                      return html`
+                        <div class="empty-prescription-folder">
+                          <img src="${initialPath}/assets/images/folder.svg"/>
+                          <span>Keine PDF’s vorhanden.</span>
+                        </div>
+                        `;
+                    }
+                  })()
+                }
                 ${this.state.map(previousPrescriptionBundles => {
                     const previousPrescription = previousPrescriptionBundles[0];
                     let patient     = previousPrescription.entry.filter(oEntry => oEntry.resource.resourceType === "Patient")[0];
