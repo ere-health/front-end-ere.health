@@ -350,8 +350,9 @@ class Prescription extends BElement {
                       value       = "${medication.code.text}" 
                       placeholder = ""
                     />
-                    <input type="text" class="duration" value="${medicationRequest.dosageInstruction.length > 0 ? medicationRequest.dosageInstruction[0].text : ""}" placeholder="" />
-                    <span class="checkmark"></span>
+                    <input type="text" class="duration" onclick="${_ => _.preventDefault()}" value="${medicationRequest.dosageInstruction.length > 0 ? medicationRequest.dosageInstruction[0].text : ""}" placeholder="" />
+                    <input type = "checkbox" id="drug-1-chk" style="display:none"/>
+                    <span class="checkmark" @click="${() => document.getElementById("drug-1-chk").click()}"></span>
                   </li>`;
               })}
 
