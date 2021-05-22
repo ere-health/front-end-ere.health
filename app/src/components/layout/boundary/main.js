@@ -43,8 +43,7 @@ class MainLayout extends BElement {
               <button  
                 data-modal-target = "#modal"                                                                     
                 @click            = "${this.state.prescriptions.list.length ? () => this.doClickId() : void 0}"  
-                class             = "jet-btn"                                                                    
-                style             = "${this.state.prescriptions.list.length ? "" : "background-color: #d1d1d1"}">
+                class             = "jet-btn ${this.state.prescriptions.list.length ? "" : "btn-inactive"}">
                 Jetzt alle Rezepte signieren
               </button>
             </div>

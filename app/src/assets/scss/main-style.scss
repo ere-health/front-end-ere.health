@@ -96,7 +96,7 @@ button, .link-button {
         color      : #fff !important;   
 
         &:hover, &:focus {
-            cursor: none;
+            cursor: pointer;
         }
     }
 
@@ -456,12 +456,12 @@ button, .link-button {
                     background-color: #fff;
                     border-color: $secondary-color;
 
-                    ~ .checkmark {
+                    /*~ .checkmark {
 
                         &:before, &:after {
                             display: block;
                         }
-                    }
+                    }*/
                 }
             }
         }
