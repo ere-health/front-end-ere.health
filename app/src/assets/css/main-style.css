@@ -465,23 +465,27 @@ button.active, button:hover, button:focus, .link-button.active, .link-button:hov
   align-items: center;
 }
 .popup .modal .modal-buttons button, .popup .modal .modal-buttons a {
-  background: #11142D;
   padding: 12px 24px;
   font-size: 1.125rem;
   line-height: 1.2222222222;
-  box-shadow: 0px 24px 32px -6px rgba(0, 0, 0, 0.2);
+  background: #EDD767;
+  box-shadow: 0px 12px 24px -6px rgba(0, 0, 0, 0.2);
   border-radius: 4px;
-  color: #fff;
+  color: #000;
   font-weight: 700;
   transition: all 0.3s ease;
   text-decoration: none;
 }
 .popup .modal .modal-buttons button.active, .popup .modal .modal-buttons button:hover, .popup .modal .modal-buttons button:focus, .popup .modal .modal-buttons a.active, .popup .modal .modal-buttons a:hover, .popup .modal .modal-buttons a:focus {
+  color: #fff;
+  background: #359ead;
+}
+.popup .modal .modal-buttons button.cancel, .popup .modal .modal-buttons a.cancel {
+  margin-left: 16px;
   background: #E4E4E4;
-  color: #11142D;
 }
 .popup .modal .modal-buttons button.ok-next, .popup .modal .modal-buttons a.ok-next {
-  margin-left: 16px;
+  margin-left: 137px;
 }
 .popup #overlay {
   position: fixed;
