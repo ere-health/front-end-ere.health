@@ -463,6 +463,7 @@ button.active, button:hover, button:focus, .link-button.active, .link-button:hov
   display: flex;
   justify-content: center;
   align-items: center;
+  white-space: nowrap;
 }
 .popup .modal .modal-buttons button, .popup .modal .modal-buttons a {
   padding: 12px 24px;
