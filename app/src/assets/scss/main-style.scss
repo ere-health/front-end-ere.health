@@ -517,6 +517,7 @@ button, .link-button {
             display         : flex;  
             justify-content : center;
             align-items     : center;
+            white-space     : nowrap;
     
             button, a {
                 padding    : 12px 24px;     
