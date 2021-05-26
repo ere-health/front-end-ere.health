@@ -4,3 +4,5 @@ RUN apt update -y && \
 
 COPY ./start.sh /start.sh
 RUN chmod u+x /start.sh
+
+ENTRYPOINT "./start.sh" && /bin/bash
