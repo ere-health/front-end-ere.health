@@ -1,7 +1,8 @@
 import * as Hapi                from "@hapi/hapi";            
 import * as inert               from "@hapi/inert";           
 import * as Path                from "path";                  
-import {json01, json02, json03} from "./exemples/samples.mjs";
+import {json01, json02, json03} from "./examples/samples.mjs";
+import {vosBundle}              from "./examples/vos-bundle.mjs";
 import _ws                      from "ws";                    
 const  {Server} = _ws;
 
@@ -57,6 +58,16 @@ async function startServer() {
       return h.response().redirect("/frontend/app/src/index.html");
     }
   });
+
+  // Example URL: http://localhost:8888/frontend/app/src/?vosBundleUrl=http://localhost:8888/pvs-vos-fhir/Bundle/b97e55f4-3900-4505-a277-75cd93baede5
+  server.route({
+    method  : "GET",
+    path    : "/pvs-vos-fhir/Bundle/b97e55f4-3900-4505-a277-75cd93baede5",       
+    handler : (r, h) => {
+      return h.response(vosBundle).type("application/fhir+xml");
+    }
+    
+  })
   
   await server.start();
   
