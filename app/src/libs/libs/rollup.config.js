@@ -1,8 +1,6 @@
 //npm install @rollup/plugin-node-resolve --save-dev
-//npm install @rollup/plugin-commonjs --save-dev
 
 import { nodeResolve } from '@rollup/plugin-node-resolve';
-import commonjs from '@rollup/plugin-commonjs';
 
 export default [{
   input: [
@@ -13,13 +11,5 @@ export default [{
     output: { dir: "../", format: "esm" },
   plugins: [nodeResolve({
     browser: true
-  }), commonjs()]
-}, {
-  input: [
-    './node_modules/fhir/dist/bundle.js'
-  ],
-    output: { dir: "../", format: "esm"},
-  plugins: [nodeResolve({
-    browser: true
-  }), commonjs()]
+  })]
 }]
