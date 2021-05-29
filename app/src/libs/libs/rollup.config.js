@@ -8,7 +8,7 @@ export default [{
     './node_modules/@vaadin/router/dist/vaadin-router.js',
     './node_modules/@reduxjs/toolkit/dist/redux-toolkit.esm.js'
   ],
-    output: { dir: "../libs", format: "esm" },
+    output: { dir: "../", format: "esm" },
   plugins: [nodeResolve({
     browser: true
   })]
