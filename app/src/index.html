@@ -12,10 +12,43 @@
     <script src="libs/bundle.js"></script>
     <script src="libs/pouchdb.min.js"></script>
 </head>
-<body class="home-page">  
+<body class="home-page">
+  <section class="popup">
+  <div class="modal" id="browser-error">
+    <div class="modal-title">
+      <div class="modal-image" style="margin-bottom: 30px;">
+        <img src="./assets/images/popup-warning.png" alt="popup" />
+      </div>
+      <p>
+        <strong style="color:#004046;">Bitte verwenden Sie Google Chrome</strong>
+        <hr style="
+            border: none;
+            margin-top: 10px;
+            margin-right: auto;
+            margin-left: auto;
+            width: 294px;
+            border-top: 1px solid #E4E4E4;
+            margin-bottom: 10px;
+        ">
+        <span style="
+          color:#004046;
+          font-style: normal;
+          font-weight: normal;
+          font-size: 21px;
+          line-height: 150%;
+        ">Die Komfortsignatur ist auf Ihrem Konnektor nicht aktiviert.</span>
+      </p>
 
-    <main-layout />
-    
+    </div>
+    <div class="modal-buttons" style="margin-top:80px;">
+      <button data-modal-target-processing="#Ok" class="ok-next" style="margin:0px">OK, Schließen</button>
+    </div>
+  </div>
+  <div id="overlay"></div>
+  </section>
+
+  <main-layout />
+  
   <script src="init.js"></script>
   <script src="app.js" type="module"></script>
 </body>

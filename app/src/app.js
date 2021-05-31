@@ -12,26 +12,53 @@ import './prescriptions/boundary/PrescriptionPdf.js';
 import { save } from "./localstorage/control/StorageControl.js";
 import { initialPath } from "./libs/helper/helper.js";
 
+var browser = (function (agent) {
+  switch (true) {
+      case agent.indexOf("edge") > -1: return "edge";
+      case agent.indexOf("edg") > -1: return "chromium based edge (dev or canary)";
+      case agent.indexOf("opr") > -1 && !!window.opr: return "opera";
+      case agent.indexOf("chrome") > -1 && !!window.chrome: return "chrome";
+      case agent.indexOf("trident") > -1: return "ie";
+      case agent.indexOf("firefox") > -1: return "firefox";
+      case agent.indexOf("safari") > -1: return "safari";
+      default: return "other";
+  }
+})(window.navigator.userAgent.toLowerCase());
 
-store.subscribe(_ => { 
-    const state = store.getState();
-    // Disable saving of state for testing purposes
-    // save(state);
-})
-const outlet = document.querySelector('.recipe-body');
-const router = new Router(outlet);
+console.log(browser)
 
-router.setRoutes([
-  { path: `${initialPath}/`                           , component: 'prescription-empty', action: () => {
-      const vosBundleUrl = new URL(window.location.href).searchParams.get("vosBundleUrl");
-      if(vosBundleUrl) {
-        loadVosBundleAndConvertToPrescriptionBundle(vosBundleUrl);
+if (browser !== "chrome") {
+function addActiveClass(modal) {
+  if (modal == null) return
+  modal.classList.add('active')
+}
+const overlay = document.getElementById("overlay");
+const modal = document.querySelector("#browser-error");
+addActiveClass(modal);
+addActiveClass(overlay);
+} else {
+
+  store.subscribe(_ => { 
+      const state = store.getState();
+      // Disable saving of state for testing purposes
+      // save(state);
+  })
+  const outlet = document.querySelector('.recipe-body');
+  const router = new Router(outlet);
+  
+  router.setRoutes([
+    { path: `${initialPath}/`                           , component: 'prescription-empty', action: () => {
+        const vosBundleUrl = new URL(window.location.href).searchParams.get("vosBundleUrl");
+        if(vosBundleUrl) {
+          loadVosBundleAndConvertToPrescriptionBundle(vosBundleUrl);
+        }
       }
-    }
-  },
-  { path: `${initialPath}/index.html`                 , component: 'prescription-empty' },
-  { path: `${initialPath}/print`                      , component: 'prescription-empty' },
-  { path: `${initialPath}/prescription/:prescription` , component: 'prescription-item'  },
-  { path: `${initialPath}/previous/:prescription`     , component: 'prescription-pdf'  }
-]);
-console.log("router initialized");
+    },
+    { path: `${initialPath}/index.html`                 , component: 'prescription-empty' },
+    { path: `${initialPath}/print`                      , component: 'prescription-empty' },
+    { path: `${initialPath}/prescription/:prescription` , component: 'prescription-item'  },
+    { path: `${initialPath}/previous/:prescription`     , component: 'prescription-pdf'  }
+  ]);
+  console.log("router initialized");
+}
+
