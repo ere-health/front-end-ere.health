@@ -38,7 +38,7 @@ class UnsignedPrescriptionList extends BElement {
                     const unsignedPrescription = unsignedPrescriptionBundles[0];
                     let patient     = unsignedPrescription.entry.filter(oEntry => oEntry.resource.resourceType === "Patient")[0];
                     let name        = patient.resource && patient.resource.name ? patient.resource.name[0] : {"given": [], "family": ""};
-                    let displayName = name.given.join(" ")+" "+name.family;
+                    let displayName = name?.given?.join(" ") +" " + name?.family;
                     return html`
                         <a
                             href    = "${initialPath}/prescription/${unsignedPrescription.id}"
