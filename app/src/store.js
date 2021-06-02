@@ -16,8 +16,3 @@ const config         = preloadedState ? { reducer, preloadedState } : { reducer 
 const store          = configureStore(config);                                    
 
 export default store;
-
-/*setTimeout(() => {
-    console.log("dsss")
-    showPopupId();
-}, 5000)*/
