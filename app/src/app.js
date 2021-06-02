@@ -41,7 +41,7 @@ addActiveClass(overlay);
   store.subscribe(_ => { 
       const state = store.getState();
       // Disable saving of state for testing purposes
-      // save(state);
+      save(state);
   })
   const outlet = document.querySelector('.recipe-body');
   const router = new Router(outlet);

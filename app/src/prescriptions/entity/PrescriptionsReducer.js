@@ -20,7 +20,9 @@ var db = new PouchDB("Prescriptions");
 export const prescriptions = createReducer(initialState, (builder) => {
     //Add prescription to the unsigned list
     builder.addCase(addPrescriptionAction, (state, {payload: prescription}) => {
-        state.list = state.list.concat([prescription]);
+        if (!state.list.filter(_ => _[0].id ===  prescription[0].id).length) {
+          state.list = state.list.concat([prescription]);
+        }
     })
     //Move a prescription to the signed list
     .addCase(signedPrescriptionAction, (state, {payload: prescriptions}) => {
