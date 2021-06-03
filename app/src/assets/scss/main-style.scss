@@ -246,6 +246,35 @@ button, .link-button {
                                         Custom Tab
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/ 
 
+.dgn-body {
+
+    input{
+        display: block;
+        width: 90%;
+        height: 1.5rem;
+        padding-left: 1rem;
+        padding-top: 0.3rem;
+        padding-bottom: 0.3rem;
+        margin: 0.8rem;
+        font-size: 150%;
+        border-radius: 1rem;
+        background: white;
+        border: none;
+        transition: background 0.5s;
+        &:focus{
+            outline-width: 0;
+            background: rgba(31,134,252, 0.15);
+            transition: background 0.5s;
+        }
+    }
+
+    label{
+        padding-left: 8px;
+        font-size: 15px;
+        color: #444;
+    }
+}
+
 .recipe-body .recipe-wrapper {
     display: none;
     
