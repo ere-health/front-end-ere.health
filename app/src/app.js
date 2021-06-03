@@ -11,6 +11,7 @@ import './prescriptions/boundary/PreviousPresciptionList.js';
 import './prescriptions/boundary/PrescriptionPdf.js';
 import { save } from "./localstorage/control/StorageControl.js";
 import { initialPath } from "./libs/helper/helper.js";
+import { Mapper } from "./libs/helper/Mapper.js";
 
 var browser = (function (agent) {
   switch (true) {
