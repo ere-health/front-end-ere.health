@@ -182,19 +182,27 @@ button, .link-button {
   padding-bottom: 0.3rem;
   margin: 0.8rem;
   font-size: 150%;
-  border-radius: 1rem;
+  border-radius: 4px;
   background: white;
   border: none;
   transition: background 0.5s; }
   .dgn-body input:focus {
     outline-width: 0;
-    background: rgba(31, 134, 252, 0.15);
+    background: rgba(255, 255, 255, 0.7);
     transition: background 0.5s; }
 
+.dgn-body .recipe-wrapper.active {
+  flex: auto; }
+
+.dgn-body fieldset {
+  border: 0; }
+
+.dgn-body legend {
+  margin: 0.8rem; }
+
 .dgn-body label {
-  padding-left: 8px;
-  font-size: 15px;
-  color: #444; }
+  padding-left: 0.8rem;
+  font-size: 15px; }
 
 .recipe-body .recipe-wrapper {
   display: none; }
