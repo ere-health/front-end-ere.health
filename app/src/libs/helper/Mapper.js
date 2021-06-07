@@ -63,6 +63,7 @@ export class Mapper {
   }
 
   read(path, defaultValue, forceMapObject) {
+    if (path === null) return;
     const pathDefinition = typeof path === "string" ? this.tokenizePath(path) : path;
 
     let cursor = forceMapObject ?? this.mapObject;
