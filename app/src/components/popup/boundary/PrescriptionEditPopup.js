@@ -133,7 +133,7 @@ export class PatientEditPopup extends BElement {
         </div>
         <div class="modal-buttons">
             <button data-close-button class="cancel" @click="${() => _hidePopup()}">Abbrechen</button>
-            <button data-modal-target-processing="#processing" @click="${() => this.saveAll()}" class="ok-next">Speichern</button>
+            <button data-modal-target-processing="#processing" @click="${() => _hidePopup()}" class="ok-next">Speichern</button>
         </div>
       </div>
     `;
