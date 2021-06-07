@@ -26,3 +26,7 @@ export const showPopupFatig = () => {
     store.dispatch(showPopupFatigAction());
 }
 
+export const showPopupEditPatientAction = createAction("showPopupEditPatientAction");
+export const showPopupEditPatient = () => {
+    store.dispatch(showPopupEditPatientAction());
+}

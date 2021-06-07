@@ -17,8 +17,8 @@ export const signedPrescription = (prescription) => {
 }
 
 export const updatePrescriptionAction = createAction("updatePrescriptionAction");
-export const updatePrescription = (name, value) => {
-    store.dispatch(updatePrescriptionAction({name, value}));
+export const updatePrescription = (name, value, key) => {
+    store.dispatch(updatePrescriptionAction({name, value, key}));
 }
 
 export const signAndUploadBundlesAction = createAction("signAndUploadBundlesAction");
