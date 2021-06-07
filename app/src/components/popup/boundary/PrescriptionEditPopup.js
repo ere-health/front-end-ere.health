@@ -6,6 +6,7 @@ import {
 } from "../../../libs/helper/helper.js";
 import { _hidePopup } from "../control/PopupControl.js";
 import { Mapper } from "../../../libs/helper/Mapper.js";
+import { updatePrescription } from "../../../prescriptions/control/UnsignedPrescriptionControl.js";
 
 export class BasePopup extends BElement {
   constructor() {
@@ -61,7 +62,9 @@ export class EditField extends BElement {
         border-radius : 4px;      
         border        : none;     
         width         : 100%;
-      ">
+      "
+      @keyup="${_ => updatePrescription(this.label, _.target.value, this.mapKey)}"
+      >
     </div>
     `;
   }
@@ -115,7 +118,7 @@ export class PatientEditPopup extends BElement {
         <div style="text-align:left">
           <div class="fieldRow"> 
             <edit-field label="Titel"></edit-field>
-            <edit-field statePath="prescriptions.selectedPrescription.prescriptions[0]" label="Vorname"  mapKey="entry[resource.resourceType?Patient].resource.name[0].given"></edit-field>
+            <edit-field statePath="prescriptions.selectedPrescription.prescriptions[0]" label="Vorname"  mapKey="entry[resource.resourceType?Patient].resource.name[0].given[0]"></edit-field>
             <edit-field statePath="prescriptions.selectedPrescription.prescriptions[0]" label="Nachname" mapKey="entry[resource.resourceType?Patient].resource.name[0].family"></edit-field>
           </div>
           <div class="fieldRow"> 
@@ -130,7 +133,7 @@ export class PatientEditPopup extends BElement {
         </div>
         <div class="modal-buttons">
             <button data-close-button class="cancel" @click="${() => _hidePopup()}">Abbrechen</button>
-            <button data-modal-target-processing="#processing" @click="${() => showPopupProgress()}" class="ok-next">Speichern</button>
+            <button data-modal-target-processing="#processing" @click="${() => this.saveAll()}" class="ok-next">Speichern</button>
         </div>
       </div>
     `;

@@ -62,6 +62,74 @@ export class Mapper {
     this.mapObject = mapObject;
   }
 
+  write(path, value) {
+    if (path === null) return;
+    const pathDefinition = typeof path === "string" ? this.tokenizePath(path) : path;
+
+    let cursor = this.mapObject;
+    let prevCursor = cursor;
+    let prevPath = "";
+
+    pathDefinition.forEach(pathToken => {
+      if (cursor === void 0) return;
+      switch(pathToken.type) {
+        case "SEGMENT":
+          if (!cursor[pathToken.name]) {
+            cursor[pathToken.name] = {};
+          }
+          prevCursor = cursor;
+          prevPath = pathToken.name;
+          cursor = cursor[pathToken.name];
+          break;
+        case "ARRAY":
+          if (pathToken.index !== null) {
+            if (!Array.isArray(cursor)) {
+              if (Object.entries(cursor).length === 0) {
+                prevCursor[prevPath] = [];
+                cursor = prevCursor[prevPath];
+                cursor[pathToken.index] = {};
+              }
+            }
+            prevCursor = cursor;
+            prevPath = pathToken.index;
+            cursor = cursor[pathToken.index];
+            return;
+          }
+          if (pathToken.path) {
+            // Recursive path
+            cursor.forEach(_tmpCur => {
+              const tmpCursor = this.read(pathToken.path, void 0, _tmpCur);
+              switch(pathToken.operator) {
+                case "?":
+                    if (tmpCursor.toString().includes(pathToken.filter.toString())) {
+                      cursor = _tmpCur;
+                      return;
+                    }
+                  break;
+                case "=":
+                    if (tmpCursor === pathToken.filter) {
+                      cursor = _tmpCur;
+                      return;
+                    }
+                  break;
+                  case "/":
+                    if (tmpCursor) {
+                      cursor = _tmpCur;
+                      return;
+                    }
+                  break;
+              }
+            });
+          }
+
+          break;
+      }
+    });
+    try {
+      prevCursor[prevPath] = value
+    } catch(ex) { console.warn(ex) }
+  }
+
   read(path, defaultValue, forceMapObject) {
     if (path === null) return;
     const pathDefinition = typeof path === "string" ? this.tokenizePath(path) : path;

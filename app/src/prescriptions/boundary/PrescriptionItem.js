@@ -33,8 +33,8 @@ class Prescription extends BElement {
     updatePrescription(name, checked);
   }
 
-  onUserInput({ target: { name, value } }) {
-    updatePrescription(name, value);
+  onUserInput({ target: { name, value } }, key) {
+    updatePrescription(name, value, key);
   }
 
   onMount() {
@@ -164,7 +164,7 @@ class Prescription extends BElement {
                       name   = "name"
                       id     = "name"
                       value  = "${_psp.read("entry[resource.resourceType?Coverage].resource.payor[0].display", "")}"
-                      @keyup = "${_ => this.onUserInput(_)}"
+                      @keyup = "${_ => this.onUserInput(_, "entry[resource.resourceType?Coverage].resource.payor[0].display")}"
                     />
                   </div>
                 </div>
@@ -194,7 +194,7 @@ class Prescription extends BElement {
                         type   = "text"
                         name   = "geb"
                         id     = "geb1"
-                        @keyup = "${_ => this.onUserInput(_)}"
+                        @keyup = "${_ => this.onUserInput(_, "entry[resource.resourceType?Patient].resource.birthDate")}"
                         value  = "${_psp.read("entry[resource.resourceType?Patient].resource.birthDate", "")}"
                       />
                     </div>
@@ -212,7 +212,8 @@ class Prescription extends BElement {
                         name   = "Kostenträgerkennung"
                         id     = "Kostenträgerkennung1"
                         class  = "bright"
-                        value  = "${_psp.read("entry[resource.resourceType?Coverage].resource.payor[0].identifier.value", "")}" @keyup = "${_ => this.onUserInput(_)}"
+                        value  = "${_psp.read("entry[resource.resourceType?Coverage].resource.payor[0].identifier.value", "")}" 
+                        @keyup = "${_ => this.onUserInput(_, "entry[resource.resourceType?Coverage].resource.payor[0].identifier.value")}"
                       />
                       <span></span>
                     </div>
@@ -227,7 +228,7 @@ class Prescription extends BElement {
                         id     = "address"
                         class  = "bright"
                         value  = "${_psp.read("entry[resource.resourceType?Patient].resource.identifier[0].value", "")}"
-                        @keyup = "${_ => this.onUserInput(_)}"
+                        @keyup = "${_ => this.onUserInput(_, "entry[resource.resourceType?Patient].resource.identifier[0].value")}"
                       />
                       <span></span>
                     </div>
@@ -261,7 +262,7 @@ class Prescription extends BElement {
                         id     = "Betriebsstätten1"
                         class  = "bright"
                         value  = "${_psp.read("entry[resource.resourceType?Organization].resource.identifier[0].value", "")}"
-                        @keyup = "${_ => this.onUserInput(_)}"
+                        @keyup = "${_ => this.onUserInput(_, "entry[resource.resourceType?Organization].resource.identifier[0].value")}"
                       />
                       <span></span>
                     </div>
@@ -276,7 +277,7 @@ class Prescription extends BElement {
                         id     = "doctor1"
                         class  = "bright"
                         value  = "${_psp.read("entry[resource.resourceType?Practitioner].resource.identifier[0].value", "")}"
-                        @keyup = "${_ => this.onUserInput(_)}"
+                        @keyup = "${_ => this.onUserInput(_, "entry[resource.resourceType?Practitioner].resource.identifier[0].value")}"
                       />
                       <span></span>
                     </div>
@@ -291,7 +292,15 @@ class Prescription extends BElement {
                         class  = "bright"
                         name   = "date"
                         value  = "${new Date(_psp.read("entry[resource.resourceType?Composition].resource.date", "")).toLocaleDateString()}"
-                        @keyup = "${_ => this.onUserInput(_)}"
+                        @keyup = "${_ => {
+                          try {
+                            this.onUserInput({
+                              target: { value: new Date(_.target.value).toISOString()}
+                            }, "entry[resource.resourceType?Composition].resource.date")
+                          } catch(ex) {
+                            this.onUserInput(_, "entry[resource.resourceType?Composition].resource.date")
+                          }
+                        }}"
                       />
                     </div>
                   </div>

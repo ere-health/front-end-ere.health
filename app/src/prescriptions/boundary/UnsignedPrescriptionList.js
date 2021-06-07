@@ -4,6 +4,7 @@ import { i18n }             from "../../libs/i18n/i18n.js";
 import {selectPrescription} from "../control/UnsignedPrescriptionControl.js"
 import {setMusterTheme} from "../../components/layout/control/MainControl.js"
 import { initialPath } from "../../libs/helper/helper.js";
+import { Mapper } from "../../libs/helper/Mapper.js";
 
 class UnsignedPrescriptionList extends BElement {
 
@@ -36,9 +37,14 @@ class UnsignedPrescriptionList extends BElement {
                 }
                 ${this.state.map(unsignedPrescriptionBundles => {
                     const unsignedPrescription = unsignedPrescriptionBundles[0];
+                    const _psp = new Mapper(unsignedPrescription);
                     let patient     = unsignedPrescription.entry.filter(oEntry => oEntry.resource.resourceType === "Patient")[0];
                     let name        = patient.resource && patient.resource.name ? patient.resource.name[0] : {"given": [], "family": ""};
-                    let displayName = name?.given?.join(" ") +" " + name?.family;
+                    //let displayName = name?.given?.join(" ") +" " + name?.family;
+                    let displayName = [
+                      _psp.read("entry[resource.resourceType?Patient].resource.name[0].given", []).join(" "), 
+                      _psp.read("entry[resource.resourceType?Patient].resource.name[0].family")
+                    ].filter(_ => _).join(" ");
                     return html`
                         <a
                             href    = "${initialPath}/prescription/${unsignedPrescription.id}"

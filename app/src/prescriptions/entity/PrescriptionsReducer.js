@@ -1,4 +1,6 @@
+import { Mapper } from "../../libs/helper/Mapper.js";
 import { createReducer } from "../../libs/redux-toolkit.esm.js"
+import { save } from "../../localstorage/control/StorageControl.js";
 import serverWebSocketActionForwarder from "../../prescriptions/boundary/websocket/ServerWebSocketActionForwarder.js";
 import { 
     addPrescriptionAction, 
@@ -40,8 +42,18 @@ export const prescriptions = createReducer(initialState, (builder) => {
         state.isPrevious           = isPrevious;
         state.selectedPrescription.updatedProps = {}
     })
-    .addCase(updatePrescriptionAction, (state, { payload: { name, value } }) => {
+    .addCase(updatePrescriptionAction, (state, { payload: { name, value, key } }) => {
         state.selectedPrescription.updatedProps[name] = value;
+        const _psp = new Mapper(state.selectedPrescription.prescriptions[0]);
+        if (key) {
+          _psp.write(key, value);
+          state.list.forEach((_,idx) => {
+            if (_[0].id === state.selectedPrescription.prescriptions[0].id) {
+              _[0] = state.selectedPrescription.prescriptions[0];
+            }
+          })
+          save(state);
+        }
     })
     .addCase(signAndUploadBundlesAction, (state, { payload: bundles }) => {
         // Send a list of a list of a list
