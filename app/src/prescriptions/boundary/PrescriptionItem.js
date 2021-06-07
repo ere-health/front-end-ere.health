@@ -3,10 +3,11 @@ import { html }            from "../../libs/lit-html.js";
 import { i18n, setLocale } from "../../libs/i18n/i18n.js";
 import {
   showPopupId,
-  showPopupFatig,
-  showPopupProgress,
+  showPopupEditPatient
 } from "../../components/popup/control/PopupControl.js";
 import { signAndUploadBundles, updatePrescription } from "../../prescriptions/control/UnsignedPrescriptionControl.js";
+import { initialPath } from "../../libs/helper/helper.js";
+import { Mapper } from "../../libs/helper/Mapper.js";
 
 function getFromRes(source, resourceType, key) {
   const resource = source.entry.filter(
@@ -50,10 +51,12 @@ class Prescription extends BElement {
     // get the first prescription of the bundle array
     const firstPrescription = this.state.selectedPrescription.prescriptions[0];
     const prescriptions = this.state.selectedPrescription.prescriptions;
-    let displayName = getFromRes(firstPrescription, "Patient", (_) => {
-      let name = _.name ? _.name[0] : { given: [], family: "" };
-      return name.given.join(" ") + " " + name.family;
-    });
+    const _psp = new Mapper(firstPrescription);
+
+    let displayName = [
+      _psp.read("entry[resource.resourceType?Patient].resource.name[0].given", []).join(" "), 
+      _psp.read("entry[resource.resourceType?Patient].resource.name[0].family")]
+      .filter(_ => _).join(" ");
 
     const _this = this;
     return html`
@@ -160,7 +163,7 @@ class Prescription extends BElement {
                       type   = "text"
                       name   = "name"
                       id     = "name"
-                      value  = "${this.state.selectedPrescription.updatedProps.name ?? getFromRes(firstPrescription,"Coverage",(_) => _.payor?.[0]?.display ?? "")}"
+                      value  = "${_psp.read("entry[resource.resourceType?Coverage].resource.payor[0].display", "")}"
                       @keyup = "${_ => this.onUserInput(_)}"
                     />
                   </div>
@@ -169,6 +172,7 @@ class Prescription extends BElement {
                 <div class="column-2 border-bottom">
                   <div class="form-group">
                     <div class="input-wrapper">
+                    <div class="edit-btn" @click="${() => showPopupEditPatient()}" style="background-image: url(${initialPath}/assets/images/edit-btn.png);"></div>
                       <label for="address1">${i18n("Patient.Name")}</label>
                       <textarea
                         name   = "address"
@@ -176,8 +180,9 @@ class Prescription extends BElement {
                         cols   = "10"
                         @keyup = "${_ => this.onUserInput(_)}"
                       >${(this.state.selectedPrescription.updatedProps.address ?? (displayName + ", " +
-                          getFromRes(firstPrescription,"Patient",(_) => _.address?.[0]?.line?.[0] ?? "") + ", " +
-                          getFromRes(firstPrescription,"Patient",(_) => _.address?.[0]?.city))).trim()}</textarea>
+                          _psp.read("entry[resource.resourceType?Patient].resource.address[0].line[0]", "") + ", " +
+                          _psp.read("entry[resource.resourceType?Patient].resource.address[0].city", "").trim()))}
+                      </textarea>
                       <span></span>
                     </div>
                   </div>
@@ -190,7 +195,7 @@ class Prescription extends BElement {
                         name   = "geb"
                         id     = "geb1"
                         @keyup = "${_ => this.onUserInput(_)}"
-                        value  = "${this.state.selectedPrescription.updatedProps.geb ?? getFromRes(firstPrescription,"Patient",(_) => _.birthDate ?? "")}"
+                        value  = "${_psp.read("entry[resource.resourceType?Patient].resource.birthDate", "")}"
                       />
                     </div>
                   </div>
@@ -207,8 +212,7 @@ class Prescription extends BElement {
                         name   = "Kostenträgerkennung"
                         id     = "Kostenträgerkennung1"
                         class  = "bright"
-                        value  = "${this.state.selectedPrescription.updatedProps["Kostenträgerkennung"] ?? getFromRes(firstPrescription,"Coverage",(_) => _.payor?.[0]?.identifier?.value ?? "")}"
-                        @keyup = "${_ => this.onUserInput(_)}"
+                        value  = "${_psp.read("entry[resource.resourceType?Coverage].resource.payor[0].identifier.value", "")}" @keyup = "${_ => this.onUserInput(_)}"
                       />
                       <span></span>
                     </div>
@@ -222,7 +226,7 @@ class Prescription extends BElement {
                         name   = "person1"
                         id     = "address"
                         class  = "bright"
-                        value  = "${this.state.selectedPrescription.updatedProps.person1 ?? getFromRes(firstPrescription,"Patient",(_) => _.identifier?.[0]?.value ?? "")}"
+                        value  = "${_psp.read("entry[resource.resourceType?Patient].resource.identifier[0].value", "")}"
                         @keyup = "${_ => this.onUserInput(_)}"
                       />
                       <span></span>
@@ -256,7 +260,7 @@ class Prescription extends BElement {
                         name   = "Betriebsstätten-Nr."
                         id     = "Betriebsstätten1"
                         class  = "bright"
-                        value  = "${this.state.selectedPrescription.updatedProps["Betriebsstätten-Nr."] ?? getFromRes(firstPrescription,"Organization",(_) => _.identifier?.[0]?.value ?? "")}"
+                        value  = "${_psp.read("entry[resource.resourceType?Organization].resource.identifier[0].value", "")}"
                         @keyup = "${_ => this.onUserInput(_)}"
                       />
                       <span></span>
@@ -271,7 +275,7 @@ class Prescription extends BElement {
                         name   = "doctor-no"
                         id     = "doctor1"
                         class  = "bright"
-                        value  = "${this.state.selectedPrescription.updatedProps["doctor-no"] ?? getFromRes(firstPrescription,"Practitioner",(_) => _.identifier?.[0]?.value ?? "")}"
+                        value  = "${_psp.read("entry[resource.resourceType?Practitioner].resource.identifier[0].value", "")}"
                         @keyup = "${_ => this.onUserInput(_)}"
                       />
                       <span></span>
@@ -286,7 +290,7 @@ class Prescription extends BElement {
                         id     = "date1"
                         class  = "bright"
                         name   = "date"
-                        value  = "${this.state.selectedPrescription.updatedProps["date"] ?? getFromRes(firstPrescription,"Composition",(_) => new Date(_.date).toLocaleDateString())}"
+                        value  = "${new Date(_psp.read("entry[resource.resourceType?Composition].resource.date", "")).toLocaleDateString()}"
                         @keyup = "${_ => this.onUserInput(_)}"
                       />
                     </div>
