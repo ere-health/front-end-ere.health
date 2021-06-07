@@ -8,10 +8,12 @@ import { i18n } from "../../../libs/i18n/i18n.js";
 import { signedPrescription } from "../../../prescriptions/control/UnsignedPrescriptionControl.js";
 import { _hidePopup, showPopupId, showPopupFatig, showPopupProgress } from "../control/PopupControl.js";
 import { initialPath } from "../../../libs/helper/helper.js";
+import { PatientEditPopup } from "./PrescriptionEditPopup.js";
 
 
 class Popup extends BElement {
   showPopup(key) {
+    //key = "organizationEdit" // debug purpose
     //Close all popup before
     this.hideAll();
 
@@ -30,7 +32,7 @@ class Popup extends BElement {
   }
 
   hideAll() {
-    ["id", "processing", "fatig"].forEach(_ => this.hidePopup(_));
+    ["id", "processing", "fatig", "patientEdit"].forEach(_ => this.hidePopup(_));
   }
 
   doSign() {
@@ -93,6 +95,11 @@ class Popup extends BElement {
             <a href="${initialPath}/print" id="print" @click="${() => this.doSign()}"class="grow-in-wealth"> ${i18n("popupGenerateBtnReady")}</a>
           </div>
         </div>
+
+        <medicament-edit-popup></medicament-edit-popup>
+        <patient-edit-popup></patient-edit-popup>
+        <organization-edit-popup></organization-edit-popup>
+
         <div id="overlay"></div>
       </section>
     `;

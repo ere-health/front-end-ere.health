@@ -1,6 +1,7 @@
 import BElement         from "../../../models/BElement.js";
 import { html }         from "../../../libs/lit-html.js";
 import { showPopupAll } from "../../../components/popup/control/PopupControl.js";
+import {  } from "../../../components/popup/boundary/PrescriptionEditPopup.js";
 import { initialPath } from "../../..//libs/helper/helper.js";
 
 class MainLayout extends BElement {
@@ -55,7 +56,7 @@ class MainLayout extends BElement {
 
         <section class="recipe-body"></section>
         <!-- / Each patient items wrapper -->
-
+        <edit-popup />
         <prescription-popup />
       </div>
     `;
