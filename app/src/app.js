@@ -26,8 +26,6 @@ var browser = (function (agent) {
   }
 })(window.navigator.userAgent.toLowerCase());
 
-console.log(browser)
-
 if (browser !== "chrome") {
 function addActiveClass(modal) {
   if (modal == null) return
