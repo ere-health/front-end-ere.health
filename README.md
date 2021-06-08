@@ -3,8 +3,8 @@
 To run the local server :
 * Ensure to have a recent stable version of nodeJS (14.x)
 * run `npm install`
-* Open a terminal and run teh command `node srv/src/Server.mjs`
-* Open a browser and got to : http://localhost:8888
+* Open a terminal and run the command `node srv/src/Server.mjs`
+* Open a browser and go to : http://localhost:8888
 
 To install node on windows : https://nodejs.org/en/download/  
 To install node on linux   : https://nodejs.org/en/download/package-manager/
@@ -20,7 +20,7 @@ docker build --pull --rm -f "docker\Dockerfile" -t frontendere:latest "docker"
 ```sh
 docker run --rm --name backend -p 8080:8080 frontendere 
 ```
-When You see the Ascii logo Quarkus, backend is configured
+When you see the Ascii logo, then the Quarkus backend is configured.
 ```sh
 __  ____  __  _____   ___  __ ____  ______ 
  --/ __ \/ / / / _ | / _ \/ //_/ / / / __/
