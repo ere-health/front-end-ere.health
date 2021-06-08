@@ -3,7 +3,8 @@ import { html }            from "../../libs/lit-html.js";
 import { i18n, setLocale } from "../../libs/i18n/i18n.js";
 import {
   showPopupId,
-  showPopupEditPatient
+  showPopupEditPatient,
+  showPopupEditStatus
 } from "../../components/popup/control/PopupControl.js";
 import { signAndUploadBundles, updatePrescription } from "../../prescriptions/control/UnsignedPrescriptionControl.js";
 import { initialPath } from "../../libs/helper/helper.js";
@@ -236,6 +237,7 @@ class Prescription extends BElement {
 
                   <div class="form-group">
                     <div class="input-wrapper">
+                      <div class="edit-btn" @click="${() => showPopupEditStatus()}" style="background-image: url(${initialPath}/assets/images/edit-btn.png);"></div>
                       <label for="Status1">Status</label>
                       <input
                         type        = "text"
