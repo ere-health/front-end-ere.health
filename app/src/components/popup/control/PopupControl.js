@@ -30,3 +30,8 @@ export const showPopupEditPatientAction = createAction("showPopupEditPatientActi
 export const showPopupEditPatient = () => {
     store.dispatch(showPopupEditPatientAction());
 }
+
+export const showPopupEditStatusAction = createAction("showPopupEditStatusAction");
+export const showPopupEditStatus = () => {
+    store.dispatch(showPopupEditStatusAction());
+}

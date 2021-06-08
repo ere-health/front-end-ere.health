@@ -5,7 +5,8 @@ import {
   showPopupFatigAction,
   hidePopupAction,
   showPopupAllAction,
-  showPopupEditPatientAction
+  showPopupEditPatientAction,
+  showPopupEditStatusAction
 } from "../control/PopupControl.js";
 
 const initialState = {
@@ -33,5 +34,8 @@ export const popupReducer = createReducer(initialState, (builder) => {
     });
     builder.addCase(showPopupEditPatientAction, (state) => {
       state.showPopup = "patientEdit";
-  });
+    });
+    builder.addCase(showPopupEditStatusAction, (state) => {
+      state.showPopup = "statusEdit";
+    });
 })
