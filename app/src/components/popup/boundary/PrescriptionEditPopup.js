@@ -37,6 +37,17 @@ const FIELD_STATUS_ZUORDNUNG = [
   {value: "10", label: "Rheuma"},
 ]
 
+const FIELD_STATUS_STATUSKENNZEICHEN = [
+  {value: "00",	label: "ohne Ersatzverordnungskennzeichen"},
+  {value: "01",	label: "ASV-Kennzeichen"},
+  {value: "04",	label: "Entlassmanagement-Kennzeichen"},
+  {value: "07",	label: "TSS-Kennzeichen"},
+  {value: "10",	label: "nur Ersatzverordnungskennzeichen"},
+  {value: "11",	label: "ASV-Kennzeichen mit Ersatzverordnungskennzeichen"},
+  {value: "14",	label: "Entlassmanagement-Kennzeichen mit Ersatzverordnungskennzeichen"},
+  {value: "17",	label: "TSS-Kennzeichen mit Ersatzverordnungskennzeichen"}
+];
+
 export class BasePopup extends BElement {
   constructor() {
     super();
@@ -122,7 +133,12 @@ export class SelectField extends BElement {
         background    : #E4E4E44D;
         border-radius : 4px;      
         border        : none;     
-        width         : 100%;
+        width         : 100%;     
+        font-family   : Quicksand;
+        font-style    : normal;   
+        font-weight   : 500;      
+        font-size     : 18px;     
+        line-height   : 22px;     
       "
       @change="${_ => void 0}"
       >
@@ -240,14 +256,8 @@ export class OrganizationEditPopup extends BElement {
           </div>
         </div>
         <div class="modal-buttons">
-          <a
-            href="/print"
-            id="print"
-            @click="${() => this.doSign()}"
-            class="grow-in-wealth"
-          >
-            asdasdasdasd</a
-          >
+            <button data-close-button class="cancel" @click="${() => _hidePopup()}">Abbrechen</button>
+            <button data-modal-target-processing="#processing" @click="${() => _hidePopup()}" class="ok-next">Speichern</button>
         </div>
       </div>
     `;
@@ -267,10 +277,13 @@ export class StatusEditPopup extends BElement {
             <select-field label="Versichertenart" items="${JSON.stringify(FIELD_STATUS_VERSICHERTENART)}"></select-field>
           </div>
           <div class="fieldRow">
-            <select-field label="Besondere Personengruppe" items="${JSON.stringify(FIELD_STATUS_BESONDERE)}"></select-field>
+            <select-field label="Besondere Personengruppe (optional)" items="${JSON.stringify(FIELD_STATUS_BESONDERE)}"></select-field>
           </div>
           <div class="fieldRow"> 
-            <select-field label="DMP-Zuordnung" items="${JSON.stringify(FIELD_STATUS_ZUORDNUNG)}"></select-field>
+            <select-field label="DMP-Zuordnung (optional)" items="${JSON.stringify(FIELD_STATUS_ZUORDNUNG)}"></select-field>
+          </div>
+          <div class="fieldRow"> 
+            <select-field label="Statuskennzeichen (optional)" items="${JSON.stringify(FIELD_STATUS_STATUSKENNZEICHEN)}"></select-field>
           </div>
         </div>
         <div class="modal-buttons">
