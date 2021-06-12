@@ -35,3 +35,8 @@ export const showPopupEditStatusAction = createAction("showPopupEditStatusAction
 export const showPopupEditStatus = () => {
     store.dispatch(showPopupEditStatusAction());
 }
+
+export const showPopupEditOrgaAction = createAction("showPopupEditOrgaAction");
+export const showPopupEditOrga = () => {
+    store.dispatch(showPopupEditOrgaAction());
+}

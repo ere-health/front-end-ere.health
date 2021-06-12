@@ -4,7 +4,8 @@ import { i18n, setLocale } from "../../libs/i18n/i18n.js";
 import {
   showPopupId,
   showPopupEditPatient,
-  showPopupEditStatus
+  showPopupEditStatus,
+  showPopupEditOrga
 } from "../../components/popup/control/PopupControl.js";
 import { signAndUploadBundles, updatePrescription } from "../../prescriptions/control/UnsignedPrescriptionControl.js";
 import { initialPath } from "../../libs/helper/helper.js";
@@ -339,45 +340,130 @@ class Prescription extends BElement {
                   </div>
                 </div>
               </div>
+
+              <ul class="zet-check-list" style="margin-left: 15px">
+                <div class="zet-title"></div>
+                <li class="art-list-item">
+                  <input
+                    type     = "checkbox"
+                    id       = "gebührenfrei"
+                    name     = "BVG"
+                    .checked = "${this.state.selectedPrescription.updatedProps?.tollFree ?? false}"
+                    @change  = "${(_) => this.onUserCheckArt(_)}"
+                    value    = "BVG"
+                  />
+                  <label for="gebührenfrei">BVG</label>
+                  <span class="checkmark" @click="${() => document.getElementById("gebührenfrei").click()}"></span>
+                </li>
+                <li class="art-list-item">
+                  <input
+                    type     = "checkbox"
+                    id       = "geb-pfl"
+                    name     = "gebpfl"
+                    value    = "Geb. -pfl."
+                    name     = "gebpfl"
+                    .checked = "${this.state.selectedPrescription.updatedProps?.gebpfl ?? false}"
+                    @change  = "${(_) => this.onUserCheckArt(_)}"
+                  />
+                  <label for="geb-pfl">Hilfs-mittel</label>
+                  <span class="checkmark" @click="${() => document.getElementById("geb-pfl").click()}"></span>
+                </li>
+                <li class="art-list-item">
+                  <input
+                    type     = "checkbox"
+                    id       = "noctu"
+                    value    = "noctu"
+                    name     = "noctu"
+                    .checked = "${this.state.selectedPrescription.updatedProps?.noctu ?? false}"
+                    @change  = "${(_) => this.onUserCheckArt(_)}"
+                  />
+                  <label for="noctu">Impf-stoff</label>
+                  <span class="checkmark" @click="${() => document.getElementById("noctu").click()}"></span>
+                </li>
+                <li class="art-list-item">
+                  <input
+                    type     = "checkbox"
+                    id       = "sonstige"
+                    value    = "Sonstige"
+                    name     = "other"
+                    .checked = "${this.state.selectedPrescription.updatedProps?.other ?? false}"
+                    @change  = "${(_) => this.onUserCheckArt(_)}"
+                  />
+                  <label for="sonstige">Spr. St. Bedarf</label>
+                  <span class="checkmark" @click="${() => document.getElementById("sonstige").click()}"></span>
+                </li>
+                <li class="art-list-item">
+                  <input
+                    type     = "checkbox"
+                    id       = "unfall"
+                    value    = "Unfall"
+                    name     = "accident"
+                    .checked = "${this.state.selectedPrescription.updatedProps?.accident ?? false}"
+                    @change  = "${(_) => this.onUserCheckArt(_)}"
+                  />
+                  <label for="unfall">Begr. Pflicht</label>
+                  <span class="checkmark" @click="${() => document.getElementById("unfall").click()}"></span>
+                </li>
+              </ul>
             </form>
           </div>
           <div class="user-info-box"></div>
         </div>
 
-        <div class="drug-area">
-          <div class="inline">
-            <div class="zet-title first-col">Aut idem</div>
-            <div class="zet-title second-col">Medikament</div>
-            <div class="zet-title third-col">Dosierung</div>
+        <div style="display: flex;">
+          <div class="drug-area-1" style="flex: 1;flex-grow: 2;">
+            <div class="drug-area">
+              <div class="inline">
+                <div class="zet-title first-col">Aut idem</div>
+                <div class="zet-title second-col">Medikament</div>
+                <div class="zet-title first-col-bis">PZN</div>
+                <div class="zet-title third-col">Dosierung</div>
+              </div>
+
+              <form action="" class="art-form">
+                <ul class="zet-check-list">
+                  
+                  ${prescriptions.map(medicationLine  => {
+                    const medication =  medicationLine.entry.filter(
+                      (oEntry) => oEntry.resource.resourceType === "Medication"
+                    )[0].resource;
+                    const medicationRequest =  medicationLine.entry.filter(
+                      (oEntry) => oEntry.resource.resourceType === "MedicationRequest"
+                    )[0].resource;
+                    return html`
+                      <li class="art-list-item">
+                        <input
+                          type        = "text"
+                          class       = "drug-name"
+                          name        = "drug-1"
+                          value       = "${medication.code.text}" 
+                          placeholder = ""
+                        />
+                        <input type="text" class="pzn" onclick="${_ => _.preventDefault()}" value="${medicationRequest.dosageInstruction.length > 0 ? medicationRequest.dosageInstruction[0].text : ""}" placeholder="" />
+                        <input type="text" class="duration" onclick="${_ => _.preventDefault()}" value="${medicationRequest.dosageInstruction.length > 0 ? medicationRequest.dosageInstruction[0].text : ""}" placeholder="" />
+                        <input type = "checkbox" id="drug-1-chk" style="display:none"/>
+                        <span class="checkmark" @click="${() => document.getElementById("drug-1-chk").click()}"></span>
+                      </li>`;
+                  })}
+
+                </ul>
+              </form>
+            </div>
           </div>
+          <div class="drug-area-2" style="
+              display         : flex;      
+              flex            : 1;         
+              padding         : 40px 0;    
+              align-content   : center;    
+              justify-content : flex-start;
+              flex-direction  : column;    
+              align-items     : center;    
+              position        : relative;  
+          ">
+          <div class="edit-btn" @click="${() => showPopupEditOrga()}" style="background-image: url(${initialPath}/assets/images/edit-btn.png);"></div>
 
-          <form action="" class="art-form">
-            <ul class="zet-check-list">
-              
-              ${prescriptions.map(medicationLine  => {
-                const medication =  medicationLine.entry.filter(
-                  (oEntry) => oEntry.resource.resourceType === "Medication"
-                )[0].resource;
-                const medicationRequest =  medicationLine.entry.filter(
-                  (oEntry) => oEntry.resource.resourceType === "MedicationRequest"
-                )[0].resource;
-                return html`
-                  <li class="art-list-item">
-                    <input
-                      type        = "text"
-                      class       = "drug-name"
-                      name        = "drug-1"
-                      value       = "${medication.code.text}" 
-                      placeholder = ""
-                    />
-                    <input type="text" class="duration" onclick="${_ => _.preventDefault()}" value="${medicationRequest.dosageInstruction.length > 0 ? medicationRequest.dosageInstruction[0].text : ""}" placeholder="" />
-                    <input type = "checkbox" id="drug-1-chk" style="display:none"/>
-                    <span class="checkmark" @click="${() => document.getElementById("drug-1-chk").click()}"></span>
-                  </li>`;
-              })}
-
-            </ul>
-          </form>
+          <div class="zet-title first-col">Vertragsarztdaten</div>
+          </div>
         </div>
       </div>
       <!-- / Each patient item -->
