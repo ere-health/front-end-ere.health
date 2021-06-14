@@ -2,7 +2,7 @@ import { Router } from "./libs/vaadin-router.js";
 import store      from "./store.js";             
 import './components/popup/boundary/popup.js';
 import './components/layout/boundary/main.js';
-import './prescriptions/boundary/websocket/ServerWebSocketActionForwarder.js';
+import './prescriptions/boundary/websocket/WebSocketHandler.js';
 import loadVosBundleAndConvertToPrescriptionBundle from './prescriptions/boundary/vos/VOSBoundary.js';
 import './prescriptions/boundary/PrescriptionEmpty.js';
 import './prescriptions/boundary/PrescriptionItem.js';

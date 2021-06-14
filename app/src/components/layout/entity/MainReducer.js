@@ -1,5 +1,5 @@
 import { createReducer } from "../../../libs/redux-toolkit.esm.js"
-import {setLeanThemeAction,setMusterThemeAction} from "../control/MainControl.js";
+import {setLeanThemeAction, setMusterThemeAction} from "../control/MainControl.js";
 
 const initialState = {
     isMuster  : true

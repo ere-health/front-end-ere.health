@@ -32,7 +32,7 @@ class MainLayout extends BElement {
             </div>
 
             <div class="generated-pdf">
-              <p>Erzeugte PDF’s</p>
+              <p>E-Rezepten pdfs</p>
               <previous-prescription-list />
             </div>
 

@@ -1,7 +1,7 @@
 import { Mapper } from "../../libs/helper/Mapper.js";
 import { createReducer } from "../../libs/redux-toolkit.esm.js"
 import { save } from "../../localstorage/control/StorageControl.js";
-import serverWebSocketActionForwarder from "../../prescriptions/boundary/websocket/ServerWebSocketActionForwarder.js";
+import serverWebSocketActionForwarder from "../boundary/websocket/WebSocketHandler.js";
 import { 
     addPrescriptionAction, 
     signedPrescriptionAction, 
@@ -9,6 +9,10 @@ import {
     selectPrescriptionAction,
     signAndUploadBundlesAction
 } from "../control/UnsignedPrescriptionControl.js";
+import { 
+  addSignedPrescriptionAction,
+  sendSignedPrescriptionAction
+} from "../control/SignedPrescriptionControl.js";
 
 const initialState = {
     list                 : [] ,
@@ -20,8 +24,9 @@ const initialState = {
 var db = new PouchDB("Prescriptions");
 
 export const prescriptions = createReducer(initialState, (builder) => {
+    builder
     //Add prescription to the unsigned list
-    builder.addCase(addPrescriptionAction, (state, {payload: prescription}) => {
+    .addCase(addPrescriptionAction, (state, {payload: prescription}) => {
         if (!state.list.filter(_ => _[0].id ===  prescription[0].id).length) {
           state.list = state.list.concat([prescription]);
         }
@@ -56,7 +61,26 @@ export const prescriptions = createReducer(initialState, (builder) => {
         }
     })
     .addCase(signAndUploadBundlesAction, (state, { payload: bundles }) => {
-        // Send a list of a list of a list
+        //Send a list of a list of a list :)
         serverWebSocketActionForwarder.send({type: "SignAndUploadBundles", bearerToken: window.bearerToken, payload: [bundles]});
+    })
+    //Add the signed prescription to the store
+    .addCase(addSignedPrescriptionAction, (state, {payload: bundles}) => 
+      state.signedList = state.signedList.concat([bundles])
+    )
+     //Send the pdf to the POST endpoint
+    .addCase(sendSignedPrescriptionAction, (state, {payload}) => {
+      console.log("payload received from action:" + payload);
+      const payloadToSend = {"patient": payload.displayName, "document": payload.pdfEncodedInBase64 };
+      console.log("Now sending document with payload:" + payloadToSend);
+      
+      // ajax({
+      //   url: "http://127.0.0.1:8080/erixa/sync",
+      //   type: "POST",
+      //   data: payload,
+      //   success: function (a) {
+      //     console.log("prescription send successfully to post endpoint");
+      //   }
+      // });
     });
 })
