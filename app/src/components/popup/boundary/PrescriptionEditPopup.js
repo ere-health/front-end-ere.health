@@ -7,6 +7,7 @@ import {
 import { _hidePopup } from "../control/PopupControl.js";
 import { Mapper } from "../../../libs/helper/Mapper.js";
 import { updatePrescription } from "../../../prescriptions/control/UnsignedPrescriptionControl.js";
+import { MappingKeys } from "../../../models/MappingModel.js";
 
 const FIELD_STATUS_VERSICHERTENART = [
   {value: "1", label: "Mitglieder"},
@@ -129,20 +130,23 @@ export class SelectField extends BElement {
     <div style="display:flex; flex-direction:column;flex-grow: 1;padding: 7px;margin-top:5px"> 
       <label>${this.label}</label>
       <select style="
-        height        : 56px;     
+        height        : 56px;
         background    : #E4E4E44D;
-        border-radius : 4px;      
-        border        : none;     
-        width         : 100%;     
+        border-radius : 4px;
+        border        : none;
+        width         : 100%;
         font-family   : Quicksand;
-        font-style    : normal;   
-        font-weight   : 500;      
-        font-size     : 18px;     
-        line-height   : 22px;     
+        font-style    : normal;
+        font-weight   : 500;
+        font-size     : 18px;
+        line-height   : 22px;
       "
-      @change="${_ => void 0}"
+      @change="${_ => updatePrescription(this.label, _.target.value, this.mapKey)}"
       >
-      ${this.items.map(_ => new Option(_.label, _.value, stateObject.read(this.mapKey ?? "", "")))}
+      ${this.items.map(_ => {
+        console.info(this.mapKey, _.value === stateObject.read(this.mapKey))
+        return new Option(_.label, _.value, false, _.value === stateObject.read(this.mapKey))
+      })}
       </select>
     </div>
     `;
@@ -200,9 +204,9 @@ export class PatientEditPopup extends BElement {
             <edit-field statePath="prescriptions.selectedPrescription.prescriptions[0]" label="Nachname" mapKey="entry[resource.resourceType?Patient].resource.name[0].family"></edit-field>
           </div>
           <div class="fieldRow"> 
-            <edit-field statePath="prescriptions.selectedPrescription.prescriptions[0]" label="Straße" mapKey="entry[resource.resourceType?Patient].resource.address[0].line[0]" ratio="1.5"></edit-field>
-            <edit-field statePath="prescriptions.selectedPrescription.prescriptions[0]" label="Hausnummer" mapKey="entry[resource.resourceType?Patient].resource.address[0].line[1]" ratio="0.5"></edit-field>
-            <edit-field statePath="prescriptions.selectedPrescription.prescriptions[0]" label="Adresszusatz" mapKey="entry[resource.resourceType?Patient].resource.address[0].line[2]" ></edit-field>
+            <edit-field statePath="prescriptions.selectedPrescription.prescriptions[0]" label="Straße" mapKey="entry[resource.resourceType?Patient].resource.address[0]._line[extension[url?streetName]].extension[url?streetName].valueString" ratio="1.5"></edit-field>
+            <edit-field statePath="prescriptions.selectedPrescription.prescriptions[0]" label="Hausnummer" mapKey="entry[resource.resourceType?Patient].resource.address[0]._line[extension[url?houseNumber]].extension[url?houseNumber].valueString" ratio="0.5"></edit-field>
+            <edit-field statePath="prescriptions.selectedPrescription.prescriptions[0]" label="Adresszusatz" mapKey="entry[resource.resourceType?Patient].resource.address[0]._line[extension[url?additionalLocator]].extension[url?additionalLocator].valueString" ></edit-field>
           </div>
           <div class="fieldRow"> 
             <edit-field statePath="prescriptions.selectedPrescription.prescriptions[0]" label="Postleitzahl" mapKey="entry[resource.resourceType?Patient].resource.address[0].postalCode" ratio="1"></edit-field>
@@ -229,30 +233,33 @@ export class OrganizationEditPopup extends BElement {
         </div>
         <div style="text-align:left">
           <div class="fieldRow"> 
-            <edit-field label="Titel"></edit-field>
-            <edit-field label="Vorname"></edit-field>
-            <edit-field label="Nachname"></edit-field>
+            <edit-field statePath="prescriptions.selectedPrescription.prescriptions[0]" mapKey="entry[resource.resourceType?Practitioner].resource.name[0]._prefix[extension[url?qualifier]].extension[url?qualifier].valueCode" label="Titel"></edit-field>
+            <edit-field statePath="prescriptions.selectedPrescription.prescriptions[0]" mapKey="entry[resource.resourceType?Practitioner].resource.name[0].given[0]" label="Vorname"></edit-field>
+            <edit-field statePath="prescriptions.selectedPrescription.prescriptions[0]" mapKey="entry[resource.resourceType?Practitioner].resource.name[0].family" label="Nachname"></edit-field>
           </div>
           <div class="fieldRow"> 
-            <edit-field label="Qualifikation" ratio="1"></edit-field>
-            <edit-field label="Berufsbezeichnung" ratio="2"></edit-field>
+            <edit-field statePath="prescriptions.selectedPrescription.prescriptions[0]" mapKey="entry[resource.resourceType?Practitioner].resource.qualification[code.coding[system?Qualification_Type]].code.coding[system?Qualification_Type].code" label="Qualifikation" ratio="1"></edit-field>
+            <edit-field statePath="prescriptions.selectedPrescription.prescriptions[0]" mapKey="entry[resource.resourceType?Practitioner].resource.qualification[code.text].code.text" label="Berufsbezeichnung" ratio="2"></edit-field>
           </div>
         </div>
         <div class="modal-title" style="text-align:left;margin-top:15px;margin-bottom:15px">
           <p style="text-align:left"><strong>Informationen zum Betrieb</strong></p>
         </div>
         <div style="text-align:left">
-          <div class="fieldRow"> 
-          <edit-field label="Straße" ratio="1.5"></edit-field>
-            <edit-field label="Hausnummer" ratio="0.5"></edit-field>
-            <edit-field label="Adresszusatz"></edit-field>
+        <div class="fieldRow"> 
+            <edit-field statePath="prescriptions.selectedPrescription.prescriptions[0]" mapKey="entry[resource.resourceType?Organization].resource.name" label="Betriebsname" ratio="1"></edit-field>
           </div>
           <div class="fieldRow"> 
-            <edit-field label="Postleitzahl" ratio="1"></edit-field>
-            <edit-field label="Stadt" ratio="2"></edit-field>
+            <edit-field statePath="prescriptions.selectedPrescription.prescriptions[0]" mapKey="entry[resource.resourceType?Organization].resource.address[0]._line[extension[url?streetName]].extension[url?streetName].valueString" label="Straße" ratio="1.5"></edit-field>
+            <edit-field statePath="prescriptions.selectedPrescription.prescriptions[0]" mapKey="entry[resource.resourceType?Organization].resource.address[0]._line[extension[url?houseNumber]].extension[url?houseNumber].valueString" label="Hausnummer" ratio="0.5"></edit-field>
+            <edit-field statePath="prescriptions.selectedPrescription.prescriptions[0]" mapKey="entry[resource.resourceType?Organization].resource.address[0]._line[extension[url?additionalLocator]].extension[url?additionalLocator].valueString" label="Adresszusatz"></edit-field>
           </div>
           <div class="fieldRow"> 
-            <edit-field label="Telefonnummer" ratio="1"></edit-field>
+            <edit-field statePath="prescriptions.selectedPrescription.prescriptions[0]" mapKey="entry[resource.resourceType?Organization].resource.address.postalCode" label="Postleitzahl" ratio="1"></edit-field>
+            <edit-field statePath="prescriptions.selectedPrescription.prescriptions[0]" mapKey="entry[resource.resourceType?Organization].resource.address.city" label="Stadt" ratio="2"></edit-field>
+          </div>
+          <div class="fieldRow"> 
+            <edit-field statePath="prescriptions.selectedPrescription.prescriptions[0]" mapKey="entry[resource.resourceType?Organization].resource.telecom[system?phone].value" label="Telefonnummer" ratio="1"></edit-field>
           </div>
         </div>
         <div class="modal-buttons">
@@ -274,16 +281,16 @@ export class StatusEditPopup extends BElement {
         </div>
         <div style="text-align:left">
           <div class="fieldRow"> 
-            <select-field label="Versichertenart" items="${JSON.stringify(FIELD_STATUS_VERSICHERTENART)}"></select-field>
+            <select-field statePath="prescriptions.selectedPrescription.prescriptions[0]" mapKey="entry[resource.resourceType?MedicationRequest].ext.st0.valueCoding" label="Versichertenart" items="${JSON.stringify(FIELD_STATUS_VERSICHERTENART)}"></select-field>
           </div>
           <div class="fieldRow">
-            <select-field label="Besondere Personengruppe (optional)" items="${JSON.stringify(FIELD_STATUS_BESONDERE)}"></select-field>
+            <select-field statePath="prescriptions.selectedPrescription.prescriptions[0]" mapKey="entry[resource.resourceType?MedicationRequest].ext.st1.valueCoding" label="Besondere Personengruppe (optional)" items="${JSON.stringify(FIELD_STATUS_BESONDERE)}"></select-field>
           </div>
           <div class="fieldRow"> 
-            <select-field label="DMP-Zuordnung (optional)" items="${JSON.stringify(FIELD_STATUS_ZUORDNUNG)}"></select-field>
+            <select-field statePath="prescriptions.selectedPrescription.prescriptions[0]" mapKey="entry[resource.resourceType?MedicationRequest].ext.st2.valueCoding" label="DMP-Zuordnung (optional)" items="${JSON.stringify(FIELD_STATUS_ZUORDNUNG)}"></select-field>
           </div>
           <div class="fieldRow"> 
-            <select-field label="Statuskennzeichen (optional)" items="${JSON.stringify(FIELD_STATUS_STATUSKENNZEICHEN)}"></select-field>
+            <select-field statePath="prescriptions.selectedPrescription.prescriptions[0]" mapKey="entry[resource.resourceType?MedicationRequest].ext.st3.valueCoding" label="Statuskennzeichen (optional)" items="${JSON.stringify(FIELD_STATUS_STATUSKENNZEICHEN)}"></select-field>
           </div>
         </div>
         <div class="modal-buttons">

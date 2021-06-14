@@ -1,0 +1,38 @@
+export const MappingKeys = {
+  "patient-name-prefix-ac"                 : "entry[resource.resourceType?Patient].resource.name[0]._prefix[extension[url?qualifier]].extension[url?qualifier].valueCode",        
+  "patient-name-given"                     : "entry[resource.resourceType?Patient].resource.name[0].given[0]",                                          
+  "patient-name-family-name"               : "entry[resource.resourceType?Patient].resource.name[0].family",
+  "patient-address-streetName"             : "entry[resource.resourceType?Patient].resource.address[0]._line[extension[url?streetName]].extension[url?streetName].valueString",                                                
+  "patient-address-houseNumber"            : "entry[resource.resourceType?Patient].resource.address[0]._line[extension[url?houseNumber]].extension[url?houseNumber].valueString", 
+  "patient-address-additionalLocator"      : "entry[resource.resourceType?Patient].resource.address[0]._line[extension[url?additionalLocator]].extension[url?additionalLocator].valueString",         
+  "patient-address-postalCode"             : "entry[resource.resourceType?Patient].resource.address[0].postalCode",                                      
+  "patient-address-city"                   : "entry[resource.resourceType?Patient].resource.address[0].city",                                      
+  "":"",                                      
+  "":"",                                      
+  "":"",                                      
+  "practitioner-name-prefix-ac"            : "entry[resource.resourceType?Practitioner].resource.name[0]._prefix[extension[url?qualifier]].extension[url?qualifier].valueCode",        
+  "practitioner-name-family-given"         : "entry[resource.resourceType?Practitioner].resource.name[0].given[0]",                                         
+  "practitioner-name-family-name"          : "entry[resource.resourceType?Practitioner].resource.name[0].family",                                         
+  "practitioner-qualification-type"        : "entry[resource.resourceType?Practitioner].resource.qualification[code.coding[system?Qualification_Type]].code.coding[system?Qualification_Type].code",                                      
+  "practitioner-qualification-text"        : "entry[resource.resourceType?Practitioner].resource.qualification[code.text].code.text",                                      
+
+  "coverage-patient-wop"                   : "",                                                                                                          
+  "coverage-payor-display"                 : "entry[resource.resourceType?Coverage].resource.payor[0].display",                                           
+  "patient-birthDate"                      : "entry[resource.resourceType?Patient].resource.birthDate",                                                   
+  "coverage-payor-iknr"                    : "entry[resource.resourceType?Coverage].resource.payor[0].identifier.value",                                  
+  "patient-kvid-10"                        : "entry[resource.resourceType?Patient].resource.identifier[0].value",                                         
+  "practitioner-identifier"                : "entry[resource.resourceType?Practitioner].resource.identifier[0].value",                                    
+  "medicationRequest-authoredOn"           : "entry[resource.resourceType?Composition].resource.date",                                                    
+  "accident-type-work-day"                 : "",                                                                                                          
+  "organization-name"                      : "entry[resource.resourceType?Organization].resource.name",                                         
+  "organization-address-streetName"        : "entry[resource.resourceType?Patient].resource.address[0]._line[extension[url?streetName]].extension[url?streetName].valueString",                                                                                                          
+  "organization-address-houseNumber"       : "entry[resource.resourceType?Patient].resource.address[0]._line[extension[url?houseNumber]].extension[url?houseNumber].valueString",                                                                                                          
+  "organization-address-additionalLocator" : "entry[resource.resourceType?Patient].resource.address[0]._line[extension[url?additionalLocator]].extension[url?additionalLocator].valueString",                                                                                                          
+  "organization-address-postalCode"        : "entry[resource.resourceType?Organization].resource.address.postalCode",                                     
+  "organization-address-city"              : "entry[resource.resourceType?Organization].resource.address.city",                                           
+  "organization-phone"                     : "entry[resource.resourceType?Organization].resource.telecom[system?phone].system.value",                                  
+  "composition-statuskennzeichen"          : "entry[resource.resourceType?Composition].resource.extension[url?rechtsgrundlage].value[0].valueCoding.code",
+  "d"                                      : "entry[resource.resourceType?Organization].resource.address.postalCode"                                      
+}
+
+window.MappingKeys = MappingKeys;

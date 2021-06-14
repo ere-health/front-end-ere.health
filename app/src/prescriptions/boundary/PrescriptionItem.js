@@ -182,7 +182,10 @@ class Prescription extends BElement {
                         cols   = "10"
                         @keyup = "${_ => this.onUserInput(_)}"
                       >${(this.state.selectedPrescription.updatedProps.address ?? (displayName + ", " +
-                          _psp.read("entry[resource.resourceType?Patient].resource.address[0].line[0]", "") + ", " +
+                          _psp.read("entry[resource.resourceType?Patient].resource.address[0]._line[extension[url?streetName]].extension[url?streetName].valueString", "") + " " +
+                          _psp.read("entry[resource.resourceType?Patient].resource.address[0]._line[extension[url?houseNumber]].extension[url?houseNumber].valueString", "") + " " +
+                          _psp.read("entry[resource.resourceType?Patient].resource.address[0]._line[extension[url?additionalLocator]].extension[url?additionalLocator].valueString", "") + ", " +
+                          _psp.read("entry[resource.resourceType?Patient].resource.address[0].postalCode","") + " " +
                           _psp.read("entry[resource.resourceType?Patient].resource.address[0].city", "").trim()))}
                       </textarea>
                       <span></span>
@@ -246,9 +249,7 @@ class Prescription extends BElement {
                         id          = "Status1"
                         class       = "bright"
                         placeholder = "1000 1"
-                        value  = "${this.state.selectedPrescription.updatedProps.Status ?? "-"}"
-                        @keyup = "${_ => this.onUserInput(_)}"
-                      />
+                        value  = "${_psp.read("entry[resource.resourceType?MedicationRequest].ext.st0.valueCoding", "0")}-${_psp.read("entry[resource.resourceType?MedicationRequest].ext.st1.valueCoding", "00")}-${_psp.read("entry[resource.resourceType?MedicationRequest].ext.st2.valueCoding", "00")}-${_psp.read("entry[resource.resourceType?MedicationRequest].ext.st3.valueCoding", "00")}"/>
                     </div>
                   </div>
                 </div>
@@ -317,9 +318,9 @@ class Prescription extends BElement {
                         type   = "text"
                         name   = "Unfalltag"
                         id     = "Unfalltag1"
-                        value  = "${this.state.selectedPrescription.updatedProps["Unfalltag"] ?? "-"}"
-                        @keyup = "${_ => this.onUserInput(_)}"
-                      />
+                        value  = "${_psp.read("entry[resource.resourceType?Accident].resource.extension[url?unfalltag].value[0].valueDate", "")}"
+                        @keyup = "${_ => this.onUserInput(_, "entry[resource.resourceType?Accident].resource.extension[url?unfalltag].value[0].valueDate")}"
+                           />
                       <span class="long-border"></span>
                     </div>
                   </div>
@@ -333,9 +334,9 @@ class Prescription extends BElement {
                         type   = "text"
                         id     = "Unfallbetrieb1"
                         name   = "Unfallbetrieb"
-                        value  = "${this.state.selectedPrescription.updatedProps["Unfallbetrieb"] ?? "-"}"
-                        @keyup = "${_ => this.onUserInput(_)}"
-                      />
+                        value  = "${_psp.read("entry[resource.resourceType?Accident].resource.extension[url?unfallbetrieb].value[0].valueDate", "")}"
+                        @keyup = "${_ => this.onUserInput(_, "entry[resource.resourceType?Accident].resource.extension[url?unfallbetrieb].value[0].valueDate")}"
+                       />
                     </div>
                   </div>
                 </div>
@@ -348,12 +349,11 @@ class Prescription extends BElement {
                     type     = "checkbox"
                     id       = "gebührenfrei"
                     name     = "BVG"
-                    .checked = "${this.state.selectedPrescription.updatedProps?.tollFree ?? false}"
-                    @change  = "${(_) => this.onUserCheckArt(_)}"
+                   
                     value    = "BVG"
                   />
                   <label for="gebührenfrei">BVG</label>
-                  <span class="checkmark" @click="${() => document.getElementById("gebührenfrei").click()}"></span>
+                  <span class="checkmark"></span>
                 </li>
                 <li class="art-list-item">
                   <input
@@ -362,11 +362,9 @@ class Prescription extends BElement {
                     name     = "gebpfl"
                     value    = "Geb. -pfl."
                     name     = "gebpfl"
-                    .checked = "${this.state.selectedPrescription.updatedProps?.gebpfl ?? false}"
-                    @change  = "${(_) => this.onUserCheckArt(_)}"
-                  />
+                           />
                   <label for="geb-pfl">Hilfs-mittel</label>
-                  <span class="checkmark" @click="${() => document.getElementById("geb-pfl").click()}"></span>
+                  <span class="checkmark" ></span>
                 </li>
                 <li class="art-list-item">
                   <input
@@ -374,11 +372,9 @@ class Prescription extends BElement {
                     id       = "noctu"
                     value    = "noctu"
                     name     = "noctu"
-                    .checked = "${this.state.selectedPrescription.updatedProps?.noctu ?? false}"
-                    @change  = "${(_) => this.onUserCheckArt(_)}"
-                  />
+                            />
                   <label for="noctu">Impf-stoff</label>
-                  <span class="checkmark" @click="${() => document.getElementById("noctu").click()}"></span>
+                  <span class="checkmark"></span>
                 </li>
                 <li class="art-list-item">
                   <input
@@ -386,11 +382,10 @@ class Prescription extends BElement {
                     id       = "sonstige"
                     value    = "Sonstige"
                     name     = "other"
-                    .checked = "${this.state.selectedPrescription.updatedProps?.other ?? false}"
-                    @change  = "${(_) => this.onUserCheckArt(_)}"
+                   
                   />
                   <label for="sonstige">Spr. St. Bedarf</label>
-                  <span class="checkmark" @click="${() => document.getElementById("sonstige").click()}"></span>
+                  <span class="checkmark" ></span>
                 </li>
                 <li class="art-list-item">
                   <input
@@ -398,11 +393,10 @@ class Prescription extends BElement {
                     id       = "unfall"
                     value    = "Unfall"
                     name     = "accident"
-                    .checked = "${this.state.selectedPrescription.updatedProps?.accident ?? false}"
-                    @change  = "${(_) => this.onUserCheckArt(_)}"
+                    
                   />
                   <label for="unfall">Begr. Pflicht</label>
-                  <span class="checkmark" @click="${() => document.getElementById("unfall").click()}"></span>
+                  <span class="checkmark"></span>
                 </li>
               </ul>
             </form>
@@ -463,6 +457,22 @@ class Prescription extends BElement {
           <div class="edit-btn" @click="${() => showPopupEditOrga()}" style="background-image: url(${initialPath}/assets/images/edit-btn.png);"></div>
 
           <div class="zet-title first-col">Vertragsarztdaten</div>
+          <div style="text-align: center">
+          ${_psp.read("entry[resource.resourceType?Practitioner].resource.name[0]._prefix[extension[url?qualifier]].extension[url?qualifier].valueCode") + " " +
+                  _psp.read("entry[resource.resourceType?Practitioner].resource.name[0].given[0]") + " " +
+                  _psp.read("entry[resource.resourceType?Practitioner].resource.name[0].family") + " "}                
+        <br/>
+        ${
+           _psp.read("entry[resource.resourceType?Practitioner].resource.qualification[code.coding[system?Qualification_Type]].code.coding[system?Qualification_Type].code") + " " + 
+           _psp.read("entry[resource.resourceType?Practitioner].resource.qualification[code.text].code.text") + " " 
+        }
+        <br/>
+        ${
+           _psp.read("entry[resource.resourceType?Organization].resource.address[0]._line[extension[url?streetName]].extension[url?streetName].valueString") + " " + 
+           _psp.read("entry[resource.resourceType?Organization].resource.address[0]._line[extension[url?houseNumber]].extension[url?houseNumber].valueString") + " " +
+           _psp.read("entry[resource.resourceType?Organization].resource.address[0]._line[extension[url?additionalLocator]].extension[url?additionalLocator].valueString") + " " 
+        }
+        </div>
           </div>
         </div>
       </div>
