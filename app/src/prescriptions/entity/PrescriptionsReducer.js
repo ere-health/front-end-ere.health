@@ -44,9 +44,11 @@ export const prescriptions = createReducer(initialState, (builder) => {
     })
     .addCase(updatePrescriptionAction, (state, { payload: { name, value, key } }) => {
         state.selectedPrescription.updatedProps[name] = value;
-        const _psp = new Mapper(state.selectedPrescription.prescriptions[0]);
+        // Clone object, Redux Toolkit does not support updateding object with Indexer.
+        const _psp = new Mapper(JSON.parse(JSON.stringify(state.selectedPrescription.prescriptions[0])));
         if (key) {
           _psp.write(key, value);
+          state.selectedPrescription.prescriptions[0] = _psp.mapObject;
           state.list.forEach((_,idx) => {
             if (_[0].id === state.selectedPrescription.prescriptions[0].id) {
               _[0] = state.selectedPrescription.prescriptions[0];

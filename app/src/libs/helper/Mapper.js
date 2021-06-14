@@ -62,11 +62,11 @@ export class Mapper {
     this.mapObject = mapObject;
   }
 
-  write(path, value) {
+  write(path, value, forceMapObject) {
     if (path === null) return;
     const pathDefinition = typeof path === "string" ? this.tokenizePath(path) : path;
 
-    let cursor = this.mapObject;
+    let cursor = forceMapObject ?? this.mapObject;
     let prevCursor = cursor;
     let prevPath = "";
 
@@ -97,6 +97,14 @@ export class Mapper {
           }
           if (pathToken.path) {
             // Recursive path
+            if (!Array.isArray(cursor)) {
+              prevCursor[prevPath] = [];
+              cursor = prevCursor[prevPath];
+            }
+            if (cursor.length === 0) {
+              const elt = this.write(pathToken.path, pathToken.filter, {});
+              cursor.push(elt);
+            }
             cursor.forEach(_tmpCur => {
               const tmpCursor = this.read(pathToken.path, void 0, _tmpCur);
               switch(pathToken.operator) {
@@ -128,6 +136,8 @@ export class Mapper {
     try {
       prevCursor[prevPath] = value
     } catch(ex) { console.warn(ex) }
+
+    return forceMapObject ?? this.mapObject;
   }
 
   read(path, defaultValue, forceMapObject) {
@@ -148,6 +158,9 @@ export class Mapper {
           }
           if (pathToken.path) {
             // Recursive path
+            if (!Array.isArray(cursor)) {
+              return defaultValue;
+            }
             cursor.forEach(_tmpCur => {
               const tmpCursor = this.read(pathToken.path, void 0, _tmpCur);
               switch(pathToken.operator) {
