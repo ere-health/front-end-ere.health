@@ -9,15 +9,14 @@ import {
     selectPrescriptionAction,
     signAndUploadBundlesAction
 } from "../control/UnsignedPrescriptionControl.js";
+import { TEST_ERIXA_BUNDLE } from "./DemoErixa.js";
 
 const initialState = {
     list                 : [] ,
-    signedList           : [] ,
+    signedList           : [[TEST_ERIXA_BUNDLE]] , // Demo Erixa
     selectedPrescription : {} ,
     isPrevious           : false
 }
-
-var db = new PouchDB("Prescriptions");
 
 export const prescriptions = createReducer(initialState, (builder) => {
     //Add prescription to the unsigned list
