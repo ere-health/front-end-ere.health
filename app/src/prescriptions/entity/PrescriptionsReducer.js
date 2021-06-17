@@ -1,3 +1,4 @@
+import { fixBundleMediosDemo } from "../../libs/helper/BundleFix.js";
 import { Mapper } from "../../libs/helper/Mapper.js";
 import { createReducer } from "../../libs/redux-toolkit.esm.js"
 import { save } from "../../localstorage/control/StorageControl.js";
@@ -7,13 +8,14 @@ import {
     signedPrescriptionAction, 
     updatePrescriptionAction,
     selectPrescriptionAction,
-    signAndUploadBundlesAction
+    signAndUploadBundlesAction,
+    addSignedAction
 } from "../control/UnsignedPrescriptionControl.js";
 import { TEST_ERIXA_BUNDLE } from "./DemoErixa.js";
 
 const initialState = {
     list                 : [] ,
-    signedList           : [[TEST_ERIXA_BUNDLE]] , // Demo Erixa
+    signedList           : [] , // Demo Erixa
     selectedPrescription : {} ,
     isPrevious           : false
 }
@@ -25,6 +27,10 @@ export const prescriptions = createReducer(initialState, (builder) => {
           state.list = state.list.concat([prescription]);
         }
     })
+    builder.addCase(addSignedAction, (state, {payload: prescription}) => {
+      state.signedList = state.signedList.concat(prescription);
+      save(state);
+  })
     //Move a prescription to the signed list
     .addCase(signedPrescriptionAction, (state, {payload: prescriptions}) => {
         let currentPrescription = null;
@@ -33,7 +39,7 @@ export const prescriptions = createReducer(initialState, (builder) => {
           currentPrescription = _;
           return false;
         });
-        state.signedList = state.signedList.concat([currentPrescription]);
+        //state.signedList = state.signedList.concat([currentPrescription]);
     })
     // Define the current prescription
     .addCase(selectPrescriptionAction, (state, {payload: {prescriptions, isPrevious}}) => {
@@ -53,7 +59,7 @@ export const prescriptions = createReducer(initialState, (builder) => {
               _[0] = state.selectedPrescription.prescriptions[0];
             }
           })
-          save(state);
+         // save(state);
         }
     })
     .addCase(signAndUploadBundlesAction, (state, { payload: bundles }) => {

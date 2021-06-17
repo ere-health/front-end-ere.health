@@ -4,8 +4,8 @@ import { html } from "../../libs/lit-html.js";
 class PrescriptionPdf extends BElement {
 
   async sendPdfErixa() {
-    const document = this.state.prescriptions.selectedPrescription.prescriptions[0].document;
-    const firstPrescription = this.state.prescriptions.selectedPrescription.prescriptions[0];
+    const document = this.state.prescriptions.selectedPrescription.prescriptions.pdfDocument.content;
+    const firstPrescription = this.state.prescriptions.selectedPrescription.prescriptions.bundleWithAccessCodeOrThrowables[0].bundle;
     const _psp = new Mapper(firstPrescription);
 
     let displayName = [
@@ -28,9 +28,9 @@ class PrescriptionPdf extends BElement {
   }
 
   view() {
-    const document = this.state.prescriptions.selectedPrescription.prescriptions[0].document;
-    const firstPrescription = this.state.prescriptions.selectedPrescription.prescriptions[0];
-    const _psp = new Mapper(firstPrescription);
+    const document = this.state.prescriptions.selectedPrescription.prescriptions.pdfDocument.content;
+    const firstPrescription = this.state.prescriptions.selectedPrescription.prescriptions.bundleWithAccessCodeOrThrowables[0].bundle;
+     const _psp = new Mapper(firstPrescription);
 
     let displayName = [
       _psp.read("entry[resource.resourceType?Patient].resource.name[0].given", []).join(" "),

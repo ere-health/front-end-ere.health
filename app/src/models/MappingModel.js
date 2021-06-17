@@ -22,7 +22,7 @@ export const MappingKeys = {
   "coverage-payor-iknr"                    : "entry[resource.resourceType?Coverage].resource.payor[0].identifier.value",                                  
   "patient-kvid-10"                        : "entry[resource.resourceType?Patient].resource.identifier[0].value",                                         
   "practitioner-identifier"                : "entry[resource.resourceType?Practitioner].resource.identifier[0].value",                                    
-  "medicationRequest-authoredOn"           : "entry[resource.resourceType?Composition].resource.date",                                                    
+  "medicationRequest-authoredOn"           : "entry[resource.resourceType?Composition].resource.authoredOn",                                                    
   "accident-type-work-day"                 : "",                                                                                                          
   "organization-name"                      : "entry[resource.resourceType?Organization].resource.name",                                         
   "organization-address-streetName"        : "entry[resource.resourceType?Patient].resource.address[0]._line[extension[url?streetName]].extension[url?streetName].valueString",                                                                                                          
