@@ -1,5 +1,6 @@
 
-import { addPrescription } from "../../control/UnsignedPrescriptionControl.js";
+import { fixBundleMediosDemo } from "../../../libs/helper/BundleFix.js";
+import { addPrescription, addSigned } from "../../control/UnsignedPrescriptionControl.js";
 
 class _ServerWebSocketActionForwarder {
     constructor() {
@@ -9,11 +10,12 @@ class _ServerWebSocketActionForwarder {
             const eventData = JSON.parse(event.data);
             if(eventData.type === "Bundles") {
                 this.processBundles(eventData.payload);
-            } else if(eventData.type === "ERezeptDocuments") {
+            } else if(eventData.type === "ERezeptWithDocuments") {
                 if("pdfDocument" in eventData.payload[0]) {
                     const blob = this.b64toBlob(eventData.payload[0].pdfDocument.content, "application/pdf");
                     const blobUrl = URL.createObjectURL(blob);
-                    window.location = blobUrl;
+                    window.open(blobUrl);
+                    addSigned(eventData.payload);
                 } else {
                     alert("Could not process e prescription");
                 }
@@ -44,6 +46,7 @@ class _ServerWebSocketActionForwarder {
     }
 
     processBundles(bundles) {
+        fixBundleMediosDemo(bundles[0])
         addPrescription(bundles);
     }
 

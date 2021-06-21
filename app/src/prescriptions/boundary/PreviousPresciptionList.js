@@ -33,7 +33,7 @@ class PreviousPrescriptionList extends BElement {
                   })()
                 }
                 ${this.state.map(previousPrescriptionBundles => {
-                    const previousPrescription = previousPrescriptionBundles[0];
+                    const previousPrescription = previousPrescriptionBundles.bundleWithAccessCodeOrThrowables[0].bundle;
                     let patient     = previousPrescription.entry.filter(oEntry => oEntry.resource.resourceType === "Patient")[0];
                     let name        = patient.resource && patient.resource.name ? patient.resource.name[0] : {"given": [], "family": ""};
                     let displayName = name.given.join(" ")+" "+name.family;

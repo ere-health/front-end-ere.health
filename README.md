@@ -50,5 +50,6 @@ Just copy a valid PDF to the watch folder
 docker cp {path-to-pdf-filder}/{pdf-file} backend:/ere-ps-app/target/watch-pdf/
 
 #Ex: 
+
 docker cp ./docker/cgm-z1-manuel-blechschmidt.pdf backend:/ere-ps-app/target/watch-pdf/
 ```

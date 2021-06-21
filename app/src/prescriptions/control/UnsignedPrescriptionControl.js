@@ -21,6 +21,11 @@ export const updatePrescription = (name, value, key) => {
     store.dispatch(updatePrescriptionAction({name, value, key}));
 }
 
+export const addSignedAction = createAction("addSignedAction");
+export const addSigned = (bundles) => {
+    store.dispatch(addSignedAction(bundles));
+}
+
 export const signAndUploadBundlesAction = createAction("signAndUploadBundlesAction");
 export const signAndUploadBundles = (bundles) => {
     store.dispatch(signAndUploadBundlesAction(bundles));
