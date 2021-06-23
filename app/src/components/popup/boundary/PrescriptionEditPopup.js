@@ -7,7 +7,6 @@ import {
 import { _hidePopup } from "../control/PopupControl.js";
 import { Mapper } from "../../../libs/helper/Mapper.js";
 import { updatePrescription } from "../../../prescriptions/control/UnsignedPrescriptionControl.js";
-import { MappingKeys } from "../../../models/MappingModel.js";
 
 const FIELD_STATUS_VERSICHERTENART = [
   {value: "1", label: "Mitglieder"},
