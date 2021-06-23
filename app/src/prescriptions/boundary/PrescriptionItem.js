@@ -433,7 +433,7 @@ class Prescription extends BElement {
                           value       = "${medication.code.text}" 
                           placeholder = ""
                         />
-                        <input type="text" class="pzn" onclick="${_ => _.preventDefault()}" value="${medicationRequest.dosageInstruction.length > 0 ? medicationRequest.dosageInstruction[0].text : ""}" placeholder="" />
+                        <input type="text" class="pzn" onclick="${_ => _.preventDefault()}" value="${_psp.read("entry[resource.resourceType?Medication].resource.code.coding[system?pzn].code", "")}" placeholder="" />
                         <input type="text" class="duration" onclick="${_ => _.preventDefault()}" value="${medicationRequest.dosageInstruction.length > 0 ? medicationRequest.dosageInstruction[0].text : ""}" placeholder="" />
                         <input type = "checkbox" id="drug-1-chk" style="display:none"/>
                         <span class="checkmark" @click="${() => document.getElementById("drug-1-chk").click()}"></span>
@@ -458,7 +458,7 @@ class Prescription extends BElement {
 
           <div class="zet-title first-col">Vertragsarztdaten</div>
           <div style="text-align: center">
-          ${_psp.read("entry[resource.resourceType?Practitioner].resource.name[0]._prefix[extension[url?qualifier]].extension[url?qualifier].valueCode") + " " +
+          ${_psp.read("entry[resource.resourceType?Practitioner].resource.name[0].prefix[0]") + " " +
                   _psp.read("entry[resource.resourceType?Practitioner].resource.name[0].given[0]") + " " +
                   _psp.read("entry[resource.resourceType?Practitioner].resource.name[0].family") + " "}                
         <br/>
@@ -469,8 +469,7 @@ class Prescription extends BElement {
         <br/>
         ${
            _psp.read("entry[resource.resourceType?Organization].resource.address[0]._line[extension[url?streetName]].extension[url?streetName].valueString") + " " + 
-           _psp.read("entry[resource.resourceType?Organization].resource.address[0]._line[extension[url?houseNumber]].extension[url?houseNumber].valueString") + " " +
-           _psp.read("entry[resource.resourceType?Organization].resource.address[0]._line[extension[url?additionalLocator]].extension[url?additionalLocator].valueString") + " " 
+           _psp.read("entry[resource.resourceType?Organization].resource.address[0]._line[extension[url?houseNumber]].extension[url?houseNumber].valueString") + " "
         }
         </div>
           </div>

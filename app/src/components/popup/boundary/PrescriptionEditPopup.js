@@ -199,7 +199,7 @@ export class PatientEditPopup extends BElement {
         </div>
         <div style="text-align:left">
           <div class="fieldRow"> 
-            <edit-field label="Titel"></edit-field>
+            <edit-field statePath="prescriptions.selectedPrescription.prescriptions[0]" label="Titel" mapKey="entry[resource.resourceType?Patient].resource.name[0].prefix[0]"></edit-field>
             <edit-field statePath="prescriptions.selectedPrescription.prescriptions[0]" label="Vorname"  mapKey="entry[resource.resourceType?Patient].resource.name[0].given[0]"></edit-field>
             <edit-field statePath="prescriptions.selectedPrescription.prescriptions[0]" label="Nachname" mapKey="entry[resource.resourceType?Patient].resource.name[0].family"></edit-field>
           </div>
@@ -233,7 +233,7 @@ export class OrganizationEditPopup extends BElement {
         </div>
         <div style="text-align:left">
           <div class="fieldRow"> 
-            <edit-field statePath="prescriptions.selectedPrescription.prescriptions[0]" mapKey="entry[resource.resourceType?Practitioner].resource.name[0]._prefix[extension[url?qualifier]].extension[url?qualifier].valueCode" label="Titel"></edit-field>
+            <edit-field statePath="prescriptions.selectedPrescription.prescriptions[0]" mapKey="entry[resource.resourceType?Practitioner].resource.name[0].prefix[0]" label="Titel"></edit-field>
             <edit-field statePath="prescriptions.selectedPrescription.prescriptions[0]" mapKey="entry[resource.resourceType?Practitioner].resource.name[0].given[0]" label="Vorname"></edit-field>
             <edit-field statePath="prescriptions.selectedPrescription.prescriptions[0]" mapKey="entry[resource.resourceType?Practitioner].resource.name[0].family" label="Nachname"></edit-field>
           </div>
@@ -255,8 +255,8 @@ export class OrganizationEditPopup extends BElement {
             <edit-field statePath="prescriptions.selectedPrescription.prescriptions[0]" mapKey="entry[resource.resourceType?Organization].resource.address[0]._line[extension[url?additionalLocator]].extension[url?additionalLocator].valueString" label="Adresszusatz"></edit-field>
           </div>
           <div class="fieldRow"> 
-            <edit-field statePath="prescriptions.selectedPrescription.prescriptions[0]" mapKey="entry[resource.resourceType?Organization].resource.address.postalCode" label="Postleitzahl" ratio="1"></edit-field>
-            <edit-field statePath="prescriptions.selectedPrescription.prescriptions[0]" mapKey="entry[resource.resourceType?Organization].resource.address.city" label="Stadt" ratio="2"></edit-field>
+            <edit-field statePath="prescriptions.selectedPrescription.prescriptions[0]" mapKey="entry[resource.resourceType?Organization].resource.address[0].postalCode" label="Postleitzahl" ratio="1"></edit-field>
+            <edit-field statePath="prescriptions.selectedPrescription.prescriptions[0]" mapKey="entry[resource.resourceType?Organization].resource.address[0].city" label="Stadt" ratio="2"></edit-field>
           </div>
           <div class="fieldRow"> 
             <edit-field statePath="prescriptions.selectedPrescription.prescriptions[0]" mapKey="entry[resource.resourceType?Organization].resource.telecom[system?phone].value" label="Telefonnummer" ratio="1"></edit-field>

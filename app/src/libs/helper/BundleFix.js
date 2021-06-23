@@ -3,9 +3,9 @@ export function fixBundleMediosDemo(bundle) {
   //x.prescriptions.list = x.prescriptions.list.filter(_ => _);
   //x.prescriptions.list.push(x.prescriptions.signedList.pop())
   //let bundle = x.prescriptions.list[0][0];
-  makeCompositionFirstEntryRule(bundle);
-  checkAuthoredOn(bundle);
-  checkPatientidentifierValue(bundle);
+  //makeCompositionFirstEntryRule(bundle);
+  //checkAuthoredOn(bundle);
+  //checkPatientidentifierValue(bundle);
   //localStorage.setItem("app.localstorage.control", JSON.stringify(x))
 }
 

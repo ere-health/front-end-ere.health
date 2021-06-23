@@ -4,6 +4,7 @@ import * as Path                from "path";
 import {json01, json02, json03} from "./examples/samples.mjs";
 import {vosBundle}              from "./examples/vos-bundle.mjs";
 import _ws                      from "ws";                    
+import { validBundle } from "./examples/samples.mjs";
 const  {Server} = _ws;
 
 async function startServer() {
@@ -78,10 +79,10 @@ async function startServer() {
     console.log("connection")
     socket.send(JSON.stringify({
       type    : "Bundles",
-      payload : [json02]   
+      payload : [validBundle]   
     }));
 
-    socket.send(JSON.stringify({
+    /*socket.send(JSON.stringify({
       type    : "Bundles",
       payload : [json01]   
     }));
@@ -89,7 +90,7 @@ async function startServer() {
     socket.send(JSON.stringify({
       type    : "Bundles",
       payload : [json03]   
-    }));
+    }));*/
   });
   console.log('Server running at:', server.info.uri);
 }
