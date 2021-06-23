@@ -1,4 +1,3 @@
-import { fixBundleMediosDemo } from "../../libs/helper/BundleFix.js";
 import { Mapper } from "../../libs/helper/Mapper.js";
 import { createReducer } from "../../libs/redux-toolkit.esm.js"
 import { save } from "../../localstorage/control/StorageControl.js";
