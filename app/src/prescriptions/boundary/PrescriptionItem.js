@@ -182,9 +182,7 @@ class Prescription extends BElement {
                         cols   = "10"
                         @keyup = "${_ => this.onUserInput(_)}"
                       >${(this.state.selectedPrescription.updatedProps.address ?? (displayName + ", " +
-                          _psp.read("entry[resource.resourceType?Patient].resource.address[0]._line[extension[url?streetName]].extension[url?streetName].valueString", "") + " " +
-                          _psp.read("entry[resource.resourceType?Patient].resource.address[0]._line[extension[url?houseNumber]].extension[url?houseNumber].valueString", "") + " " +
-                          _psp.read("entry[resource.resourceType?Patient].resource.address[0]._line[extension[url?additionalLocator]].extension[url?additionalLocator].valueString", "") + ", " +
+                          _psp.read("entry[resource.resourceType?Patient].resource.address[0].line[0]", "") + "," +
                           _psp.read("entry[resource.resourceType?Patient].resource.address[0].postalCode","") + " " +
                           _psp.read("entry[resource.resourceType?Patient].resource.address[0].city", "").trim()))}
                       </textarea>
@@ -226,10 +224,10 @@ class Prescription extends BElement {
 
                   <div class="form-group">
                     <div class="input-wrapper">
-                      <label for="person1">${i18n("InsuredPersNum")}</label>
+                      <label for="kvid">${i18n("InsuredPersNum")}</label>
                       <input
                         type   = "text"
-                        name   = "person1"
+                        name   = "kvid"
                         id     = "address"
                         class  = "bright"
                         value  = "${_psp.read("entry[resource.resourceType?Patient].resource.identifier[0].value", "")}"
@@ -248,8 +246,7 @@ class Prescription extends BElement {
                         name        = "Status"
                         id          = "Status1"
                         class       = "bright"
-                        placeholder = "1000 1"
-                        value  = "${_psp.read("entry[resource.resourceType?MedicationRequest].ext.st0.valueCoding", "0")}-${_psp.read("entry[resource.resourceType?MedicationRequest].ext.st1.valueCoding", "00")}-${_psp.read("entry[resource.resourceType?MedicationRequest].ext.st2.valueCoding", "00")}-${_psp.read("entry[resource.resourceType?MedicationRequest].ext.st3.valueCoding", "00")}"/>
+                        value  = "${_psp.read("entry[resource.resourceType?Coverage].extension[url?'https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_KBV_VERSICHERTENSTATUS'].valueCoding.code", "")}"/>
                     </div>
                   </div>
                 </div>
@@ -286,26 +283,25 @@ class Prescription extends BElement {
                       <span></span>
                     </div>
                   </div>
-
+                  
                   <div class="form-group">
                     <div class="input-wrapper">
-                      <label for="date1">${i18n("Date")}</label>
+                      <label for="authoredOn">${i18n("Date")}</label>
                       <input
                         type   = "text"
-                        id     = "date1"
+                        id     = "authoredOn"
                         class  = "bright"
                         name   = "date"
-                        value  = "${new Date(_psp.read("entry[resource.resourceType?Composition].resource.date", "")).toLocaleDateString()}"
+                        value  = "${new Date(_psp.read("entry[resource.resourceType?MedicationRequest].resource.authoredOn", "")).toLocaleDateString()}"
                         @keyup = "${_ => {
                           try {
                             this.onUserInput({
                               target: { value: new Date(_.target.value).toISOString()}
-                            }, "entry[resource.resourceType?Composition].resource.date")
+                            }, "entry[resource.resourceType?MedicationRequest].resource.date")
                           } catch(ex) {
-                            this.onUserInput(_, "entry[resource.resourceType?Composition].resource.date")
+                            this.onUserInput(_, "entry[resource.resourceType?MedicationRequest].resource.date")
                           }
-                        }}"
-                      />
+                        }}"                      />
                     </div>
                   </div>
                 </div>
