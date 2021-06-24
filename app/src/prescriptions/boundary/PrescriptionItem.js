@@ -332,6 +332,7 @@ class Prescription extends BElement {
                     <div class="input-wrapper">
                       <label for="Unfalltag1">${i18n("AccidentDay")}</label>
                       <input
+                        readonly
                         type   = "text"
                         name   = "Unfalltag"
                         id     = "Unfalltag1"
@@ -349,6 +350,7 @@ class Prescription extends BElement {
                       >
                       <input
                         type   = "text"
+                        readonly
                         id     = "Unfallbetrieb1"
                         name   = "Unfallbetrieb"
                         value  = "${_psp.read("entry[resource.resourceType?Accident].resource.extension[url?unfallbetrieb].value[0].valueDate", "")}"
