@@ -10,7 +10,6 @@ import {
     signAndUploadBundlesAction,
     addSignedAction
 } from "../control/UnsignedPrescriptionControl.js";
-import { TEST_ERIXA_BUNDLE } from "./DemoErixa.js";
 
 const initialState = {
     list                 : [] ,
@@ -58,7 +57,6 @@ export const prescriptions = createReducer(initialState, (builder) => {
               _[0] = state.selectedPrescription.prescriptions[0];
             }
           })
-         // save(state);
         }
     })
     .addCase(signAndUploadBundlesAction, (state, { payload: bundles }) => {

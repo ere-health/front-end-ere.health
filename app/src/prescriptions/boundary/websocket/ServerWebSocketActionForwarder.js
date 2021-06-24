@@ -46,7 +46,6 @@ class _ServerWebSocketActionForwarder {
     }
 
     processBundles(bundles) {
-        //fixBundleMediosDemo(bundles[0])
         addPrescription(bundles);
     }
 
