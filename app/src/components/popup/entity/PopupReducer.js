@@ -8,7 +8,7 @@ import {
   showPopupEditPatientAction,
   showPopupEditStatusAction,
   showPopupEditOrgaAction,
-
+  showPopupEditMedicAction,
   showPopupEditClinicAction,
   cancelPopupEditClinicAction,
   savePopupEditClinicAction
@@ -30,8 +30,11 @@ export const popupReducer = createReducer(initialState, (builder) => {
     builder.addCase(showPopupFatigAction, (state) => {
         state.showPopup = "fatig";
     });
+    builder.addCase(showPopupEditMedicAction, (state) => {
+      state.showPopup = "medicEdit";
+    });   
     builder.addCase(hidePopupAction, (state) => {
-        state.showPopup = "";
+      state.showPopup = "";
     });
     builder.addCase(showPopupAllAction, (state) => {
         state.all = true;

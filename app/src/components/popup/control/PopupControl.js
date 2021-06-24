@@ -41,6 +41,11 @@ export const showPopupEditOrga = () => {
     store.dispatch(showPopupEditOrgaAction());
 }
 
+export const showPopupEditMedicAction = createAction("showPopupEditMedicAction");
+export const showPopupEditMedic = () => {
+    store.dispatch(showPopupEditMedicAction());
+}
+
 
 // Clinic Popup
 export const showPopupEditClinicAction = createAction("showPopupEditClinic");
