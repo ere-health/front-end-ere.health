@@ -212,15 +212,9 @@ export class MedicamentEditPopup extends BElement {
           </div>
         </div>
         <div class="modal-buttons">
-          <a
-            href="/print"
-            id="print"
-            @click="${() => this.doSign()}"
-            class="grow-in-wealth"
-          >
-            asdasdasdasd</a
-          >
-        </div>
+        <button data-close-button class="cancel" @click="${() => this.cancelPopupEditClinic()}">Abbrechen</button>
+        <button data-modal-target-processing="#processing" @click="${() => savePopupEditClinic()}" class="ok-next">Speichern</button>
+    </div>
       </div>
     `;
   }

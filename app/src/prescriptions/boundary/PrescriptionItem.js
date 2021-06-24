@@ -6,7 +6,8 @@ import {
   showPopupEditPatient,
   showPopupEditStatus,
   showPopupEditOrga,
-  showPopupEditClinic
+  showPopupEditClinic,
+  showPopupEditMedic
 } from "../../components/popup/control/PopupControl.js";
 import { signAndUploadBundles, updatePrescription } from "../../prescriptions/control/UnsignedPrescriptionControl.js";
 import { initialPath } from "../../libs/helper/helper.js";
@@ -434,17 +435,19 @@ class Prescription extends BElement {
               </div>
 
               <form action="" class="art-form">
-                <ul class="zet-check-list">
-                  
-                  ${prescriptions.map(medicationLine => {
-        const medicationResource = medicationLine.entry.filter(
-          (oEntry) => oEntry.resource.resourceType === "Medication"
-        )[0].resource;
-        const medicationRequestResource = medicationLine.entry.filter(
-          (oEntry) => oEntry.resource.resourceType === "MedicationRequest"
-        )[0].resource;
-        return html`
-                      <li class="art-list-item">
+              
+              <ul class="zet-check-list">
+              
+              ${prescriptions.map(medicationLine => {
+                const medicationResource = medicationLine.entry.filter(
+                  (oEntry) => oEntry.resource.resourceType === "Medication"
+                  )[0].resource;
+                  const medicationRequestResource = medicationLine.entry.filter(
+                    (oEntry) => oEntry.resource.resourceType === "MedicationRequest"
+                    )[0].resource;
+                    return html`
+                    <li class="art-list-item">
+                    <div class="edit-btn" @click="${() => showPopupEditMedic()}" style="background-image: url(${initialPath}/assets/images/edit-btn.png);"></div>
                         <input
                           type        = "text"
                           class       = "drug-name"
@@ -468,7 +471,7 @@ class Prescription extends BElement {
                         <input type = "checkbox" id="drug-1-chk" style="display:none"/>
                         <span class="checkmark" @click="${() => document.getElementById("drug-1-chk").click()}"></span>
                       </li>`;
-      })}
+                      })}
 
                 </ul>
               </form>
