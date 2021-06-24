@@ -1,3 +1,4 @@
+import { cancelPopupEditClinicAction, savePopupEditClinicAction, showPopupEditClinicAction } from "../../components/popup/control/PopupControl.js";
 import { Mapper } from "../../libs/helper/Mapper.js";
 import { createReducer } from "../../libs/redux-toolkit.esm.js"
 import { save } from "../../localstorage/control/StorageControl.js";
@@ -8,14 +9,18 @@ import {
     updatePrescriptionAction,
     selectPrescriptionAction,
     signAndUploadBundlesAction,
-    addSignedAction
+    addSignedAction,
+    updatePrescription
 } from "../control/UnsignedPrescriptionControl.js";
 
 const initialState = {
     list                 : [] ,
     signedList           : [] , // Demo Erixa
     selectedPrescription : {} ,
-    isPrevious           : false
+    isPrevious           : false,
+
+    //Popups
+    clinicPopup          : {}
 }
 
 export const prescriptions = createReducer(initialState, (builder) => {
@@ -45,22 +50,72 @@ export const prescriptions = createReducer(initialState, (builder) => {
         state.isPrevious           = isPrevious;
         state.selectedPrescription.updatedProps = {}
     })
-    .addCase(updatePrescriptionAction, (state, { payload: { name, value, key } }) => {
-        state.selectedPrescription.updatedProps[name] = value;
+    .addCase(updatePrescriptionAction, (state, { payload: { name, value, key, statePath , useWindow} }) => {
+        if (statePath.indexOf("prescriptions") === 0) {
+          statePath = statePath.replace("prescriptions.","");
+        }
+        //state.selectedPrescription.updatedProps[name] = value;
         // Clone object, Redux Toolkit does not support updateding object with Indexer.
-        const _psp = new Mapper(JSON.parse(JSON.stringify(state.selectedPrescription.prescriptions[0])));
+        const _state = useWindow === "true" ? new Mapper(window) :  new Mapper(JSON.parse(JSON.stringify(state)));
+        const _psp = new Mapper(_state.read(statePath ?? "selectedPrescription.prescriptions[0]"));
+
         if (key) {
           _psp.write(key, value);
-          state.selectedPrescription.prescriptions[0] = _psp.mapObject;
-          state.list.forEach((_,idx) => {
-            if (_[0].id === state.selectedPrescription.prescriptions[0].id) {
-              _[0] = state.selectedPrescription.prescriptions[0];
-            }
-          })
+          if (useWindow !== "true") {
+            Object.keys(_state.mapObject).forEach( k=> {
+              state[k] = _state.mapObject[k];
+            })
+            //state.selectedPrescription.prescriptions[0] = _psp.mapObject;
+            state.list.forEach((_,idx) => {
+              if (_[0].id === state.selectedPrescription.prescriptions[0].id) {
+                _[0] = state.selectedPrescription.prescriptions[0];
+              }
+            })
+          }
         }
     })
     .addCase(signAndUploadBundlesAction, (state, { payload: bundles }) => {
         // Send a list of a list of a list
         serverWebSocketActionForwarder.send({type: "SignAndUploadBundles", bearerToken: window.bearerToken, payload: [bundles]});
+    });
+
+
+    // Clinic Popup
+
+    builder.addCase(showPopupEditClinicAction, (state) => {
+      const psp = new Mapper(state.selectedPrescription.prescriptions[0]);
+      state.clinicPopup = {
+        type: psp.read("entry[resource.resourceType?Organization].resource.identifier[0].type.coding[0].code"),
+        value: psp.read("entry[resource.resourceType?Organization].resource.identifier[0].value")
+      }
+    });
+    builder.addCase(cancelPopupEditClinicAction, (state) => {
+      const psp = new Mapper(state.selectedPrescription.prescriptions[0]);
+      state.clinicPopup = {
+        type: psp.read("entry[resource.resourceType?Organization].resource.identifier[0].value"),
+        value: psp.read("entry[resource.resourceType?Organization].resource.identifier[0].value")
+      }
+    });
+    builder.addCase(savePopupEditClinicAction, (state) => {
+      const [_system, _typeCode, _typeSystem] = (() => {
+        if (state.clinicPopup.type === "BSNR") {
+          return [
+            "https://fhir.kbv.de/NamingSystem/KBV_NS_Base_BSNR",
+            "BSNR",
+            "http://terminology.hl7.org/CodeSystem/v2-0203"
+          ];
+        }
+        return [
+          "http://fhir.de/CodeSystem/identifier-type-de-basis",
+          "KZVA",
+          "http://fhir.de/NamingSystem/kzbv/kzvabrechnungsnummer"
+        ]
+      })();
+      const psp = new Mapper(state.selectedPrescription.prescriptions[0]);
+      const elt = psp.read("entry[resource.resourceType?Organization].resource.identifier[0]");
+      elt.type.coding[0].code = _typeCode;
+      elt.type.coding[0].system = _typeSystem;
+      elt.system = _system;
+      elt.value = state.clinicPopup.value;
     });
 })

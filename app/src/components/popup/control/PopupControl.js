@@ -40,3 +40,20 @@ export const showPopupEditOrgaAction = createAction("showPopupEditOrgaAction");
 export const showPopupEditOrga = () => {
     store.dispatch(showPopupEditOrgaAction());
 }
+
+
+// Clinic Popup
+export const showPopupEditClinicAction = createAction("showPopupEditClinic");
+export const showPopupEditClinic = () => {
+    store.dispatch(showPopupEditClinicAction());
+}
+
+export const cancelPopupEditClinicAction = createAction("cancelPopupEditClinicAction");
+export const cancelPopupEditClinic = () => {
+    store.dispatch(cancelPopupEditClinicAction());
+}
+
+export const savePopupEditClinicAction = createAction("savePopupEditClinicAction");
+export const savePopupEditClinic = () => {
+    store.dispatch(savePopupEditClinicAction());
+}

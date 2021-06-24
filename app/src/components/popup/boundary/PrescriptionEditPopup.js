@@ -4,7 +4,7 @@ import {
   addActiveClass,
   removeActiveClass,
 } from "../../../libs/helper/helper.js";
-import { _hidePopup } from "../control/PopupControl.js";
+import { cancelPopupEditClinic, savePopupEditClinic, _hidePopup } from "../control/PopupControl.js";
 import { Mapper } from "../../../libs/helper/Mapper.js";
 import { updatePrescription } from "../../../prescriptions/control/UnsignedPrescriptionControl.js";
 
@@ -48,6 +48,11 @@ const FIELD_STATUS_STATUSKENNZEICHEN = [
   {value: "17",	label: "TSS-Kennzeichen mit Ersatzverordnungskennzeichen"}
 ];
 
+const FIELD_CLINIC_TYPE = [
+  {value: "BSNR",	label: "Betriebsstättennummer"},
+  {value: "KZVA",	label: "KZV-Abrechnungsnummer"}
+];
+
 export class BasePopup extends BElement {
   constructor() {
     super();
@@ -85,25 +90,27 @@ export class EditField extends BElement {
     super();
 
     this.label     = this.getAttribute('label');
+    this.id        = this.getAttribute('id');
     this.ratio     = Number(this.getAttribute('ratio') ?? 1);
     this.statePath = this.getAttribute('statePath');
     this.mapKey    = this.getAttribute('mapKey');
+    this.useWindow = this.getAttribute('useWindow');
   }
 
   view() {
-    const stateObject = new Mapper(new Mapper(this.state).read(this.statePath));
+    const stateObject = new Mapper(new Mapper(this.useWindow === "true" ? window : this.state).read(this.statePath));
     this.style.flexGrow = this.ratio;
     return html`
     <div style="display:flex; flex-direction:column;flex-grow: 1;padding: 7px;margin-top:5px"> 
       <label>${this.label}</label>
-      <input type="text" value="${stateObject.read(this.mapKey ?? "", "")}" style="
+      <input type="text" id="--${this.id}" value="${stateObject.read(this.mapKey ?? "", "")}" style="
         height        : 56px;     
         background    : #E4E4E44D;
         border-radius : 4px;      
         border        : none;     
         width         : 100%;
       "
-      @keyup="${_ => updatePrescription(this.label, _.target.value, this.mapKey)}"
+      @keyup="${_ => updatePrescription(this.label, _.target.value, this.mapKey, this.statePath, true)}"
       >
     </div>
     `;
@@ -119,6 +126,7 @@ export class SelectField extends BElement {
     this.ratio     = Number(this.getAttribute('ratio') ?? 1);
     this.statePath = this.getAttribute('statePath');
     this.mapKey    = this.getAttribute('mapKey');
+    this.useWindow = this.getAttribute('useWindow');
   }
 
   view() {
@@ -140,10 +148,10 @@ export class SelectField extends BElement {
         font-size     : 18px;
         line-height   : 22px;
       "
-      @change="${_ => updatePrescription(this.label, _.target.value, this.mapKey)}"
+      @change="${_ => updatePrescription(this.label, _.target.value, this.mapKey, this.statePath)}"
       >
       ${this.items.map(_ => {
-        console.info(this.mapKey, _.value === stateObject.read(this.mapKey))
+        //console.info(this.mapKey, _.value === stateObject.read(this.mapKey))
         return new Option(_.label, _.value, false, _.value === stateObject.read(this.mapKey))
       })}
       </select>
@@ -152,6 +160,36 @@ export class SelectField extends BElement {
   }
 }
 customElements.define("select-field", SelectField);
+
+export class ClinicEditPopup extends BElement {
+
+  cancelPopupEditClinic() {
+    const psp = new Mapper(this.state.prescriptions.selectedPrescription.prescriptions[0]);
+    document.getElementById("--xx").value = psp.read("entry[resource.resourceType?Organization].resource.identifier[0].value");
+    cancelPopupEditClinic();
+  }
+
+  view() {
+    return html`
+      <div class="modal" id="clinicEdit" style="max-width: 800px;">
+        <div class="modal-title" style="text-align:left">
+          <p style="text-align:left"><strong>Medikament</strong></p>
+        </div>
+        <div style="text-align:left">
+          <div class="fieldRow">
+            <select-field statePath="prescriptions.clinicPopup" mapKey="type" label="Type" items="${JSON.stringify(FIELD_CLINIC_TYPE)}"></select-field> 
+            <edit-field statePath="prescriptions.clinicPopup" mapKey="value" id="xx" label="Betriebsstätten-Nr" />
+          </div>
+        </div>
+        <div class="modal-buttons">
+            <button data-close-button class="cancel" @click="${() => this.cancelPopupEditClinic()}">Abbrechen</button>
+            <button data-modal-target-processing="#processing" @click="${() => savePopupEditClinic()}" class="ok-next">Speichern</button>
+        </div>
+      </div>
+    `;
+  }
+}
+customElements.define("clinic-edit-popup", ClinicEditPopup);
 
 
 export class MedicamentEditPopup extends BElement {
