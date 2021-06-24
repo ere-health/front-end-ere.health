@@ -1,5 +1,4 @@
 
-import { fixBundleMediosDemo } from "../../../libs/helper/BundleFix.js";
 import { addPrescription, addSigned } from "../../control/UnsignedPrescriptionControl.js";
 
 class _ServerWebSocketActionForwarder {

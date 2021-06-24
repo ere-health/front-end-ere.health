@@ -5,7 +5,8 @@ import {
   showPopupId,
   showPopupEditPatient,
   showPopupEditStatus,
-  showPopupEditOrga
+  showPopupEditOrga,
+  showPopupEditClinic
 } from "../../components/popup/control/PopupControl.js";
 import { signAndUploadBundles, updatePrescription } from "../../prescriptions/control/UnsignedPrescriptionControl.js";
 import { initialPath } from "../../libs/helper/helper.js";
@@ -160,15 +161,13 @@ class Prescription extends BElement {
                     .checked = "${this.state.selectedPrescription.updatedProps?.industrialAccident ?? false}"
                     @change  = "${(_) => this.onUserCheckArt(_)}"
                   />
-                  <label for="arbeitsunfall"
-                    >${i18n("IndustrialAccident")}</label
-                  >
+                  <label for="arbeitsunfall">${i18n("IndustrialAccident")}</label>
                   <span class="checkmark" @click="${() => document.getElementById("arbeitsunfall").click()}"></span>
                 </li>
               </ul>
 
               <div class="collect-information">
-                <div class="form-group border-bottom">
+                <div class="form-group border-bottom" style="display:flex; justify-content: space-between;">
                   <div class="input-wrapper">
                     <label for="name">${i18n("HealthInsurance")}</label>
                     <input
@@ -179,7 +178,18 @@ class Prescription extends BElement {
                       @keyup = "${_ => this.onUserInput(_, "entry[resource.resourceType?Coverage].resource.payor[0].display")}"
                     />
                   </div>
+
+                  <div class="input-wrapper">
+                  <label for="wop">WOP</label>
+                  <input
+                    type   = "text"
+                    name   = "wop"
+                    id     = "wop"
+                    value  = "${_psp.read("entry[resource.resourceType?Coverage].resource.extension[url?wop].valueCoding.code", "")}"
+                    @keyup = "${_ => this.onUserInput(_, "entry[resource.resourceType?Coverage].resource.extension[url?wop].valueCoding.code")}"
+                  />
                 </div>
+              </div>
 
                 <div class="column-2 border-bottom">
                   <div class="form-group">
@@ -264,6 +274,7 @@ class Prescription extends BElement {
                 <div class="column-3 border-bottom">
                   <div class="form-group">
                     <div class="input-wrapper">
+                      <div class="edit-btn" @click="${() => showPopupEditClinic()}" style="background-image: url(${initialPath}/assets/images/edit-btn.png);"></div>
                       <label for="Betriebsstätten1"
                         >${i18n("OperatingSiteNum")}</label
                       >
