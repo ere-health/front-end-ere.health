@@ -14,7 +14,10 @@ import {
   savePopupEditClinicAction,
   showPopupEditPractIdAction,
   savePopupEditPractIdAction,
-  cancelPopupEditPractIdAction
+  cancelPopupEditPractIdAction,
+  showPopupEditMedikamentAction,
+  savePopupEditMedikamentAction,
+  cancelPopupEditMedikamentAction
 } from "../control/PopupControl.js";
 
 const initialState = {
@@ -33,9 +36,7 @@ export const popupReducer = createReducer(initialState, (builder) => {
     builder.addCase(showPopupFatigAction, (state) => {
         state.showPopup = "fatig";
     });
-    builder.addCase(showPopupEditMedicAction, (state) => {
-      state.showPopup = "medicEdit";
-    });   
+ 
     builder.addCase(hidePopupAction, (state) => {
       state.showPopup = "";
     });
@@ -72,6 +73,17 @@ export const popupReducer = createReducer(initialState, (builder) => {
       state.showPopup = "";
     });
     builder.addCase(savePopupEditPractIdAction, (state) => {
+      state.showPopup = "";
+    });
+
+
+    builder.addCase(showPopupEditMedikamentAction, (state) => {
+      state.showPopup = "medicEdit";
+    });
+    builder.addCase(cancelPopupEditMedikamentAction, (state) => {
+      state.showPopup = "";
+    });
+    builder.addCase(savePopupEditMedikamentAction, (state) => {
       state.showPopup = "";
     });
 })

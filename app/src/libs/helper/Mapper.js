@@ -115,7 +115,7 @@ export class Mapper {
                     }
                   break;
                 case "=":
-                    if (tmpCursor === pathToken.filter) {
+                    if (tmpCursor.toString() === pathToken.filter.toString()) {
                       cursor = _tmpCur;
                       return;
                     }

@@ -1,4 +1,4 @@
-import { cancelPopupEditClinicAction, cancelPopupEditPractIdAction, savePopupEditClinicAction, savePopupEditPractIdAction, showPopupEditClinicAction, showPopupEditPractIdAction } from "../../components/popup/control/PopupControl.js";
+import { cancelPopupEditClinicAction, cancelPopupEditMedikamentAction, cancelPopupEditPractIdAction, savePopupEditClinicAction, savePopupEditMedikamentAction, savePopupEditPractIdAction, showPopupEditClinicAction, showPopupEditMedikamentAction, showPopupEditPractIdAction } from "../../components/popup/control/PopupControl.js";
 import { Mapper } from "../../libs/helper/Mapper.js";
 import { createReducer } from "../../libs/redux-toolkit.esm.js"
 import { save } from "../../localstorage/control/StorageControl.js";
@@ -21,7 +21,8 @@ const initialState = {
 
     //Popups
     clinicPopup          : {},
-    PractIdPopup         : {}
+    PractIdPopup         : {},
+    MedikamentPopup      : {}
 }
 
 export const prescriptions = createReducer(initialState, (builder) => {
@@ -158,5 +159,47 @@ export const prescriptions = createReducer(initialState, (builder) => {
       elt.type.coding[0].system = _typeSystem;
       elt.system = _system;
       elt.value = state.PractIdPopup.value;
+    });
+
+
+
+
+    // MedicEdit Popup
+
+    builder.addCase(showPopupEditMedikamentAction, (state) => {
+      const psp = new Mapper(state.selectedPrescription.prescriptions[0]);
+      state.MedikamentPopup = {
+        medicationText    : psp.read("entry[resource.resourceType=Medication].resource.code.text"),
+        pzn               : psp.read("entry[resource.resourceType=Medication].resource.code.coding[system?pzn].code"),
+        quantityValue     : psp.read("entry[resource.resourceType?MedicationRequest].resource.dispenseRequest.quantity.value"),
+        norm              : psp.read("entry[resource.resourceType?Medication].resource.extension[url?normgroesse].valueCode"),
+        form              : psp.read("entry[resource.resourceType?Medication].resource.form.coding[system?KBV_CS_SFHIR_KBV_DARREICHUNGSFORM].code"),
+        dosageInstruction : psp.read("entry[resource.resourceType?MedicationRequest].resource.dosageInstruction[0].text")
+      }
+    });
+    builder.addCase(cancelPopupEditMedikamentAction, (state) => {
+      const psp = new Mapper(state.selectedPrescription.prescriptions[0]);
+      state.MedikamentPopup = {
+        medicationText    : psp.read("entry[resource.resourceType=Medication].resource.code.text"),
+        pzn               : psp.read("entry[resource.resourceType=Medication].resource.code.coding[system?pzn].code"),
+        quantityValue     : psp.read("entry[resource.resourceType?MedicationRequest].resource.dispenseRequest.quantity.value"),
+        norm              : psp.read("entry[resource.resourceType?Medication].resource.extension[url?normgroesse].valueCode"),
+        form              : psp.read("entry[resource.resourceType?Medication].resource.form.coding[system?KBV_CS_SFHIR_KBV_DARREICHUNGSFORM].code"),
+        dosageInstruction : psp.read("entry[resource.resourceType?MedicationRequest].resource.dosageInstruction[0].text")
+      }
+    });
+    builder.addCase(savePopupEditMedikamentAction, (state) => {
+      const psp = new Mapper(state.selectedPrescription.prescriptions[0]);
+      psp.write("entry[resource.resourceType=Medication].resource.code.text", state.MedikamentPopup.medicationText);
+      psp.write("entry[resource.resourceType=Medication].resource.code.coding[system?pzn].code", state.MedikamentPopup.pzn);
+      psp.write("entry[resource.resourceType?MedicationRequest].resource.dispenseRequest.quantity.value", Number(state.MedikamentPopup.quantityValue));
+      psp.write("entry[resource.resourceType?Medication].resource.extension[url?normgroesse].valueCode", state.MedikamentPopup.norm);
+      psp.write("entry[resource.resourceType?Medication].resource.form.coding[system?KBV_CS_SFHIR_KBV_DARREICHUNGSFORM].code", state.MedikamentPopup.form);
+      psp.write("entry[resource.resourceType?MedicationRequest].resource.dosageInstruction[0].text", state.MedikamentPopup.dosageInstruction);
+      if (state.MedikamentPopup.dosageInstruction) {
+        psp.write("entry[resource.resourceType?MedicationRequest].resource.dosageInstruction[0].extension[url?KBV_EX_ERP_DosageFlag].valueBoolean", true);
+      } else {
+        psp.write("entry[resource.resourceType?MedicationRequest].resource.dosageInstruction[0].extension[url?KBV_EX_ERP_DosageFlag].valueBoolean", false);
+      }
     });
 })
