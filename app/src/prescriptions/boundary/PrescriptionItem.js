@@ -450,7 +450,7 @@ class Prescription extends BElement {
                     )[0].resource;
                     return html`
                     <li class="art-list-item">
-                    <div class="edit-btn" @click="${() => showPopupEditMedikament()}" style="background-image: url(${initialPath}/assets/images/edit-btn.png);"></div>
+                    <div class="edit-btn" @click="${() => showPopupEditMedikament()}" style="left: 40px; background-image: url(${initialPath}/assets/images/edit-btn.png);"></div>
                         <input
                           type        = "text"
                           class       = "drug-name"
