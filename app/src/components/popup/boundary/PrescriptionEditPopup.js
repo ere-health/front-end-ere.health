@@ -24,7 +24,7 @@ const FIELD_STATUS_BESONDERE  = [
 ]
 
 const FIELD_STATUS_ZUORDNUNG = [
-  {value: "00", label: "ni11cht gesetzt"},
+  {value: "00", label: "nicht gesetzt"},
   {value: "01", label: "DM2"},
   {value: "02", label: "BRK"},
   {value: "03", label: "KHK"},
@@ -190,7 +190,7 @@ export class ClinicEditPopup extends BElement {
     return html`
       <div class="modal" id="clinicEdit" style="max-width: 800px;">
         <div class="modal-title" style="text-align:left">
-          <p style="text-align:left"><strong>Medikament</strong></p>
+          <p style="text-align:left"><strong>Betriebsstätten-Nr.</strong></p>
         </div>
         <div style="text-align:left">
           <div class="fieldRow">
@@ -220,7 +220,7 @@ export class PractIdEditPopup extends BElement {
     return html`
       <div class="modal" id="PractIdEdit" style="max-width: 800px;">
         <div class="modal-title" style="text-align:left">
-          <p style="text-align:left"><strong>Medikament</strong></p>
+          <p style="text-align:left"><strong>Arzt-Nr.</strong></p>
         </div>
         <div style="text-align:left">
           <div class="fieldRow">
