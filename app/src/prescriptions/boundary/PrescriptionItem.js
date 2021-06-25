@@ -7,7 +7,8 @@ import {
   showPopupEditStatus,
   showPopupEditOrga,
   showPopupEditClinic,
-  showPopupEditMedic
+  showPopupEditMedic,
+  showPopupEditPractId
 } from "../../components/popup/control/PopupControl.js";
 import { signAndUploadBundles, updatePrescription } from "../../prescriptions/control/UnsignedPrescriptionControl.js";
 import { initialPath } from "../../libs/helper/helper.js";
@@ -293,6 +294,7 @@ class Prescription extends BElement {
 
                   <div class="form-group">
                     <div class="input-wrapper">
+                      <div class="edit-btn" @click="${() => showPopupEditPractId()}" style="background-image: url(${initialPath}/assets/images/edit-btn.png);"></div>
                       <label for="doctor1">${i18n("DoctorNum")}</label>
                       <input
                         type   = "text"

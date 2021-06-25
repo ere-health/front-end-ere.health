@@ -62,3 +62,21 @@ export const savePopupEditClinicAction = createAction("savePopupEditClinicAction
 export const savePopupEditClinic = () => {
     store.dispatch(savePopupEditClinicAction());
 }
+
+
+
+// Practitionner ID Popup
+export const showPopupEditPractIdAction = createAction("showPopupEditPractId");
+export const showPopupEditPractId = () => {
+    store.dispatch(showPopupEditPractIdAction());
+}
+
+export const cancelPopupEditPractIdAction = createAction("cancelPopupEditPractIdAction");
+export const cancelPopupEditPractId = () => {
+    store.dispatch(cancelPopupEditPractIdAction());
+}
+
+export const savePopupEditPractIdAction = createAction("savePopupEditPractIdAction");
+export const savePopupEditPractId = () => {
+    store.dispatch(savePopupEditPractIdAction());
+}

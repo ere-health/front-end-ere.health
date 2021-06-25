@@ -1,4 +1,4 @@
-import { cancelPopupEditClinicAction, savePopupEditClinicAction, showPopupEditClinicAction } from "../../components/popup/control/PopupControl.js";
+import { cancelPopupEditClinicAction, cancelPopupEditPractIdAction, savePopupEditClinicAction, savePopupEditPractIdAction, showPopupEditClinicAction, showPopupEditPractIdAction } from "../../components/popup/control/PopupControl.js";
 import { Mapper } from "../../libs/helper/Mapper.js";
 import { createReducer } from "../../libs/redux-toolkit.esm.js"
 import { save } from "../../localstorage/control/StorageControl.js";
@@ -20,7 +20,8 @@ const initialState = {
     isPrevious           : false,
 
     //Popups
-    clinicPopup          : {}
+    clinicPopup          : {},
+    PractIdPopup         : {}
 }
 
 export const prescriptions = createReducer(initialState, (builder) => {
@@ -117,5 +118,45 @@ export const prescriptions = createReducer(initialState, (builder) => {
       elt.type.coding[0].system = _typeSystem;
       elt.system = _system;
       elt.value = state.clinicPopup.value;
+    });
+
+
+    // PractId Popup
+
+    builder.addCase(showPopupEditPractIdAction, (state) => {
+      const psp = new Mapper(state.selectedPrescription.prescriptions[0]);
+      state.PractIdPopup = {
+        type: psp.read("entry[resource.resourceType?Practitioner].resource.identifier[0].type.coding[0].code"),
+        value: psp.read("entry[resource.resourceType?Practitioner].resource.identifier[0].value")
+      }
+    });
+    builder.addCase(cancelPopupEditPractIdAction, (state) => {
+      const psp = new Mapper(state.selectedPrescription.prescriptions[0]);
+      state.PractIdPopup = {
+        type: psp.read("entry[resource.resourceType?Practitioner].resource.identifier[0].value"),
+        value: psp.read("entry[resource.resourceType?Practitioner].resource.identifier[0].value")
+      }
+    });
+    builder.addCase(savePopupEditPractIdAction, (state) => {
+      const [_system, _typeCode, _typeSystem] = (() => {
+        if (state.PractIdPopup.type === "LANR") {
+          return [
+            "https://fhir.kbv.de/NamingSystem/KBV_NS_Base_ANR",
+            "LANR",
+            "http://terminology.hl7.org/CodeSystem/v2-0203"
+          ];
+        }
+        return [
+          "http://fhir.de/NamingSystem/kzbv/zahnarztnummer",
+          "ZANR",
+          "http://fhir.de/CodeSystem/identifier-type-de-basis"
+        ]
+      })();
+      const psp = new Mapper(state.selectedPrescription.prescriptions[0]);
+      const elt = psp.read("entry[resource.resourceType?Practitioner].resource.identifier[0]");
+      elt.type.coding[0].code = _typeCode;
+      elt.type.coding[0].system = _typeSystem;
+      elt.system = _system;
+      elt.value = state.PractIdPopup.value;
     });
 })
