@@ -32,7 +32,7 @@ class Popup extends BElement {
   }
 
   hideAll() {
-    ["id", "processing", "fatig", "patientEdit", "statusEdit", "organizationEdit", "clinicEdit", "PractIdEdit"].forEach(_ => this.hidePopup(_));
+    ["id", "processing", "fatig", "patientEdit", "statusEdit", "organizationEdit", "clinicEdit", "PractIdEdit", "medicEdit"].forEach(_ => this.hidePopup(_));
   }
 
   doSign() {

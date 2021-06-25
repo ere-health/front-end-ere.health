@@ -4,7 +4,7 @@ import {
   addActiveClass,
   removeActiveClass,
 } from "../../../libs/helper/helper.js";
-import { cancelPopupEditClinic, savePopupEditClinic, _hidePopup , cancelPopupEditPractId, savePopupEditPractId} from "../control/PopupControl.js";
+import { cancelPopupEditClinic, savePopupEditClinic, _hidePopup , cancelPopupEditPractId, savePopupEditPractId, savePopupEditMedikament, cancelPopupEditMedikament} from "../control/PopupControl.js";
 import { Mapper } from "../../../libs/helper/Mapper.js";
 import { updatePrescription } from "../../../prescriptions/control/UnsignedPrescriptionControl.js";
 
@@ -54,6 +54,18 @@ const FIELD_CLINIC_TYPE = [
 ];
 
 const FIELD_PRACTID_TYPE = [
+  {value: "LANR",	label: "Arztnummer"},
+  {value: "ZANR",	label: "Zahnarztnummer"}
+];
+
+const FIELD_NORMGROBE_TYPE = [
+  {value: "none",	label: "none"},
+  {value: "N1",	label: "N1"},
+  {value: "N2",	label: "N2"},
+  {value: "N3",	label: "N3"}
+];
+
+const FIELD_DARREICH_TYPE = [
   {value: "LANR",	label: "Arztnummer"},
   {value: "ZANR",	label: "Zahnarztnummer"}
 ];
@@ -200,7 +212,7 @@ export class PractIdEditPopup extends BElement {
 
   cancelPopupEditPractId() {
     const psp = new Mapper(this.state.prescriptions.selectedPrescription.prescriptions[0]);
-    document.getElementById("--xx").value = psp.read("entry[resource.resourceType?Practitioner].resource.identifier[0].value");
+    document.getElementById("--practid-value").value = psp.read("entry[resource.resourceType?Practitioner].resource.identifier[0].value");
     cancelPopupEditPractId();
   }
 
@@ -213,7 +225,7 @@ export class PractIdEditPopup extends BElement {
         <div style="text-align:left">
           <div class="fieldRow">
             <select-field statePath="prescriptions.PractIdPopup" mapKey="type" label="Type" items="${JSON.stringify(FIELD_PRACTID_TYPE)}"></select-field> 
-            <edit-field statePath="prescriptions.PractIdPopup" mapKey="value" id="xx" label="Betriebsstätten-Nr" />
+            <edit-field statePath="prescriptions.PractIdPopup" mapKey="value" id="practid-value" label="Betriebsstätten-Nr" />
           </div>
         </div>
         <div class="modal-buttons">
@@ -235,19 +247,23 @@ export class MedicamentEditPopup extends BElement {
         </div>
         <div style="text-align:left">
           <div class="fieldRow"> 
-            <edit-field label="Handelsname" />
+            <edit-field statePath="prescriptions.MedikamentPopup" mapKey="medicationText" label="Handelsname"</edit-field>
           </div>
           <div class="fieldRow">
-            <span style="display:flex;flex:1"><edit-field label="PZN" /></span>
-            <span style="display:flex;flex:1"><edit-field label="Darreichungsform" /></span>
+            <edit-field statePath="prescriptions.MedikamentPopup" mapKey="pzn" label="PZN" ratio="0.5"></edit-field>
+          </div>
+          <div class="fieldRow">
+            <edit-field statePath="prescriptions.MedikamentPopup" mapKey="quantityValue" label="Menge"></edit-field>
+            <select-field statePath="prescriptions.MedikamentPopup" mapKey="norm" label="Normgröße" items="${JSON.stringify(FIELD_NORMGROBE_TYPE)}"></select-field> 
+            <select-field statePath="prescriptions.MedikamentPopup" mapKey="form" label="Darreichungsform" items="${JSON.stringify(FIELD_DARREICH_TYPE)}"></select-field> 
           </div>
           <div class="fieldRow"> 
-            <edit-field label="Dosierungsanweisung" />
+            <edit-field statePath="prescriptions.MedikamentPopup" mapKey="dosageInstruction" label="Dosierungsanweisung"</edit-field>
           </div>
         </div>
         <div class="modal-buttons">
-        <button data-close-button class="cancel" @click="${() => this.cancelPopupEditClinic()}">Abbrechen</button>
-        <button data-modal-target-processing="#processing" @click="${() => savePopupEditClinic()}" class="ok-next">Speichern</button>
+        <button data-close-button class="cancel" @click="${() => cancelPopupEditMedikament()}">Abbrechen</button>
+        <button data-modal-target-processing="#processing" @click="${() => savePopupEditMedikament()}" class="ok-next">Speichern</button>
     </div>
       </div>
     `;

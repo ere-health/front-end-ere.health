@@ -8,7 +8,8 @@ import {
   showPopupEditOrga,
   showPopupEditClinic,
   showPopupEditMedic,
-  showPopupEditPractId
+  showPopupEditPractId,
+  showPopupEditMedikament
 } from "../../components/popup/control/PopupControl.js";
 import { signAndUploadBundles, updatePrescription } from "../../prescriptions/control/UnsignedPrescriptionControl.js";
 import { initialPath } from "../../libs/helper/helper.js";
@@ -449,7 +450,7 @@ class Prescription extends BElement {
                     )[0].resource;
                     return html`
                     <li class="art-list-item">
-                    <div class="edit-btn" @click="${() => showPopupEditMedic()}" style="background-image: url(${initialPath}/assets/images/edit-btn.png);"></div>
+                    <div class="edit-btn" @click="${() => showPopupEditMedikament()}" style="background-image: url(${initialPath}/assets/images/edit-btn.png);"></div>
                         <input
                           type        = "text"
                           class       = "drug-name"
