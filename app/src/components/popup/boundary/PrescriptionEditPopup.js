@@ -4,7 +4,7 @@ import {
   addActiveClass,
   removeActiveClass,
 } from "../../../libs/helper/helper.js";
-import { cancelPopupEditClinic, savePopupEditClinic, _hidePopup } from "../control/PopupControl.js";
+import { cancelPopupEditClinic, savePopupEditClinic, _hidePopup , cancelPopupEditPractId, savePopupEditPractId} from "../control/PopupControl.js";
 import { Mapper } from "../../../libs/helper/Mapper.js";
 import { updatePrescription } from "../../../prescriptions/control/UnsignedPrescriptionControl.js";
 
@@ -51,6 +51,11 @@ const FIELD_STATUS_STATUSKENNZEICHEN = [
 const FIELD_CLINIC_TYPE = [
   {value: "BSNR",	label: "Betriebsstättennummer"},
   {value: "KZVA",	label: "KZV-Abrechnungsnummer"}
+];
+
+const FIELD_PRACTID_TYPE = [
+  {value: "LANR",	label: "Arztnummer"},
+  {value: "ZANR",	label: "Zahnarztnummer"}
 ];
 
 export class BasePopup extends BElement {
@@ -191,6 +196,35 @@ export class ClinicEditPopup extends BElement {
 }
 customElements.define("clinic-edit-popup", ClinicEditPopup);
 
+export class PractIdEditPopup extends BElement {
+
+  cancelPopupEditPractId() {
+    const psp = new Mapper(this.state.prescriptions.selectedPrescription.prescriptions[0]);
+    document.getElementById("--xx").value = psp.read("entry[resource.resourceType?Practitioner].resource.identifier[0].value");
+    cancelPopupEditPractId();
+  }
+
+  view() {
+    return html`
+      <div class="modal" id="PractIdEdit" style="max-width: 800px;">
+        <div class="modal-title" style="text-align:left">
+          <p style="text-align:left"><strong>Medikament</strong></p>
+        </div>
+        <div style="text-align:left">
+          <div class="fieldRow">
+            <select-field statePath="prescriptions.PractIdPopup" mapKey="type" label="Type" items="${JSON.stringify(FIELD_PRACTID_TYPE)}"></select-field> 
+            <edit-field statePath="prescriptions.PractIdPopup" mapKey="value" id="xx" label="Betriebsstätten-Nr" />
+          </div>
+        </div>
+        <div class="modal-buttons">
+            <button data-close-button class="cancel" @click="${() => this.cancelPopupEditPractId()}">Abbrechen</button>
+            <button data-modal-target-processing="#processing" @click="${() => savePopupEditPractId()}" class="ok-next">Speichern</button>
+        </div>
+      </div>
+    `;
+  }
+}
+customElements.define("pract-id-edit-popup", PractIdEditPopup);
 
 export class MedicamentEditPopup extends BElement {
   view() {
