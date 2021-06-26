@@ -471,7 +471,13 @@ class Prescription extends BElement {
                           @keyup="${_ => this.onUserInput(_, "entry[1].resource.dosageInstruction[0].text")}"
                           placeholder="" 
                         />
-                        <input type = "checkbox" id="drug-1-chk" style="display:none"/>
+                        <input 
+                        type="checkbox" 
+                        id="drug-1-chk" 
+                        style="display:none"
+                        .checked = "${_psp.read("entry[resource.resourceType?MedicationRequest].resource.substitution.allowedBoolean")}"
+                        @change  = "${_ => updatePrescription("", _.target.checked, "entry[resource.resourceType?MedicationRequest].resource.substitution.allowedBoolean", "")}"
+                        />
                         <span class="checkmark" @click="${() => document.getElementById("drug-1-chk").click()}"></span>
                       </li>`;
                       })}
