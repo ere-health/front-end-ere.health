@@ -53,14 +53,13 @@ export const prescriptions = createReducer(initialState, (builder) => {
         state.selectedPrescription.updatedProps = {}
     })
     .addCase(updatePrescriptionAction, (state, { payload: { name, value, key, statePath , useWindow} }) => {
-        if (statePath.indexOf("prescriptions") === 0) {
+        if (statePath?.indexOf("prescriptions") === 0) {
           statePath = statePath.replace("prescriptions.","");
         }
         //state.selectedPrescription.updatedProps[name] = value;
         // Clone object, Redux Toolkit does not support updateding object with Indexer.
         const _state = useWindow === "true" ? new Mapper(window) :  new Mapper(JSON.parse(JSON.stringify(state)));
-        const _psp = new Mapper(_state.read(statePath ?? "selectedPrescription.prescriptions[0]"));
-
+        const _psp = new Mapper(_state.read(statePath ? statePath : "selectedPrescription.prescriptions[0]"));
         if (key) {
           _psp.write(key, value);
           if (useWindow !== "true") {
