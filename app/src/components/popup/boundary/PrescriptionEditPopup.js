@@ -70,6 +70,14 @@ const FIELD_DARREICH_TYPE = [
   {value: "ZANR",	label: "Zahnarztnummer"}
 ];
 
+const FIELD_PRACTQUALI_CODE = [
+  {value: "00", label: "Arzt"},
+  {value: "01", label: "Zahnarzt"},
+  {value: "02", label: "Hebamme"},
+  {value: "03", label: "Arzt in Weiterbildung"},
+  {value: "04", label: "Arzt als Vertreter"},
+]
+
 export class BasePopup extends BElement {
   constructor() {
     super();
@@ -319,7 +327,7 @@ export class OrganizationEditPopup extends BElement {
             <edit-field statePath="prescriptions.selectedPrescription.prescriptions[0]" mapKey="entry[resource.resourceType?Practitioner].resource.name[0].family" label="Nachname"></edit-field>
           </div>
           <div class="fieldRow"> 
-            <edit-field statePath="prescriptions.selectedPrescription.prescriptions[0]" mapKey="entry[resource.resourceType?Practitioner].resource.qualification[code.coding[system?Qualification_Type]].code.coding[system?Qualification_Type].code" label="Qualifikation" ratio="1"></edit-field>
+            <select-field statePath="prescriptions.selectedPrescription.prescriptions[0]" mapKey="entry[resource.resourceType?Practitioner].resource.qualification[code.coding[system?Qualification_Type]].code.coding[system?Qualification_Type].code" label="Qualifikation" ratio="1" items="${JSON.stringify(FIELD_PRACTQUALI_CODE)}"></select-field> 
             <edit-field statePath="prescriptions.selectedPrescription.prescriptions[0]" mapKey="entry[resource.resourceType?Practitioner].resource.qualification[code.text].code.text" label="Berufsbezeichnung" ratio="2"></edit-field>
           </div>
         </div>
