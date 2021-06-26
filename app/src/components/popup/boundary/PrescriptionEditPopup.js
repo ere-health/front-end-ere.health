@@ -59,7 +59,7 @@ const FIELD_PRACTID_TYPE = [
 ];
 
 const FIELD_NORMGROBE_TYPE = [
-  {value: "none",	label: "none"},
+  {value: "none",	label: "nicht gesetzt"},
   {value: "N1",	label: "N1"},
   {value: "N2",	label: "N2"},
   {value: "N3",	label: "N3"}
