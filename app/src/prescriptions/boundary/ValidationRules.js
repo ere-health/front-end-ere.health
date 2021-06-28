@@ -6,7 +6,8 @@ export const MainWindowValidationRules = {
     'drug-1' : ['required', 'regex:/^.{1,50}$/'],
     'pzn': ['required', 'regex:/^[0-9]{6,8}$/'],
     'dosage-instructions' :  ['regex:/^.{1,30}$/'],
-    // 'full-address': ['required', ]
+    'full-patient-address': ['required', 
+    'regex:/^[a-z A-ZäöüÄÖÜß\\-\\.]{1,20}? [a-z A-ZäöüÄÖÜß\\-]{1,50} [a-z A-ZäöüÄÖÜß\\-\\.]{1,50}, [a-z A-ZäöüÄÖÜß\\-\\.0-9]{1,50} [a-z A-ZäöüÄÖÜß\\-\\.0-9]{1,10}, [0-9]{5} [a-z A-ZäöüÄÖÜß\\-]{1,32}$/'],
 
     //Numbers
     'betriebsstätten': ['required', 'regex:/^[0-9]{8,9}$/'],
@@ -26,8 +27,8 @@ export const PatientPopupValidationRules = {
     'patient-given' : ['required', 'regex:/^[a-z A-ZäöüÄÖÜß\\-]{1,50}$/'],
     'patient-family' : ['required', 'regex:/^[a-z A-ZäöüÄÖÜß\\-\\.]{1,50}$/'],
     'patient-street-name' : ['required', 'regex:/^[a-z A-ZäöüÄÖÜß\\-\\.0-9]{1,50}$/'],
-    'patient-city' : ['required', 'regex:/^[a-z A-ZäöüÄÖÜß\\-]{1,32}$/'],
     'patient-street-number': ['required', 'regex:/^[a-z A-ZäöüÄÖÜß\\-\\.0-9]{1,10}$/'],
+    'patient-city' : ['required', 'regex:/^[a-z A-ZäöüÄÖÜß\\-]{1,32}$/'],
 
     //Numbers
     'patient-postal-code': ['required', 'regex:/^[0-9]{5}$/']
@@ -49,7 +50,27 @@ export const OrganizationPopupValidationRules = {
     'organization-phone' : ['required', 'regex:/^\\+?[0-9]{6,15}$/']
 };
 
+export const ClinicPopupValidationRules = {
+    //Numbers, copy of MainWindows value
+    'clinic-betriebsstätten': ['required', 'regex:/^[0-9]{8,9}$/']
+};
+
+export const PractIdPopupValidationRules = {
+    //Numbers, copy of MainWindows value
+    'practId-doctor-number': ['required', 'regex:/^[0-9]{6,9}$/']
+};
+
+export const MedicPopupValidationRules = {
+    //String, copy of MainWindows value
+    'medic-medicationText' : ['required', 'regex:/^.{1,50}$/'],
+    'medic-pzn': ['required', 'regex:/^[0-9]{6,8}$/'],
+    'medic-dosage-instructions' :  ['regex:/^.{1,30}$/']
+};
+
 export const PopupRules = {
     'organizationEdit': OrganizationPopupValidationRules,
-    'patientEdit' : PatientPopupValidationRules
+    'patientEdit' : PatientPopupValidationRules,
+    'clinicEdit' : ClinicPopupValidationRules,
+    'PractIdEdit' : PractIdPopupValidationRules,
+    'medicEdit' : MedicPopupValidationRules
 }

@@ -49,9 +49,8 @@ class Prescription extends BElement {
   }
 
   onUserInput({ target: { name, value } }, key) {
-    console.info("Validating name:" + name + ", value:" + value);
     let validation = this.validateInput(name, value);
-    console.info("Passes?" + validation.passes() + " for field:" + name + " and value:" + value);
+    // console.info("Passes?" + validation.passes() + " for field:" + name + " and value:" + value);
 
     if (validation.passes()) {
       removeValidationErrorForMainWindow(name);
@@ -226,15 +225,15 @@ class Prescription extends BElement {
                   <div class="form-group">
                     <div class="input-wrapper">
                     <div class="edit-btn" @click="${() => showPopupEditPatient()}" style="background-image: url(${initialPath}/assets/images/edit-btn.png);"></div>
-                      <label for="address1">${i18n("Patient.Name")}</label>
+                      <label for="full-patient-address">${i18n("Patient.Name")}</label>
                       <textarea
-                        name   = "address"
-                        id     = "address1"
+                        name   = "full-patient-address"
+                        id     = "full-patient-address"
                         cols   = "10"
                         @keyup = "${_ => this.onUserInput(_)}"
-                      >${(this.state.selectedPrescription.updatedProps.address ?? (displayName + ", " +
-        _psp.read("entry[resource.resourceType?Patient].resource.address[0]._line[extension[url?streetName]].extension[url?streetName].valueString", "") + " " +
-        _psp.read("entry[resource.resourceType?Patient].resource.address[0]._line[extension[url?houseNumber]].extension[url?houseNumber].valueString", "") + ", " +
+                        >${(this.state.selectedPrescription.updatedProps.address ?? (
+        _psp.read("entry[resource.resourceType?Patient].resource.name[0].prefix[0]", "") + " " + displayName + ", " +
+        _psp.read("entry[resource.resourceType?Patient].resource.address[0].line[0]", "") + ", " +
         _psp.read("entry[resource.resourceType?Patient].resource.address[0].postalCode", "") + " " +
         _psp.read("entry[resource.resourceType?Patient].resource.address[0].city", "").trim()))}
                       </textarea>
@@ -346,7 +345,7 @@ class Prescription extends BElement {
                         id     = "authoredOn"
                         class  = "bright"
                         name   = "authoredOn"
-                        value  = "${_psp.read("entry[resource.resourceType?MedicationRequest].resource.authoredOn", "")}"
+                        value  = "${_psp.read("entry[resource.resourceType?MedicationRequest].resource.authoredOn", "").split('T')[0]}"
                         @keyup = "${_ => {
         try {
           this.onUserInput({

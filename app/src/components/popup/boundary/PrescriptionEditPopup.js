@@ -17,6 +17,8 @@ import {
 } from "../control/PopupControl.js";
 import { Mapper } from "../../../libs/helper/Mapper.js";
 import { updatePrescription } from "../../../prescriptions/control/UnsignedPrescriptionControl.js";
+import { PopupRules } from "../../../prescriptions/boundary/ValidationRules.js";
+
 
 const FIELD_STATUS_VERSICHERTENART = [
   { value: "1", label: "Mitglieder" },
@@ -402,10 +404,17 @@ export class EditField extends BElement {
     let rule = new Object();
     let currentPopupName = "";
 
+    //How to get here state.showPopup?
     if (this.id.startsWith('patient')) {
       currentPopupName = 'patientEdit';
     } else if ((this.id.startsWith('practitioner')) || (this.id.startsWith('organization'))) {
       currentPopupName = 'organizationEdit';
+    } else if (this.id.startsWith('practId')) {
+      currentPopupName = 'PractIdEdit';
+    } else if (this.id.startsWith('clinic')) {
+      currentPopupName = 'clinicEdit';
+    } else if (this.id.startsWith('medic')) {
+      currentPopupName = 'medicEdit';
     }
 
     data[name] = value;
@@ -414,14 +423,38 @@ export class EditField extends BElement {
     return new Validator(data, rule);
   }
 
-  onUserInput(name, value, key) {
-    let validation = this.validateInput(name, value);
+  onUserInput(label, value, key, statePath, useWindow, id) {
+    let validation = this.validateInput(id, value);
 
     if (validation.passes()) {
-      removeValidationErrorForCurrentPopup(name);
-      updatePrescription(name, value, key);
+      removeValidationErrorForCurrentPopup(id);
+      updatePrescription(label, value, key, statePath, useWindow);
+
+      if ((id.startsWith("clinic")) && ((document.getElementById("clinicEdit-error-messages").innerHTML.trim().length == 0))) {
+        document.getElementById("clinic-save-button").disabled = false;
+      } else if ((id.startsWith("practId"))  && ((document.getElementById("PractIdEdit-error-messages").innerHTML.trim().length == 0))) {
+        document.getElementById("practId-save-button").disabled = false;
+      } else if ((id.startsWith("medic")) && ((document.getElementById("medicEdit-error-messages").innerHTML.trim().length == 0))) {
+        document.getElementById("medic-save-button").disabled = false;
+      }else if ((id.startsWith("patient")) && ((document.getElementById("patientEdit-error-messages").innerHTML.trim().length == 0))) {
+        document.getElementById("patient-save-button").disabled = false;
+      }else if ((id.startsWith("organization")) && ((document.getElementById("organizationEdit-error-messages").innerHTML.trim().length == 0))) {
+        document.getElementById("organization-save-button").disabled = false;
+      }
     } else {
-      addValidationErrorForCurrentPopup(name, validation.errors.get(name));
+      addValidationErrorForCurrentPopup(id, validation.errors.get(id));
+
+      if (id.startsWith("clinic")) {
+        document.getElementById("clinic-save-button").disabled = true;
+      } else if (id.startsWith("practId")) {
+        document.getElementById("practId-save-button").disabled = true;
+      } else if (id.startsWith("medic")) {
+        document.getElementById("medic-save-button").disabled = true;
+      } else if (id.startsWith("patient")) {
+        document.getElementById("patient-save-button").disabled = true;
+      } else if ((id.startsWith("organization")) || (id.startsWith("practitioner"))) {
+        document.getElementById("organization-save-button").disabled = true;
+      }
     }
   }
 
@@ -438,7 +471,7 @@ export class EditField extends BElement {
         border        : none;     
         width         : 100%;
       "
-      @keyup="${_ => updatePrescription(this.label, _.target.value, this.mapKey, this.statePath, true)}"
+      @keyup="${_ => this.onUserInput(this.label, _.target.value, this.mapKey, this.statePath, true, this.id)}"
       >
     </div>
     `;
@@ -506,13 +539,14 @@ export class ClinicEditPopup extends BElement {
         <div style="text-align:left">
           <div class="fieldRow">
             <select-field statePath="prescriptions.clinicPopup" mapKey="type" label="Type" items="${JSON.stringify(FIELD_CLINIC_TYPE)}"></select-field> 
-            <edit-field statePath="prescriptions.clinicPopup" mapKey="value" id="xx" label="Betriebsstätten-Nr" />
+            <edit-field statePath="prescriptions.clinicPopup" mapKey="value" id="clinic-betriebsstätten" label="Betriebsstätten-Nr" />
           </div>
         </div>
         <div class="modal-buttons">
             <button data-close-button class="cancel" @click="${() => this.cancelPopupEditClinic()}">Abbrechen</button>
-            <button data-modal-target-processing="#processing" @click="${() => savePopupEditClinic()}" class="ok-next">Speichern</button>
+            <button data-modal-target-processing="#processing" @click="${() => savePopupEditClinic()}" class="ok-next" id="clinic-save-button">Speichern</button>
         </div>
+        <div id="clinicEdit-error-messages"/>
       </div>
     `;
   }
@@ -536,13 +570,14 @@ export class PractIdEditPopup extends BElement {
         <div style="text-align:left">
           <div class="fieldRow">
             <select-field statePath="prescriptions.PractIdPopup" mapKey="type" label="Type" items="${JSON.stringify(FIELD_PRACTID_TYPE)}"></select-field> 
-            <edit-field statePath="prescriptions.PractIdPopup" mapKey="value" id="practid-value" label="Betriebsstätten-Nr" />
+            <edit-field statePath="prescriptions.PractIdPopup" mapKey="value" id="practId-doctor-number" label="Betriebsstätten-Nr" />
           </div>
         </div>
         <div class="modal-buttons">
             <button data-close-button class="cancel" @click="${() => this.cancelPopupEditPractId()}">Abbrechen</button>
-            <button data-modal-target-processing="#processing" @click="${() => savePopupEditPractId()}" class="ok-next">Speichern</button>
+            <button data-modal-target-processing="#processing" @click="${() => savePopupEditPractId()}" class="ok-next" id="practId-save-button">Speichern</button>
         </div>
+        <div id="PractIdEdit-error-messages"/>
       </div>
     `;
   }
@@ -558,10 +593,10 @@ export class MedicamentEditPopup extends BElement {
         </div>
         <div style="text-align:left">
           <div class="fieldRow"> 
-            <edit-field statePath="prescriptions.MedikamentPopup" mapKey="medicationText" label="Handelsname"</edit-field>
+            <edit-field statePath="prescriptions.MedikamentPopup" mapKey="medicationText" label="Handelsname" id="medic-medicationText"</edit-field>
           </div>
           <div class="fieldRow">
-            <edit-field statePath="prescriptions.MedikamentPopup" mapKey="pzn" label="PZN" ratio="0.5"></edit-field>
+            <edit-field statePath="prescriptions.MedikamentPopup" mapKey="pzn" label="PZN" ratio="0.5" id="medic-pzn"></edit-field>
           </div>
           <div class="fieldRow">
             <edit-field statePath="prescriptions.MedikamentPopup" mapKey="quantityValue" label="Menge"></edit-field>
@@ -569,13 +604,14 @@ export class MedicamentEditPopup extends BElement {
             <select-field statePath="prescriptions.MedikamentPopup" mapKey="form" label="Darreichungsform" items="${JSON.stringify(FIELD_DARREICH_TYPE)}"></select-field> 
           </div>
           <div class="fieldRow"> 
-            <edit-field statePath="prescriptions.MedikamentPopup" mapKey="dosageInstruction" label="Dosierungsanweisung"</edit-field>
+            <edit-field statePath="prescriptions.MedikamentPopup" mapKey="dosageInstruction" label="Dosierungsanweisung" id="medic-dosage-instructions"</edit-field>
           </div>
         </div>
         <div class="modal-buttons">
         <button data-close-button class="cancel" @click="${() => cancelPopupEditMedikament()}">Abbrechen</button>
-        <button data-modal-target-processing="#processing" @click="${() => savePopupEditMedikament()}" class="ok-next">Speichern</button>
+        <button data-modal-target-processing="#processing" @click="${() => savePopupEditMedikament()}" class="ok-next" id="medic-save-button">Speichern</button>
     </div>
+    <div id="medicEdit-error-messages"/>
       </div>
     `;
   }
@@ -607,7 +643,7 @@ export class PatientEditPopup extends BElement {
         </div>
         <div class="modal-buttons">
             <button data-close-button class="cancel" @click="${() => _hidePopup()}">Abbrechen</button>
-            <button data-modal-target-processing="#processing" @click="${() => _hidePopup()}" class="ok-next">Speichern</button>
+            <button data-modal-target-processing="#processing" @click="${() => _hidePopup()}" class="ok-next" id="patient-save-button">Speichern</button>
         </div>
         <div id="patientEdit-error-messages"/>
       </div>
@@ -657,7 +693,7 @@ export class OrganizationEditPopup extends BElement {
         </div>
         <div class="modal-buttons">
             <button data-close-button class="cancel" @click="${() => _hidePopup()}">Abbrechen</button>
-            <button data-modal-target-processing="#processing" @click="${() => _hidePopup()}" class="ok-next">Speichern</button>
+            <button data-modal-target-processing="#processing" @click="${() => _hidePopup()}" class="ok-next" id="organization-save-button">Speichern</button>
         </div>
         <div id="organizationEdit-error-messages"/>
       </div>
