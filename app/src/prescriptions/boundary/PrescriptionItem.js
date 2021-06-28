@@ -70,7 +70,6 @@ class Prescription extends BElement {
   }
 
   onMount() {
-    console.info("First Updated");
     this.triggerViewUpdate();
   }
 
@@ -95,7 +94,7 @@ class Prescription extends BElement {
 
   view() {
     // get the first prescription of the bundle array
-    const firstPrescription = this.state.selectedPrescription.prescriptions[0];
+    const firstPrescription = this.state.selectedPrescription;
     const prescriptions = this.state.selectedPrescription.prescriptions;
     const _psp = new Mapper(firstPrescription);
 

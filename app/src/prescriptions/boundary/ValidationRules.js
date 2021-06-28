@@ -16,9 +16,9 @@ export const MainWindowValidationRules = {
     'doctor-number': ['regex:/^[0-9]{6,9}$/'],
     'wop': ['regex:/^[0-9]{1,2}$/'],
 
-    //Dates, we need to be DD.MM.YYYY
+    //Dates, we need to be DD.MM.YYYY, to fix when the mapping will be fixed
     'birthdate': ['required', 'regex:/^[0-9]{4}\\-[0-9]{1,2}\\-[0-9]{1,2}$/'],
-    'authoredOn': ['required', 'regex:/^[0-9]{4}\\-[0-9]{1,2}\\-[0-9]{1,2}$/']
+    'authoredOn': ['required', 'regex:/^[0-9]{4}\\-[0-9]{1,2}\\-[0-9]{1,2}T00:00:00.000Z$/']
 };
 
 
