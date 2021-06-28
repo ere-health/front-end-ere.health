@@ -97,3 +97,14 @@ export const savePopupEditMedikamentAction = createAction("savePopupEditMedikame
 export const savePopupEditMedikament = () => {
     store.dispatch(savePopupEditMedikamentAction());
 }
+
+// Validations
+export const addValidationErrorForCurrentPopupAction = createAction("addValidationErrorForCurrentPopupAction");
+export const addValidationErrorForCurrentPopup = (fieldId, error) => {
+    store.dispatch(addValidationErrorForCurrentPopupAction({fieldId, error}));
+}
+
+export const removeValidationErrorForCurrentPopupAction = createAction("removeValidationErrorForCurrentPopupAction");
+export const removeValidationErrorForCurrentPopup = (fieldId) => {
+    store.dispatch(removeValidationErrorForCurrentPopupAction({fieldId}));
+}

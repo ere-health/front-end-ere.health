@@ -17,6 +17,7 @@ Currently included:
 2. [redux toolkit](https://redux-toolkit.js.org/tutorials/quick-start)
 3. [vaadin router](https://vaadin.com/router)
 3. [FHIR](http://lantanagroup.github.io/FHIR.js/)
+4. [validationjs] (https://github.com/mikeerickson/validatorjs)
 
 The bulma.css was directly downloaded from [bulma.io](https://bulma.io). There are multiple alternatives available:
 

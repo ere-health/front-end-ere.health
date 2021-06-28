@@ -11,9 +11,15 @@ import {
   showPopupEditPractId,
   showPopupEditMedikament
 } from "../../components/popup/control/PopupControl.js";
-import { signAndUploadBundles, updatePrescription } from "../../prescriptions/control/UnsignedPrescriptionControl.js";
+import {
+  signAndUploadBundles,
+  updatePrescription,
+  addValidationErrorForMainWindow,
+  removeValidationErrorForMainWindow
+} from "../../prescriptions/control/UnsignedPrescriptionControl.js";
 import { initialPath } from "../../libs/helper/helper.js";
 import { Mapper } from "../../libs/helper/Mapper.js";
+import { MainWindowValidationRules } from "./ValidationRules.js";
 
 let impfStoffInit = false;
 let drug1chkInit = false;
@@ -43,7 +49,26 @@ class Prescription extends BElement {
   }
 
   onUserInput({ target: { name, value } }, key) {
-    updatePrescription(name, value, key);
+    console.info("Validating name:" + name + ", value:" + value);
+    let validation = this.validateInput(name, value);
+    console.info("Passes?" + validation.passes() + " for field:" + name + " and value:" + value);
+
+    if (validation.passes()) {
+      removeValidationErrorForMainWindow(name);
+      updatePrescription(name, value, key);
+    } else {
+      addValidationErrorForMainWindow(name, validation.errors.get(name));
+    }
+  }
+
+  validateInput(name, value) {
+    let data = new Object();
+    let rule = new Object();
+
+    data[name] = value;
+    rule[name] = MainWindowValidationRules[name];
+
+    return new Validator(data, rule);
   }
 
   onMount() {
@@ -175,11 +200,11 @@ class Prescription extends BElement {
               <div class="collect-information">
                 <div class="form-group border-bottom" style="display:flex; justify-content: space-between;">
                   <div class="input-wrapper">
-                    <label for="name">${i18n("HealthInsurance")}</label>
+                    <label for="coverage-payor-display">${i18n("HealthInsurance")}</label>
                     <input
                       type   = "text"
-                      name   = "name"
-                      id     = "name"
+                      name   = "coverage-payor-display"
+                      id     = "coverage-payor-display"
                       value  = "${_psp.read("entry[resource.resourceType?Coverage].resource.payor[0].display", "")}"
                       @keyup = "${_ => this.onUserInput(_, "entry[resource.resourceType?Coverage].resource.payor[0].display")}"
                     />
@@ -208,7 +233,8 @@ class Prescription extends BElement {
                         cols   = "10"
                         @keyup = "${_ => this.onUserInput(_)}"
                       >${(this.state.selectedPrescription.updatedProps.address ?? (displayName + ", " +
-        _psp.read("entry[resource.resourceType?Patient].resource.address[0].line[0]", "") + ", " +
+        _psp.read("entry[resource.resourceType?Patient].resource.address[0]._line[extension[url?streetName]].extension[url?streetName].valueString", "") + " " +
+        _psp.read("entry[resource.resourceType?Patient].resource.address[0]._line[extension[url?houseNumber]].extension[url?houseNumber].valueString", "") + ", " +
         _psp.read("entry[resource.resourceType?Patient].resource.address[0].postalCode", "") + " " +
         _psp.read("entry[resource.resourceType?Patient].resource.address[0].city", "").trim()))}
                       </textarea>
@@ -218,11 +244,11 @@ class Prescription extends BElement {
 
                   <div class="form-group">
                     <div class="input-wrapper">
-                      <label for="geb1">${i18n("Patient.Birth")}</label>
+                      <label for="birthdate">${i18n("Patient.Birth")}</label>
                       <input
                         type   = "text"
-                        name   = "geb"
-                        id     = "geb1"
+                        name   = "birthdate"
+                        id     = "birthdate"
                         @keyup = "${_ => this.onUserInput(_, "entry[resource.resourceType?Patient].resource.birthDate")}"
                         value  = "${_psp.read("entry[resource.resourceType?Patient].resource.birthDate", "")}"
                       />
@@ -233,13 +259,13 @@ class Prescription extends BElement {
                 <div class="column-3 border-bottom">
                   <div class="form-group">
                     <div class="input-wrapper">
-                      <label for="Kostenträgerkennung1"
+                      <label for="coverage-payor-iknr"
                         >${i18n("CostUnitId")}</label
                       >
                       <input
                         type   = "text"
-                        name   = "Kostenträgerkennung"
-                        id     = "Kostenträgerkennung1"
+                        name   = "coverage-payor-iknr"
+                        id     = "coverage-payor-iknr"
                         class  = "bright"
                         value  = "${_psp.read("entry[resource.resourceType?Coverage].resource.payor[0].identifier.value", "")}" 
                         @keyup = "${_ => this.onUserInput(_, "entry[resource.resourceType?Coverage].resource.payor[0].identifier.value")}"
@@ -254,7 +280,7 @@ class Prescription extends BElement {
                       <input
                         type   = "text"
                         name   = "kvid"
-                        id     = "address"
+                        id     = "kvid"
                         class  = "bright"
                         value  = "${_psp.read("entry[resource.resourceType?Patient].resource.identifier[0].value", "")}"
                         @keyup = "${_ => this.onUserInput(_, "entry[resource.resourceType?Patient].resource.identifier[0].value")}"
@@ -281,13 +307,13 @@ class Prescription extends BElement {
                   <div class="form-group">
                     <div class="input-wrapper">
                       <div class="edit-btn" @click="${() => showPopupEditClinic()}" style="background-image: url(${initialPath}/assets/images/edit-btn.png);"></div>
-                      <label for="Betriebsstätten1"
+                      <label for="betriebsstätten"
                         >${i18n("OperatingSiteNum")}</label
                       >
                       <input
                         type   = "text"
-                        name   = "Betriebsstätten-Nr."
-                        id     = "Betriebsstätten1"
+                        name   = "betriebsstätten"
+                        id     = "betriebsstätten"
                         class  = "bright"
                         value  = "${_psp.read("entry[resource.resourceType?Organization].resource.identifier[0].value", "")}"
                         @keyup = "${_ => this.onUserInput(_, "entry[resource.resourceType?Organization].resource.identifier[0].value")}"
@@ -299,11 +325,11 @@ class Prescription extends BElement {
                   <div class="form-group">
                     <div class="input-wrapper">
                       <div class="edit-btn" @click="${() => showPopupEditPractId()}" style="background-image: url(${initialPath}/assets/images/edit-btn.png);"></div>
-                      <label for="doctor1">${i18n("DoctorNum")}</label>
+                      <label for="doctor-number">${i18n("DoctorNum")}</label>
                       <input
                         type   = "text"
-                        name   = "doctor-no"
-                        id     = "doctor1"
+                        name   = "doctor-number"
+                        id     = "doctor-number"
                         class  = "bright"
                         value  = "${_psp.read("entry[resource.resourceType?Practitioner].resource.identifier[0].value", "")}"
                         @keyup = "${_ => this.onUserInput(_, "entry[resource.resourceType?Practitioner].resource.identifier[0].value")}"
@@ -319,7 +345,7 @@ class Prescription extends BElement {
                         type   = "text"
                         id     = "authoredOn"
                         class  = "bright"
-                        name   = "date"
+                        name   = "authoredOn"
                         value  = "${_psp.read("entry[resource.resourceType?MedicationRequest].resource.authoredOn", "")}"
                         @keyup = "${_ => {
         try {
@@ -398,16 +424,15 @@ class Prescription extends BElement {
                     type     = "checkbox"
                     id       = "Impf-stoff"
                     name     = "Impf-stoff"
-                    checked = "${
-                      (() => {
-                        const value = _psp.read("entry[resource.resourceType=Medication].resource.extension[url?KBV_EX_ERP_Medication_Vaccine].valueBoolean");
-                        if (!impfStoffInit) {
-                          impfStoffInit = true;
-                          if (!value) setTimeout(() => document.getElementById("Impf-stoff").click(), 0)
-                        }
-                        return value;
-                      })()
-                    }"
+                    checked = "${(() => {
+        const value = _psp.read("entry[resource.resourceType=Medication].resource.extension[url?KBV_EX_ERP_Medication_Vaccine].valueBoolean");
+        if (!impfStoffInit) {
+          impfStoffInit = true;
+          if (!value) setTimeout(() => document.getElementById("Impf-stoff").click(), 0)
+        }
+        return value;
+      })()
+      }"
                     @change  = "${_ => updatePrescription("", _.target.checked, "entry[resource.resourceType=Medication].resource.extension[url?KBV_EX_ERP_Medication_Vaccine].valueBoolean", "")}"
                   />
                   <label for="Impf-stoff">Impf-stoff</label>
@@ -456,31 +481,34 @@ class Prescription extends BElement {
               <ul class="zet-check-list">
               
               ${prescriptions.map(medicationLine => {
-                const medicationResource = medicationLine.entry.filter(
-                  (oEntry) => oEntry.resource.resourceType === "Medication"
-                  )[0].resource;
-                  const medicationRequestResource = medicationLine.entry.filter(
-                    (oEntry) => oEntry.resource.resourceType === "MedicationRequest"
-                    )[0].resource;
-                    return html`
+        const medicationResource = medicationLine.entry.filter(
+          (oEntry) => oEntry.resource.resourceType === "Medication"
+        )[0].resource;
+        const medicationRequestResource = medicationLine.entry.filter(
+          (oEntry) => oEntry.resource.resourceType === "MedicationRequest"
+        )[0].resource;
+        return html`
                     <li class="art-list-item">
                     <div class="edit-btn" @click="${() => showPopupEditMedikament()}" style="left: 40px; background-image: url(${initialPath}/assets/images/edit-btn.png);"></div>
                         <input
                           type        = "text"
                           class       = "drug-name"
                           name        = "drug-1"
+                          id        = "drug-1"
                           value       = "${medicationResource.code.text}"
                           @keyup = "${_ => this.onUserInput(_, "entry[0].resource.code.text")}"
                           placeholder = ""
                         />
                         <input type="text" 
                           class="pzn"
+                          id="pzn"
                           value="${medicationResource.code.coding[0].code}"
                           @keyup="${_ => this.onUserInput(_, "entry[0].resource.code.coding[0].code")}" 
                           placeholder="" 
                         />
                         <input type="text" 
                           class="duration" 
+                          id="dosage-instructions"
                           value="${medicationRequestResource.dosageInstruction.length > 0 ? medicationRequestResource.dosageInstruction[0].text : ""}"
                           @keyup="${_ => this.onUserInput(_, "entry[1].resource.dosageInstruction[0].text")}"
                           placeholder="" 
@@ -489,22 +517,21 @@ class Prescription extends BElement {
                         type="checkbox" 
                         id="drug-1-chk" 
                         style="display:none"
-                        .checked = "${
-                          (() => {
-                            const value = _psp.read("entry[resource.resourceType?MedicationRequest].resource.substitution.allowedBoolean");
-                            if (!drug1chkInit) {
-                              drug1chkInit = true;
-                              if (!value) setTimeout(() => document.getElementById("drug-1-chk").click(), 0)
-                            }
-                            return value;
-                          })()  
-                          
-                        }"
+                        .checked = "${(() => {
+            const value = _psp.read("entry[resource.resourceType?MedicationRequest].resource.substitution.allowedBoolean");
+            if (!drug1chkInit) {
+              drug1chkInit = true;
+              if (!value) setTimeout(() => document.getElementById("drug-1-chk").click(), 0)
+            }
+            return value;
+          })()
+
+          }"
                         @change  = "${_ => updatePrescription("", _.target.checked, "entry[resource.resourceType?MedicationRequest].resource.substitution.allowedBoolean", "")}"
                         />
                         <span class="checkmark" @click="${() => document.getElementById("drug-1-chk").click()}"></span>
                       </li>`;
-                      })}
+      })}
 
                 </ul>
               </form>
@@ -538,6 +565,7 @@ class Prescription extends BElement {
         </div>
           </div>
         </div>
+        <div id="error-messages"/>
       </div>
       <!-- / Each patient item -->
     `;
