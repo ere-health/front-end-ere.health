@@ -77,7 +77,7 @@ export const prescriptions = createReducer(initialState, (builder) => {
       state.list = state.list.concat([[JSON.parse(bundleTemplate)]]);
 
       //Select prescription action
-      state.selectedPrescription = state.list[state.list.length-1][0];
+      state.selectedPrescription = state.list[state.list.length-1];
       state.isPrevious = false;
       state.selectedPrescription.updatedProps = {};
     })
@@ -111,7 +111,6 @@ export const prescriptions = createReducer(initialState, (builder) => {
 
 
   // Clinic Popup
-
   builder.addCase(showPopupEditClinicAction, (state) => {
     const psp = new Mapper(state.selectedPrescription.prescriptions[0]);
     state.clinicPopup = {

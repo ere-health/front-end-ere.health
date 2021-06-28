@@ -324,8 +324,8 @@ class Prescription extends BElement {
                         @keyup = "${_ => {
         try {
           this.onUserInput({
-            target: { value: new Date(_.target.value).toISOString() }
-          }, "entry[resource.resourceType?MedicationRequest].resource.date")
+            target: { name: "authoredOn", value: new Date(_.target.value).toISOString() }
+          }, "entry[resource.resourceType?MedicationRequest].resource.authoredOn")
         } catch (ex) {
           this.onUserInput(_, "entry[resource.resourceType?MedicationRequest].resource.date")
         }

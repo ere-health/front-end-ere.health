@@ -381,7 +381,7 @@ export const NewPrescriptionTemplate = `
             "value": ""
           }
         ],
-        "name": "Kinderarztpraxis",
+        "name": "",
         "telecom": [
           {
             "system": "phone",
