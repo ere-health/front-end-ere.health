@@ -599,7 +599,7 @@ export class MedicamentEditPopup extends BElement {
             <edit-field statePath="prescriptions.MedikamentPopup" mapKey="pzn" label="PZN" ratio="0.5" id="medic-pzn"></edit-field>
           </div>
           <div class="fieldRow">
-            <edit-field statePath="prescriptions.MedikamentPopup" mapKey="quantityValue" label="Menge"></edit-field>
+            <edit-field statePath="prescriptions.MedikamentPopup" mapKey="quantityValue" label="Menge" id="medic-quantity"></edit-field>
             <select-field statePath="prescriptions.MedikamentPopup" mapKey="norm" label="Normgröße" items="${JSON.stringify(FIELD_NORMGROBE_TYPE)}"></select-field> 
             <select-field statePath="prescriptions.MedikamentPopup" mapKey="form" label="Darreichungsform" items="${JSON.stringify(FIELD_DARREICH_TYPE)}"></select-field> 
           </div>

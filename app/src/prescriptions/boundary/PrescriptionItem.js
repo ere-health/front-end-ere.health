@@ -19,7 +19,7 @@ import {
 } from "../../prescriptions/control/UnsignedPrescriptionControl.js";
 import { initialPath } from "../../libs/helper/helper.js";
 import { Mapper } from "../../libs/helper/Mapper.js";
-import { MainWindowValidationRules } from "./ValidationRules.js";
+import { MainWindowValidationRules, MainWindowErrorMessages } from "./ValidationRules.js";
 
 let impfStoffInit = false;
 let drug1chkInit = false;
@@ -50,7 +50,6 @@ class Prescription extends BElement {
 
   onUserInput({ target: { name, value } }, key) {
     let validation = this.validateInput(name, value);
-    // console.info("Passes?" + validation.passes() + " for field:" + name + " and value:" + value);
 
     if (validation.passes()) {
       removeValidationErrorForMainWindow(name);
@@ -63,21 +62,29 @@ class Prescription extends BElement {
   validateInput(name, value) {
     let data = new Object();
     let rule = new Object();
+    let customErrorMessage = new Object();
 
     data[name] = value;
     rule[name] = MainWindowValidationRules[name];
+    customErrorMessage = MainWindowErrorMessages[name];
 
-    return new Validator(data, rule);
+    console.info("Displaying message:" + customErrorMessage + ", from:" + MainWindowErrorMessages[name]);
+
+    return new Validator(data, rule, customErrorMessage);
   }
 
   onMount() {
-    console.log("First Updated");
+    console.info("First Updated");
     this.triggerViewUpdate();
   }
 
   onClickSignRecipe(event) {
-    signAndUploadBundles(this.state.selectedPrescription.prescriptions);
-    showPopupId();
+    if (document.getElementById("error-messages").innerHTML.trim().length == 0) {
+      signAndUploadBundles(this.state.selectedPrescription.prescriptions);
+      showPopupId();
+    } else {
+      alert('Bitte beheben Sie alle unten auf dieser Seite aufgeführten Fehler, bevor Sie das Rezept unterschreiben');
+    }
   }
 
   doesClientHasToPay(boolean) {
