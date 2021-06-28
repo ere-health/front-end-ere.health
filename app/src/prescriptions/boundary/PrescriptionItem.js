@@ -238,9 +238,9 @@ class Prescription extends BElement {
                         id     = "full-patient-address"
                         cols   = "10"
                         @keyup = "${_ => this.onUserInput(_)}"
-                        >${(this.state.selectedPrescription.updatedProps.address ?? (
-        _psp.read("entry[resource.resourceType?Patient].resource.name[0].prefix[0]", "") + " " + displayName + ", " +
-        _psp.read("entry[resource.resourceType?Patient].resource.address[0].line[0]", "") + ", " +
+                      >${(this.state.selectedPrescription.updatedProps.address ?? (displayName + ", " +
+        _psp.read("entry[resource.resourceType?Patient].resource.address[0]._line[extension[url?streetName]].extension[url?streetName].valueString", "") + " " +
+        _psp.read("entry[resource.resourceType?Patient].resource.address[0]._line[extension[url?houseNumber]].extension[url?houseNumber].valueString", "") + ", " +
         _psp.read("entry[resource.resourceType?Patient].resource.address[0].postalCode", "") + " " +
         _psp.read("entry[resource.resourceType?Patient].resource.address[0].city", "").trim()))}
                       </textarea>
@@ -356,8 +356,8 @@ class Prescription extends BElement {
                         @keyup = "${_ => {
         try {
           this.onUserInput({
-            target: { value: new Date(_.target.value).toISOString() }
-          }, "entry[resource.resourceType?MedicationRequest].resource.date")
+            target: { name: "authoredOn", value: new Date(_.target.value).toISOString() }
+          }, "entry[resource.resourceType?MedicationRequest].resource.authoredOn")
         } catch (ex) {
           this.onUserInput(_, "entry[resource.resourceType?MedicationRequest].resource.date")
         }
@@ -502,14 +502,14 @@ class Prescription extends BElement {
                           name        = "drug-1"
                           id        = "drug-1"
                           value       = "${medicationResource.code.text}"
-                          @keyup = "${_ => this.onUserInput(_, "entry[0].resource.code.text")}"
+                          @keyup = "${_ => this.onUserInput(_, "entry[resource.resourceType?Medication].resource.code.text")}"
                           placeholder = ""
                         />
                         <input type="text" 
                           class="pzn"
                           id="pzn"
                           value="${medicationResource.code.coding[0].code}"
-                          @keyup="${_ => this.onUserInput(_, "entry[0].resource.code.coding[0].code")}" 
+                          @keyup="${_ => this.onUserInput(_, "entry[resource.resourceType?Medication].resource.code.coding[0].code")}" 
                           placeholder="" 
                         />
                         <input type="text" 
