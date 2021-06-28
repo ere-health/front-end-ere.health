@@ -62,15 +62,11 @@ class Prescription extends BElement {
   validateInput(name, value) {
     let data = new Object();
     let rule = new Object();
-    let customErrorMessage = new Object();
 
     data[name] = value;
     rule[name] = MainWindowValidationRules[name];
-    customErrorMessage = MainWindowErrorMessages[name];
 
-    console.info("Displaying message:" + customErrorMessage + ", from:" + MainWindowErrorMessages[name]);
-
-    return new Validator(data, rule, customErrorMessage);
+    return new Validator(data, rule, MainWindowErrorMessages[name]);
   }
 
   onMount() {
@@ -499,8 +495,8 @@ class Prescription extends BElement {
                         <input
                           type        = "text"
                           class       = "drug-name"
-                          name        = "drug-1"
-                          id        = "drug-1"
+                          name        = "medicationText"
+                          id          = "medicationText"
                           value       = "${medicationResource.code.text}"
                           @keyup = "${_ => this.onUserInput(_, "entry[resource.resourceType?Medication].resource.code.text")}"
                           placeholder = ""

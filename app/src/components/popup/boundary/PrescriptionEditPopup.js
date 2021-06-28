@@ -17,7 +17,7 @@ import {
 } from "../control/PopupControl.js";
 import { Mapper } from "../../../libs/helper/Mapper.js";
 import { updatePrescription } from "../../../prescriptions/control/UnsignedPrescriptionControl.js";
-import { PopupRules } from "../../../prescriptions/boundary/ValidationRules.js";
+import { PopupRules, PopupErrorMessages } from "../../../prescriptions/boundary/ValidationRules.js";
 
 
 const FIELD_STATUS_VERSICHERTENART = [
@@ -420,7 +420,7 @@ export class EditField extends BElement {
     data[name] = value;
     rule[name] = PopupRules[currentPopupName][name];
 
-    return new Validator(data, rule);
+    return new Validator(data, rule, PopupErrorMessages[currentPopupName][name]);
   }
 
   onUserInput(label, value, key, statePath, useWindow, id) {

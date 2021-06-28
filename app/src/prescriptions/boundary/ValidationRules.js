@@ -21,18 +21,11 @@ export const MainWindowValidationRules = {
     'authoredOn': ['required', 'regex:/^[0-9]{4}\\-[0-9]{1,2}\\-[0-9]{1,2}$/']
 };
 
-export const MainWindowErrorMessages = {
-    //AUF DEUTSCH BITTE :)
-    'coverage-payor-display': {
-        required: 'You need to enter an insurance name',
-        regex: 'The insurance name must be between 1 and 50 characters long'
-    }
-};
 
 export const PatientPopupValidationRules = {
     //String
     'patient-prefix': ['regex:/^[a-z A-ZäöüÄÖÜß\\-\\.]{1,20}$/'],
-    'patient-given': ['required', 'regex:/^[a-z A-ZäöüÄÖÜß\\-]{1,50}$/'],
+    'patient-given': ['required', 'regex:/^[a-z A-ZäöüÄÖÜß\\-\\.]{1,50}$/'],
     'patient-family': ['required', 'regex:/^[a-z A-ZäöüÄÖÜß\\-\\.]{1,50}$/'],
     'patient-street-name': ['required', 'regex:/^[a-z A-ZäöüÄÖÜß\\-\\.0-9]{1,50}$/'],
     'patient-street-number': ['required', 'regex:/^[a-z A-ZäöüÄÖÜß\\-\\.0-9]{1,10}$/'],
@@ -41,6 +34,7 @@ export const PatientPopupValidationRules = {
     //Numbers
     'patient-postal-code': ['required', 'regex:/^[0-9]{5}$/']
 };
+
 
 export const OrganizationPopupValidationRules = {
     //String
@@ -57,6 +51,7 @@ export const OrganizationPopupValidationRules = {
     'organization-postal-code': ['required', 'regex:/^[0-9]{5}$/'],
     'organization-phone': ['required', 'regex:/^\\+?[0-9]{6,15}$/']
 };
+
 
 export const ClinicPopupValidationRules = {
     //Numbers, copy of MainWindows value
@@ -84,4 +79,164 @@ export const PopupRules = {
     'clinicEdit': ClinicPopupValidationRules,
     'PractIdEdit': PractIdPopupValidationRules,
     'medicEdit': MedicPopupValidationRules
-}
+};
+
+
+export const MainWindowErrorMessages = {
+    //AUF DEUTSCH BITTE :)
+    'coverage-payor-display': {
+        required: 'The insurance name must be present',
+        regex: 'The insurance name must be between 1 and 50 characters long'
+    },
+    'medicationText': {
+        required: 'The medication name must be present',
+        regex: 'The medication name must be between 1 and 50 characters long'
+    },
+    'pzn' : {
+        required: 'The pzn number must be present',
+        regex: 'The pzn number must be between 6 and 8 numbers long'
+    },
+    'dosage-instructions' : {
+        regex: 'The dosage instructions must be between 1 and 30 characters long'
+    },
+    'full-patient-address' :{
+        required: 'The full address must be present',
+        regex: 'The full address seems to be wrong, please open the popup to fill its details'
+    },
+    'betriebsstätten' :{
+        required: "The id of the practitioner's company must be present",
+        regex: "The id of the practitioner's company must be between 8 and 9 numbers long"
+    },
+    'kvid': {
+        regex: 'The kvid must be 10 characters long and composed by numbers or common letters'
+    },
+    'coverage-payor-iknr': {
+        required: 'The iknr must be present',
+        regex: 'The iknr must be composed by 9 numbers'
+    },
+    'doctor-number': {
+        regex: 'The practitioner id must be between 6 and 8 numbers long'
+    },
+    'wop': {
+        regex: 'The WOP must be 1 or 2 numbers long'
+    },
+    'birthdate': {
+        required: 'The patient birthday must be present',
+        regex: 'The patient birtday must bo of format D(D).M(M).YYYY'
+    },
+    'authoredOn': {
+        required: 'The prescription date must be present',
+        regex: 'The prescription date must bo of format D(D).M(M).YYYY'
+    }
+};
+
+export const PatientPopupErrorMessages = {
+    //AUF DEUTSCH BITTE :)
+    'patient-prefix': {
+        regex: "The patient name's prefix must be between 1 and 20 letters long and can only contain a - or a ."
+    },
+    'patient-given': {
+        required: 'The patient first name must be present',
+        regex: 'The patient first name must be between 1 and 50 letters long and can only contain a - or a .'
+    },
+    'patient-family': {
+        required: 'The patient last name must be present',
+        regex: 'The patient last name must be between 1 and 50 letters long and can only contain a - or a .'
+    },
+    'patient-street-name': {
+        required: 'The patient street name must be present',
+        regex: 'The patient street name must be between 1 and 50 characters long and can only contain letters, numbers, a - or a .'
+    },
+    'patient-street-number': {
+        required: 'The patient street number must be present',
+        regex: 'The patient street name must be between 1 and 10 characters long and can only contain letters, numbers, a - or a .'
+    },
+    'patient-city': {
+        required: 'The patient city must be present',
+        regex: 'The patient city must be between 1 and 32 letters long and can only contain a -'
+    },
+    'patient-postal-code': {
+        required: 'The patient postal code must be present',
+        regex: 'The patient postal code must be 5 numbers long'
+    }
+};
+
+export const OrganizationPopupErrorMessages = {
+    //AUF DEUTSCH BITTE :)
+    'practitioner-prefix': {
+        regex: "The practitioner name's prefix must be between 1 and 20 letters long and can only contain a - or a ."
+    },
+    'practitioner-given': {
+        required: 'The practitioner first name must be present',
+        regex: 'The practitioner first name must be between 1 and 50 letters long and can only contain a - or a .'
+    },
+    'practitioner-family': {
+        required: 'The practitioner last name must be present',
+        regex: 'The practitioner last name must be between 1 and 50 letters long and can only contain a - or a .'
+    },
+    'practitioner-qualification-text': {
+        required: 'The practitioner qualification text must be present',
+        regex: 'The practitioner qualification text must be between 1 and 50 letters long and can only contain a - or a .'
+    },
+    'organization-street-name': {
+        required: 'The organization street name must be present',
+        regex: 'The organization street name must be between 1 and 50 characters long and can only contain letters, numbers, a - or a .'
+    },
+    'organization-street-number': {
+        required: 'The organization street number must be present',
+        regex: 'The organization street name must be between 1 and 10 characters long and can only contain letters, numbers, a - or a .'
+    },
+    'organization-city': {
+        required: 'The organization city must be present',
+        regex: 'The organization city must be between 1 and 32 letters long and can only contain a -'
+    },
+    'organization-postal-code': {
+        required: 'The organization postal code must be present',
+        regex: 'The organization postal code must be 5 numbers long'
+    },
+    'organization-phone': {
+        required: 'The organization phone number must be present',
+        regex: 'The organization phone number must be between 6 and 15 numbers long'
+    }
+};
+
+export const ClinicPopupErrorMessages = {
+    'clinic-betriebsstätten': {
+        required: "The id of the practitioner's company must be present",
+        regex: "The id of the practitioner's company must be between 8 and 9 numbers long"
+    }
+};
+
+export const PractIdErrorMessages = {
+    'practId-doctor-number': {
+        required: "The practitioner id must be present",
+        regex: 'The practitioner id must be between 6 and 8 numbers long'
+    }
+};
+
+export const MedicPopupErrorMessages = {
+    //AUF DEUTSCH BITTE :)
+    'medic-medicationText': {
+        required: 'The medication name must be present',
+        regex: 'The medication name must be between 1 and 50 characters long'
+    },
+    'medic-pzn' : {
+        required: 'The pzn number must be present',
+        regex: 'The pzn number must be between 6 and 8 numbers long'
+    },
+    'medic-dosage-instructions' : {
+        regex: 'The dosage instructions must be between 1 and 30 characters long'
+    },
+    'medic-quantity': {
+        regex: 'The quantity of medication must be between 1 and 3 numbers long'
+    }
+};
+
+
+export const PopupErrorMessages = {
+    'organizationEdit': OrganizationPopupErrorMessages,
+    'patientEdit': PatientPopupErrorMessages,
+    'clinicEdit': ClinicPopupErrorMessages,
+    'PractIdEdit': PractIdErrorMessages,
+    'medicEdit': MedicPopupErrorMessages
+};
