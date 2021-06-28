@@ -94,7 +94,7 @@ class Prescription extends BElement {
 
   view() {
     // get the first prescription of the bundle array
-    const firstPrescription = this.state.selectedPrescription;
+    const firstPrescription = this.state.selectedPrescription.prescriptions[0];
     const prescriptions = this.state.selectedPrescription.prescriptions;
     const _psp = new Mapper(firstPrescription);
 
