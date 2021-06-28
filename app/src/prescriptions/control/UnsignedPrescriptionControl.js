@@ -11,6 +11,11 @@ export const selectPrescription = (prescriptions, isPrevious) => {
     store.dispatch(selectPrescriptionAction({prescriptions, isPrevious}));
 }
 
+export const createNewPrescriptionAction = createAction("createNewPrescriptionAction");
+export const createNewPrescription = () => {
+    store.dispatch(createNewPrescriptionAction());
+}
+
 export const signedPrescriptionAction = createAction("signedPrescriptionAction");
 export const signedPrescription = (prescription) => {
     store.dispatch(signedPrescriptionAction(prescription));
