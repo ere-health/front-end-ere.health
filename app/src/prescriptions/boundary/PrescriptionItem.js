@@ -208,7 +208,8 @@ class Prescription extends BElement {
                         cols   = "10"
                         @keyup = "${_ => this.onUserInput(_)}"
                       >${(this.state.selectedPrescription.updatedProps.address ?? (displayName + ", " +
-        _psp.read("entry[resource.resourceType?Patient].resource.address[0].line[0]", "") + ", " +
+        _psp.read("entry[resource.resourceType?Patient].resource.address[0]._line[extension[url?streetName]].extension[url?streetName].valueString", "") + " " +
+        _psp.read("entry[resource.resourceType?Patient].resource.address[0]._line[extension[url?houseNumber]].extension[url?houseNumber].valueString", "") + ", " +
         _psp.read("entry[resource.resourceType?Patient].resource.address[0].postalCode", "") + " " +
         _psp.read("entry[resource.resourceType?Patient].resource.address[0].city", "").trim()))}
                       </textarea>
@@ -470,13 +471,13 @@ class Prescription extends BElement {
                           class       = "drug-name"
                           name        = "drug-1"
                           value       = "${medicationResource.code.text}"
-                          @keyup = "${_ => this.onUserInput(_, "entry[0].resource.code.text")}"
+                          @keyup = "${_ => this.onUserInput(_, "entry[resource.resourceType?Medication].resource.code.text")}"
                           placeholder = ""
                         />
                         <input type="text" 
                           class="pzn"
                           value="${medicationResource.code.coding[0].code}"
-                          @keyup="${_ => this.onUserInput(_, "entry[0].resource.code.coding[0].code")}" 
+                          @keyup="${_ => this.onUserInput(_, "entry[resource.resourceType?Medication].resource.code.coding[0].code")}" 
                           placeholder="" 
                         />
                         <input type="text" 

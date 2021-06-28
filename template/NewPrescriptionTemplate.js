@@ -260,9 +260,6 @@ export const NewPrescriptionTemplate = `
         "address": [
           {
             "type": "both",
-            "line": [
-              ""
-            ],
             "_line": [
               {
                 "extension": [
