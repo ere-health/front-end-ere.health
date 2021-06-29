@@ -92,6 +92,14 @@ class Prescription extends BElement {
     }
   }
 
+  extractDate(date) {
+    if (date != "") {
+      return new Date(date).toLocaleDateString("de-DE");
+    } else {
+      return "";
+    }
+  }
+
   view() {
     // get the first prescription of the bundle array
     const firstPrescription = this.state.selectedPrescription.prescriptions[0];
@@ -103,7 +111,7 @@ class Prescription extends BElement {
       _psp.read("entry[resource.resourceType?Patient].resource.name[0].family")]
       .filter(_ => _).join(" ");
 
-    const _this = this;
+    const _this = this; //Why?
     return html`
       <div class="recipe-wrapper active" id="unsigned_1">
         <div class="title-rezept-button">
@@ -252,7 +260,7 @@ class Prescription extends BElement {
                         id     = "birthdate"
                         @keyup = "${_ => this.onUserInput({ target: { name: "birthdate", value: new Date(_.target.value).toLocaleDateString("fr-CA") } },
           "entry[resource.resourceType?Patient].resource.birthDate")}"
-                        value  = "${new Date(_psp.read("entry[resource.resourceType?Patient].resource.birthDate", "")).toLocaleDateString("de-DE")}"
+                        value  = "${this.extractDate(_psp.read("entry[resource.resourceType?Patient].resource.birthDate", ""))}"
                       />
                     </div>
                   </div>
@@ -294,13 +302,17 @@ class Prescription extends BElement {
                   <div class="form-group">
                     <div class="input-wrapper">
                       <div class="edit-btn" @click="${() => showPopupEditStatus()}" style="background-image: url(${initialPath}/assets/images/edit-btn.png);"></div>
-                      <label for="Status1">Status</label>
+                      <label for="status">Status</label>
                       <input
                         type        = "text"
-                        name        = "Status"
-                        id          = "Status1"
+                        name        = "status"
+                        id          = "status"
                         class       = "bright"
-                        value  = "${_psp.read("entry[resource.resourceType?Coverage].resource.extension[3].valueCoding.code", "")}"/>
+                        value  = "${_psp.read("entry[resource.resourceType?Coverage].resource.extension[url?versichertenart].valueCoding.code", "") + "-" +
+      _psp.read("entry[resource.resourceType?Coverage].resource.extension[url?personengruppe].valueCoding.code", "") + "-" +
+      _psp.read("entry[resource.resourceType?Coverage].resource.extension[url?dmp].valueCoding.code", "") + "-" +
+      _psp.read("entry[resource.resourceType?Composition].resource.extension[url?KBV_EX_FOR_Legal_basis].valueCoding.code", "")
+      }"/>
                     </div>
                   </div>
                 </div>
@@ -348,9 +360,9 @@ class Prescription extends BElement {
                         id     = "authoredOn"
                         class  = "bright"
                         name   = "authoredOn"
-                        value  = "${new Date(_psp.read("entry[resource.resourceType?MedicationRequest].resource.authoredOn", "").split("T")[0]).toLocaleDateString("de-DE")}"
+                        value  = "${this.extractDate(_psp.read("entry[resource.resourceType?MedicationRequest].resource.authoredOn", "").split("T")[0])}"
                         @keyup = "${_ => {
-        this.onUserInput({ target: { name: "authoredOn", value: new Date(_.target.value).toLocaleDateString("fr-CA") + "T00:00:000Z" } },
+        this.onUserInput({ target: { name: "authoredOn", value: new Date(_.target.value).toLocaleDateString("fr-CA") + "T00:00:00.000Z" } },
           "entry[resource.resourceType?MedicationRequest].resource.authoredOn")
       }}"/>
                     </div>

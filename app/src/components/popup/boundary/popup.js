@@ -37,14 +37,14 @@ class Popup extends BElement {
 
   doSign() {
     _hidePopup();
-    if (this.state.popupReducer.all) {
-      const all = this.state.prescriptions.list.map((_) => _);
-      all.forEach((_) => {
-        signedPrescription(_);
-      });
-    } else {
-      signedPrescription(this.state.prescriptions.selectedPrescription.prescriptions);
-    }
+    // if (this.state.popupReducer.all) {
+    //   const all = this.state.prescriptions.list.map((_) => _);
+    //   all.forEach((_) => {
+    //     signedPrescription(_);
+    //   });
+    // } else {
+    //   signedPrescription(this.state.prescriptions.selectedPrescription.prescriptions);
+    // }
   }
 
   view() {

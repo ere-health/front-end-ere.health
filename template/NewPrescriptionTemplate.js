@@ -56,7 +56,7 @@ export const NewPrescriptionTemplate = `
             "type": "Device",
             "identifier": {
               "system": "https://fhir.kbv.de/NamingSystem/KBV_NS_FOR_Pruefnummer",
-              "value": "ignored-certificate-number"
+              "value": "unused-device-id"
             }
           }
         ],
@@ -170,7 +170,7 @@ export const NewPrescriptionTemplate = `
           }
         },
         "substitution": {
-          "allowedBoolean": true
+          "allowedBoolean": false
         }
       }
     },
@@ -240,7 +240,7 @@ export const NewPrescriptionTemplate = `
                 }
               ]
             },
-            "system": "http://fhir.de/NamingSystem/gkv/kvid-10",
+            "system": "http://fhir.de/sid/gkv/kvid-10",
             "value": ""
           }
         ],
@@ -253,6 +253,16 @@ export const NewPrescriptionTemplate = `
             ],
             "prefix": [
               ""
+            ],
+            "_prefix": [
+              {
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/iso21090-EN-qualifier",
+                    "valueCode": "AC"
+                  }
+                ]
+              }
             ]
           }
         ],
@@ -260,6 +270,9 @@ export const NewPrescriptionTemplate = `
         "address": [
           {
             "type": "both",
+            "line": [
+              ""
+            ],
             "_line": [
               {
                 "extension": [
@@ -348,7 +361,7 @@ export const NewPrescriptionTemplate = `
           },
           {
             "code": {
-              "text": "Arzt-Hausarzt"
+              "text": ""
             }
           }
         ]
@@ -382,10 +395,6 @@ export const NewPrescriptionTemplate = `
         "telecom": [
           {
             "system": "phone",
-            "value": ""
-          },
-          {
-            "system": "fax",
             "value": ""
           }
         ],
@@ -468,13 +477,10 @@ export const NewPrescriptionTemplate = `
         "beneficiary": {
           "reference": "Patient/$PATIENT_ID"
         },
-        "period": {
-          "end": ""
-        },
         "payor": [
           {
             "identifier": {
-              "system": "http://fhir.de/NamingSystem/arge-ik/iknr",
+              "system": "http://fhir.de/sid/arge-ik/iknr",
               "value": ""
             },
             "display": ""
