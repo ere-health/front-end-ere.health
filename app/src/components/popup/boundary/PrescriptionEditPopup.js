@@ -464,7 +464,7 @@ export class EditField extends BElement {
     return html`
     <div style="display:flex; flex-direction:column;flex-grow: 1;padding: 7px;margin-top:5px"> 
       <label>${this.label}</label>
-      <input type="text" id="--${this.id}" value="${stateObject.read(this.mapKey ?? "", "")}" style="
+      <input type="text" id="--${this.id !== "null" ? this.id : this.label}" value="${stateObject.read(this.mapKey ?? "", "")}" style="
         height        : 56px;     
         background    : #E4E4E44D;
         border-radius : 4px;      
