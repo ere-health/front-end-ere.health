@@ -11,10 +11,10 @@ export const MainWindowValidationRules = {
 
     //Numbers
     'betriebsstätten': ['required', 'regex:/^[0-9]{8,9}$/'],
-    'kvid': ['regex:/^[a-zA-Z0-9]{10}$/'],
+    'kvid': ['required', 'regex:/^[a-zA-Z0-9]{10}$/'],
     'coverage-payor-iknr': ['required', 'regex:/^[0-9]{9}$/'],
     'doctor-number': ['regex:/^[0-9]{6,9}$/'],
-    'wop': ['regex:/^[0-9]{1,2}$/'],
+    'wop': ['required', 'regex:/^[0-9]{1,2}$/'],
 
     //Dates, entered as DD.MM.YYYY but converted into YYYY-MM-DD for the bundle.
     'birthdate': ['required', 'regex:/^[0-9]{4}\\-[0-9]{1,2}\\-[0-9]{1,2}$/'],
@@ -108,6 +108,7 @@ export const MainWindowErrorMessages = {
         regex: "The id of the practitioner's company must be between 8 and 9 numbers long"
     },
     'kvid': {
+        required: 'The kvid must be present',
         regex: 'The kvid must be 10 characters long and composed by numbers or common letters'
     },
     'coverage-payor-iknr': {
@@ -118,6 +119,7 @@ export const MainWindowErrorMessages = {
         regex: 'The practitioner id must be between 6 and 8 numbers long'
     },
     'wop': {
+        required: 'The WOP must be present',
         regex: 'The WOP must be 1 or 2 numbers long'
     },
     'birthdate': {

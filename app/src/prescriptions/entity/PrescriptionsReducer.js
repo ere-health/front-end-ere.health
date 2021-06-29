@@ -62,7 +62,7 @@ export const prescriptions = createReducer(initialState, (builder) => {
       state.isPrevious = isPrevious;
       state.selectedPrescription.updatedProps = {}
     })
-    //Create an empty prescription for the doctor to sign
+    //Create an empty prescription
     .addCase(createNewPrescriptionAction, (state) => {
       let bundleTemplate = NewPrescriptionTemplate;
 
@@ -113,7 +113,7 @@ export const prescriptions = createReducer(initialState, (builder) => {
       }
     })
     .addCase(signAndUploadBundlesAction, (state, { payload: bundles }) => {
-      // Send a list of a list of a list
+      // Send a list of a list of a list      
       serverWebSocketActionForwarder.send({ type: "SignAndUploadBundles", bearerToken: window.bearerToken, payload: [bundles] });
     });
 
