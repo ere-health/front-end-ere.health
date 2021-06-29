@@ -15,11 +15,11 @@ import {
   removeValidationErrorForMainWindowAction,
   createNewPrescriptionAction
 } from "../control/UnsignedPrescriptionControl.js";
-import { 
+import {
   MainWindowValidationRules,
   PatientPopupValidationRules,
   OrganizationPopupValidationRules
- } from "../boundary/ValidationRules.js"
+} from "../boundary/ValidationRules.js"
 import { NewPrescriptionTemplate } from "../../../../template/NewPrescriptionTemplate.js";
 
 const initialState = {
@@ -65,12 +65,12 @@ export const prescriptions = createReducer(initialState, (builder) => {
     //Create an empty prescription for the doctor to sign
     .addCase(createNewPrescriptionAction, (state) => {
       let bundleTemplate = NewPrescriptionTemplate;
-  
+
       const currentDate = new Date().toISOString();
       bundleTemplate = bundleTemplate.replaceAll('$LAST_UPDATED', currentDate);
       bundleTemplate = bundleTemplate.replaceAll('$TIMESTAMP', currentDate);
       bundleTemplate = bundleTemplate.replaceAll('$COMPOSITION_DATE', currentDate);
-  
+
       bundleTemplate = bundleTemplate.replaceAll('$BUNDLE_ID', uuidv4());
       bundleTemplate = bundleTemplate.replaceAll('$PRESCRIPTION_ID', uuidv4());
       bundleTemplate = bundleTemplate.replaceAll('$PATIENT_ID', uuidv4());
@@ -80,12 +80,12 @@ export const prescriptions = createReducer(initialState, (builder) => {
       bundleTemplate = bundleTemplate.replaceAll('$COVERAGE_ID', uuidv4());
       bundleTemplate = bundleTemplate.replaceAll('$COMPOSITION_ID', uuidv4());
       bundleTemplate = bundleTemplate.replaceAll('$MEDICATION_ID', uuidv4());
-  
+
       //Add prescription action, you need to inject a list of list
       state.list = state.list.concat([[JSON.parse(bundleTemplate)]]);
 
       //Select prescription action
-      state.selectedPrescription = state.list[state.list.length-1][0];
+      state.selectedPrescription = state.list[state.list.length - 1][0];
       state.isPrevious = false;
       state.selectedPrescription.updatedProps = {};
     })
@@ -116,6 +116,7 @@ export const prescriptions = createReducer(initialState, (builder) => {
       // Send a list of a list of a list
       serverWebSocketActionForwarder.send({ type: "SignAndUploadBundles", bearerToken: window.bearerToken, payload: [bundles] });
     });
+
 
 
   // Clinic Popup
@@ -154,11 +155,17 @@ export const prescriptions = createReducer(initialState, (builder) => {
     elt.type.coding[0].system = _typeSystem;
     elt.system = _system;
     elt.value = state.clinicPopup.value;
+
+    const selectedPrescriptionId = state.selectedPrescription.prescriptions[0].id;
+    for (const prescriptionList of state.list) {
+      if (selectedPrescriptionId == prescriptionList[0].id) {
+        prescriptionList[0] = state.selectedPrescription.prescriptions[0];
+      }
+    }
   });
 
 
   // PractId Popup
-
   builder.addCase(showPopupEditPractIdAction, (state) => {
     const psp = new Mapper(state.selectedPrescription.prescriptions[0]);
     state.PractIdPopup = {
@@ -194,13 +201,17 @@ export const prescriptions = createReducer(initialState, (builder) => {
     elt.type.coding[0].system = _typeSystem;
     elt.system = _system;
     elt.value = state.PractIdPopup.value;
+
+    const selectedPrescriptionId = state.selectedPrescription.prescriptions[0].id;
+    for (const prescriptionList of state.list) {
+      if (selectedPrescriptionId == prescriptionList[0].id) {
+        prescriptionList[0] = state.selectedPrescription.prescriptions[0];
+      }
+    }
   });
 
 
-
-
   // MedicEdit Popup
-
   builder.addCase(showPopupEditMedikamentAction, (state) => {
     const psp = new Mapper(state.selectedPrescription.prescriptions[0]);
     state.MedikamentPopup = {
@@ -235,6 +246,13 @@ export const prescriptions = createReducer(initialState, (builder) => {
       psp.write("entry[resource.resourceType?MedicationRequest].resource.dosageInstruction[0].extension[url?KBV_EX_ERP_DosageFlag].valueBoolean", true);
     } else {
       psp.write("entry[resource.resourceType?MedicationRequest].resource.dosageInstruction[0].extension[url?KBV_EX_ERP_DosageFlag].valueBoolean", false);
+    }
+
+    const selectedPrescriptionId = state.selectedPrescription.prescriptions[0].id;
+    for (const prescriptionList of state.list) {
+      if (selectedPrescriptionId == prescriptionList[0].id) {
+        prescriptionList[0] = state.selectedPrescription.prescriptions[0];
+      }
     }
   });
 
@@ -295,9 +313,9 @@ export const prescriptions = createReducer(initialState, (builder) => {
   }
 
   const uuidv4 = () => {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-        var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
-        return v.toString(16);
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+      var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+      return v.toString(16);
     });
-}
+  }
 })
