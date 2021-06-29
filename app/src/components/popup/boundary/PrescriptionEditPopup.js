@@ -71,10 +71,13 @@ const FIELD_PRACTID_TYPE = [
 ];
 
 const FIELD_NORMGROBE_TYPE = [
-  { value: "none", label: "nicht gesetzt" },
+  { value: "KA", label: "Keine Angabe" },
+  { value: "KTP", label: "Keine therapiegerechte Packungsgröße" },
   { value: "N1", label: "N1" },
   { value: "N2", label: "N2" },
-  { value: "N3", label: "N3" }
+  { value: "N3", label: "N3" },
+  { value: "NB", label: "Nicht betroffen" },
+  { value: "Sonstiges", label: "Sonstiges" }
 ];
 
 const FIELD_DARREICH_TYPE = [
@@ -432,13 +435,13 @@ export class EditField extends BElement {
 
       if ((id.startsWith("clinic")) && ((document.getElementById("clinicEdit-error-messages").innerHTML.trim().length == 0))) {
         document.getElementById("clinic-save-button").disabled = false;
-      } else if ((id.startsWith("practId"))  && ((document.getElementById("PractIdEdit-error-messages").innerHTML.trim().length == 0))) {
+      } else if ((id.startsWith("practId")) && ((document.getElementById("PractIdEdit-error-messages").innerHTML.trim().length == 0))) {
         document.getElementById("practId-save-button").disabled = false;
       } else if ((id.startsWith("medic")) && ((document.getElementById("medicEdit-error-messages").innerHTML.trim().length == 0))) {
         document.getElementById("medic-save-button").disabled = false;
-      }else if ((id.startsWith("patient")) && ((document.getElementById("patientEdit-error-messages").innerHTML.trim().length == 0))) {
+      } else if ((id.startsWith("patient")) && ((document.getElementById("patientEdit-error-messages").innerHTML.trim().length == 0))) {
         document.getElementById("patient-save-button").disabled = false;
-      }else if ((id.startsWith("organization")) && ((document.getElementById("organizationEdit-error-messages").innerHTML.trim().length == 0))) {
+      } else if ((id.startsWith("organization")) && ((document.getElementById("organizationEdit-error-messages").innerHTML.trim().length == 0))) {
         document.getElementById("organization-save-button").disabled = false;
       }
     } else {
