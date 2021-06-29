@@ -270,13 +270,15 @@ export const prescriptions = createReducer(initialState, (builder) => {
     refreshErrorMessages(state.currentValidationErrors);
   });
   builder.addCase(ValidateAllFieldsInMainWindowAction, (state) => {
+    const psp = new Mapper(state.selectedPrescription.prescriptions[0]);
+    
     for (const [key, rule] of Object.entries(MainWindowValidationRules)) {
       let currentValue = document.getElementById(key).value.trim();
 
       if (key === 'birthdate') {
-        currentValue = new Date(document.getElementById(key).value).toLocaleDateString("fr-CA")
+        currentValue = new Date(psp.read("entry[resource.resourceType?Patient].resource.birthDate", "")).toLocaleDateString("fr-CA");
       } else if (key === 'authoredOn') {
-        currentValue = new Date(document.getElementById(key).value).toLocaleDateString("fr-CA") + "T00:00:00.000Z"
+        currentValue = new Date(psp.read("entry[resource.resourceType?MedicationRequest].resource.authoredOn", "")).toLocaleDateString("fr-CA") + "T00:00:00.000Z";
       }
 
       let validation = validateInput(key, currentValue, MainWindowValidationRules);
