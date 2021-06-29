@@ -13,12 +13,12 @@ import {
   updatePrescription,
   addValidationErrorForMainWindowAction,
   removeValidationErrorForMainWindowAction,
-  createNewPrescriptionAction
+  createNewPrescriptionAction,
+  ValidateAllFieldsInMainWindowAction
 } from "../control/UnsignedPrescriptionControl.js";
 import {
   MainWindowValidationRules,
-  PatientPopupValidationRules,
-  OrganizationPopupValidationRules
+  MainWindowErrorMessages
 } from "../boundary/ValidationRules.js"
 import { NewPrescriptionTemplate } from "../../../../template/NewPrescriptionTemplate.js";
 
@@ -113,7 +113,7 @@ export const prescriptions = createReducer(initialState, (builder) => {
       }
     })
     .addCase(signAndUploadBundlesAction, (state, { payload: bundles }) => {
-      // Send a list of a list of a list      
+      // Send a list of a list of a list    
       serverWebSocketActionForwarder.send({ type: "SignAndUploadBundles", bearerToken: window.bearerToken, payload: [bundles] });
     });
 
@@ -269,38 +269,26 @@ export const prescriptions = createReducer(initialState, (builder) => {
     document.getElementById(fieldId).style.backgroundColor = "";
     refreshErrorMessages(state.currentValidationErrors);
   });
+  builder.addCase(ValidateAllFieldsInMainWindowAction, (state) => {
+    for (const [key, rule] of Object.entries(MainWindowValidationRules)) {
+      let currentValue = document.getElementById(key).value.trim();
 
-
-  const refreshErrorMessages = (currentErrors) => {
-    document.getElementById("error-messages").innerHTML = "";
-    for (const field in currentErrors) {
-      if (currentErrors[field] != "") {
-        document.getElementById("error-messages").innerHTML += currentErrors[field] + "<BR/>";
+      if (key === 'birthdate') {
+        currentValue = new Date(document.getElementById(key).value).toLocaleDateString("fr-CA")
+      } else if (key === 'authoredOn') {
+        currentValue = new Date(document.getElementById(key).value).toLocaleDateString("fr-CA") + "T00:00:00.000Z"
       }
-    }
-  }
 
-  const validateAllValues = (currentErrors) => {
-    validateAllFieldsInRules(currentErrors, MainWindowValidationRules);
-    validateAllFieldsInRules(currentErrors, PatientPopupValidationRules);
-    validateAllFieldsInRules(currentErrors, OrganizationPopupValidationRules);
-  }
-
-  const validateAllFieldsInRules = (currentErrors, ValidationRules) => {
-    for (const [key, value] of Object.entries(ValidationRules)) {
-      // console.info(key + ":" + value + ", current value:" + document.getElementById(key).value);
-      const currentValue = document.getElementById(key).value;
-
-      let validation = validateInput(key, currentValue, ValidationRules);
+      let validation = validateInput(key, currentValue, MainWindowValidationRules);
 
       if (validation.fails()) {
-        currentErrors[key] = validation.errors.get(key);
+        state.currentValidationErrors[key] = validation.errors.get(key);
         document.getElementById(key).style.backgroundColor = "yellow";
 
-        refreshErrorMessages(currentErrors);
+        refreshErrorMessages(state.currentValidationErrors);
       }
     }
-  }
+  });
 
   const validateInput = (name, value, ValidationRules) => {
     let data = new Object();
@@ -309,7 +297,16 @@ export const prescriptions = createReducer(initialState, (builder) => {
     data[name] = value;
     rule[name] = ValidationRules[name];
 
-    return new Validator(data, rule);
+    return new Validator(data, rule, MainWindowErrorMessages[name]);
+  }
+
+  const refreshErrorMessages = (currentErrors) => {
+    document.getElementById("error-messages").innerHTML = "";
+    for (const field in currentErrors) {
+      if (currentErrors[field] != "") {
+        document.getElementById("error-messages").innerHTML += currentErrors[field] + "<BR/>";
+      }
+    }
   }
 
   const uuidv4 = () => {

@@ -15,7 +15,8 @@ import {
   signAndUploadBundles,
   updatePrescription,
   addValidationErrorForMainWindow,
-  removeValidationErrorForMainWindow
+  removeValidationErrorForMainWindow,
+  ValidateAllFieldsInMainWindow
 } from "../../prescriptions/control/UnsignedPrescriptionControl.js";
 import { initialPath } from "../../libs/helper/helper.js";
 import { Mapper } from "../../libs/helper/Mapper.js";
@@ -74,6 +75,8 @@ class Prescription extends BElement {
   }
 
   onClickSignRecipe(event) {
+    ValidateAllFieldsInMainWindow();
+
     if (document.getElementById("error-messages").innerHTML.trim().length == 0) {
       signAndUploadBundles(this.state.selectedPrescription.prescriptions);
       showPopupId();
@@ -99,6 +102,7 @@ class Prescription extends BElement {
       return "";
     }
   }
+
 
   view() {
     // get the first prescription of the bundle array
@@ -240,9 +244,9 @@ class Prescription extends BElement {
                         name   = "full-patient-address"
                         id     = "full-patient-address"
                         cols   = "10"
-                        @keyup = "${_ => this.onUserInput(_)}"
                       >${(this.state.selectedPrescription.updatedProps.address ?? (displayName + ", " +
-        _psp.read("entry[resource.resourceType?Patient].resource.address[0].line", "") + ", " +
+        _psp.read("entry[resource.resourceType?Patient].resource.address[0]._line[extension[url?streetName]].extension[url?streetName].valueString", "") + " " +
+        _psp.read("entry[resource.resourceType?Patient].resource.address[0]._line[extension[url?houseNumber]].extension[url?houseNumber].valueString", "") + ", " +
         _psp.read("entry[resource.resourceType?Patient].resource.address[0].postalCode", "") + " " +
         _psp.read("entry[resource.resourceType?Patient].resource.address[0].city", "").trim()))}
                       </textarea>
@@ -558,19 +562,24 @@ class Prescription extends BElement {
           <div class="edit-btn" @click="${() => showPopupEditOrga()}" style="background-image: url(${initialPath}/assets/images/edit-btn.png);"></div>
 
           <div class="zet-title first-col">Vertragsarztdaten</div>
-          <div style="text-align: center">
-          ${_psp.read("entry[resource.resourceType?Practitioner].resource.name[0].prefix[0]") + " " +
+          <textarea
+                        name   = "organization-summary"
+                        id     = "organization-summary"
+                        rows="5" 
+                        cols="30"
+                        style="background: transparent; border: none;"
+                      >${_psp.read("entry[resource.resourceType?Practitioner].resource.name[0].prefix[0]", "") + " " +
       _psp.read("entry[resource.resourceType?Practitioner].resource.name[0].given[0]") + " " +
-      _psp.read("entry[resource.resourceType?Practitioner].resource.name[0].family") + " "}                
-        <br/>
-        ${_psp.read("entry[resource.resourceType?Practitioner].resource.qualification[code.coding[system?Qualification_Type]].code.coding[system?Qualification_Type].code") + " " +
-      _psp.read("entry[resource.resourceType?Practitioner].resource.qualification[code.text].code.text") + " "
-      }
-        <br/>
-        ${_psp.read("entry[resource.resourceType?Organization].resource.address[0]._line[extension[url?streetName]].extension[url?streetName].valueString") + " " +
-      _psp.read("entry[resource.resourceType?Organization].resource.address[0]._line[extension[url?houseNumber]].extension[url?houseNumber].valueString") + " "
-      }
-        </div>
+      _psp.read("entry[resource.resourceType?Practitioner].resource.name[0].family") + ", " +
+      _psp.read("entry[resource.resourceType?Practitioner].resource.qualification[code.coding[system?Qualification_Type]].code.coding[system?Qualification_Type].code") + " " +
+      _psp.read("entry[resource.resourceType?Practitioner].resource.qualification[code.text].code.text", "") + ", " +
+      _psp.read("entry[resource.resourceType?Organization].resource.name") + ", " +
+      _psp.read("entry[resource.resourceType?Organization].resource.address[0]._line[extension[url?streetName]].extension[url?streetName].valueString") + " " +
+      _psp.read("entry[resource.resourceType?Organization].resource.address[0]._line[extension[url?houseNumber]].extension[url?houseNumber].valueString") + ", " +
+      _psp.read("entry[resource.resourceType?Organization].resource.address[0].postalCode") + " " +
+      _psp.read("entry[resource.resourceType?Organization].resource.address[0].city") + ", " +
+      _psp.read("entry[resource.resourceType?Organization].resource.telecom[system?phone].value")}
+            </textarea>
           </div>
         </div>
         <div id="error-messages"/>

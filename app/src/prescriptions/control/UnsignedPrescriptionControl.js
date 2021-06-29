@@ -45,3 +45,8 @@ export const removeValidationErrorForMainWindowAction = createAction("removeVali
 export const removeValidationErrorForMainWindow = (fieldId) => {
     store.dispatch(removeValidationErrorForMainWindowAction({fieldId}));
 }
+
+export const ValidateAllFieldsInMainWindowAction = createAction("ValidateAllFieldsInMainWindowAction");
+export const ValidateAllFieldsInMainWindow = () => {
+    store.dispatch(ValidateAllFieldsInMainWindowAction());
+}

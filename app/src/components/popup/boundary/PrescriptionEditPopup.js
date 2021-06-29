@@ -622,6 +622,7 @@ export class MedicamentEditPopup extends BElement {
 customElements.define("medicament-edit-popup", MedicamentEditPopup);
 
 export class PatientEditPopup extends BElement {
+
   view() {
     return html`
       <div class="modal" id="patientEdit" style="max-width: 800px;">
@@ -652,7 +653,7 @@ export class PatientEditPopup extends BElement {
       </div>
     `;
   }
-}
+};
 customElements.define("patient-edit-popup", PatientEditPopup);
 
 

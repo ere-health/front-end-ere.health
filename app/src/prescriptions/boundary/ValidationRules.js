@@ -3,11 +3,13 @@
 export const MainWindowValidationRules = {
     //String
     'coverage-payor-display': ['required', 'regex:/^.{1,50}$/'],
-    'drug-1': ['required', 'regex:/^.{1,50}$/'],
+    'medicationText': ['required', 'regex:/^.{1,50}$/'],
     'pzn': ['required', 'regex:/^[0-9]{6,8}$/'],
     'dosage-instructions': ['regex:/^.{1,30}$/'],
     'full-patient-address': ['required',
-        'regex:/^[a-z A-ZäöüÄÖÜß\\-\\.]{1,20}? [a-z A-ZäöüÄÖÜß\\-]{1,50} [a-z A-ZäöüÄÖÜß\\-\\.]{1,50}, [a-z A-ZäöüÄÖÜß\\-\\.0-9]{1,50} [a-z A-ZäöüÄÖÜß\\-\\.0-9]{1,10}, [0-9]{5} [a-z A-ZäöüÄÖÜß\\-]{1,32}$/'],
+        'regex:/^[a-z A-ZäöüÄÖÜß\\-\\.]{1,20} ?[a-z A-ZäöüÄÖÜß\\-]{1,50} [a-z A-ZäöüÄÖÜß\\-\\.]{1,50}, [a-z A-ZäöüÄÖÜß\\-\\.0-9]{1,50} [a-z A-ZäöüÄÖÜß\\-\\.0-9]{1,10}, [0-9]{5} [a-z A-ZäöüÄÖÜß\\-]{1,32}$/'],
+    'organization-summary': ['required', 
+        'regex:/^[a-z A-ZäöüÄÖÜß\\-\\.]{1,20} ?[a-z A-ZäöüÄÖÜß\\-]{1,50} [a-z A-ZäöüÄÖÜß\\-\\.]{1,50}, [0-9]{2} [a-z A-ZäöüÄÖÜß\\-\\.]{1,50}, [a-z A-ZäöüÄÖÜß\\-\\.0-9]{1,50}, [a-z A-ZäöüÄÖÜß\\-\\.0-9]{1,50} [a-z A-ZäöüÄÖÜß\\-\\.0-9]{1,10}, [0-9]{5} [a-z A-ZäöüÄÖÜß\\-]{1,32}, \\+?[0-9]{6,15}$/'],  
 
     //Numbers
     'betriebsstätten': ['required', 'regex:/^[0-9]{8,9}$/'],
@@ -100,8 +102,12 @@ export const MainWindowErrorMessages = {
         regex: 'The dosage instructions must be between 1 and 30 characters long'
     },
     'full-patient-address' :{
-        required: 'The full address must be present',
-        regex: 'The full address seems to be wrong, please open the popup to fill its details'
+        required: "Please open the popup related to the patient's data to fill its details",
+        regex: "The full patient address seems to be wrong, Please open the popup related to the patient's data to fill its details"
+    },
+    'organization-summary' :{
+        required: "Please open the popup related to the organization's data to fill its details",
+        regex: "The full organization details seems to be wrong, Please open the popup related to the organization's data to fill its details"
     },
     'betriebsstätten' :{
         required: "The id of the practitioner's company must be present",
@@ -124,11 +130,11 @@ export const MainWindowErrorMessages = {
     },
     'birthdate': {
         required: 'The patient birthday must be present',
-        regex: 'The patient birtday must bo of format D(D).M(M).YYYY'
+        regex: 'The patient birtday must be of format D(D).M(M).YYYY'
     },
     'authoredOn': {
         required: 'The prescription date must be present',
-        regex: 'The prescription date must bo of format D(D).M(M).YYYY'
+        regex: 'The prescription date must be of format D(D).M(M).YYYY'
     }
 };
 
