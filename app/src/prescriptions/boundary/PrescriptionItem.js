@@ -250,8 +250,9 @@ class Prescription extends BElement {
                         type   = "text"
                         name   = "birthdate"
                         id     = "birthdate"
-                        @keyup = "${_ => this.onUserInput(_, "entry[resource.resourceType?Patient].resource.birthDate")}"
-                        value  = "${_psp.read("entry[resource.resourceType?Patient].resource.birthDate", "")}"
+                        @keyup = "${_ => this.onUserInput({ target: { name: "birthdate", value: new Date(_.target.value).toLocaleDateString("fr-CA") } },
+          "entry[resource.resourceType?Patient].resource.birthDate")}"
+                        value  = "${new Date(_psp.read("entry[resource.resourceType?Patient].resource.birthDate", "")).toLocaleDateString("de-DE")}"
                       />
                     </div>
                   </div>
@@ -347,16 +348,11 @@ class Prescription extends BElement {
                         id     = "authoredOn"
                         class  = "bright"
                         name   = "authoredOn"
-                        value  = "${_psp.read("entry[resource.resourceType?MedicationRequest].resource.authoredOn", "").split('T')[0]}"
+                        value  = "${new Date(_psp.read("entry[resource.resourceType?MedicationRequest].resource.authoredOn", "").split("T")[0]).toLocaleDateString("de-DE")}"
                         @keyup = "${_ => {
-        try {
-          this.onUserInput({
-            target: { name: "authoredOn", value: new Date(_.target.value).toISOString() }
-          }, "entry[resource.resourceType?MedicationRequest].resource.authoredOn")
-        } catch (ex) {
-          this.onUserInput(_, "entry[resource.resourceType?MedicationRequest].resource.date")
-        }
-      }}"                      />
+        this.onUserInput({ target: { name: "authoredOn", value: new Date(_.target.value).toLocaleDateString("fr-CA") + "T00:00:000Z" } },
+          "entry[resource.resourceType?MedicationRequest].resource.authoredOn")
+      }}"/>
                     </div>
                   </div>
                 </div>
