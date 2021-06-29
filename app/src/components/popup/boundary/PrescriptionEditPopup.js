@@ -464,7 +464,7 @@ export class EditField extends BElement {
     return html`
     <div style="display:flex; flex-direction:column;flex-grow: 1;padding: 7px;margin-top:5px"> 
       <label>${this.label}</label>
-      <input type="text" id="--${this.id}" value="${stateObject.read(this.mapKey ?? "", "")}" style="
+      <input type="text" id="--${this.id !== "null" ? this.id : this.label}" value="${stateObject.read(this.mapKey ?? "", "")}" style="
         height        : 56px;     
         background    : #E4E4E44D;
         border-radius : 4px;      
@@ -526,7 +526,7 @@ export class ClinicEditPopup extends BElement {
 
   cancelPopupEditClinic() {
     const psp = new Mapper(this.state.prescriptions.selectedPrescription.prescriptions[0]);
-    document.getElementById("--xx").value = psp.read("entry[resource.resourceType?Organization].resource.identifier[0].value");
+    document.getElementById("--clinic-betriebsstätten").value = psp.read("entry[resource.resourceType?Organization].resource.identifier[0].value");
     cancelPopupEditClinic();
   }
 
@@ -557,7 +557,7 @@ export class PractIdEditPopup extends BElement {
 
   cancelPopupEditPractId() {
     const psp = new Mapper(this.state.prescriptions.selectedPrescription.prescriptions[0]);
-    document.getElementById("--practid-value").value = psp.read("entry[resource.resourceType?Practitioner].resource.identifier[0].value");
+    document.getElementById("--practId-doctor-number").value = psp.read("entry[resource.resourceType?Practitioner].resource.identifier[0].value");
     cancelPopupEditPractId();
   }
 
