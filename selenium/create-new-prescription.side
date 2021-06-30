@@ -1,0 +1,852 @@
+{
+  "id": "0e5dbf7d-6892-4548-bbeb-f1accb78d5a9",
+  "version": "2.0",
+  "name": "New prescription",
+  "url": "http://localhost:8080",
+  "tests": [{
+    "id": "14c71bab-b1b7-4526-b58f-61a646e8cbb9",
+    "name": "new prescription",
+    "commands": [{
+      "id": "19d4a8c1-a417-46e6-a90d-7dd730f9740f",
+      "comment": "",
+      "command": "open",
+      "target": "/frontend/app/src/index.html",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "2b96230f-c716-4bed-ab1f-722e58baf845",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1229x1393",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "b23db7ba-cafa-455a-9003-1f58a86f68b1",
+      "comment": "",
+      "command": "click",
+      "target": "id=create-new-prescription-button",
+      "targets": [
+        ["id=create-new-prescription-button", "id"],
+        ["css=#create-new-prescription-button", "css:finder"],
+        ["xpath=//button[@id='create-new-prescription-button']", "xpath:attributes"],
+        ["xpath=//unsigned-prescription-list/div/button", "xpath:position"],
+        ["xpath=//button[contains(.,'neues Rezept erstellen')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "7ec4d663-0f6b-4ab6-81ad-c2875d728b23",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=New prescription",
+      "targets": [
+        ["linkText=New prescription", "linkText"],
+        ["css=.unsigned-button", "css:finder"],
+        ["xpath=//a[contains(text(),'New prescription')]", "xpath:link"],
+        ["xpath=//a[contains(@href, '/frontend/app/src/prescription/fadb13ae-e618-4331-b416-7c50c51a18da')]", "xpath:href"],
+        ["xpath=//unsigned-prescription-list/div/div/a", "xpath:position"],
+        ["xpath=//a[contains(.,'New prescription')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "e1177cc0-9e62-4bb3-abdb-fc6d3a1f7268",
+      "comment": "",
+      "command": "click",
+      "target": "css=.column-2 .edit-btn",
+      "targets": [
+        ["css=.column-2 .edit-btn", "css:finder"],
+        ["xpath=//div[@id='unsigned_1']/div[2]/div/form/div/div[2]/div/div/div", "xpath:idRelative"],
+        ["xpath=//div[2]/div/div/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "8b8c9688-1bc3-4e79-b7eb-25ab456e7543",
+      "comment": "",
+      "command": "click",
+      "target": "id=--patient-prefix",
+      "targets": [
+        ["id=--patient-prefix", "id"],
+        ["css=#\\--patient-prefix", "css:finder"],
+        ["xpath=//input[@id='--patient-prefix']", "xpath:attributes"],
+        ["xpath=//edit-field[@id='patient-prefix']/div/input", "xpath:idRelative"],
+        ["xpath=//patient-edit-popup/div/div[2]/div/edit-field/div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "005c165f-1132-414a-8e9d-c3825e3507fd",
+      "comment": "",
+      "command": "type",
+      "target": "id=--patient-prefix",
+      "targets": [
+        ["id=--patient-prefix", "id"],
+        ["css=#\\--patient-prefix", "css:finder"],
+        ["xpath=//input[@id='--patient-prefix']", "xpath:attributes"],
+        ["xpath=//edit-field[@id='patient-prefix']/div/input", "xpath:idRelative"],
+        ["xpath=//patient-edit-popup/div/div[2]/div/edit-field/div/input", "xpath:position"]
+      ],
+      "value": "Dr."
+    }, {
+      "id": "6534e35d-baaa-4c21-b7f7-897e7a55d851",
+      "comment": "",
+      "command": "type",
+      "target": "id=--patient-given",
+      "targets": [
+        ["id=--patient-given", "id"],
+        ["css=#\\--patient-given", "css:finder"],
+        ["xpath=//input[@id='--patient-given']", "xpath:attributes"],
+        ["xpath=//edit-field[@id='patient-given']/div/input", "xpath:idRelative"],
+        ["xpath=//edit-field[2]/div/input", "xpath:position"]
+      ],
+      "value": "Vor-patient"
+    }, {
+      "id": "1aaa8a06-24c5-4625-9657-c1eba21b2da3",
+      "comment": "",
+      "command": "type",
+      "target": "id=--patient-family",
+      "targets": [
+        ["id=--patient-family", "id"],
+        ["css=#\\--patient-family", "css:finder"],
+        ["xpath=//input[@id='--patient-family']", "xpath:attributes"],
+        ["xpath=//edit-field[@id='patient-family']/div/input", "xpath:idRelative"],
+        ["xpath=//edit-field[3]/div/input", "xpath:position"]
+      ],
+      "value": "Nach-patient"
+    }, {
+      "id": "8e9f63bb-f578-4a57-99b9-6cbdb2eaac5e",
+      "comment": "",
+      "command": "type",
+      "target": "id=--patient-street-name",
+      "targets": [
+        ["id=--patient-street-name", "id"],
+        ["css=#\\--patient-street-name", "css:finder"],
+        ["xpath=//input[@id='--patient-street-name']", "xpath:attributes"],
+        ["xpath=//edit-field[@id='patient-street-name']/div/input", "xpath:idRelative"],
+        ["xpath=//patient-edit-popup/div/div[2]/div[2]/edit-field/div/input", "xpath:position"]
+      ],
+      "value": "Strasse-patient"
+    }, {
+      "id": "215f0b0f-8f51-445f-9ffb-c428f6f6d136",
+      "comment": "",
+      "command": "type",
+      "target": "id=--patient-street-number",
+      "targets": [
+        ["id=--patient-street-number", "id"],
+        ["css=#\\--patient-street-number", "css:finder"],
+        ["xpath=//input[@id='--patient-street-number']", "xpath:attributes"],
+        ["xpath=//edit-field[@id='patient-street-number']/div/input", "xpath:idRelative"],
+        ["xpath=//div[2]/edit-field[2]/div/input", "xpath:position"]
+      ],
+      "value": "1"
+    }, {
+      "id": "9cb55f57-0a87-4198-b524-b403d55a1ac0",
+      "comment": "",
+      "command": "type",
+      "target": "id=--patient-postal-code",
+      "targets": [
+        ["id=--patient-postal-code", "id"],
+        ["css=#\\--patient-postal-code", "css:finder"],
+        ["xpath=//input[@id='--patient-postal-code']", "xpath:attributes"],
+        ["xpath=//edit-field[@id='patient-postal-code']/div/input", "xpath:idRelative"],
+        ["xpath=//patient-edit-popup/div/div[2]/div[3]/edit-field/div/input", "xpath:position"]
+      ],
+      "value": "12345"
+    }, {
+      "id": "f414a243-550a-408b-86af-8cfa8cd5eba2",
+      "comment": "",
+      "command": "type",
+      "target": "id=--patient-city",
+      "targets": [
+        ["id=--patient-city", "id"],
+        ["css=#\\--patient-city", "css:finder"],
+        ["xpath=//input[@id='--patient-city']", "xpath:attributes"],
+        ["xpath=//edit-field[@id='patient-city']/div/input", "xpath:idRelative"],
+        ["xpath=//div[3]/edit-field[2]/div/input", "xpath:position"]
+      ],
+      "value": "Stadt-patient"
+    }, {
+      "id": "f823bd11-7001-4040-8762-80856a0698ce",
+      "comment": "",
+      "command": "click",
+      "target": "id=patient-save-button",
+      "targets": [
+        ["id=patient-save-button", "id"],
+        ["css=#patient-save-button", "css:finder"],
+        ["xpath=//button[@id='patient-save-button']", "xpath:attributes"],
+        ["xpath=//div[@id='patientEdit']/div[3]/button[2]", "xpath:idRelative"],
+        ["xpath=//patient-edit-popup/div/div[3]/button[2]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "afc9d940-f924-4276-8304-509ea9746120",
+      "comment": "",
+      "command": "click",
+      "target": "css=.border-bottom > .input-wrapper:nth-child(1) > label",
+      "targets": [
+        ["css=.border-bottom > .input-wrapper:nth-child(1) > label", "css:finder"],
+        ["xpath=//div[@id='unsigned_1']/div[2]/div/form/div/div/div/label", "xpath:idRelative"],
+        ["xpath=//div/label", "xpath:position"],
+        ["xpath=//label[contains(.,'Krankenkasse bzw. Kostenträger')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "e3559cc9-2a04-4509-92c2-f87a10195955",
+      "comment": "",
+      "command": "type",
+      "target": "id=coverage-payor-display",
+      "targets": [
+        ["id=coverage-payor-display", "id"],
+        ["name=coverage-payor-display", "name"],
+        ["css=#coverage-payor-display", "css:finder"],
+        ["xpath=//input[@id='coverage-payor-display']", "xpath:attributes"],
+        ["xpath=//div[@id='unsigned_1']/div[2]/div/form/div/div/div/input", "xpath:idRelative"],
+        ["xpath=//div/input", "xpath:position"]
+      ],
+      "value": "Krankenkasse"
+    }, {
+      "id": "80993a83-f83c-42cc-9b77-870943a96588",
+      "comment": "",
+      "command": "click",
+      "target": "id=wop",
+      "targets": [
+        ["id=wop", "id"],
+        ["name=wop", "name"],
+        ["css=#wop", "css:finder"],
+        ["xpath=//input[@id='wop']", "xpath:attributes"],
+        ["xpath=//div[@id='unsigned_1']/div[2]/div/form/div/div/div[2]/input", "xpath:idRelative"],
+        ["xpath=//div[2]/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "6df7980d-f6ca-400a-99d2-d96e38ba59e1",
+      "comment": "",
+      "command": "type",
+      "target": "id=wop",
+      "targets": [
+        ["id=wop", "id"],
+        ["name=wop", "name"],
+        ["css=#wop", "css:finder"],
+        ["xpath=//input[@id='wop']", "xpath:attributes"],
+        ["xpath=//div[@id='unsigned_1']/div[2]/div/form/div/div/div[2]/input", "xpath:idRelative"],
+        ["xpath=//div[2]/input", "xpath:position"]
+      ],
+      "value": "42"
+    }, {
+      "id": "8649f851-d36a-4cf1-ba2d-81837876d6f7",
+      "comment": "",
+      "command": "click",
+      "target": "css=.column-2:nth-child(2) > .form-group:nth-child(2) > .input-wrapper",
+      "targets": [
+        ["css=.column-2:nth-child(2) > .form-group:nth-child(2) > .input-wrapper", "css:finder"],
+        ["xpath=//div[@id='unsigned_1']/div[2]/div/form/div/div[2]/div[2]/div", "xpath:idRelative"],
+        ["xpath=//div[2]/div[2]/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "1ee9b65a-68d8-4094-a463-91895a7cb42e",
+      "comment": "",
+      "command": "click",
+      "target": "id=birthdate",
+      "targets": [
+        ["id=birthdate", "id"],
+        ["name=birthdate", "name"],
+        ["css=#birthdate", "css:finder"],
+        ["xpath=//input[@id='birthdate']", "xpath:attributes"],
+        ["xpath=//div[@id='unsigned_1']/div[2]/div/form/div/div[2]/div[2]/div/input", "xpath:idRelative"],
+        ["xpath=//div[2]/div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "02aabba3-56ed-4a1e-982b-899c5cfc32a6",
+      "comment": "",
+      "command": "type",
+      "target": "id=birthdate",
+      "targets": [
+        ["id=birthdate", "id"],
+        ["name=birthdate", "name"],
+        ["css=#birthdate", "css:finder"],
+        ["xpath=//input[@id='birthdate']", "xpath:attributes"],
+        ["xpath=//div[@id='unsigned_1']/div[2]/div/form/div/div[2]/div[2]/div/input", "xpath:idRelative"],
+        ["xpath=//div[2]/div/input", "xpath:position"]
+      ],
+      "value": "1.1.1968"
+    }, {
+      "id": "a86a99c8-de45-4c5f-8dea-cc3080abfacb",
+      "comment": "",
+      "command": "click",
+      "target": "id=authoredOn",
+      "targets": [
+        ["id=authoredOn", "id"],
+        ["name=authoredOn", "name"],
+        ["css=#authoredOn", "css:finder"],
+        ["xpath=//input[@id='authoredOn']", "xpath:attributes"],
+        ["xpath=//div[@id='unsigned_1']/div[2]/div/form/div/div[4]/div[3]/div/input", "xpath:idRelative"],
+        ["xpath=//div[4]/div[3]/div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "a88e4e37-6f3c-437a-bda3-8ea66d821e6b",
+      "comment": "",
+      "command": "type",
+      "target": "id=authoredOn",
+      "targets": [
+        ["id=authoredOn", "id"],
+        ["name=authoredOn", "name"],
+        ["css=#authoredOn", "css:finder"],
+        ["xpath=//input[@id='authoredOn']", "xpath:attributes"],
+        ["xpath=//div[@id='unsigned_1']/div[2]/div/form/div/div[4]/div[3]/div/input", "xpath:idRelative"],
+        ["xpath=//div[4]/div[3]/div/input", "xpath:position"]
+      ],
+      "value": "10.12.1654"
+    }, {
+      "id": "75f481f6-404c-4904-9bcd-e70756274405",
+      "comment": "",
+      "command": "click",
+      "target": "id=kvid",
+      "targets": [
+        ["id=kvid", "id"],
+        ["name=kvid", "name"],
+        ["css=#kvid", "css:finder"],
+        ["xpath=//input[@id='kvid']", "xpath:attributes"],
+        ["xpath=//div[@id='unsigned_1']/div[2]/div/form/div/div[3]/div[2]/div/input", "xpath:idRelative"],
+        ["xpath=//div[3]/div[2]/div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "7ce43bd6-ae7c-4d0d-9836-3aa18c7aefeb",
+      "comment": "",
+      "command": "type",
+      "target": "id=kvid",
+      "targets": [
+        ["id=kvid", "id"],
+        ["name=kvid", "name"],
+        ["css=#kvid", "css:finder"],
+        ["xpath=//input[@id='kvid']", "xpath:attributes"],
+        ["xpath=//div[@id='unsigned_1']/div[2]/div/form/div/div[3]/div[2]/div/input", "xpath:idRelative"],
+        ["xpath=//div[3]/div[2]/div/input", "xpath:position"]
+      ],
+      "value": "1234567894"
+    }, {
+      "id": "b3e1c806-914a-4a5e-8818-7c4671ffa255",
+      "comment": "",
+      "command": "click",
+      "target": "id=coverage-payor-iknr",
+      "targets": [
+        ["id=coverage-payor-iknr", "id"],
+        ["name=coverage-payor-iknr", "name"],
+        ["css=#coverage-payor-iknr", "css:finder"],
+        ["xpath=//input[@id='coverage-payor-iknr']", "xpath:attributes"],
+        ["xpath=//div[@id='unsigned_1']/div[2]/div/form/div/div[3]/div/div/input", "xpath:idRelative"],
+        ["xpath=//div[3]/div/div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "d040dad5-13a7-48fc-8305-bc0fa39dd33b",
+      "comment": "",
+      "command": "type",
+      "target": "id=coverage-payor-iknr",
+      "targets": [
+        ["id=coverage-payor-iknr", "id"],
+        ["name=coverage-payor-iknr", "name"],
+        ["css=#coverage-payor-iknr", "css:finder"],
+        ["xpath=//input[@id='coverage-payor-iknr']", "xpath:attributes"],
+        ["xpath=//div[@id='unsigned_1']/div[2]/div/form/div/div[3]/div/div/input", "xpath:idRelative"],
+        ["xpath=//div[3]/div/div/input", "xpath:position"]
+      ],
+      "value": "123456789"
+    }, {
+      "id": "c39fe875-aa8b-4dc6-b8bf-d4c01e8ca332",
+      "comment": "",
+      "command": "click",
+      "target": "css=.column-3 > .form-group:nth-child(1) .edit-btn",
+      "targets": [
+        ["css=.column-3 > .form-group:nth-child(1) .edit-btn", "css:finder"],
+        ["xpath=//div[@id='unsigned_1']/div[2]/div/form/div/div[4]/div/div/div", "xpath:idRelative"],
+        ["xpath=//div[4]/div/div/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "b1e0af5e-b4c2-4568-8e40-44614070d1ff",
+      "comment": "",
+      "command": "click",
+      "target": "id=--clinic-betriebsstätten",
+      "targets": [
+        ["id=--clinic-betriebsstätten", "id"],
+        ["css=#\\--clinic-betriebsst\\E4tten", "css:finder"],
+        ["xpath=//input[@id='--clinic-betriebsstätten']", "xpath:attributes"],
+        ["xpath=//edit-field[@id='clinic-betriebsstätten']/div/input", "xpath:idRelative"],
+        ["xpath=//clinic-edit-popup/div/div[2]/div/edit-field/div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "f181488c-dcad-4258-8969-81a51c9292eb",
+      "comment": "",
+      "command": "type",
+      "target": "id=--clinic-betriebsstätten",
+      "targets": [
+        ["id=--clinic-betriebsstätten", "id"],
+        ["css=#\\--clinic-betriebsst\\E4tten", "css:finder"],
+        ["xpath=//input[@id='--clinic-betriebsstätten']", "xpath:attributes"],
+        ["xpath=//edit-field[@id='clinic-betriebsstätten']/div/input", "xpath:idRelative"],
+        ["xpath=//clinic-edit-popup/div/div[2]/div/edit-field/div/input", "xpath:position"]
+      ],
+      "value": "123456789"
+    }, {
+      "id": "055702eb-5049-4034-9baa-5c5be3a7f266",
+      "comment": "",
+      "command": "click",
+      "target": "id=clinic-save-button",
+      "targets": [
+        ["id=clinic-save-button", "id"],
+        ["css=#clinic-save-button", "css:finder"],
+        ["xpath=//button[@id='clinic-save-button']", "xpath:attributes"],
+        ["xpath=//div[@id='clinicEdit']/div[3]/button[2]", "xpath:idRelative"],
+        ["xpath=//clinic-edit-popup/div/div[3]/button[2]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "0a1418bd-3750-44a6-a442-8770e4b679f7",
+      "comment": "",
+      "command": "click",
+      "target": "css=.form-group:nth-child(2) .edit-btn",
+      "targets": [
+        ["css=.form-group:nth-child(2) .edit-btn", "css:finder"],
+        ["xpath=//div[@id='unsigned_1']/div[2]/div/form/div/div[4]/div[2]/div/div", "xpath:idRelative"],
+        ["xpath=//div[4]/div[2]/div/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "44f3b126-5fe2-4929-bb07-a169dd1cbb8c",
+      "comment": "",
+      "command": "click",
+      "target": "id=--practId-doctor-number",
+      "targets": [
+        ["id=--practId-doctor-number", "id"],
+        ["css=#\\--practId-doctor-number", "css:finder"],
+        ["xpath=//input[@id='--practId-doctor-number']", "xpath:attributes"],
+        ["xpath=//edit-field[@id='practId-doctor-number']/div/input", "xpath:idRelative"],
+        ["xpath=//pract-id-edit-popup/div/div[2]/div/edit-field/div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "d61d4750-ce43-4755-a3c0-4c0506a27b01",
+      "comment": "",
+      "command": "type",
+      "target": "id=--practId-doctor-number",
+      "targets": [
+        ["id=--practId-doctor-number", "id"],
+        ["css=#\\--practId-doctor-number", "css:finder"],
+        ["xpath=//input[@id='--practId-doctor-number']", "xpath:attributes"],
+        ["xpath=//edit-field[@id='practId-doctor-number']/div/input", "xpath:idRelative"],
+        ["xpath=//pract-id-edit-popup/div/div[2]/div/edit-field/div/input", "xpath:position"]
+      ],
+      "value": "123456"
+    }, {
+      "id": "73983b9d-07c8-4cc1-8eff-91bfaf6e72ba",
+      "comment": "",
+      "command": "click",
+      "target": "id=practId-save-button",
+      "targets": [
+        ["id=practId-save-button", "id"],
+        ["css=#practId-save-button", "css:finder"],
+        ["xpath=//button[@id='practId-save-button']", "xpath:attributes"],
+        ["xpath=//div[@id='PractIdEdit']/div[3]/button[2]", "xpath:idRelative"],
+        ["xpath=//pract-id-edit-popup/div/div[3]/button[2]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "1f7728df-fd60-4d81-82fe-f66af0a86932",
+      "comment": "",
+      "command": "click",
+      "target": "css=.drug-area-2 > .edit-btn",
+      "targets": [
+        ["css=.drug-area-2 > .edit-btn", "css:finder"],
+        ["xpath=//div[@id='unsigned_1']/div[3]/div[2]/div", "xpath:idRelative"],
+        ["xpath=//prescription-item/div/div[3]/div[2]/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "53ffa52a-ed78-4083-b323-5e2102ef8c20",
+      "comment": "",
+      "command": "click",
+      "target": "id=--practitioner-prefix",
+      "targets": [
+        ["id=--practitioner-prefix", "id"],
+        ["css=#\\--practitioner-prefix", "css:finder"],
+        ["xpath=//input[@id='--practitioner-prefix']", "xpath:attributes"],
+        ["xpath=//edit-field[@id='practitioner-prefix']/div/input", "xpath:idRelative"],
+        ["xpath=//organization-edit-popup/div/div[2]/div/edit-field/div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "bf985af6-d34f-412e-a3c2-ffa2f20530a2",
+      "comment": "",
+      "command": "type",
+      "target": "id=--practitioner-prefix",
+      "targets": [
+        ["id=--practitioner-prefix", "id"],
+        ["css=#\\--practitioner-prefix", "css:finder"],
+        ["xpath=//input[@id='--practitioner-prefix']", "xpath:attributes"],
+        ["xpath=//edit-field[@id='practitioner-prefix']/div/input", "xpath:idRelative"],
+        ["xpath=//organization-edit-popup/div/div[2]/div/edit-field/div/input", "xpath:position"]
+      ],
+      "value": "Prof."
+    }, {
+      "id": "ff627e7f-9249-4a1c-8e2e-aed0923a7879",
+      "comment": "",
+      "command": "type",
+      "target": "id=--practitioner-given",
+      "targets": [
+        ["id=--practitioner-given", "id"],
+        ["css=#\\--practitioner-given", "css:finder"],
+        ["xpath=//input[@id='--practitioner-given']", "xpath:attributes"],
+        ["xpath=//edit-field[@id='practitioner-given']/div/input", "xpath:idRelative"],
+        ["xpath=//organization-edit-popup/div/div[2]/div/edit-field[2]/div/input", "xpath:position"]
+      ],
+      "value": "Vor-pract"
+    }, {
+      "id": "2dc9ae54-b6f4-4ae6-861e-64677759abc8",
+      "comment": "",
+      "command": "type",
+      "target": "id=--practitioner-family",
+      "targets": [
+        ["id=--practitioner-family", "id"],
+        ["css=#\\--practitioner-family", "css:finder"],
+        ["xpath=//input[@id='--practitioner-family']", "xpath:attributes"],
+        ["xpath=//edit-field[@id='practitioner-family']/div/input", "xpath:idRelative"],
+        ["xpath=//organization-edit-popup/div/div[2]/div/edit-field[3]/div/input", "xpath:position"]
+      ],
+      "value": "Nach-pract"
+    }, {
+      "id": "96c4bc4e-06bc-42ce-b342-e7ab4fdf7421",
+      "comment": "",
+      "command": "click",
+      "target": "id=--practitioner-qualification-text",
+      "targets": [
+        ["id=--practitioner-qualification-text", "id"],
+        ["css=#\\--practitioner-qualification-text", "css:finder"],
+        ["xpath=//input[@id='--practitioner-qualification-text']", "xpath:attributes"],
+        ["xpath=//edit-field[@id='practitioner-qualification-text']/div/input", "xpath:idRelative"],
+        ["xpath=//organization-edit-popup/div/div[2]/div[2]/edit-field/div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "d7d32d49-603e-42fb-8d1b-c2c5c4b3c66c",
+      "comment": "",
+      "command": "type",
+      "target": "id=--practitioner-qualification-text",
+      "targets": [
+        ["id=--practitioner-qualification-text", "id"],
+        ["css=#\\--practitioner-qualification-text", "css:finder"],
+        ["xpath=//input[@id='--practitioner-qualification-text']", "xpath:attributes"],
+        ["xpath=//edit-field[@id='practitioner-qualification-text']/div/input", "xpath:idRelative"],
+        ["xpath=//organization-edit-popup/div/div[2]/div[2]/edit-field/div/input", "xpath:position"]
+      ],
+      "value": "Beruf"
+    }, {
+      "id": "530d4d05-b277-4a0c-a372-36496c6d9a89",
+      "comment": "",
+      "command": "click",
+      "target": "id=--organization-name",
+      "targets": [
+        ["id=--organization-name", "id"],
+        ["css=#\\--organization-name", "css:finder"],
+        ["xpath=//input[@id='--organization-name']", "xpath:attributes"],
+        ["xpath=//edit-field[@id='organization-name']/div/input", "xpath:idRelative"],
+        ["xpath=//div[4]/div/edit-field/div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "da6566e1-39d1-423a-ac82-7b9036acb4f1",
+      "comment": "",
+      "command": "type",
+      "target": "id=--organization-name",
+      "targets": [
+        ["id=--organization-name", "id"],
+        ["css=#\\--organization-name", "css:finder"],
+        ["xpath=//input[@id='--organization-name']", "xpath:attributes"],
+        ["xpath=//edit-field[@id='organization-name']/div/input", "xpath:idRelative"],
+        ["xpath=//div[4]/div/edit-field/div/input", "xpath:position"]
+      ],
+      "value": "Betriebsname"
+    }, {
+      "id": "3dc1d570-972e-4c78-92b0-49a512ee74fd",
+      "comment": "",
+      "command": "type",
+      "target": "id=--organization-street-name",
+      "targets": [
+        ["id=--organization-street-name", "id"],
+        ["css=#\\--organization-street-name", "css:finder"],
+        ["xpath=//input[@id='--organization-street-name']", "xpath:attributes"],
+        ["xpath=//edit-field[@id='organization-street-name']/div/input", "xpath:idRelative"],
+        ["xpath=//div[4]/div[2]/edit-field/div/input", "xpath:position"]
+      ],
+      "value": "Strasse-pract"
+    }, {
+      "id": "04bc0ee6-0b35-4eeb-8334-e86ed61236eb",
+      "comment": "",
+      "command": "type",
+      "target": "id=--organization-street-number",
+      "targets": [
+        ["id=--organization-street-number", "id"],
+        ["css=#\\--organization-street-number", "css:finder"],
+        ["xpath=//input[@id='--organization-street-number']", "xpath:attributes"],
+        ["xpath=//edit-field[@id='organization-street-number']/div/input", "xpath:idRelative"],
+        ["xpath=//div[4]/div[2]/edit-field[2]/div/input", "xpath:position"]
+      ],
+      "value": "2"
+    }, {
+      "id": "b228224e-282c-4c8b-8c50-3a37d4dee1eb",
+      "comment": "",
+      "command": "type",
+      "target": "id=--organization-postal-code",
+      "targets": [
+        ["id=--organization-postal-code", "id"],
+        ["css=#\\--organization-postal-code", "css:finder"],
+        ["xpath=//input[@id='--organization-postal-code']", "xpath:attributes"],
+        ["xpath=//edit-field[@id='organization-postal-code']/div/input", "xpath:idRelative"],
+        ["xpath=//div[4]/div[3]/edit-field/div/input", "xpath:position"]
+      ],
+      "value": "54321"
+    }, {
+      "id": "cd497c32-1c31-4516-8b34-c654db08172b",
+      "comment": "",
+      "command": "type",
+      "target": "id=--organization-city",
+      "targets": [
+        ["id=--organization-city", "id"],
+        ["css=#\\--organization-city", "css:finder"],
+        ["xpath=//input[@id='--organization-city']", "xpath:attributes"],
+        ["xpath=//edit-field[@id='organization-city']/div/input", "xpath:idRelative"],
+        ["xpath=//div[4]/div[3]/edit-field[2]/div/input", "xpath:position"]
+      ],
+      "value": "Stadt-pract"
+    }, {
+      "id": "22e77633-154a-44bd-a6ad-c4c4880fcc7b",
+      "comment": "",
+      "command": "type",
+      "target": "id=--organization-phone",
+      "targets": [
+        ["id=--organization-phone", "id"],
+        ["css=#\\--organization-phone", "css:finder"],
+        ["xpath=//input[@id='--organization-phone']", "xpath:attributes"],
+        ["xpath=//edit-field[@id='organization-phone']/div/input", "xpath:idRelative"],
+        ["xpath=//div[4]/div[4]/edit-field/div/input", "xpath:position"]
+      ],
+      "value": "12345678"
+    }, {
+      "id": "35f124ef-382e-42d8-9d58-082ddb1ea2d0",
+      "comment": "",
+      "command": "click",
+      "target": "id=organization-save-button",
+      "targets": [
+        ["id=organization-save-button", "id"],
+        ["css=#organization-save-button", "css:finder"],
+        ["xpath=//button[@id='organization-save-button']", "xpath:attributes"],
+        ["xpath=//div[@id='organizationEdit']/div[5]/button[2]", "xpath:idRelative"],
+        ["xpath=//div[5]/button[2]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "29d2bea6-2e50-4daf-ae5d-946469ed2e90",
+      "comment": "",
+      "command": "click",
+      "target": "css=.art-list-item > .edit-btn",
+      "targets": [
+        ["css=.art-list-item > .edit-btn", "css:finder"],
+        ["xpath=//div[@id='unsigned_1']/div[3]/div/div/form/ul/li/div", "xpath:idRelative"],
+        ["xpath=//li/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "41b9d04e-2c63-4dca-9fbd-9353d47cdec1",
+      "comment": "",
+      "command": "click",
+      "target": "id=--medic-medicationText",
+      "targets": [
+        ["id=--medic-medicationText", "id"],
+        ["css=#\\--medic-medicationText", "css:finder"],
+        ["xpath=//input[@id='--medic-medicationText']", "xpath:attributes"],
+        ["xpath=//edit-field[@id='medic-medicationText']/div/input", "xpath:idRelative"],
+        ["xpath=//edit-field/div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "229dfc67-77d4-40b1-84ac-9e4560fcf255",
+      "comment": "",
+      "command": "type",
+      "target": "id=--medic-medicationText",
+      "targets": [
+        ["id=--medic-medicationText", "id"],
+        ["css=#\\--medic-medicationText", "css:finder"],
+        ["xpath=//input[@id='--medic-medicationText']", "xpath:attributes"],
+        ["xpath=//edit-field[@id='medic-medicationText']/div/input", "xpath:idRelative"],
+        ["xpath=//edit-field/div/input", "xpath:position"]
+      ],
+      "value": "Medoc"
+    }, {
+      "id": "052af1f8-f7d6-4fa7-a3f3-f16739c2c8b9",
+      "comment": "",
+      "command": "type",
+      "target": "id=--medic-pzn",
+      "targets": [
+        ["id=--medic-pzn", "id"],
+        ["css=#\\--medic-pzn", "css:finder"],
+        ["xpath=//input[@id='--medic-pzn']", "xpath:attributes"],
+        ["xpath=//edit-field[@id='medic-pzn']/div/input", "xpath:idRelative"],
+        ["xpath=//div[2]/edit-field/div/input", "xpath:position"]
+      ],
+      "value": "123456"
+    }, {
+      "id": "9cf1ff59-937b-4a06-bc49-7a07af44077a",
+      "comment": "",
+      "command": "select",
+      "target": "css=select-field:nth-child(2) select",
+      "targets": [],
+      "value": "label=N1"
+    }, {
+      "id": "b0824602-e626-436e-9b2c-77e224324c10",
+      "comment": "",
+      "command": "mouseDownAt",
+      "target": "css=select-field:nth-child(2) select",
+      "targets": [
+        ["css=select-field:nth-child(2) select", "css:finder"],
+        ["xpath=//div[@id='medicEdit']/div[2]/div[3]/select-field/div/select", "xpath:idRelative"],
+        ["xpath=//select", "xpath:position"]
+      ],
+      "value": "-351.515625,-663"
+    }, {
+      "id": "125fb4bd-e885-4c04-89ea-187926f0cc31",
+      "comment": "",
+      "command": "mouseMoveAt",
+      "target": "css=select-field:nth-child(2) select",
+      "targets": [
+        ["css=select-field:nth-child(2) select", "css:finder"],
+        ["xpath=//div[@id='medicEdit']/div[2]/div[3]/select-field/div/select", "xpath:idRelative"],
+        ["xpath=//select", "xpath:position"]
+      ],
+      "value": "-351.515625,-663"
+    }, {
+      "id": "cfd6ed68-2b58-4199-a634-da758dab0009",
+      "comment": "",
+      "command": "mouseUpAt",
+      "target": "css=select-field:nth-child(2) select",
+      "targets": [
+        ["css=select-field:nth-child(2) select", "css:finder"],
+        ["xpath=//div[@id='medicEdit']/div[2]/div[3]/select-field/div/select", "xpath:idRelative"],
+        ["xpath=//select", "xpath:position"]
+      ],
+      "value": "-351.515625,-663"
+    }, {
+      "id": "d3d4b6ad-04be-4aab-ab7c-a69925aa1c6b",
+      "comment": "",
+      "command": "click",
+      "target": "css=select-field:nth-child(2) select",
+      "targets": [
+        ["css=select-field:nth-child(2) select", "css:finder"],
+        ["xpath=//div[@id='medicEdit']/div[2]/div[3]/select-field/div/select", "xpath:idRelative"],
+        ["xpath=//select", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "2c6457e1-3a43-4bca-aa67-0878937f8aed",
+      "comment": "",
+      "command": "select",
+      "target": "css=select-field:nth-child(3) select",
+      "targets": [],
+      "value": "label=APA - Ampullenpaare"
+    }, {
+      "id": "867fc228-6c52-4979-b88b-cbb53e3bb32d",
+      "comment": "",
+      "command": "mouseDownAt",
+      "target": "css=select-field:nth-child(3) select",
+      "targets": [
+        ["css=select-field:nth-child(3) select", "css:finder"],
+        ["xpath=//div[@id='medicEdit']/div[2]/div[3]/select-field[2]/div/select", "xpath:idRelative"],
+        ["xpath=//select-field[2]/div/select", "xpath:position"]
+      ],
+      "value": "-479.046875,-663"
+    }, {
+      "id": "8575c63f-9710-432d-a41c-e6d4670b8402",
+      "comment": "",
+      "command": "mouseMoveAt",
+      "target": "css=select-field:nth-child(3) select",
+      "targets": [
+        ["css=select-field:nth-child(3) select", "css:finder"],
+        ["xpath=//div[@id='medicEdit']/div[2]/div[3]/select-field[2]/div/select", "xpath:idRelative"],
+        ["xpath=//select-field[2]/div/select", "xpath:position"]
+      ],
+      "value": "-479.046875,-663"
+    }, {
+      "id": "762fdb6f-966a-4cee-baf0-2143be6a21b5",
+      "comment": "",
+      "command": "mouseUpAt",
+      "target": "css=select-field:nth-child(3) select",
+      "targets": [
+        ["css=select-field:nth-child(3) select", "css:finder"],
+        ["xpath=//div[@id='medicEdit']/div[2]/div[3]/select-field[2]/div/select", "xpath:idRelative"],
+        ["xpath=//select-field[2]/div/select", "xpath:position"]
+      ],
+      "value": "-479.046875,-663"
+    }, {
+      "id": "822fb182-d669-4bbc-9c6c-a1b9923284a9",
+      "comment": "",
+      "command": "click",
+      "target": "css=select-field:nth-child(3) select",
+      "targets": [
+        ["css=select-field:nth-child(3) select", "css:finder"],
+        ["xpath=//div[@id='medicEdit']/div[2]/div[3]/select-field[2]/div/select", "xpath:idRelative"],
+        ["xpath=//select-field[2]/div/select", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "3dfc613f-ba52-4e7b-b62b-cf9c02cb6417",
+      "comment": "",
+      "command": "click",
+      "target": "id=--medic-dosage-instructions",
+      "targets": [
+        ["id=--medic-dosage-instructions", "id"],
+        ["css=#\\--medic-dosage-instructions", "css:finder"],
+        ["xpath=//input[@id='--medic-dosage-instructions']", "xpath:attributes"],
+        ["xpath=//edit-field[@id='medic-dosage-instructions']/div/input", "xpath:idRelative"],
+        ["xpath=//div[4]/edit-field/div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "99485a6e-ed4b-49dc-8ef1-60a21f1a7af8",
+      "comment": "",
+      "command": "type",
+      "target": "id=--medic-dosage-instructions",
+      "targets": [
+        ["id=--medic-dosage-instructions", "id"],
+        ["css=#\\--medic-dosage-instructions", "css:finder"],
+        ["xpath=//input[@id='--medic-dosage-instructions']", "xpath:attributes"],
+        ["xpath=//edit-field[@id='medic-dosage-instructions']/div/input", "xpath:idRelative"],
+        ["xpath=//div[4]/edit-field/div/input", "xpath:position"]
+      ],
+      "value": "1-1-1"
+    }, {
+      "id": "00bb3367-73f8-45a2-a9c1-5fb841fd0482",
+      "comment": "",
+      "command": "click",
+      "target": "id=medic-save-button",
+      "targets": [
+        ["id=medic-save-button", "id"],
+        ["css=#medic-save-button", "css:finder"],
+        ["xpath=//button[@id='medic-save-button']", "xpath:attributes"],
+        ["xpath=//div[@id='medicEdit']/div[3]/button[2]", "xpath:idRelative"],
+        ["xpath=//medicament-edit-popup/div/div[3]/button[2]", "xpath:position"],
+        ["xpath=//button[contains(.,'Speichern')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }]
+  }],
+  "suites": [{
+    "id": "9df65dd6-3050-4a2e-8b7a-14fc83586627",
+    "name": "Default Suite",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": []
+  }],
+  "urls": ["http://localhost:8080/"],
+  "plugins": []
+}

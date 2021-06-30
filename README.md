@@ -53,3 +53,13 @@ docker cp {path-to-pdf-filder}/{pdf-file} backend:/ere-ps-app/target/watch-pdf/
 
 docker cp ./docker/cgm-z1-manuel-blechschmidt.pdf backend:/ere-ps-app/target/watch-pdf/
 ```
+
+# Run the current modifications on the FE without docker
+Assuming you have the cloned repositories front-end-ere.health and ere-ps-app in the same folder, go in ere-ps-app and run:
+```sh
+cp -r ../front-end-ere.health/* src/main/resources/META-INF/resources/frontend/ && mvn quarkus:dev
+```
+Then simply open the website on http://localhost:8080/frontend/app/src/index.html
+
+# Selenium
+You can use a selenium script to create a new prescription filled automatically, it resides in the folder selenium
