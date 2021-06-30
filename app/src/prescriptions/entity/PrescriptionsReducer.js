@@ -146,8 +146,8 @@ export const prescriptions = createReducer(initialState, (builder) => {
         ];
       }
       return [
-        "http://fhir.de/CodeSystem/identifier-type-de-basis",
-        "KZVA",
+        "http://fhir.de/NamingSystem/kzbv/zahnarztnummer",
+        "ZANR",
         "http://fhir.de/CodeSystem/identifier-type-de-basis"
       ]
     })();
