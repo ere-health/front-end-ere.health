@@ -190,7 +190,18 @@ export class Mapper {
       }
     });
 
-    return cursor ?? defaultValue;
+    let finalValue = cursor ?? defaultValue;
+
+    switch(finalValue) {
+      case "$$$":
+        finalValue = "";
+      break;
+      case "9999-12-28":
+        finalValue = "";
+      break;
+    }
+    
+    return finalValue;
   }
 
   /**
