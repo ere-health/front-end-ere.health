@@ -50,6 +50,13 @@ class Prescription extends BElement {
   }
 
   onUserInput({ target: { name, value } }, key) {
+    if (name === 'birthdate') {
+      value = this.convertGermanDateToFhirFormat(value);
+    } else if (name === 'authoredOn') {
+      value = this.convertGermanDateToFhirFormat(value);
+      value += "T00:00:00.000Z";
+    }
+
     let validation = this.validateInput(name, value);
 
     if (validation.passes()) {
@@ -103,6 +110,21 @@ class Prescription extends BElement {
     }
   }
 
+  convertGermanDateToFhirFormat(germanDate) {
+    const dateArray = germanDate.split(".");
+    let month = dateArray[1];
+    let day = dateArray[0];
+
+    if (month.length < 2) {
+      month = "0" + month;
+    }
+    if (day.length < 2) {
+      day = "0" + day;
+    }
+
+    return dateArray[2] + "-" + month + "-" + day;
+  }
+
 
   view() {
     // get the first prescription of the bundle array
@@ -120,6 +142,12 @@ class Prescription extends BElement {
       <div class="recipe-wrapper active" id="unsigned_1">
         <div class="title-rezept-button">
           <h2>${i18n("RecipeFor")} <strong>${displayName}</strong></h2>
+          <button
+            id     = "check-errors-button"
+            @click = "${() => ValidateAllFieldsInMainWindow()}"
+            class  = "open-modal jet-btn">
+            Fehler prüfen
+          </button>
           <button
             id     = "sign-recipe"
             @click = "${(_) => this.onClickSignRecipe(_)}"
@@ -244,11 +272,15 @@ class Prescription extends BElement {
                         name   = "full-patient-address"
                         id     = "full-patient-address"
                         cols   = "10"
-                      >${(this.state.selectedPrescription.updatedProps.address ?? (displayName + ", " +
+                        rows   = "2"
+                      >${
+                        _psp.read("entry[resource.resourceType?Patient].resource.name[0].prefix[0]", "") + " " +
+                        _psp.read("entry[resource.resourceType?Patient].resource.name[0].given[0]", "") + " " +
+                        _psp.read("entry[resource.resourceType?Patient].resource.name[0].family", "") + ", " +
         _psp.read("entry[resource.resourceType?Patient].resource.address[0]._line[extension[url?streetName]].extension[url?streetName].valueString", "") + " " +
         _psp.read("entry[resource.resourceType?Patient].resource.address[0]._line[extension[url?houseNumber]].extension[url?houseNumber].valueString", "") + ", " +
         _psp.read("entry[resource.resourceType?Patient].resource.address[0].postalCode", "") + " " +
-        _psp.read("entry[resource.resourceType?Patient].resource.address[0].city", "").trim()))}
+        _psp.read("entry[resource.resourceType?Patient].resource.address[0].city", "").trim()}
                       </textarea>
                       <span></span>
                     </div>
@@ -261,8 +293,7 @@ class Prescription extends BElement {
                         type   = "text"
                         name   = "birthdate"
                         id     = "birthdate"
-                        @keyup = "${_ => this.onUserInput({ target: { name: "birthdate", value: new Date(_.target.value).toLocaleDateString("fr-CA") } },
-          "entry[resource.resourceType?Patient].resource.birthDate")}"
+                        @keyup = "${_ => this.onUserInput({ target: { name: "birthdate", value: _.target.value } }, "entry[resource.resourceType?Patient].resource.birthDate")}"
                         value  = "${this.extractDate(_psp.read("entry[resource.resourceType?Patient].resource.birthDate", ""))}"
                       />
                     </div>
@@ -365,8 +396,7 @@ class Prescription extends BElement {
                         name   = "authoredOn"
                         value  = "${this.extractDate(_psp.read("entry[resource.resourceType?MedicationRequest].resource.authoredOn", "").split("T")[0])}"
                         @keyup = "${_ => {
-        this.onUserInput({ target: { name: "authoredOn", value: new Date(_.target.value).toLocaleDateString("fr-CA") + "T00:00:00.000Z" } },
-          "entry[resource.resourceType?MedicationRequest].resource.authoredOn")
+        this.onUserInput({ target: { name: "authoredOn", value: _.target.value} }, "entry[resource.resourceType?MedicationRequest].resource.authoredOn")
       }}"/>
                     </div>
                   </div>
@@ -521,7 +551,7 @@ class Prescription extends BElement {
                         <input type="text" 
                           class="duration" 
                           id="dosage-instructions"
-                          value="${medicationRequestResource.dosageInstruction.length > 0 ? medicationRequestResource.dosageInstruction[0].text : ""}"
+                          value="${medicationRequestResource.dosageInstruction.length > 0 && medicationRequestResource.dosageInstruction[0].text != undefined ? medicationRequestResource.dosageInstruction[0].text : ""}"
                           @keyup="${_ => this.onUserInput(_, "entry[1].resource.dosageInstruction[0].text")}"
                           placeholder="" 
                         />
@@ -573,7 +603,7 @@ class Prescription extends BElement {
       _psp.read("entry[resource.resourceType?Practitioner].resource.name[0].family") + ", " +
       _psp.read("entry[resource.resourceType?Practitioner].resource.qualification[code.coding[system?Qualification_Type]].code.coding[system?Qualification_Type].code") + " " +
       _psp.read("entry[resource.resourceType?Practitioner].resource.qualification[code.text].code.text", "") + ", " +
-      _psp.read("entry[resource.resourceType?Organization].resource.name") + ", " +
+      _psp.read("entry[resource.resourceType?Organization].resource.name", "") + ", " +
       _psp.read("entry[resource.resourceType?Organization].resource.address[0]._line[extension[url?streetName]].extension[url?streetName].valueString") + " " +
       _psp.read("entry[resource.resourceType?Organization].resource.address[0]._line[extension[url?houseNumber]].extension[url?houseNumber].valueString") + ", " +
       _psp.read("entry[resource.resourceType?Organization].resource.address[0].postalCode") + " " +

@@ -250,19 +250,6 @@ export const NewPrescriptionTemplate = `
             "family": "",
             "given": [
               ""
-            ],
-            "prefix": [
-              ""
-            ],
-            "_prefix": [
-              {
-                "extension": [
-                  {
-                    "url": "http://hl7.org/fhir/StructureDefinition/iso21090-EN-qualifier",
-                    "valueCode": "AC"
-                  }
-                ]
-              }
             ]
           }
         ],
@@ -329,19 +316,6 @@ export const NewPrescriptionTemplate = `
             },
             "given": [
               ""
-            ],
-            "prefix": [
-              ""
-            ],
-            "_prefix": [
-              {
-                "extension": [
-                  {
-                    "url": "http://hl7.org/fhir/StructureDefinition/iso21090-EN-qualifier",
-                    "valueCode": "AC"
-                  }
-                ]
-              }
             ]
           }
         ],

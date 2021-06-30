@@ -93,22 +93,29 @@ export const prescriptions = createReducer(initialState, (builder) => {
       if (statePath?.indexOf("prescriptions") === 0) {
         statePath = statePath.replace("prescriptions.", "");
       }
+      const psp = new Mapper(state.selectedPrescription.prescriptions[0]);
       //state.selectedPrescription.updatedProps[name] = value;
       // Clone object, Redux Toolkit does not support updateding object with Indexer.
-      const _state = useWindow === "true" ? new Mapper(window) : new Mapper(JSON.parse(JSON.stringify(state)));
-      const _psp = new Mapper(_state.read(statePath ? statePath : "selectedPrescription.prescriptions[0]"));
-      if (key) {
-        _psp.write(key, value);
-        if (useWindow !== "true") {
-          Object.keys(_state.mapObject).forEach(k => {
-            state[k] = _state.mapObject[k];
-          })
-          //state.selectedPrescription.prescriptions[0] = _psp.mapObject;
-          state.list.forEach((_, idx) => {
-            if (_[0].id === state.selectedPrescription.prescriptions[0].id) {
-              _[0] = state.selectedPrescription.prescriptions[0];
-            }
-          })
+      if (name === 'patient-prefix') {
+        setPrefix(psp, "entry[resource.resourceType?Patient].resource.name[0]", value);
+      } else if (name == 'practitioner-prefix') {
+        setPrefix(psp, "entry[resource.resourceType?Practitioner].resource.name[0]", value);
+      } else {
+        const _state = useWindow === "true" ? new Mapper(window) : new Mapper(JSON.parse(JSON.stringify(state)));
+        const _psp = new Mapper(_state.read(statePath ? statePath : "selectedPrescription.prescriptions[0]"));
+        if (key) {
+          _psp.write(key, value);
+          if (useWindow !== "true") {
+            Object.keys(_state.mapObject).forEach(k => {
+              state[k] = _state.mapObject[k];
+            })
+            //state.selectedPrescription.prescriptions[0] = _psp.mapObject;
+            state.list.forEach((_, idx) => {
+              if (_[0].id === state.selectedPrescription.prescriptions[0].id) {
+                _[0] = state.selectedPrescription.prescriptions[0];
+              }
+            })
+          }
         }
       }
     })
@@ -271,14 +278,14 @@ export const prescriptions = createReducer(initialState, (builder) => {
   });
   builder.addCase(ValidateAllFieldsInMainWindowAction, (state) => {
     const psp = new Mapper(state.selectedPrescription.prescriptions[0]);
-    
+
     for (const [key, rule] of Object.entries(MainWindowValidationRules)) {
       let currentValue = document.getElementById(key).value.trim();
 
       if (key === 'birthdate') {
-        currentValue = new Date(psp.read("entry[resource.resourceType?Patient].resource.birthDate", "")).toLocaleDateString("fr-CA");
+        currentValue = psp.read("entry[resource.resourceType?Patient].resource.birthDate", "");
       } else if (key === 'authoredOn') {
-        currentValue = new Date(psp.read("entry[resource.resourceType?MedicationRequest].resource.authoredOn", "")).toLocaleDateString("fr-CA") + "T00:00:00.000Z";
+        currentValue = psp.read("entry[resource.resourceType?MedicationRequest].resource.authoredOn", "");
       }
 
       let validation = validateInput(key, currentValue, MainWindowValidationRules);
@@ -317,4 +324,22 @@ export const prescriptions = createReducer(initialState, (builder) => {
       return v.toString(16);
     });
   }
+
+  const setPrefix = (psp, namePath, value) => {
+    const patientName = psp.read(namePath);
+    if (value == "") {
+      delete patientName._prefix;
+      delete patientName.prefix;
+    } else {
+      patientName.prefix = [];
+      patientName._prefix = [];
+      patientName._prefix[0] = new Object();
+      patientName._prefix[0].extension = [];
+      patientName._prefix[0].extension[0] = new Object();
+      patientName._prefix[0].extension[0].url = "http://hl7.org/fhir/StructureDefinition/iso21090-EN-qualifier";
+      patientName._prefix[0].extension[0].valueCode = "AC";
+      patientName.prefix[0] = value;
+    }
+    psp.write(namePath, patientName);
+  };
 })

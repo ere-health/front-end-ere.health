@@ -407,7 +407,6 @@ export class EditField extends BElement {
     let rule = new Object();
     let currentPopupName = "";
 
-    //How to get here state.showPopup?
     if (this.id.startsWith('patient')) {
       currentPopupName = 'patientEdit';
     } else if ((this.id.startsWith('practitioner')) || (this.id.startsWith('organization'))) {
@@ -431,7 +430,7 @@ export class EditField extends BElement {
 
     if (validation.passes()) {
       removeValidationErrorForCurrentPopup(id);
-      updatePrescription(label, value, key, statePath, useWindow);
+      updatePrescription(id, value, key, statePath, useWindow);
 
       if ((id.startsWith("clinic")) && ((document.getElementById("clinicEdit-error-messages").innerHTML.trim().length == 0))) {
         document.getElementById("clinic-save-button").disabled = false;
