@@ -26,19 +26,9 @@ export const showPopupFatig = () => {
     store.dispatch(showPopupFatigAction());
 }
 
-export const showPopupEditPatientAction = createAction("showPopupEditPatientAction");
-export const showPopupEditPatient = () => {
-    store.dispatch(showPopupEditPatientAction());
-}
-
 export const showPopupEditStatusAction = createAction("showPopupEditStatusAction");
 export const showPopupEditStatus = () => {
     store.dispatch(showPopupEditStatusAction());
-}
-
-export const showPopupEditOrgaAction = createAction("showPopupEditOrgaAction");
-export const showPopupEditOrga = () => {
-    store.dispatch(showPopupEditOrgaAction());
 }
 
 export const showPopupEditMedicAction = createAction("showPopupEditMedicAction");
@@ -107,4 +97,36 @@ export const addValidationErrorForCurrentPopup = (fieldId, error) => {
 export const removeValidationErrorForCurrentPopupAction = createAction("removeValidationErrorForCurrentPopupAction");
 export const removeValidationErrorForCurrentPopup = (fieldId) => {
     store.dispatch(removeValidationErrorForCurrentPopupAction({fieldId}));
+}
+
+// patient Popup
+export const showPopupEditPatientAction = createAction("showPopupEditPatient");
+export const showPopupEditPatient = () => {
+    store.dispatch(showPopupEditPatientAction());
+}
+
+export const cancelPopupEditPatientAction = createAction("cancelPopupEditPatientAction");
+export const cancelPopupEditPatient = () => {
+    store.dispatch(cancelPopupEditPatientAction());
+}
+
+export const savePopupEditPatientAction = createAction("savePopupEditPatientAction");
+export const savePopupEditPatient = () => {
+    store.dispatch(savePopupEditPatientAction());
+}
+
+// organisation Popup
+export const showPopupEditOrgaAction = createAction("showPopupEditOrga");
+export const showPopupEditOrga = () => {
+    store.dispatch(showPopupEditOrgaAction());
+}
+
+export const cancelPopupEditOrgaAction = createAction("cancelPopupEditOrgaAction");
+export const cancelPopupEditOrga = () => {
+    store.dispatch(cancelPopupEditOrgaAction());
+}
+
+export const savePopupEditOrgaAction = createAction("savePopupEditOrgaAction");
+export const savePopupEditOrga = () => {
+    store.dispatch(savePopupEditOrgaAction());
 }
