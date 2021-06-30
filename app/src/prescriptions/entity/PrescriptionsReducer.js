@@ -127,7 +127,6 @@ export const prescriptions = createReducer(initialState, (builder) => {
     });
 
 
-
   // Clinic Popup
   builder.addCase(showPopupEditClinicAction, (state) => {
     const psp = new Mapper(state.selectedPrescription.prescriptions[0]);
@@ -155,7 +154,7 @@ export const prescriptions = createReducer(initialState, (builder) => {
       return [
         "http://fhir.de/CodeSystem/identifier-type-de-basis",
         "KZVA",
-        "http://fhir.de/NamingSystem/kzbv/kzvabrechnungsnummer"
+        "http://fhir.de/CodeSystem/identifier-type-de-basis"
       ]
     })();
     const psp = new Mapper(state.selectedPrescription.prescriptions[0]);
@@ -199,7 +198,7 @@ export const prescriptions = createReducer(initialState, (builder) => {
         ];
       }
       return [
-        "http://fhir.de/NamingSystem/kzbv/zahnarztnummer",
+        "https://fhir.kbv.de/NamingSystem/KBV_NS_Base_BSNR",
         "ZANR",
         "http://fhir.de/CodeSystem/identifier-type-de-basis"
       ]
