@@ -13,7 +13,12 @@ import {
   savePopupEditMedikament,
   cancelPopupEditMedikament,
   addValidationErrorForCurrentPopup,
-  removeValidationErrorForCurrentPopup
+  removeValidationErrorForCurrentPopup,
+  savePopupEditPatient,
+  cancelPopupEditPatient,
+  cancelPopupEditOrgaAction,
+  cancelPopupEditOrga,
+  savePopupEditOrga
 } from "../control/PopupControl.js";
 import { Mapper } from "../../../libs/helper/Mapper.js";
 import { updatePrescription } from "../../../prescriptions/control/UnsignedPrescriptionControl.js";
@@ -588,6 +593,7 @@ export class PractIdEditPopup extends BElement {
 customElements.define("pract-id-edit-popup", PractIdEditPopup);
 
 export class MedicamentEditPopup extends BElement {
+
   view() {
     return html`
       <div class="modal" id="medicEdit" style="max-width: 800px;">
@@ -622,7 +628,19 @@ export class MedicamentEditPopup extends BElement {
 customElements.define("medicament-edit-popup", MedicamentEditPopup);
 
 export class PatientEditPopup extends BElement {
+  cancelPopupEditPatient() {
+    const psp = new Mapper(this.state.prescriptions.selectedPrescription.prescriptions[0]);
+    document.getElementById("--patient-prefix").value            = psp.read("entry[resource.resourceType?Patient].resource.name[0].prefix[0]");
+    document.getElementById("--patient-given").value             = psp.read("entry[resource.resourceType?Patient].resource.name[0].given[0]");
+    document.getElementById("--patient-family").value            = psp.read("entry[resource.resourceType?Patient].resource.name[0].family");
+    document.getElementById("--patient-street-name").value       = psp.read("entry[resource.resourceType?Patient].resource.address[0]._line[extension[url?streetName]].extension[url?streetName].valueString");
+    document.getElementById("--patient-street-number").value     = psp.read("entry[resource.resourceType?Patient].resource.address[0]._line[extension[url?houseNumber]].extension[url?houseNumber].valueString");
+    document.getElementById("--patient-street-additional").value = psp.read("entry[resource.resourceType?Patient].resource.address[0]._line[extension[url?additionalLocator]].extension[url?additionalLocator].valueString");
+    document.getElementById("--patient-postal-code").value       = psp.read("entry[resource.resourceType?Patient].resource.address[0].postalCode");
+    document.getElementById("--patient-city").value              = psp.read("entry[resource.resourceType?Patient].resource.address[0].city");
 
+    cancelPopupEditPatient();
+  }
   view() {
     return html`
       <div class="modal" id="patientEdit" style="max-width: 800px;">
@@ -631,23 +649,23 @@ export class PatientEditPopup extends BElement {
         </div>
         <div style="text-align:left">
           <div class="fieldRow"> 
-            <edit-field statePath="prescriptions.selectedPrescription.prescriptions[0]" id="patient-prefix" label="Titel" mapKey="entry[resource.resourceType?Patient].resource.name[0].prefix[0]"></edit-field>
-            <edit-field statePath="prescriptions.selectedPrescription.prescriptions[0]" id="patient-given" label="Vorname"  mapKey="entry[resource.resourceType?Patient].resource.name[0].given[0]"></edit-field>
-            <edit-field statePath="prescriptions.selectedPrescription.prescriptions[0]" id="patient-family" label="Nachname" mapKey="entry[resource.resourceType?Patient].resource.name[0].family"></edit-field>
+            <edit-field statePath="prescriptions.PatientPopup" id="patient-prefix" label="Titel" mapKey="patientPrefix"></edit-field>
+            <edit-field statePath="prescriptions.PatientPopup" id="patient-given" label="Vorname"  mapKey="patientGiven"></edit-field>
+            <edit-field statePath="prescriptions.PatientPopup" id="patient-family" label="Nachname" mapKey="patientFamily"></edit-field>
           </div>
           <div class="fieldRow"> 
-            <edit-field statePath="prescriptions.selectedPrescription.prescriptions[0]" id="patient-street-name" label="Straße" mapKey="entry[resource.resourceType?Patient].resource.address[0]._line[extension[url?streetName]].extension[url?streetName].valueString" ratio="1.5"></edit-field>
-            <edit-field statePath="prescriptions.selectedPrescription.prescriptions[0]" id="patient-street-number" label="Hausnummer" mapKey="entry[resource.resourceType?Patient].resource.address[0]._line[extension[url?houseNumber]].extension[url?houseNumber].valueString" ratio="0.5"></edit-field>
-            <edit-field statePath="prescriptions.selectedPrescription.prescriptions[0]" id="patient-street-additional" label="Adresszusatz" mapKey="entry[resource.resourceType?Patient].resource.address[0]._line[extension[url?additionalLocator]].extension[url?additionalLocator].valueString" ></edit-field>
+            <edit-field statePath="prescriptions.PatientPopup" id="patient-street-name" label="Straße" mapKey="patientStreetName" ratio="1.5"></edit-field>
+            <edit-field statePath="prescriptions.PatientPopup" id="patient-street-number" label="Hausnummer" mapKey="patientStreetNumber" ratio="0.5"></edit-field>
+            <edit-field statePath="prescriptions.PatientPopup" id="patient-street-additional" label="Adresszusatz" mapKey="patientStreetAdditional" ></edit-field>
           </div>
           <div class="fieldRow"> 
-            <edit-field statePath="prescriptions.selectedPrescription.prescriptions[0]" id="patient-postal-code" label="Postleitzahl" mapKey="entry[resource.resourceType?Patient].resource.address[0].postalCode" ratio="1"></edit-field>
-            <edit-field statePath="prescriptions.selectedPrescription.prescriptions[0]" id="patient-city" label="Stadt" mapKey="entry[resource.resourceType?Patient].resource.address[0].city" ratio="2"></edit-field>
+            <edit-field statePath="prescriptions.PatientPopup" id="patient-postal-code" label="Postleitzahl" mapKey="patientPostalCode" ratio="1"></edit-field>
+            <edit-field statePath="prescriptions.PatientPopup" id="patient-city" label="Stadt" mapKey="patientCity" ratio="2"></edit-field>
           </div>
         </div>
         <div class="modal-buttons">
-            <button data-close-button class="cancel" @click="${() => _hidePopup()}">Abbrechen</button>
-            <button data-modal-target-processing="#processing" @click="${() => _hidePopup()}" class="ok-next" id="patient-save-button">Speichern</button>
+            <button data-close-button class="cancel" @click="${() => this.cancelPopupEditPatient()}">Abbrechen</button>
+            <button data-modal-target-processing="#processing" @click="${() => savePopupEditPatient()}" class="ok-next" id="patient-save-button">Speichern</button>
         </div>
         <div id="patientEdit-error-messages"/>
       </div>
@@ -658,6 +676,26 @@ customElements.define("patient-edit-popup", PatientEditPopup);
 
 
 export class OrganizationEditPopup extends BElement {
+
+  cancelPopupEditOrga() {
+    const psp = new Mapper(this.state.prescriptions.selectedPrescription.prescriptions[0]);
+
+    document.getElementById("--practitioner-prefix").value = psp.read("entry[resource.resourceType?Practitioner].resource.name[0].prefix[0]");
+    document.getElementById("--practitioner-given").value = psp.read("entry[resource.resourceType?Practitioner].resource.name[0].given[0]");
+    document.getElementById("--practitioner-family").value = psp.read("entry[resource.resourceType?Practitioner].resource.name[0].family");
+    //document.getElementById("--qualifikation").value = psp.read("entry[resource.resourceType?Practitioner].resource.qualification[code.coding[system?Qualification_Type]].code.coding[system?Qualification_Type].code");
+    document.getElementById("--practitioner-qualification-text").value = psp.read("entry[resource.resourceType?Practitioner].resource.qualification[code.coding[system?Qualification_Type]].code.text");
+    document.getElementById("--organization-name").value = psp.read("entry[resource.resourceType?Organization].resource.name");
+    document.getElementById("--organization-street-name").value = psp.read("entry[resource.resourceType?Organization].resource.address[0]._line[extension[url?streetName]].extension[url?streetName].valueString");
+    document.getElementById("--organization-street-number").value = psp.read("entry[resource.resourceType?Organization].resource.address[0]._line[extension[url?houseNumber]].extension[url?houseNumber].valueString");
+    document.getElementById("--organization-street-additional").value = psp.read("entry[resource.resourceType?Organization].resource.address[0]._line[extension[url?additionalLocator]].extension[url?additionalLocator].valueString");
+    document.getElementById("--organization-postal-code").value = psp.read("entry[resource.resourceType?Organization].resource.address[0].postalCode");
+    document.getElementById("--organization-city").value = psp.read("entry[resource.resourceType?Organization].resource.address[0].city");
+    document.getElementById("--organization-phone").value = psp.read("entry[resource.resourceType?Organization].resource.telecom[system?phone].value");
+
+    cancelPopupEditOrga();
+  }
+
   view() {
     return html`
       <div class="modal" id="organizationEdit" style="max-width: 800px;">
@@ -666,13 +704,13 @@ export class OrganizationEditPopup extends BElement {
         </div>
         <div style="text-align:left">
           <div class="fieldRow"> 
-            <edit-field statePath="prescriptions.selectedPrescription.prescriptions[0]" id="practitioner-prefix" mapKey="entry[resource.resourceType?Practitioner].resource.name[0].prefix[0]" label="Titel"></edit-field>
-            <edit-field statePath="prescriptions.selectedPrescription.prescriptions[0]" id="practitioner-given" mapKey="entry[resource.resourceType?Practitioner].resource.name[0].given[0]" label="Vorname"></edit-field>
-            <edit-field statePath="prescriptions.selectedPrescription.prescriptions[0]" id="practitioner-family" mapKey="entry[resource.resourceType?Practitioner].resource.name[0].family" label="Nachname"></edit-field>
+            <edit-field statePath="prescriptions.OrgaPopup" id="practitioner-prefix" mapKey="practitionerPrefix" label="Titel"></edit-field>
+            <edit-field statePath="prescriptions.OrgaPopup" id="practitioner-given" mapKey="practitionerGiven" label="Vorname"></edit-field>
+            <edit-field statePath="prescriptions.OrgaPopup" id="practitioner-family" mapKey="practitionerFamily" label="Nachname"></edit-field>
           </div>
           <div class="fieldRow"> 
-            <select-field statePath="prescriptions.selectedPrescription.prescriptions[0]" mapKey="entry[resource.resourceType?Practitioner].resource.qualification[code.coding[system?Qualification_Type]].code.coding[system?Qualification_Type].code" label="Qualifikation" ratio="1" items="${JSON.stringify(FIELD_PRACTQUALI_CODE)}"></select-field> 
-            <edit-field statePath="prescriptions.selectedPrescription.prescriptions[0]" id='practitioner-qualification-text' mapKey="entry[resource.resourceType?Practitioner].resource.qualification[code.coding[system?Qualification_Type]].code.text" label="Berufsbezeichnung" ratio="2"></edit-field>
+            <select-field statePath="prescriptions.OrgaPopup" mapKey="qualifikation" label="Qualifikation" ratio="1" items="${JSON.stringify(FIELD_PRACTQUALI_CODE)}"></select-field> 
+            <edit-field statePath="prescriptions.OrgaPopup" id='practitioner-qualification-text' mapKey="berufsbezeichnung" label="Berufsbezeichnung" ratio="2"></edit-field>
           </div>
         </div>
         <div class="modal-title" style="text-align:left;margin-top:15px;margin-bottom:15px">
@@ -680,24 +718,24 @@ export class OrganizationEditPopup extends BElement {
         </div>
         <div style="text-align:left">
         <div class="fieldRow"> 
-            <edit-field statePath="prescriptions.selectedPrescription.prescriptions[0]" id="organization-name" mapKey="entry[resource.resourceType?Organization].resource.name" label="Betriebsname" ratio="1"></edit-field>
+            <edit-field statePath="prescriptions.OrgaPopup" id="organization-name" mapKey="organizationName" label="Betriebsname" ratio="1"></edit-field>
           </div>
           <div class="fieldRow"> 
-            <edit-field statePath="prescriptions.selectedPrescription.prescriptions[0]" id="organization-street-name" mapKey="entry[resource.resourceType?Organization].resource.address[0]._line[extension[url?streetName]].extension[url?streetName].valueString" label="Straße" ratio="1.5"></edit-field>
-            <edit-field statePath="prescriptions.selectedPrescription.prescriptions[0]" id="organization-street-number" mapKey="entry[resource.resourceType?Organization].resource.address[0]._line[extension[url?houseNumber]].extension[url?houseNumber].valueString" label="Hausnummer" ratio="0.5"></edit-field>
-            <edit-field statePath="prescriptions.selectedPrescription.prescriptions[0]" id="organization-street-additional" mapKey="entry[resource.resourceType?Organization].resource.address[0]._line[extension[url?additionalLocator]].extension[url?additionalLocator].valueString" label="Adresszusatz"></edit-field>
+            <edit-field statePath="prescriptions.OrgaPopup" id="organization-street-name" mapKey="organizationStreetName" label="Straße" ratio="1.5"></edit-field>
+            <edit-field statePath="prescriptions.OrgaPopup" id="organization-street-number" mapKey="organizationStreetNumber" label="Hausnummer" ratio="0.5"></edit-field>
+            <edit-field statePath="prescriptions.OrgaPopup" id="organization-street-additional" mapKey="organizationStreetAdditional" label="Adresszusatz"></edit-field>
           </div>
           <div class="fieldRow"> 
-            <edit-field statePath="prescriptions.selectedPrescription.prescriptions[0]" id="organization-postal-code" mapKey="entry[resource.resourceType?Organization].resource.address[0].postalCode" label="Postleitzahl" ratio="1"></edit-field>
-            <edit-field statePath="prescriptions.selectedPrescription.prescriptions[0]" id="organization-city" mapKey="entry[resource.resourceType?Organization].resource.address[0].city" label="Stadt" ratio="2"></edit-field>
+            <edit-field statePath="prescriptions.OrgaPopup" id="organization-postal-code" mapKey="organizationPostalCode" label="Postleitzahl" ratio="1"></edit-field>
+            <edit-field statePath="prescriptions.OrgaPopup" id="organization-city" mapKey="organizationCity" label="Stadt" ratio="2"></edit-field>
           </div>
           <div class="fieldRow"> 
-            <edit-field statePath="prescriptions.selectedPrescription.prescriptions[0]" id="organization-phone" mapKey="entry[resource.resourceType?Organization].resource.telecom[system?phone].value" label="Telefonnummer" ratio="1"></edit-field>
+            <edit-field statePath="prescriptions.OrgaPopup" id="organization-phone" mapKey="organizationPhone" label="Telefonnummer" ratio="1"></edit-field>
           </div>
         </div>
         <div class="modal-buttons">
-            <button data-close-button class="cancel" @click="${() => _hidePopup()}">Abbrechen</button>
-            <button data-modal-target-processing="#processing" @click="${() => _hidePopup()}" class="ok-next" id="organization-save-button">Speichern</button>
+            <button data-close-button class="cancel" @click="${() => this.cancelPopupEditOrga()}">Abbrechen</button>
+            <button data-modal-target-processing="#processing" @click="${() => savePopupEditOrga()}" class="ok-next" id="organization-save-button">Speichern</button>
         </div>
         <div id="organizationEdit-error-messages"/>
       </div>

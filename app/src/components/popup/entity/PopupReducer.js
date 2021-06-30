@@ -19,7 +19,11 @@ import {
   savePopupEditMedikamentAction,
   cancelPopupEditMedikamentAction,
   addValidationErrorForCurrentPopupAction,
-  removeValidationErrorForCurrentPopupAction
+  removeValidationErrorForCurrentPopupAction,
+  cancelPopupEditPatientAction,
+  savePopupEditPatientAction,
+  cancelPopupEditOrgaAction,
+  savePopupEditOrgaAction
 } from "../control/PopupControl.js";
 
 const initialState = {
@@ -48,15 +52,10 @@ export const popupReducer = createReducer(initialState, (builder) => {
     state.all = true;
     state.showPopup = "id";
   });
-  builder.addCase(showPopupEditPatientAction, (state) => {
-    state.showPopup = "patientEdit";
-  });
   builder.addCase(showPopupEditStatusAction, (state) => {
     state.showPopup = "statusEdit";
   });
-  builder.addCase(showPopupEditOrgaAction, (state) => {
-    state.showPopup = "organizationEdit";
-  });
+
 
 
   builder.addCase(showPopupEditClinicAction, (state) => {
@@ -97,6 +96,31 @@ export const popupReducer = createReducer(initialState, (builder) => {
     state.currentValidationErrors = {};
   });
 
+  builder.addCase(showPopupEditPatientAction, (state) => {
+    state.showPopup = "patientEdit";
+  });
+  builder.addCase(cancelPopupEditPatientAction, (state) => {
+    state.showPopup = "";
+    state.currentValidationErrors = {};
+  });
+  builder.addCase(savePopupEditPatientAction, (state) => {
+    state.showPopup = "";
+    state.currentValidationErrors = {};
+  });
+
+  builder.addCase(showPopupEditOrgaAction, (state) => {
+    state.showPopup = "organizationEdit";
+  });
+  builder.addCase(cancelPopupEditOrgaAction, (state) => {
+    state.showPopup = "";
+    state.currentValidationErrors = {};
+  });
+  builder.addCase(savePopupEditOrgaAction, (state) => {
+    state.showPopup = "";
+    state.currentValidationErrors = {};
+  });
+
+  
   builder.addCase(addValidationErrorForCurrentPopupAction, (state, { payload: { fieldId, error } }) => {
     state.currentValidationErrors[fieldId] = error;
 
