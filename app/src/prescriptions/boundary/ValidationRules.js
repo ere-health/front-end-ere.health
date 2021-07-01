@@ -205,6 +205,9 @@ export const OrganizationPopupErrorMessages = {
     'organization-phone': {
         required: 'The organization phone number must be present',
         regex: 'The organization phone number must be between 6 and 15 numbers long'
+    },
+    'organization-name': {
+        regex: 'The organization name must be between 1 and 50 characters long'
     }
 };
 
