@@ -15,7 +15,7 @@ export const MainWindowValidationRules = {
     'betriebsstätten': ['required', 'regex:/^[0-9]{8,9}$/'],
     'kvid': ['required', 'regex:/^[a-zA-Z0-9]{10}$/'],
     'coverage-payor-iknr': ['required', 'regex:/^[0-9]{9}$/'],
-    'doctor-number': ['regex:/^[0-9]{6,9}$/'],
+    'doctor-number': ['required', 'regex:/^[0-9]{6,9}$/'],
     'wop': ['required', 'regex:/^[0-9]{1,2}$/'],
 
     //Dates, entered as DD.MM.YYYY but converted into YYYY-MM-DD for the bundle.
@@ -122,6 +122,7 @@ export const MainWindowErrorMessages = {
         regex: 'The iknr must be composed by 9 numbers'
     },
     'doctor-number': {
+        required: 'The doctor number must be present',
         regex: 'The practitioner id must be between 6 and 8 numbers long'
     },
     'wop': {
