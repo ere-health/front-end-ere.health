@@ -170,8 +170,7 @@ export const prescriptions = createReducer(initialState, (builder) => {
       type: psp.read("entry[resource.resourceType?Practitioner].resource.identifier[0].type.coding[0].code"),
       value: psp.read("entry[resource.resourceType?Practitioner].resource.identifier[0].value")
     };
-    state.currentValidationErrors = {};
-    document.getElementById("error-messages").innerHTML = "";
+    resetErrorsInMainWindow(state);
   });
   builder.addCase(cancelPopupEditPractIdAction, (state) => {
     const psp = new Mapper(state.selectedPrescription.prescriptions[0]);
