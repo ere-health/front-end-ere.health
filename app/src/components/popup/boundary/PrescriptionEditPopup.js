@@ -18,7 +18,8 @@ import {
   cancelPopupEditPatient,
   cancelPopupEditOrgaAction,
   cancelPopupEditOrga,
-  savePopupEditOrga
+  savePopupEditOrga,
+  ValidateAllFieldsInCurrentPopup
 } from "../control/PopupControl.js";
 import { Mapper } from "../../../libs/helper/Mapper.js";
 import { updatePrescription } from "../../../prescriptions/control/UnsignedPrescriptionControl.js";
@@ -634,12 +635,12 @@ customElements.define("medicament-edit-popup", MedicamentEditPopup);
 export class PatientEditPopup extends BElement {
   cancelPopupEditPatient() {
     const psp = new Mapper(this.state.prescriptions.selectedPrescription.prescriptions[0]);
-    document.getElementById("--patient-prefix").value            = psp.read("entry[resource.resourceType?Patient].resource.name[0].prefix[0]");
+    document.getElementById("--patient-prefix").value            = psp.read("entry[resource.resourceType?Patient].resource.name[0].prefix[0]", "");
     document.getElementById("--patient-given").value             = psp.read("entry[resource.resourceType?Patient].resource.name[0].given[0]");
     document.getElementById("--patient-family").value            = psp.read("entry[resource.resourceType?Patient].resource.name[0].family");
     document.getElementById("--patient-street-name").value       = psp.read("entry[resource.resourceType?Patient].resource.address[0]._line[extension[url?streetName]].extension[url?streetName].valueString");
     document.getElementById("--patient-street-number").value     = psp.read("entry[resource.resourceType?Patient].resource.address[0]._line[extension[url?houseNumber]].extension[url?houseNumber].valueString");
-    document.getElementById("--patient-street-additional").value = psp.read("entry[resource.resourceType?Patient].resource.address[0]._line[extension[url?additionalLocator]].extension[url?additionalLocator].valueString");
+    document.getElementById("--patient-street-additional").value = psp.read("entry[resource.resourceType?Patient].resource.address[0]._line[extension[url?additionalLocator]].extension[url?additionalLocator].valueString", "");
     document.getElementById("--patient-postal-code").value       = psp.read("entry[resource.resourceType?Patient].resource.address[0].postalCode");
     document.getElementById("--patient-city").value              = psp.read("entry[resource.resourceType?Patient].resource.address[0].city");
 
@@ -669,6 +670,7 @@ export class PatientEditPopup extends BElement {
         </div>
         <div class="modal-buttons">
             <button data-close-button class="cancel" @click="${() => this.cancelPopupEditPatient()}">Abbrechen</button>
+            <button data-close-button class="check-errors" @click="${() => ValidateAllFieldsInCurrentPopup()}">Fehler prüfen</button>
             <button data-modal-target-processing="#processing" @click="${() => savePopupEditPatient()}" class="ok-next" id="patient-save-button">Speichern</button>
         </div>
         <div id="patientEdit-error-messages"/>
@@ -739,6 +741,7 @@ export class OrganizationEditPopup extends BElement {
         </div>
         <div class="modal-buttons">
             <button data-close-button class="cancel" @click="${() => this.cancelPopupEditOrga()}">Abbrechen</button>
+            <button data-close-button class="check-errors" @click="${() => ValidateAllFieldsInCurrentPopup()}">Fehler prüfen</button>
             <button data-modal-target-processing="#processing" @click="${() => savePopupEditOrga()}" class="ok-next" id="organization-save-button">Speichern</button>
         </div>
         <div id="organizationEdit-error-messages"/>

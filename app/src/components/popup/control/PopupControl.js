@@ -99,6 +99,12 @@ export const removeValidationErrorForCurrentPopup = (fieldId) => {
     store.dispatch(removeValidationErrorForCurrentPopupAction({fieldId}));
 }
 
+export const ValidateAllFieldsInCurrentPopupAction = createAction("ValidateAllFieldsInCurrentPopupAction");
+export const ValidateAllFieldsInCurrentPopup = () => {
+    store.dispatch(ValidateAllFieldsInCurrentPopupAction({}));
+}
+
+
 // patient Popup
 export const showPopupEditPatientAction = createAction("showPopupEditPatient");
 export const showPopupEditPatient = () => {

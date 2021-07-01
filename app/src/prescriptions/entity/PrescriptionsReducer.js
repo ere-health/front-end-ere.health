@@ -122,7 +122,8 @@ export const prescriptions = createReducer(initialState, (builder) => {
     state.clinicPopup = {
       type: psp.read("entry[resource.resourceType?Organization].resource.identifier[0].type.coding[0].code"),
       value: psp.read("entry[resource.resourceType?Organization].resource.identifier[0].value")
-    }
+    };
+    resetErrorsInMainWindow(state);
   });
   builder.addCase(cancelPopupEditClinicAction, (state) => {
     const psp = new Mapper(state.selectedPrescription.prescriptions[0]);
@@ -168,7 +169,9 @@ export const prescriptions = createReducer(initialState, (builder) => {
     state.PractIdPopup = {
       type: psp.read("entry[resource.resourceType?Practitioner].resource.identifier[0].type.coding[0].code"),
       value: psp.read("entry[resource.resourceType?Practitioner].resource.identifier[0].value")
-    }
+    };
+    state.currentValidationErrors = {};
+    document.getElementById("error-messages").innerHTML = "";
   });
   builder.addCase(cancelPopupEditPractIdAction, (state) => {
     const psp = new Mapper(state.selectedPrescription.prescriptions[0]);
@@ -218,7 +221,8 @@ export const prescriptions = createReducer(initialState, (builder) => {
       "patientStreetAdditional": psp.read("entry[resource.resourceType?Patient].resource.address[0]._line[extension[url?additionalLocator]].extension[url?additionalLocator].valueString", ""),
       "patientPostalCode": psp.read("entry[resource.resourceType?Patient].resource.address[0].postalCode"),
       "patientCity": psp.read("entry[resource.resourceType?Patient].resource.address[0].city")
-    }
+    };
+    resetErrorsInMainWindow(state);
   });
 
   builder.addCase(cancelPopupEditPatientAction, (state) => {
@@ -250,11 +254,13 @@ export const prescriptions = createReducer(initialState, (builder) => {
     writer.valueString = state.PatientPopup.patientStreetNumber;
 
     writer = psp.read("entry[resource.resourceType?Patient].resource.address[0]");
-    while(writer.line.length) {
-      writer.line.pop();
+    if (writer.line) {
+      while(writer.line.length) {
+        writer.line.pop();
+      }
+      writer.line.push(`${state.PatientPopup.patientStreetName} ${state.PatientPopup.patientStreetNumber}`);
     }
-    writer.line.push(`${state.PatientPopup.patientStreetName} ${state.PatientPopup.patientStreetNumber}`);
-
+    
     try {
       writer = psp.read("entry[resource.resourceType?Patient].resource.address[0]._line[extension[url?additionalLocator]].extension[url?additionalLocator]");
       writer.valueString = state.PatientPopup.patientStreetAdditional;
@@ -289,7 +295,8 @@ export const prescriptions = createReducer(initialState, (builder) => {
       "organizationPostalCode": psp.read("entry[resource.resourceType?Organization].resource.address[0].postalCode", ""),
       "organizationCity": psp.read("entry[resource.resourceType?Organization].resource.address[0].city", ""),
       "organizationPhone": psp.read("entry[resource.resourceType?Organization].resource.telecom[system?phone].value", ""),
-    }
+    };
+    resetErrorsInMainWindow(state);
   });
 
   builder.addCase(cancelPopupEditOrgaAction, (state) => {
@@ -347,7 +354,8 @@ export const prescriptions = createReducer(initialState, (builder) => {
       norm: psp.read("entry[resource.resourceType?Medication].resource.extension[url?normgroesse].valueCode"),
       form: psp.read("entry[resource.resourceType?Medication].resource.form.coding[system?KBV_CS_SFHIR_KBV_DARREICHUNGSFORM].code"),
       dosageInstruction: psp.read("entry[resource.resourceType?MedicationRequest].resource.dosageInstruction[0].text")
-    }
+    };
+    resetErrorsInMainWindow(state);
   });
   builder.addCase(cancelPopupEditMedikamentAction, (state) => {
     const psp = new Mapper(state.selectedPrescription.prescriptions[0]);
@@ -444,6 +452,15 @@ export const prescriptions = createReducer(initialState, (builder) => {
         document.getElementById("error-messages").innerHTML += currentErrors[field] + "<BR/>";
       }
     }
+  }
+
+  const resetErrorsInMainWindow = (state) => {
+    for (const [fieldId, error] of Object.entries(state.currentValidationErrors)) {
+      document.getElementById(fieldId).style.backgroundColor = "";
+    }
+
+    state.currentValidationErrors = {};
+    document.getElementById("error-messages").innerHTML = "";
   }
 
   const uuidv4 = () => {

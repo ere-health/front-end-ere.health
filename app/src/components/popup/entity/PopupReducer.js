@@ -23,8 +23,11 @@ import {
   cancelPopupEditPatientAction,
   savePopupEditPatientAction,
   cancelPopupEditOrgaAction,
-  savePopupEditOrgaAction
+  savePopupEditOrgaAction,
+  ValidateAllFieldsInCurrentPopupAction
 } from "../control/PopupControl.js";
+import { PopupRules, PopupErrorMessages } from "../../../prescriptions/boundary/ValidationRules.js";
+
 
 const initialState = {
   showPopup: "",
@@ -134,6 +137,37 @@ export const popupReducer = createReducer(initialState, (builder) => {
     document.getElementById(fieldId).style.backgroundColor = "";
     refreshErrorMessages(state.showPopup, state.currentValidationErrors);
   });
+
+  builder.addCase(ValidateAllFieldsInCurrentPopupAction, (state) => {
+    const currentPopupName = state.showPopup;
+
+    for (const [key, rule] of Object.entries(PopupRules[currentPopupName])) {
+      let currentValue = "";
+
+      if (document.getElementById("--" + key).value != undefined) {
+        currentValue = document.getElementById("--" + key).value.trim();
+      }
+
+      let validation = validateInput(key, currentValue, currentPopupName);
+
+      if (validation.fails()) {
+        state.currentValidationErrors[key] = validation.errors.get(key);
+        document.getElementById(key).style.backgroundColor = "yellow";
+
+        refreshErrorMessages(currentPopupName, state.currentValidationErrors);
+      }
+    }
+  });
+
+  const validateInput = (name, value, currentPopupName) => {
+    let data = new Object();
+    let rule = new Object();
+
+    data[name] = value;
+    rule[name] = PopupRules[currentPopupName][name];
+
+    return new Validator(data, rule, PopupErrorMessages[currentPopupName][name]);
+  }
 
 
   const refreshErrorMessages = (currentPopupName, currentErrors) => {
