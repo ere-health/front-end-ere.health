@@ -490,8 +490,11 @@ button.active, button:hover, button:focus, .link-button.active, .link-button:hov
   margin-left: 16px;
   background: #E4E4E4;
 }
+.popup .modal .modal-buttons button.check-errors, .popup .modal .modal-buttons a.check-errors {
+  margin-left: 90px;
+}
 .popup .modal .modal-buttons button.ok-next, .popup .modal .modal-buttons a.ok-next {
-  margin-left: 137px;
+  margin-left: 120px;
 }
 .popup #overlay {
   position: fixed;
