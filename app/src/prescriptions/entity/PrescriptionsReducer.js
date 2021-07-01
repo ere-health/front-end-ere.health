@@ -20,7 +20,7 @@ import {
   MainWindowValidationRules,
   MainWindowErrorMessages
 } from "../boundary/ValidationRules.js"
-import { NewPrescriptionTemplate } from "../../../../template/NewPrescriptionTemplate.js";
+import { NewPrescriptionTemplate } from "../../template/NewPrescriptionTemplate.js";
 
 const initialState = {
   list: [],
@@ -253,6 +253,11 @@ export const prescriptions = createReducer(initialState, (builder) => {
 
     writer = psp.read("entry[resource.resourceType?Patient].resource.address[0]._line[extension[url?houseNumber]].extension[url?houseNumber]");
     writer.valueString = state.PatientPopup.patientStreetNumber;
+debugger
+    writer = psp.read("entry[resource.resourceType?Patient].resource.address[0]");
+    writer.line.pop();
+    writer.line.push(state.PatientPopup.patientStreetName);
+    writer.line.push(state.PatientPopup.patientStreetNumber);
 
     try {
       writer = psp.read("entry[resource.resourceType?Patient].resource.address[0]._line[extension[url?additionalLocator]].extension[url?additionalLocator]");
