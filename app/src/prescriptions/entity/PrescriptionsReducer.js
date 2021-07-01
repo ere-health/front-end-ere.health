@@ -253,11 +253,12 @@ export const prescriptions = createReducer(initialState, (builder) => {
 
     writer = psp.read("entry[resource.resourceType?Patient].resource.address[0]._line[extension[url?houseNumber]].extension[url?houseNumber]");
     writer.valueString = state.PatientPopup.patientStreetNumber;
-debugger
+
     writer = psp.read("entry[resource.resourceType?Patient].resource.address[0]");
-    writer.line.pop();
-    writer.line.push(state.PatientPopup.patientStreetName);
-    writer.line.push(state.PatientPopup.patientStreetNumber);
+    while(writer.line.length) {
+      writer.line.pop();
+    }
+    writer.line.push(`${state.PatientPopup.patientStreetName} ${state.PatientPopup.patientStreetNumber}`);
 
     try {
       writer = psp.read("entry[resource.resourceType?Patient].resource.address[0]._line[extension[url?additionalLocator]].extension[url?additionalLocator]");
@@ -369,7 +370,16 @@ debugger
     psp.write("entry[resource.resourceType=Medication].resource.code.text", state.MedikamentPopup.medicationText);
     psp.write("entry[resource.resourceType=Medication].resource.code.coding[system?pzn].code", state.MedikamentPopup.pzn);
     psp.write("entry[resource.resourceType?MedicationRequest].resource.dispenseRequest.quantity.value", Number(state.MedikamentPopup.quantityValue));
-    psp.write("entry[resource.resourceType?Medication].resource.extension[url?normgroesse].valueCode", state.MedikamentPopup.norm);
+    try {
+      psp.write("entry[resource.resourceType?Medication].resource.extension[url?normgroesse].valueCode", state.MedikamentPopup.norm);
+
+    } catch(ex) {
+      let writer = psp.read("entry[resource.resourceType?Medication].resource.extension");
+      writer.push({
+            "url": "http://fhir.de/StructureDefinition/normgroesse",
+            "valueCode": state.MedikamentPopup.norm
+          });
+    }
     psp.write("entry[resource.resourceType?Medication].resource.form.coding[system?KBV_CS_SFHIR_KBV_DARREICHUNGSFORM].code", state.MedikamentPopup.form);
     psp.write("entry[resource.resourceType?MedicationRequest].resource.dosageInstruction[0].text", state.MedikamentPopup.dosageInstruction);
     if (state.MedikamentPopup.dosageInstruction) {
