@@ -85,11 +85,6 @@ export const prescriptions = createReducer(initialState, (builder) => {
 
       //Add prescription action, you need to inject a list of list
       state.list = state.list.concat([[JSON.parse(bundleTemplate)]]);
-
-      //Select prescription action
-      state.selectedPrescription = state.list[state.list.length - 1][0];
-      state.isPrevious = false;
-      state.selectedPrescription.updatedProps = {};
     })
     .addCase(updatePrescriptionAction, (state, { payload: { name, value, key, statePath, useWindow } }) => {
       if (statePath?.indexOf("prescriptions") === 0) {

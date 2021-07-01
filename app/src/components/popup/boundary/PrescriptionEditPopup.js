@@ -684,15 +684,15 @@ export class OrganizationEditPopup extends BElement {
   cancelPopupEditOrga() {
     const psp = new Mapper(this.state.prescriptions.selectedPrescription.prescriptions[0]);
 
-    document.getElementById("--practitioner-prefix").value = psp.read("entry[resource.resourceType?Practitioner].resource.name[0].prefix[0]");
+    document.getElementById("--practitioner-prefix").value = psp.read("entry[resource.resourceType?Practitioner].resource.name[0].prefix[0]", "");
     document.getElementById("--practitioner-given").value = psp.read("entry[resource.resourceType?Practitioner].resource.name[0].given[0]");
     document.getElementById("--practitioner-family").value = psp.read("entry[resource.resourceType?Practitioner].resource.name[0].family");
     //document.getElementById("--qualifikation").value = psp.read("entry[resource.resourceType?Practitioner].resource.qualification[code.coding[system?Qualification_Type]].code.coding[system?Qualification_Type].code");
-    document.getElementById("--practitioner-qualification-text").value = psp.read("entry[resource.resourceType?Practitioner].resource.qualification[code.coding[system?Qualification_Type]].code.text");
+    document.getElementById("--practitioner-qualification-text").value = psp.read("entry[resource.resourceType?Practitioner].resource.qualification[code.coding[system?Qualification_Type]].code.text", "");
     document.getElementById("--organization-name").value = psp.read("entry[resource.resourceType?Organization].resource.name");
     document.getElementById("--organization-street-name").value = psp.read("entry[resource.resourceType?Organization].resource.address[0]._line[extension[url?streetName]].extension[url?streetName].valueString");
     document.getElementById("--organization-street-number").value = psp.read("entry[resource.resourceType?Organization].resource.address[0]._line[extension[url?houseNumber]].extension[url?houseNumber].valueString");
-    document.getElementById("--organization-street-additional").value = psp.read("entry[resource.resourceType?Organization].resource.address[0]._line[extension[url?additionalLocator]].extension[url?additionalLocator].valueString");
+    document.getElementById("--organization-street-additional").value = psp.read("entry[resource.resourceType?Organization].resource.address[0]._line[extension[url?additionalLocator]].extension[url?additionalLocator].valueString", "");
     document.getElementById("--organization-postal-code").value = psp.read("entry[resource.resourceType?Organization].resource.address[0].postalCode");
     document.getElementById("--organization-city").value = psp.read("entry[resource.resourceType?Organization].resource.address[0].city");
     document.getElementById("--organization-phone").value = psp.read("entry[resource.resourceType?Organization].resource.telecom[system?phone].value");
