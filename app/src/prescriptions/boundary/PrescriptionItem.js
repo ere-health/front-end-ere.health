@@ -598,7 +598,7 @@ class Prescription extends BElement {
                         rows="5" 
                         cols="30"
                         style="background: transparent; border: none;"
-                      >${_psp.read("entry[resource.resourceType?Practitioner].resource.name[0].prefix[0]", " ") + " " +
+                      >${_psp.read("entry[resource.resourceType?Practitioner].resource.name[0].prefix[0]", "") + " " +
       _psp.read("entry[resource.resourceType?Practitioner].resource.name[0].given[0]") + " " +
       _psp.read("entry[resource.resourceType?Practitioner].resource.name[0].family") + ", " +
       _psp.read("entry[resource.resourceType?Practitioner].resource.qualification[code.coding[system?Qualification_Type]].code.coding[system?Qualification_Type].code") + " " +
