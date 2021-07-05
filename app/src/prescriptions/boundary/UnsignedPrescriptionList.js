@@ -1,7 +1,7 @@
 import BElement from "../../models/BElement.js";
 import { html } from "../../libs/lit-html.js";
 import { i18n } from "../../libs/i18n/i18n.js";
-import { selectPrescription, createNewPrescription } from "../control/UnsignedPrescriptionControl.js"
+import { selectPrescription, createNewPrescription, deletePrescription } from "../control/UnsignedPrescriptionControl.js"
 import { setMusterTheme } from "../../components/layout/control/MainControl.js"
 import { initialPath } from "../../libs/helper/helper.js";
 import { Mapper } from "../../libs/helper/Mapper.js";
@@ -14,8 +14,13 @@ class UnsignedPrescriptionList extends BElement {
 
   onNavigate(unsignedPrescriptionBundles) {
     setMusterTheme();
-    selectPrescription(unsignedPrescriptionBundles, false)
+    selectPrescription(unsignedPrescriptionBundles, false);
   }
+
+  onDelete(id) {
+    deletePrescription(id);
+  }
+  
 
   view() {
     let i = 0;
@@ -46,12 +51,13 @@ class UnsignedPrescriptionList extends BElement {
           ].filter(_ => _).join(" ");
         }
 
-        return html`
+        return html`<div>
                         <a
                             href    = "${initialPath}/prescription/${unsignedPrescription.id}"
                             @click  = "${() => this.onNavigate(unsignedPrescriptionBundles)}"
                             class   = "unsigned-button link-button"
-                            data-id = "#unsigned_1"><img src="assets/images/pending-icon.svg" alt="" />${displayName}</a>`
+                            data-id = "#unsigned_1"><img src="assets/images/pending-icon.svg" alt="" />${displayName}</a><a class="link-button remove-button" @click="${() => this.onDelete(unsignedPrescription.id)}" href="#">X</a>
+                    </div>`
       }
       )}
             </div>

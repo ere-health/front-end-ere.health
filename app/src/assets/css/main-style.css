@@ -41,6 +41,10 @@ ul li {
   list-style: none;
 }
 
+.unsignierte-list > div {
+  height: 3rem;
+}
+
 .main-content-wrapper {
   flex-wrap: wrap;
   display: flex;
@@ -74,6 +78,10 @@ button.active, button:hover, button:focus, .link-button.active, .link-button:hov
   color: #11142D;
 }
 
+#create-new-prescription-button {
+  margin-bottom: 3rem;
+}
+
 .jet-btn {
   color: #000;
   padding: 12px 24px;
@@ -90,6 +98,22 @@ button.active, button:hover, button:focus, .link-button.active, .link-button:hov
 .jet-btn.active, .jet-btn:hover, .jet-btn:focus {
   color: #fff;
   background: #359ead;
+}
+
+.remove-button {
+  color: #f00;
+  border: 1px solid;
+  margin: 0.3em;
+  padding: 0.1rem 0.3rem;
+  display: inline;
+}
+.remove-button.active, .remove-button:hover, .remove-button:focus {
+  background: #f00;
+  color: #fff;
+}
+
+.unsigned-button {
+  display: inline;
 }
 
 .zet-title {
@@ -490,11 +514,8 @@ button.active, button:hover, button:focus, .link-button.active, .link-button:hov
   margin-left: 16px;
   background: #E4E4E4;
 }
-.popup .modal .modal-buttons button.check-errors, .popup .modal .modal-buttons a.check-errors {
-  margin-left: 90px;
-}
 .popup .modal .modal-buttons button.ok-next, .popup .modal .modal-buttons a.ok-next {
-  margin-left: 120px;
+  margin-left: 137px;
 }
 .popup #overlay {
   position: fixed;
@@ -1063,5 +1084,3 @@ edit-field {
     top: calc(50% - 12px) !important;
   }
 }
-
-/*# sourceMappingURL=main-style.css.map */

@@ -6,6 +6,11 @@ export const addPrescription = (prescription) => {
     store.dispatch(addPrescriptionAction(prescription));
 }
 
+export const deletePrescriptionAction = createAction("deletePrescriptionAction");
+export const deletePrescription = (id) => {
+    store.dispatch(deletePrescriptionAction({id}));
+}
+
 export const selectPrescriptionAction = createAction("selectPrescriptionAction");
 export const selectPrescription = (prescriptions, isPrevious) => {
     store.dispatch(selectPrescriptionAction({prescriptions, isPrevious}));

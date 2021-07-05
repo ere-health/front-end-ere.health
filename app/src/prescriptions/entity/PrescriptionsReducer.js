@@ -10,7 +10,7 @@ import {
   selectPrescriptionAction,
   signAndUploadBundlesAction,
   addSignedAction,
-  updatePrescription,
+  deletePrescriptionAction,
   addValidationErrorForMainWindowAction,
   removeValidationErrorForMainWindowAction,
   createNewPrescriptionAction,
@@ -67,6 +67,13 @@ export const prescriptions = createReducer(initialState, (builder) => {
       state.selectedPrescription = { prescriptions: prescriptions };
       state.isPrevious = isPrevious;
       state.selectedPrescription.updatedProps = {}
+    })
+    // delete a prescription from the given prescriptions 
+    .addCase(deletePrescriptionAction, (state, { payload: { id } }) => {
+      state.list = state.list.filter(_ => {
+        if (_[0].id !== id) return true;
+        return false;
+      });
     })
     //Create an empty prescription
     .addCase(createNewPrescriptionAction, (state) => {

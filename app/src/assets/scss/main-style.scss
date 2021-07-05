@@ -49,6 +49,12 @@ ul {
         list-style: none;
     }
 }
+.unsignierte-list {
+    
+    > div {
+        height: 3rem;
+    }
+}
 
 .main-content-wrapper {
     flex-wrap : wrap;
@@ -85,6 +91,10 @@ button, .link-button {
     color           : #11142D;
 }
 
+#create-new-prescription-button {
+    margin-bottom: 3rem;
+}
+
 .jet-btn {
     color      : #000;                                 
     padding    : 12px 24px;                            
@@ -104,6 +114,22 @@ button, .link-button {
         color      : #fff;                 
         background : rgba(53, 158, 173, 1);
     }
+}
+
+.remove-button {
+    color: #f00;
+    border: 1px solid;
+    margin: 0.3em;
+    padding: 0.1rem 0.3rem;
+    display: inline;
+    &.active, &:hover, &:focus {
+        background : #f00;
+        color      : #fff;   
+    }
+    
+}
+.unsigned-button {
+    display: inline;
 }
 
 .zet-title {
