@@ -11,7 +11,11 @@ const reducer = {
   mainReducer
 };
 
-const preloadedState = load();                                                    
+const preloadedState = load();
+
+// if popup was shown remove it
+delete preloadedState?.popupReducer?.showPopup;
+
 const config         = preloadedState ? { reducer, preloadedState } : { reducer };
 const store          = configureStore(config);                                    
 
