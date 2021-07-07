@@ -115,7 +115,7 @@ class Prescription extends BElement {
     let month = dateArray[1];
     let day = dateArray[0];
 
-    if (month.length < 2) {
+    if (month && month.length < 2) {
       month = "0" + month;
     }
     if (day.length < 2) {
@@ -405,12 +405,12 @@ class Prescription extends BElement {
                 <div class="column-2 col-reverse">
                   <div class="form-group">
                     <div class="input-wrapper">
-                      <label for="Unfalltag1">${i18n("AccidentDay")}</label>
+                      <label for="Unfalltag">${i18n("AccidentDay")}</label>
                       <input
                         readonly
                         type   = "text"
                         name   = "Unfalltag"
-                        id     = "Unfalltag1"
+                        id     = "Unfalltag"
                         value  = "${_psp.read("entry[resource.resourceType?Accident].resource.extension[url?unfalltag].value[0].valueDate", "")}"
                         @keyup = "${_ => this.onUserInput(_, "entry[resource.resourceType?Accident].resource.extension[url?unfalltag].value[0].valueDate")}"
                            />

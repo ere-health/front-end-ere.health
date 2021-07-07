@@ -21,7 +21,10 @@ export const MainWindowValidationRules = {
 
     //Dates, entered as DD.MM.YYYY but converted into YYYY-MM-DD for the bundle.
     'birthdate': ['required', 'regex:/^[0-9]{4}\\-[0-9]{1,2}\\-[0-9]{1,2}$/'],
-    'authoredOn': ['required', 'regex:/^[0-9]{4}\\-[0-9]{1,2}\\-[0-9]{1,2}T00:00:00.000Z$/']
+    'authoredOn': ['required', 'regex:/^[0-9]{4}\\-[0-9]{1,2}\\-[0-9]{1,2}T00:00:00.000Z$/'],
+
+    'Unfalltag': ['regex:/^[0-9]{4}\\-[0-9]{1,2}\\-[0-9]{1,2}$/']
+
 };
 
 
@@ -33,6 +36,7 @@ export const PatientPopupValidationRules = {
     'patient-street-name': ['required', 'regex:/^[a-z A-ZäöüÄÖÜß\\-\\.0-9]{1,50}$/'],
     'patient-street-number': ['required', 'regex:/^[a-z A-ZäöüÄÖÜß\\-\\.0-9]{1,10}$/'],
     'patient-city': ['required', 'regex:/^[a-z A-ZäöüÄÖÜß\\-]{1,32}$/'],
+    'patient-street-additional': [],
 
     //Numbers
     'patient-postal-code': ['required', 'regex:/^[0-9]{5}$/']
@@ -47,6 +51,7 @@ export const OrganizationPopupValidationRules = {
     'practitioner-qualification-text': ['required', 'regex:/^[a-z A-ZäöüÄÖÜß\\-\\.]{1,50}$/'],
     'organization-name': ['regex:/^[a-z A-ZäöüÄÖÜß\\-\\.0-9]{1,50}$/'],
     'organization-street-name': ['required', 'regex:/^[a-z A-ZäöüÄÖÜß\\-\\.0-9]{1,50}$/'],
+    'organization-street-additional': [],
     'organization-city': ['required', 'regex:/^[a-z A-ZäöüÄÖÜß\\-]{1,32}$/'],
     'organization-street-number': ['required', 'regex:/^[a-z A-ZäöüÄÖÜß\\-\\.0-9]{1,10}$/'],
 
