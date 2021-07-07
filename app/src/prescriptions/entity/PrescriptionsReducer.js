@@ -45,7 +45,29 @@ export const prescriptions = createReducer(initialState, (builder) => {
       return;
     }
     if (!state.list.filter(_ => _[0].id === prescription[0].id).length) {
-      state.list = state.list.concat([prescription]);
+
+      //Check if need to be merged
+      const psp = new Mapper(prescription[0]);
+      const id = `${psp.read("entry[resource.resourceType?Patient].resource.name[0].given[0]")}-${psp.read("entry[resource.resourceType?Patient].resource.name[0].family")}-${psp.read("entry[resource.resourceType?Patient].resource.birthDate", "")}`
+      console.info("MERGE", id, prescription);
+      let merged = false;
+
+      state.list.forEach(p => {
+        const psp = new Mapper(p[0]);
+        const _id = `${psp.read("entry[resource.resourceType?Patient].resource.name[0].given[0]")}-${psp.read("entry[resource.resourceType?Patient].resource.name[0].family")}-${psp.read("entry[resource.resourceType?Patient].resource.birthDate", "")}`
+        
+        if (id === _id) {
+          //Founded
+          console.info("Added")
+          p.push(prescription[0]);
+          merged = true;
+        }
+        
+        console.info("MERGE LIST", id);
+      })
+
+
+      !merged && (state.list = state.list.concat([prescription]));
     }
   })
   builder.addCase(addSignedAction, (state, { payload: prescription }) => {
