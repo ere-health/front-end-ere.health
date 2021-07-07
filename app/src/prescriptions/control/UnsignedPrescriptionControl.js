@@ -27,8 +27,8 @@ export const signedPrescription = (prescription) => {
 }
 
 export const updatePrescriptionAction = createAction("updatePrescriptionAction");
-export const updatePrescription = (name, value, key, statePath, useWindow) => {
-    store.dispatch(updatePrescriptionAction({name, value, key, statePath, useWindow}));
+export const updatePrescription = (name, value, key, statePath, index) => {
+    store.dispatch(updatePrescriptionAction({name, value, key, statePath, index}));
 }
 
 export const addSignedAction = createAction("addSignedAction");
