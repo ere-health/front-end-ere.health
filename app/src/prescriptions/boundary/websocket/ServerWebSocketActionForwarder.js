@@ -1,5 +1,5 @@
 
-import { addPrescription, addSigned } from "../../control/UnsignedPrescriptionControl.js";
+import { addPrescription, addSigned, abortTasksStatus } from "../../control/UnsignedPrescriptionControl.js";
 
 class _ServerWebSocketActionForwarder {
     constructor() {
@@ -8,7 +8,9 @@ class _ServerWebSocketActionForwarder {
             console.log("ws", event)
             const eventData = JSON.parse(event.data);
             if(eventData.type === "Bundles") {
-                this.processBundles(eventData.payload);
+                addPrescription(eventData.payload);
+            } else if(eventData.type === "AbortTasksStatus") {
+                abortTasksStatus(eventData.payload);
             } else if(eventData.type === "ERezeptWithDocuments") {
                 if("pdfDocument" in eventData.payload[0]) {
                     const blob = this.b64toBlob(eventData.payload[0].pdfDocument.content, "application/pdf");
@@ -42,10 +44,6 @@ class _ServerWebSocketActionForwarder {
       
         const blob = new Blob(byteArrays, {type: contentType});
         return blob;
-    }
-
-    processBundles(bundles) {
-        addPrescription(bundles);
     }
 
     send(message) {

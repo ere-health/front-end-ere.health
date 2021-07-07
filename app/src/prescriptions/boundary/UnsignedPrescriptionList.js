@@ -56,7 +56,7 @@ class UnsignedPrescriptionList extends BElement {
                             href    = "${initialPath}/prescription/${unsignedPrescription.id}"
                             @click  = "${() => this.onNavigate(unsignedPrescriptionBundles)}"
                             class   = "unsigned-button link-button"
-                            data-id = "#unsigned_1"><img src="assets/images/pending-icon.svg" alt="" />${displayName}</a><a class="link-button remove-button" @click="${() => this.onDelete(unsignedPrescription.id)}" href="#">X</a>
+                            data-id = "#unsigned_1"><img src="assets/images/pending-icon.svg" alt="" />${displayName}</a><a class="link-button remove-button" title="Löschen" @click="${() => this.onDelete(unsignedPrescription.id)}" href="#">X</a>
                     </div>`
       }
       )}

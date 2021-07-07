@@ -3,7 +3,7 @@ import { html } from "../../libs/lit-html.js";
 import { i18n } from "../../libs/i18n/i18n.js";
 import {setLeanTheme} from "../../components/layout/control/MainControl.js"
 import { initialPath } from "../../libs/helper/helper.js";
-import {selectPrescription} from "../control/UnsignedPrescriptionControl.js"
+import { selectPrescription, abortTasks} from "../control/UnsignedPrescriptionControl.js"
 
 class PreviousPrescriptionList extends BElement {
 
@@ -13,7 +13,11 @@ class PreviousPrescriptionList extends BElement {
 
     onNavigate(previousPrescriptionBundles) {
       setLeanTheme();
-      selectPrescription(previousPrescriptionBundles, true)
+      selectPrescription(previousPrescriptionBundles, true);
+    }
+
+    onAbort(previousPrescriptionBundles) {
+      abortTasks(previousPrescriptionBundles.bundleWithAccessCodeOrThrowables);
     }
 
     view() {
@@ -37,11 +41,11 @@ class PreviousPrescriptionList extends BElement {
                     let patient     = previousPrescription.entry.filter(oEntry => oEntry.resource.resourceType === "Patient")[0];
                     let name        = patient.resource && patient.resource.name ? patient.resource.name[0] : {"given": [], "family": ""};
                     let displayName = name.given.join(" ")+" "+name.family;
-                    return html`<a 
+                    return html`<div><a 
                       href    = "${initialPath}/previous/${previousPrescription.id}" 
                       class   = "unsigned-button link-button"
                       @click  = "${() => this.onNavigate(previousPrescriptionBundles)}"
-                      data-id = "#unsigned_1"><img src="/assets/images/tik-.svg" alt="" />${displayName}</button>`
+                      data-id = "#unsigned_1"><img src="/assets/images/tik-.svg" alt="" />${displayName}</button><a class="link-button remove-button" title="Stornieren" @click="${() => this.onAbort(previousPrescriptionBundles)}" href="#">X</a></div>`
                     }
                 )}
             </div>

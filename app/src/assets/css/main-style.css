@@ -41,10 +41,6 @@ ul li {
   list-style: none;
 }
 
-.unsignierte-list > div {
-  height: 3rem;
-}
-
 .main-content-wrapper {
   flex-wrap: wrap;
   display: flex;
@@ -191,6 +187,9 @@ button.active, button:hover, button:focus, .link-button.active, .link-button:hov
 .header-wrapper .header .logo {
   margin-bottom: 45px;
 }
+.header-wrapper .header .unsigned-prescription .unsignierte-list > div {
+  height: 3rem;
+}
 .header-wrapper .header .unsigned-prescription .unsignierte-list .file {
   display: flex;
   flex-wrap: wrap;
@@ -206,6 +205,9 @@ button.active, button:hover, button:focus, .link-button.active, .link-button:hov
 }
 .header-wrapper .header .generated-pdf {
   padding: 70px 0;
+}
+.header-wrapper .header .generated-pdf .generated-list > div {
+  height: 3rem;
 }
 .header-wrapper .header .jetzt-area p {
   display: flex;
@@ -924,7 +926,7 @@ edit-field {
     margin-bottom: 20px;
     flex: 0 0 100%;
   }
-  .header-wrapper .header .unsigned-prescription, .header-wrapper .header generated-pdf {
+  .header-wrapper .header .unsigned-prescription, .header-wrapper .header .generated-pdf {
     width: 50%;
   }
   .header-wrapper .header .jetzt-area {

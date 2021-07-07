@@ -16,6 +16,17 @@ export const selectPrescription = (prescriptions, isPrevious) => {
     store.dispatch(selectPrescriptionAction({prescriptions, isPrevious}));
 }
 
+export const abortTasksAction = createAction("abortTasksAction");
+export const abortTasks = (prescriptions) => {
+    store.dispatch(abortTasksAction({prescriptions}));
+}
+
+export const abortTasksStatusAction = createAction("abortTasksStatusAction");
+export const abortTasksStatus = (abortTasksStatus) => {
+    store.dispatch(abortTasksStatusAction({abortTasksStatus}));
+}
+
+
 export const createNewPrescriptionAction = createAction("createNewPrescriptionAction");
 export const createNewPrescription = () => {
     store.dispatch(createNewPrescriptionAction());

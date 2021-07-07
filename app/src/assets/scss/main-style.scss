@@ -49,12 +49,6 @@ ul {
         list-style: none;
     }
 }
-.unsignierte-list {
-    
-    > div {
-        height: 3rem;
-    }
-}
 
 .main-content-wrapper {
     flex-wrap : wrap;
@@ -222,6 +216,10 @@ button, .link-button {
 
             .unsignierte-list {
 
+                > div {
+                    height: 3rem;
+                }
+
                 .file {
                     display         : flex;      
                     flex-wrap       : wrap;      
@@ -241,6 +239,10 @@ button, .link-button {
 
         .generated-pdf {
             padding: 70px 0;
+            
+            .generated-list > div {
+                height: 3rem;
+            }
         }
 
         .jetzt-area {

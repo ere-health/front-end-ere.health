@@ -407,7 +407,7 @@ class Prescription extends BElement {
                     <div class="input-wrapper">
                       <label for="Unfalltag">${i18n("AccidentDay")}</label>
                       <input
-                        readonly
+                        industrialAccident
                         type   = "text"
                         name   = "Unfalltag"
                         id     = "Unfalltag"

@@ -6,6 +6,8 @@ import serverWebSocketActionForwarder from "../../prescriptions/boundary/websock
 import {
   addPrescriptionAction,
   signedPrescriptionAction,
+  abortTasksAction,
+  abortTasksStatusAction,
   updatePrescriptionAction,
   selectPrescriptionAction,
   signAndUploadBundlesAction,
@@ -46,7 +48,7 @@ export const prescriptions = createReducer(initialState, (builder) => {
     }
     if (!state.list.filter(_ => _[0].id === prescription[0].id).length) {
 
-      //Check if need to be merged
+      /*//Check if need to be merged
       const psp = new Mapper(prescription[0]);
       const id = `${psp.read("entry[resource.resourceType?Patient].resource.name[0].given[0]")}-${psp.read("entry[resource.resourceType?Patient].resource.name[0].family")}-${psp.read("entry[resource.resourceType?Patient].resource.birthDate", "")}`
       console.info("MERGE", id, prescription);
@@ -67,12 +69,13 @@ export const prescriptions = createReducer(initialState, (builder) => {
       })
 
 
-      !merged && (state.list = state.list.concat([prescription]));
+      !merged &&*/ (state.list = state.list.concat([prescription]));
     }
   })
   builder.addCase(addSignedAction, (state, { payload: prescription }) => {
     state.signedList = state.signedList.concat(prescription);
-    save(state);
+    // This should be done automatically in app.js
+    // save(state);
   })
     //Move a prescription to the signed list
     .addCase(signedPrescriptionAction, (state, { payload: prescriptions }) => {
@@ -89,6 +92,24 @@ export const prescriptions = createReducer(initialState, (builder) => {
       state.selectedPrescription = { prescriptions: prescriptions };
       state.isPrevious = isPrevious;
       state.selectedPrescription.updatedProps = {}
+    })
+    .addCase(abortTasksAction, (state, { payload: { prescriptions } }) => {
+      const abortTasksMessage = {
+        type: "AbortTasks",
+        payload: prescriptions.map(p => {
+          return {accessCode: p.accessCode, id: p.bundle.identifier.value};
+        })
+      };
+      serverWebSocketActionForwarder.send(abortTasksMessage);
+    })
+    .addCase(abortTasksStatusAction, (state, { payload: { abortTasksStatus } }) => {
+      const abortedIds = abortTasksStatus.filter(o => o.status == "OK").map(o => o.abortTaskEntry.id);
+      // filter our all tasks that are exceptions or that in the abortedIds
+      state.signedList = state.signedList.map(bundles => {
+        bundles.bundleWithAccessCodeOrThrowables = bundles.bundleWithAccessCodeOrThrowables
+          .filter(b => b.bundle?.identifier && abortedIds.indexOf(b.bundle.identifier.value) == -1);
+        return bundles;
+      }).filter(bundles => bundles.bundleWithAccessCodeOrThrowables.length == 0);
     })
     // delete a prescription from the given prescriptions 
     .addCase(deletePrescriptionAction, (state, { payload: { id } }) => {
@@ -126,7 +147,7 @@ export const prescriptions = createReducer(initialState, (builder) => {
       }
 
       //state.selectedPrescription.updatedProps[name] = value;
-      // Clone object, Redux Toolkit does not support updateding object with Indexer.
+      // Clone object, Redux Toolkit does not support updateing object with Indexer.
       const _state = new Mapper(JSON.parse(JSON.stringify(state)));
       const _psp = new Mapper(_state.read(statePath ? statePath : "selectedPrescription.prescriptions[" + index + "]"));
       if (key) {
