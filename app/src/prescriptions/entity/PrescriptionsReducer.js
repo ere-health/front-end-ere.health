@@ -20,7 +20,7 @@ import {
   MainWindowValidationRules,
   MainWindowErrorMessages
 } from "../boundary/ValidationRules.js"
-import { NewPrescriptionTemplate } from "../../template/NewPrescriptionTemplate.js";
+import { NewPrescriptionTemplate } from "../../../../template/NewPrescriptionTemplate.js";
 
 const initialState = {
   list: [],
