@@ -119,28 +119,27 @@ export const prescriptions = createReducer(initialState, (builder) => {
       //Add prescription action, you need to inject a list of list
       state.list = state.list.concat([[JSON.parse(bundleTemplate)]]);
     })
-    .addCase(updatePrescriptionAction, (state, { payload: { name, value, key, statePath, useWindow } }) => {
+    .addCase(updatePrescriptionAction, (state, { payload: { name, value, key, statePath, index } }) => {
+      index = index ?? 0;
       if (statePath?.indexOf("prescriptions") === 0) {
         statePath = statePath.replace("prescriptions.", "");
       }
 
       //state.selectedPrescription.updatedProps[name] = value;
       // Clone object, Redux Toolkit does not support updateding object with Indexer.
-      const _state = useWindow === "true" ? new Mapper(window) : new Mapper(JSON.parse(JSON.stringify(state)));
-      const _psp = new Mapper(_state.read(statePath ? statePath : "selectedPrescription.prescriptions[0]"));
+      const _state = new Mapper(JSON.parse(JSON.stringify(state)));
+      const _psp = new Mapper(_state.read(statePath ? statePath : "selectedPrescription.prescriptions[" + index + "]"));
       if (key) {
         _psp.write(key, value);
-        if (useWindow !== "true") {
           Object.keys(_state.mapObject).forEach(k => {
             state[k] = _state.mapObject[k];
           })
           //state.selectedPrescription.prescriptions[0] = _psp.mapObject;
           state.list.forEach((_, idx) => {
             if (_[0].id === state.selectedPrescription.prescriptions[0].id) {
-              _[0] = state.selectedPrescription.prescriptions[0];
+              _[index] = state.selectedPrescription.prescriptions[index];
             }
           })
-        }
       }
     })
     .addCase(signAndUploadBundlesAction, (state, { payload: bundles }) => {
@@ -377,9 +376,11 @@ export const prescriptions = createReducer(initialState, (builder) => {
   });
 
   // MedicEdit Popup
-  builder.addCase(showPopupEditMedikamentAction, (state) => {
-    const psp = new Mapper(state.selectedPrescription.prescriptions[0]);
+  builder.addCase(showPopupEditMedikamentAction, (state, {payload: index}) => {
+    console.info("showPopupEditMedikamentAction", state.MedikamentPopup.index);
+    const psp = new Mapper(state.selectedPrescription.prescriptions[index]);
     state.MedikamentPopup = {
+      index,
       medicationText: psp.read("entry[resource.resourceType=Medication].resource.code.text"),
       pzn: psp.read("entry[resource.resourceType=Medication].resource.code.coding[system?pzn].code"),
       quantityValue: psp.read("entry[resource.resourceType?MedicationRequest].resource.dispenseRequest.quantity.value"),
@@ -390,8 +391,10 @@ export const prescriptions = createReducer(initialState, (builder) => {
     resetErrorsInMainWindow(state);
   });
   builder.addCase(cancelPopupEditMedikamentAction, (state) => {
-    const psp = new Mapper(state.selectedPrescription.prescriptions[0]);
+    
+    const psp = new Mapper(state.selectedPrescription.prescriptions[state.MedikamentPopup.index]);
     state.MedikamentPopup = {
+      index: state.MedikamentPopup.index,
       medicationText: psp.read("entry[resource.resourceType=Medication].resource.code.text"),
       pzn: psp.read("entry[resource.resourceType=Medication].resource.code.coding[system?pzn].code"),
       quantityValue: psp.read("entry[resource.resourceType?MedicationRequest].resource.dispenseRequest.quantity.value"),
@@ -399,9 +402,12 @@ export const prescriptions = createReducer(initialState, (builder) => {
       form: psp.read("entry[resource.resourceType?Medication].resource.form.coding[system?KBV_CS_SFHIR_KBV_DARREICHUNGSFORM].code"),
       dosageInstruction: psp.read("entry[resource.resourceType?MedicationRequest].resource.dosageInstruction[0].text")
     }
+    console.info("cancelPopupEditMedikamentAction", state.MedikamentPopup.index);
   });
   builder.addCase(savePopupEditMedikamentAction, (state) => {
-    const psp = new Mapper(state.selectedPrescription.prescriptions[0]);
+    console.info("savePopupEditMedikamentAction", state.MedikamentPopup.index);
+
+    const psp = new Mapper(state.selectedPrescription.prescriptions[state.MedikamentPopup.index]);
     psp.write("entry[resource.resourceType=Medication].resource.code.text", state.MedikamentPopup.medicationText);
     psp.write("entry[resource.resourceType=Medication].resource.code.coding[system?pzn].code", state.MedikamentPopup.pzn);
     psp.write("entry[resource.resourceType?MedicationRequest].resource.dispenseRequest.quantity.value", Number(state.MedikamentPopup.quantityValue));
@@ -426,7 +432,7 @@ export const prescriptions = createReducer(initialState, (builder) => {
     const selectedPrescriptionId = state.selectedPrescription.prescriptions[0].id;
     for (const prescriptionList of state.list) {
       if (selectedPrescriptionId == prescriptionList[0].id) {
-        prescriptionList[0] = state.selectedPrescription.prescriptions[0];
+        prescriptionList[state.MedikamentPopup.index] = state.selectedPrescription.prescriptions[state.MedikamentPopup.index];
       }
     }
   });

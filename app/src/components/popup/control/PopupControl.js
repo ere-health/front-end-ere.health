@@ -74,8 +74,8 @@ export const savePopupEditPractId = () => {
 
 // Practitionner ID Popup
 export const showPopupEditMedikamentAction = createAction("showPopupEditMedikament");
-export const showPopupEditMedikament = () => {
-    store.dispatch(showPopupEditMedikamentAction());
+export const showPopupEditMedikament = (index) => {
+    store.dispatch(showPopupEditMedikamentAction(index));
 }
 
 export const cancelPopupEditMedikamentAction = createAction("cancelPopupEditMedikamentAction");

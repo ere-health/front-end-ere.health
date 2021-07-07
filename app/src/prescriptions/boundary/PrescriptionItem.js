@@ -522,7 +522,7 @@ class Prescription extends BElement {
               
               <ul class="zet-check-list">
               
-              ${prescriptions.map(medicationLine => {
+              ${prescriptions.map((medicationLine, medIndex) => {
         const medicationResource = medicationLine.entry.filter(
           (oEntry) => oEntry.resource.resourceType === "Medication"
         )[0].resource;
@@ -531,7 +531,7 @@ class Prescription extends BElement {
         )[0].resource;
         return html`
                     <li class="art-list-item">
-                    <div class="edit-btn" @click="${() => showPopupEditMedikament()}" style="left: 40px; background-image: url(${initialPath}/assets/images/edit-btn.png);"></div>
+                    <div class="edit-btn" @click="${() => showPopupEditMedikament(medIndex)}" style="left: 40px; background-image: url(${initialPath}/assets/images/edit-btn.png);"></div>
                         <input
                           type        = "text"
                           class       = "drug-name"
@@ -557,21 +557,21 @@ class Prescription extends BElement {
                         />
                         <input 
                         type="checkbox" 
-                        id="drug-1-chk" 
+                        id="drug-1-chk-${medIndex}" 
                         style="display:none"
                         .checked = "${(() => {
-            const value = _psp.read("entry[resource.resourceType?MedicationRequest].resource.substitution.allowedBoolean");
-            if (!drug1chkInit) {
-              drug1chkInit = true;
-              if (!value) setTimeout(() => document.getElementById("drug-1-chk").click(), 0)
-            }
-            return value;
-          })()
-
-          }"
-                        @change  = "${_ => updatePrescription("", _.target.checked, "entry[resource.resourceType?MedicationRequest].resource.substitution.allowedBoolean", "")}"
+                          const p = new Mapper(this.state.selectedPrescription.prescriptions[medIndex])
+                          const value = p.read("entry[resource.resourceType?MedicationRequest].resource.substitution.allowedBoolean");
+                          if (!drug1chkInit) {
+                            drug1chkInit = true;
+                            if (!value) setTimeout(() => document.getElementById("drug-1-chk-0").click(), 0)
+                          }
+                          return value;
+                        })()
+                        }"
+                        @change  = "${_ => updatePrescription("", _.target.checked, "entry[resource.resourceType?MedicationRequest].resource.substitution.allowedBoolean", "", medIndex)}"
                         />
-                        <span class="checkmark" @click="${() => document.getElementById("drug-1-chk").click()}"></span>
+                        <span class="checkmark" @click="${() => document.getElementById(`drug-1-chk-${medIndex}`).click()}"></span>
                       </li>`;
       })}
 
