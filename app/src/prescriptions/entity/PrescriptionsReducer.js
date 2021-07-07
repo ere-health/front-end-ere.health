@@ -109,7 +109,7 @@ export const prescriptions = createReducer(initialState, (builder) => {
         bundles.bundleWithAccessCodeOrThrowables = bundles.bundleWithAccessCodeOrThrowables
           .filter(b => b.bundle?.identifier && abortedIds.indexOf(b.bundle.identifier.value) == -1);
         return bundles;
-      }).filter(bundles => bundles.bundleWithAccessCodeOrThrowables.length == 0);
+      }).filter(bundles => bundles.bundleWithAccessCodeOrThrowables.length > 0);
     })
     // delete a prescription from the given prescriptions 
     .addCase(deletePrescriptionAction, (state, { payload: { id } }) => {
