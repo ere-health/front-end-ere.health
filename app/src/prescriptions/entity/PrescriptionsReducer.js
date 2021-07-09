@@ -96,7 +96,7 @@ export const prescriptions = createReducer(initialState, (builder) => {
     .addCase(abortTasksAction, (state, { payload: { prescriptions } }) => {
       const abortTasksMessage = {
         type: "AbortTasks",
-        payload: prescriptions.map(p => {
+        payload: prescriptions.filter(p => p?.bundle?.identifier?.value).map(p => {
           return {accessCode: p.accessCode, id: p.bundle.identifier.value};
         })
       };
