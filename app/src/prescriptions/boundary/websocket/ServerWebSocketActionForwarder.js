@@ -4,6 +4,7 @@ import { addPrescription, addSigned, abortTasksStatus } from "../../control/Unsi
 class _ServerWebSocketActionForwarder {
     constructor() {
         this.socket = new ReconnectingWebSocket("ws"+(window.location.protocol === "https:" ? "s" : "")+"://"+window.location.host+"/websocket");
+        window.__socket = this.socket;
         this.socket.onmessage = (event) => {
             console.log("ws", event)
             const eventData = JSON.parse(event.data);

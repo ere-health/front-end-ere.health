@@ -23,7 +23,7 @@ export const MainWindowValidationRules = {
 
     //Dates, entered as DD.MM.YYYY but converted into YYYY-MM-DD for the bundle.
     'birthdate': ['required', 'regex:/^[0-9]{4}\\-[0-9]{1,2}\\-[0-9]{1,2}$/'],
-    'authoredOn': ['required', 'regex:/^[0-9]{4}\\-[0-9]{1,2}\\-[0-9]{1,2}T00:00:00.000Z$/'],
+    'authoredOn': ['required', 'regex:/^[0-9]{4}\\-[0-9]{1,2}\\-[0-9]{1,2}(T00:00:00.000Z)?$/'],
 
     'Unfalltag': ['regex:/^[0-9]{4}\\-[0-9]{1,2}\\-[0-9]{1,2}$/']
 
