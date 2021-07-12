@@ -475,21 +475,25 @@ export const prescriptions = createReducer(initialState, (builder) => {
     const psp = new Mapper(state.selectedPrescription.prescriptions[0]);
 
     for (const [key, rule] of Object.entries(MainWindowValidationRules)) {
-      let currentValue = document.getElementById(key).value.trim();
+      try {
+        let currentValue = document.getElementById(key).value.trim();
 
-      if (key === 'birthdate') {
-        currentValue = psp.read("entry[resource.resourceType?Patient].resource.birthDate", "");
-      } else if (key === 'authoredOn') {
-        currentValue = psp.read("entry[resource.resourceType?MedicationRequest].resource.authoredOn", "");
-      }
+        if (key === 'birthdate') {
+          currentValue = psp.read("entry[resource.resourceType?Patient].resource.birthDate", "");
+        } else if (key === 'authoredOn') {
+          currentValue = psp.read("entry[resource.resourceType?MedicationRequest].resource.authoredOn", "");
+        }
 
-      let validation = validateInput(key, currentValue, MainWindowValidationRules);
+        let validation = validateInput(key, currentValue, MainWindowValidationRules);
 
-      if (validation.fails()) {
-        state.currentValidationErrors[key] = validation.errors.get(key);
-        document.getElementById(key).style.backgroundColor = "yellow";
+        if (validation.fails()) {
+          state.currentValidationErrors[key] = validation.errors.get(key);
+          document.getElementById(key).style.backgroundColor = "yellow";
 
-        refreshErrorMessages(state.currentValidationErrors);
+          refreshErrorMessages(state.currentValidationErrors);
+        }
+      } catch(e) {
+        console.log(e);
       }
     }
   });

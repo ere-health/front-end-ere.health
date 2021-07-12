@@ -10,6 +10,11 @@ class _ServerWebSocketActionForwarder {
             if(eventData.type === "Bundles") {
                 addPrescription(eventData.payload);
             } else if(eventData.type === "AbortTasksStatus") {
+                try {
+                    eventData.payload.filter(o => o.status == "ERROR").forEach(o => alert(o.throwable.localizedMessage))
+                } catch(e) {
+                    alert(e);
+                }
                 abortTasksStatus(eventData.payload);
             } else if(eventData.type === "ERezeptWithDocuments") {
                 if("pdfDocument" in eventData.payload[0]) {

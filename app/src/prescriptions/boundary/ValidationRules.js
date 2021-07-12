@@ -3,9 +3,11 @@
 export const MainWindowValidationRules = {
     //String
     'coverage-payor-display': ['required', 'regex:/^.{1,50}$/'],
-    'medicationText': ['required', 'regex:/^.{1,50}$/'],
-    'pzn': ['required', 'regex:/^[0-9]{6,8}$/'],
-    'dosage-instructions': ['regex:/^.{1,30}$/'],
+    
+    'medicationText-0': ['required', 'regex:/^.{1,50}$/'],
+    'pzn-0': ['required', 'regex:/^[0-9]{6,8}$/'],
+    'dosage-instructions-0': ['regex:/^.{1,30}$/'],
+    
     'full-patient-address': ['required',
         'regex:/^[a-z A-ZäöüÄÖÜß\\-\\.]{1,20} ?[a-z A-ZäöüÄÖÜß\\-]{1,50} [a-z A-ZäöüÄÖÜß\\-\\.]{1,50}, [a-z A-ZäöüÄÖÜß\\-\\.0-9]{1,50} [a-z A-ZäöüÄÖÜß\\-\\.0-9]{1,10}, [0-9]{5} [a-z A-ZäöüÄÖÜß\\-]{1,32}$/'],
     'organization-summary': ['required', 

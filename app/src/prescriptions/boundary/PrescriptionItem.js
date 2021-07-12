@@ -46,7 +46,7 @@ class Prescription extends BElement {
   }
 
   onUserCheckArt({ target: { name, checked } }) {
-    updatePrescription(name, checked);
+    updatePrescription(name, checked, undefined, undefined, undefined, this.state.selectedPrescription.prescriptions.length);
   }
 
   onUserInput({ target: { name, value } }, key) {
@@ -61,7 +61,7 @@ class Prescription extends BElement {
 
     if (validation.passes()) {
       removeValidationErrorForMainWindow(name);
-      updatePrescription(name, value, key);
+      updatePrescription(name, value, key, undefined, undefined, this.state.selectedPrescription.prescriptions.length);
     } else {
       addValidationErrorForMainWindow(name, validation.errors.get(name));
     }
@@ -94,10 +94,10 @@ class Prescription extends BElement {
 
   doesClientHasToPay(boolean) {
     if (boolean) {
-      updatePrescription("geb-pfl", 0, "entry[1].resource.extension[0].valueCoding.code");
+      updatePrescription("geb-pfl", 0, "entry[1].resource.extension[0].valueCoding.code", undefined, undefined, this.state.selectedPrescription.prescriptions.length);
       document.getElementById("gebührenfrei").checked = false;
     } else {
-      updatePrescription("gebührenfrei", 1, "entry[1].resource.extension[0].valueCoding.code");
+      updatePrescription("gebührenfrei", 1, "entry[1].resource.extension[0].valueCoding.code", undefined, undefined, this.state.selectedPrescription.prescriptions.length);
       document.getElementById("geb-pfl").checked = false;
     }
   }
@@ -438,28 +438,27 @@ class Prescription extends BElement {
 
               <ul class="zet-check-list" style="margin-left: 15px">
                 <div class="zet-title"></div>
-                <li class="art-list-item">
+                <!-- <li class="art-list-item">
                   <input
                     type     = "checkbox"
-                    id       = "gebührenfrei"
+                    id       = "bvg"
                     name     = "BVG"
                    
                     value    = "BVG"
                   />
-                  <label for="gebührenfrei">BVG</label>
+                  <label for="bvg">BVG</label>
                   <span class="checkmark"></span>
                 </li>
                 <li class="art-list-item">
                   <input
                     type     = "checkbox"
-                    id       = "geb-pfl"
-                    name     = "gebpfl"
-                    value    = "Geb. -pfl."
-                    name     = "gebpfl"
+                    id       = "hilfsmittel"
+                    name     = "hilfsmittel"
+                    name     = "hilfsmittel"
                            />
-                  <label for="geb-pfl">Hilfs-mittel</label>
+                  <label for="hilfsmittel">Hilfs-mittel</label>
                   <span class="checkmark" ></span>
-                </li>
+                </li> -->
 
                 <li class="art-list-item">
                   <input
@@ -479,29 +478,28 @@ class Prescription extends BElement {
                   />
                   <label for="Impf-stoff">Impf-stoff</label>
                   <span class="checkmark" @click="${() => document.getElementById("Impf-stoff").click()}"></span>
-                </li>
+                </li><!--
                 <li class="art-list-item">
                   <input
                     type     = "checkbox"
-                    id       = "sonstige"
-                    value    = "Sonstige"
-                    name     = "other"
+                    id       = "spr-st-bedarf"
+                    value    = "spr-st-bedarf"
+                    name     = "spr-st-bedarf"
                    
                   />
-                  <label for="sonstige">Spr. St. Bedarf</label>
+                  <label for="spr-st-bedarf">Spr. St. Bedarf</label>
                   <span class="checkmark" ></span>
                 </li>
                 <li class="art-list-item">
                   <input
                     type     = "checkbox"
-                    id       = "unfall"
-                    value    = "Unfall"
-                    name     = "accident"
+                    id       = "begr-pflicht"
+                    name     = "begr-pflicht"
                     
                   />
-                  <label for="unfall">Begr. Pflicht</label>
+                  <label for="begr-pflicht">Begr. Pflicht</label>
                   <span class="checkmark"></span>
-                </li>
+                </li>-->
               </ul>
             </form>
           </div>

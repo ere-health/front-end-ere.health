@@ -38,8 +38,14 @@ export const signedPrescription = (prescription) => {
 }
 
 export const updatePrescriptionAction = createAction("updatePrescriptionAction");
-export const updatePrescription = (name, value, key, statePath, index) => {
-    store.dispatch(updatePrescriptionAction({name, value, key, statePath, index}));
+export const updatePrescription = (name, value, key, statePath, index, amountOfBundles) => {
+    if(!index && amountOfBundles) {
+        for(let i=0;i<amountOfBundles;i++) {
+            store.dispatch(updatePrescriptionAction({name, value, key, statePath, i}));
+        }
+    } else {
+        store.dispatch(updatePrescriptionAction({name, value, key, statePath, index}));
+    }
 }
 
 export const addSignedAction = createAction("addSignedAction");
