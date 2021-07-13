@@ -1,4 +1,5 @@
 
+import { showPopupFatig } from "../../../components/popup/control/PopupControl.js";
 import { addPrescription, addSigned, abortTasksStatus } from "../../control/UnsignedPrescriptionControl.js";
 
 class _ServerWebSocketActionForwarder {
@@ -19,6 +20,10 @@ class _ServerWebSocketActionForwarder {
                 abortTasksStatus(eventData.payload);
             } else if(eventData.type === "ERezeptWithDocuments") {
                 if("pdfDocument" in eventData.payload[0]) {
+
+                    // TODO show it when digicode is ok
+                    showPopupFatig();
+
                     const blob = this.b64toBlob(eventData.payload[0].pdfDocument.content, "application/pdf");
                     const blobUrl = URL.createObjectURL(blob);
                     window.open(blobUrl);
