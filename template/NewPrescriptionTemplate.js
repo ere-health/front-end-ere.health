@@ -198,7 +198,7 @@ export const NewPrescriptionTemplate = `
           },
           {
             "url": "http://fhir.de/StructureDefinition/normgroesse",
-            "valueCode": ""
+            "valueCode": "KA"
           }
         ],
         "code": {
@@ -257,7 +257,8 @@ export const NewPrescriptionTemplate = `
         "address": [
           {
             "type": "both",
-            "_line": [
+            "_line": 
+            [
               {
                 "extension": [
                   {
@@ -306,14 +307,6 @@ export const NewPrescriptionTemplate = `
           {
             "use": "official",
             "family": "",
-            "_family": {
-              "extension": [
-                {
-                  "url": "http://hl7.org/fhir/StructureDefinition/humanname-own-name",
-                  "valueString": ""
-                }
-              ]
-            },
             "given": [
               ""
             ]
@@ -358,7 +351,6 @@ export const NewPrescriptionTemplate = `
             "value": ""
           }
         ],
-        "name": "",
         "telecom": [
           {
             "system": "phone",

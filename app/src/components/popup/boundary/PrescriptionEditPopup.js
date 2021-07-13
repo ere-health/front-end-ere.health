@@ -16,7 +16,6 @@ import {
   removeValidationErrorForCurrentPopup,
   savePopupEditPatient,
   cancelPopupEditPatient,
-  cancelPopupEditOrgaAction,
   cancelPopupEditOrga,
   savePopupEditOrga,
   ValidateAllFieldsInCurrentPopup

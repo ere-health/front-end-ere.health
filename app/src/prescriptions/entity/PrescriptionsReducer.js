@@ -378,7 +378,7 @@ export const prescriptions = createReducer(initialState, (builder) => {
     psp.write("entry[resource.resourceType?Practitioner].resource.name[0].family", state.OrgaPopup.practitionerFamily);
     psp.write("entry[resource.resourceType?Practitioner].resource.qualification[code.coding[system?Qualification_Type]].code.coding[system?Qualification_Type].code", state.OrgaPopup.qualifikation);
     psp.write("entry[resource.resourceType?Practitioner].resource.qualification[code.coding[system?Qualification_Type]].code.text", state.OrgaPopup.berufsbezeichnung);
-    psp.write("entry[resource.resourceType?Organization].resource.name", state.OrgaPopup.organizationName);
+    setOrganizationName(psp, state.OrgaPopup.organizationName);
     psp.write("entry[resource.resourceType?Organization].resource.address[0]._line[extension[url?streetName]].extension[url?streetName].valueString", state.OrgaPopup.organizationStreetName);
     psp.write("entry[resource.resourceType?Organization].resource.address[0]._line[extension[url?houseNumber]].extension[url?houseNumber].valueString", state.OrgaPopup.organizationStreetNumber);
     try {
@@ -549,5 +549,14 @@ export const prescriptions = createReducer(initialState, (builder) => {
       patientName.prefix[0] = value;
     }
     psp.write(namePath, patientName);
-  };
+  }
+
+  const setOrganizationName = (psp, value) => {
+    const organizationResource = psp.read("entry[resource.resourceType?Organization].resource");
+    if (value == "") {
+      delete organizationResource.name;
+    } else {
+      organizationResource.name = value;
+    }
+  }
 })
