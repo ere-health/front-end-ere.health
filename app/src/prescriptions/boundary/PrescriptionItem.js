@@ -85,7 +85,6 @@ class Prescription extends BElement {
     ValidateAllFieldsInMainWindow();
 
     if (document.getElementById("error-messages").innerHTML.trim().length == 0) {
-      signAndUploadBundles(this.state.selectedPrescription.prescriptions);
       showPopupId();
     } else {
       alert('Bitte beheben Sie alle unten auf dieser Seite aufgeführten Fehler, bevor Sie das Rezept unterschreiben');

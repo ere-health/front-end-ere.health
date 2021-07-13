@@ -5,7 +5,7 @@ import {
   removeActiveClass,
 } from "../../../libs/helper/helper.js";
 import { i18n } from "../../../libs/i18n/i18n.js";
-import { signedPrescription } from "../../../prescriptions/control/UnsignedPrescriptionControl.js";
+import { signAndUploadBundles, signedPrescription } from "../../../prescriptions/control/UnsignedPrescriptionControl.js";
 import { _hidePopup, showPopupId, showPopupFatig, showPopupProgress } from "../control/PopupControl.js";
 import { initialPath } from "../../../libs/helper/helper.js";
 import { PatientEditPopup } from "./PrescriptionEditPopup.js";
@@ -64,7 +64,10 @@ class Popup extends BElement {
           </div>
           <div class="modal-buttons">
             <button data-close-button class="cancel" @click="${() => _hidePopup()}">${i18n("popupLoginBtnCancel")}</button>
-            <button data-modal-target-processing="#processing" @click="${() => showPopupProgress()}" class="ok-next">${i18n("popupLoginBtnNext")}</button>
+            <button data-modal-target-processing="#processing" @click="${() => {
+              signAndUploadBundles(this.state.prescriptions.selectedPrescription.prescriptions);
+              showPopupProgress();
+            }}" class="ok-next">${i18n("popupLoginBtnNext")}</button>
           </div>
         </div>
 
@@ -78,9 +81,10 @@ class Popup extends BElement {
             <img src="./assets/images/popup-icon2.png" alt="popup" />
           </div>
           <div class="modal-buttons">
-            <button data-modal-target-fatig="#fatig" @click="${() => showPopupFatig()}" class="grow-in-wealth">
-            ${i18n("popupProcessingBtnWait")}
-            </button>
+            <button data-modal-target-fatig="#fatig" @click="${() => {
+              //showPopupFatig()
+              
+            }}" class="grow-in-wealth">Abbrechen</button>
           </div>
         </div>
 
