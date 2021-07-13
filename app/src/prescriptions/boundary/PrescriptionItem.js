@@ -543,7 +543,7 @@ class Prescription extends BElement {
                         <input type="text" 
                           class="duration" 
                           id="dosage-instructions-${medIndex}"
-                          value="${medicationRequestResource.dosageInstruction.length > 0 && medicationRequestResource.dosageInstruction[0].text != undefined ? medicationRequestResource.dosageInstruction[0].text : ""}"
+                          value="${medicationRequestResource.dosageInstruction != undefined && medicationRequestResource.dosageInstruction.length > 0 && medicationRequestResource.dosageInstruction[0].text != undefined ? medicationRequestResource.dosageInstruction[0].text : ""}"
                           @keyup="${_ => this.onUserInput(_, "entry[1].resource.dosageInstruction[0].text")}"
                           placeholder="" 
                         />
