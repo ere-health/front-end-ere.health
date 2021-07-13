@@ -52,7 +52,7 @@ class UnsignedPrescriptionList extends BElement {
           ].filter(_ => _).join(" ");
         }
 
-        return html`<div>
+        return html`<div class="prescription-list-item">
                         <a
                             href    = "${initialPath}/prescription/${unsignedPrescription.id}"
                             @click  = "${() => this.onNavigate(unsignedPrescriptionBundles)}"

@@ -96,22 +96,6 @@ button.active, button:hover, button:focus, .link-button.active, .link-button:hov
   background: #359ead;
 }
 
-.remove-button {
-  color: #f00;
-  border: 1px solid;
-  margin: 0.3em;
-  padding: 0.1rem 0.3rem;
-  display: inline;
-}
-.remove-button.active, .remove-button:hover, .remove-button:focus {
-  background: #f00;
-  color: #fff;
-}
-
-.unsigned-button {
-  display: inline;
-}
-
 .zet-title {
   color: #000;
   display: block;
@@ -187,8 +171,24 @@ button.active, button:hover, button:focus, .link-button.active, .link-button:hov
 .header-wrapper .header .logo {
   margin-bottom: 45px;
 }
-.header-wrapper .header .unsigned-prescription .unsignierte-list > div {
-  height: 3rem;
+.header-wrapper .header .unsigned-prescription .unsignierte-list > div.prescription-list-item {
+  width: 100%;
+}
+.header-wrapper .header .unsigned-prescription .unsignierte-list > div.prescription-list-item .link-button {
+  display: inline-block;
+  width: 65%;
+}
+.header-wrapper .header .unsigned-prescription .unsignierte-list > div.prescription-list-item .remove-button {
+  color: #f00;
+  border: 1px solid;
+  margin: 0.3em;
+  padding: 0.1rem 0.3rem;
+  width: 4%;
+  display: inline-block;
+}
+.header-wrapper .header .unsigned-prescription .unsignierte-list > div.prescription-list-item .remove-button.active, .header-wrapper .header .unsigned-prescription .unsignierte-list > div.prescription-list-item .remove-button:hover, .header-wrapper .header .unsigned-prescription .unsignierte-list > div.prescription-list-item .remove-button:focus {
+  background: #f00;
+  color: #fff;
 }
 .header-wrapper .header .unsigned-prescription .unsignierte-list .file {
   display: flex;
@@ -507,6 +507,7 @@ button.active, button:hover, button:focus, .link-button.active, .link-button:hov
   font-weight: 700;
   transition: all 0.3s ease;
   text-decoration: none;
+  margin-left: 12px;
 }
 .popup .modal .modal-buttons button.active, .popup .modal .modal-buttons button:hover, .popup .modal .modal-buttons button:focus, .popup .modal .modal-buttons a.active, .popup .modal .modal-buttons a:hover, .popup .modal .modal-buttons a:focus {
   color: #fff;

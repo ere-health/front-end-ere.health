@@ -67,7 +67,7 @@ button, .link-button {
     margin-bottom    : 15px;        
     justify-content  : center;      
     transition       : all .3s ease;
-    background-color : #fff;        
+    background-color : #fff;
     
     img {
         margin-right: 10px;
@@ -110,20 +110,7 @@ button, .link-button {
     }
 }
 
-.remove-button {
-    color: #f00;
-    border: 1px solid;
-    margin: 0.3em;
-    padding: 0.1rem 0.3rem;
-    display: inline;
-    &.active, &:hover, &:focus {
-        background : #f00;
-        color      : #fff;   
-    }
-    
-}
 .unsigned-button {
-    display: inline;
 }
 
 .zet-title {
@@ -216,8 +203,24 @@ button, .link-button {
 
             .unsignierte-list {
 
-                > div {
-                    height: 3rem;
+                > div.prescription-list-item {
+                    width: 100%;
+                    .link-button {
+                        display: inline-block;
+                        width: 65%;
+                    }
+                    .remove-button {
+                        color: #f00;
+                        border: 1px solid;
+                        margin: 0.3em;
+                        padding: 0.1rem 0.3rem;
+                        width: 4%;
+                        display: inline-block;
+                        &.active, &:hover, &:focus {
+                            background : #f00;
+                            color      : #fff;   
+                        }  
+                    }
                 }
 
                 .file {
@@ -565,6 +568,7 @@ button, .link-button {
                 font-weight     : 700;                                  
                 transition      : all 0.3s ease;                        
                 text-decoration : none;                                 
+                margin-left: 12px;
     
                 &.active, &:hover, &:focus {
                     color      : #fff;                 

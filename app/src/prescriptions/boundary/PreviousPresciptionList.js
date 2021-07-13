@@ -41,7 +41,7 @@ class PreviousPrescriptionList extends BElement {
                     let patient     = previousPrescription.entry.filter(oEntry => oEntry.resource.resourceType === "Patient")[0];
                     let name        = patient.resource && patient.resource.name ? patient.resource.name[0] : {"given": [], "family": ""};
                     let displayName = name.given.join(" ")+" "+name.family;
-                    return html`<div><a 
+                    return html`<div class="prescription-list-item"><a 
                       href    = "${initialPath}/previous/${previousPrescription.id}" 
                       class   = "unsigned-button link-button"
                       @click  = "${() => this.onNavigate(previousPrescriptionBundles)}"
