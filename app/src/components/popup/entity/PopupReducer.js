@@ -24,7 +24,8 @@ import {
   savePopupEditPatientAction,
   cancelPopupEditOrgaAction,
   savePopupEditOrgaAction,
-  ValidateAllFieldsInCurrentPopupAction
+  ValidateAllFieldsInCurrentPopupAction,
+  cancelSignAction
 } from "../control/PopupControl.js";
 import { PopupRules, PopupErrorMessages } from "../../../prescriptions/boundary/ValidationRules.js";
 
@@ -36,6 +37,13 @@ const initialState = {
 }
 
 export const popupReducer = createReducer(initialState, (builder) => {
+
+  builder.addCase(cancelSignAction, (state) => {
+    state.showPopup = "";
+    state.currentValidationErrors = {};
+    // Call WS CancelSign
+  });
+
   builder.addCase(showPopupIdAction, (state) => {
     state.showPopup = "id";
     state.all = false;

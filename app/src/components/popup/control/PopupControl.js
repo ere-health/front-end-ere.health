@@ -136,3 +136,8 @@ export const savePopupEditOrgaAction = createAction("savePopupEditOrgaAction");
 export const savePopupEditOrga = () => {
     store.dispatch(savePopupEditOrgaAction());
 }
+
+export const cancelSignAction = createAction("cancelSignAction");
+export const cancelSign = () => {
+    store.dispatch(cancelSignAction());
+}
