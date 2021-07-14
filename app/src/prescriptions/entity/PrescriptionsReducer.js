@@ -141,6 +141,8 @@ export const prescriptions = createReducer(initialState, (builder) => {
       state.list = state.list.concat([[JSON.parse(bundleTemplate)]]);
     })
     .addCase(updatePrescriptionAction, (state, { payload: { name, value, key, statePath, index } }) => {
+      // console.info("key:" + key + " with value:" + value + " with name:" + name + " with statePath:" + statePath + " with index:" + index);
+
       //Non-popup values
       if (statePath === undefined) {
         for (const prescription of state.selectedPrescription.prescriptions) {
@@ -152,7 +154,9 @@ export const prescriptions = createReducer(initialState, (builder) => {
 
             // Required values
           } else {
-            psp.write(key, value);
+            if (key) {
+              psp.write(key, value);
+            }
           }
         }
 

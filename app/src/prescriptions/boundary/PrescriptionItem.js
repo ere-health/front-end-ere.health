@@ -205,8 +205,8 @@ class Prescription extends BElement {
                     type     = "checkbox"
                     id       = "sonstige"
                     value    = "Sonstige"
-                    name     = "other"
-                    .checked = "${this.state.selectedPrescription.updatedProps?.other ?? false}"
+                    name     = "sonstige"
+                    .checked = "${this.state.selectedPrescription.updatedProps?.sonstige ?? false}"
                     @change  = "${(_) => this.onUserCheckArt(_)}"
                   />
                   <label for="sonstige">${i18n("Other")}</label>
@@ -466,7 +466,7 @@ class Prescription extends BElement {
                     id       = "Impf-stoff"
                     name     = "Impf-stoff"
                     .checked = "${_psp.read("entry[resource.resourceType=Medication].resource.extension[url?KBV_EX_ERP_Medication_Vaccine].valueBoolean")}"
-                    @change  = "${_ => updatePrescription("", _.target.checked, "entry[resource.resourceType=Medication].resource.extension[url?KBV_EX_ERP_Medication_Vaccine].valueBoolean", "")}"
+                    @change  = "${_ => updatePrescription("Impf-stoff", _.target.checked, "entry[resource.resourceType=Medication].resource.extension[url?KBV_EX_ERP_Medication_Vaccine].valueBoolean")}"
                   />
                   <label for="Impf-stoff">Impf-stoff</label>
                   <span class="checkmark" @click="${() => document.getElementById("Impf-stoff").click()}"></span>
