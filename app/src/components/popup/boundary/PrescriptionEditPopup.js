@@ -506,6 +506,7 @@ export class SelectField extends BElement {
     this.items = JSON.parse(this.getAttribute('items')) ?? [];
     const stateObject = new Mapper(new Mapper(this.state).read(this.statePath));
     this.style.flexGrow = this.ratio;
+
     return html`
     <div style="display:flex; flex-direction:column;flex-grow: 1;padding: 7px;margin-top:5px"> 
       <label>${this.label}</label>
@@ -758,16 +759,16 @@ export class StatusEditPopup extends BElement {
         </div>
         <div style="text-align:left">
           <div class="fieldRow"> 
-            <select-field statePath="prescriptions.selectedPrescription.prescriptions" mapKey="entry[resource.resourceType?Coverage].resource.extension[url?versichertenart].valueCoding.code" label="Versichertenart" items="${JSON.stringify(FIELD_STATUS_VERSICHERTENART)}"></select-field>
+            <select-field statePath="prescriptions.selectedPrescription.prescriptions[0]" mapKey="entry[resource.resourceType?Coverage].resource.extension[url?versichertenart].valueCoding.code" label="Versichertenart" items="${JSON.stringify(FIELD_STATUS_VERSICHERTENART)}"></select-field>
           </div>
           <div class="fieldRow">
-            <select-field statePath="prescriptions.selectedPrescription.prescriptions" mapKey="entry[resource.resourceType?Coverage].resource.extension[url?personengruppe].valueCoding.code" label="Besondere Personengruppe (optional)" items="${JSON.stringify(FIELD_STATUS_BESONDERE)}"></select-field>
+            <select-field statePath="prescriptions.selectedPrescription.prescriptions[0]" mapKey="entry[resource.resourceType?Coverage].resource.extension[url?personengruppe].valueCoding.code" label="Besondere Personengruppe (optional)" items="${JSON.stringify(FIELD_STATUS_BESONDERE)}"></select-field>
           </div>
           <div class="fieldRow"> 
-            <select-field statePath="prescriptions.selectedPrescription.prescriptions" mapKey="entry[resource.resourceType?Coverage].resource.extension[url?dmp].valueCoding.code" label="DMP-Zuordnung (optional)" items="${JSON.stringify(FIELD_STATUS_ZUORDNUNG)}"></select-field>
+            <select-field statePath="prescriptions.selectedPrescription.prescriptions[0]" mapKey="entry[resource.resourceType?Coverage].resource.extension[url?dmp].valueCoding.code" label="DMP-Zuordnung (optional)" items="${JSON.stringify(FIELD_STATUS_ZUORDNUNG)}"></select-field>
           </div>
           <div class="fieldRow"> 
-            <select-field statePath="prescriptions.selectedPrescription.prescriptions" mapKey="entry[resource.resourceType?Composition].resource.extension[url?KBV_EX_FOR_Legal_basis].valueCoding.code" label="Statuskennzeichen (optional)" items="${JSON.stringify(FIELD_STATUS_STATUSKENNZEICHEN)}"></select-field>
+            <select-field statePath="prescriptions.selectedPrescription.prescriptions[0]" mapKey="entry[resource.resourceType?Composition].resource.extension[url?KBV_EX_FOR_Legal_basis].valueCoding.code" label="Statuskennzeichen (optional)" items="${JSON.stringify(FIELD_STATUS_STATUSKENNZEICHEN)}"></select-field>
           </div>
         </div>
         <div class="modal-buttons">

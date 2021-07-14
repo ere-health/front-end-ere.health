@@ -164,20 +164,15 @@ export const prescriptions = createReducer(initialState, (builder) => {
         if (statePath?.indexOf("prescriptions") === 0) {
           statePath = statePath.replace("prescriptions.", "");
         }
-        console.info("New state path:" + statePath);
 
         // Clone object, Redux Toolkit does not support updateing object with Indexer.
         const _state = new Mapper(JSON.parse(JSON.stringify(state)));
 
-        if (statePath == "selectedPrescription.prescriptions") {
+        //StatusPopup to make sure all bundles of the prescription are updated
+        if (statePath == "selectedPrescription.prescriptions[0]") {
           for (const prescription of state.selectedPrescription.prescriptions) {
             const psp = new Mapper(prescription);
-            console.info("Value to change:" + psp.read(key) + " to:" + value);
             psp.write(key, value);
-            Object.keys(_state.mapObject).forEach(k => {
-              state[k] = _state.mapObject[k];
-            })
-            console.info("Value changed:" + psp.read(key));
           }
         } else {
           const _psp = new Mapper(_state.read(statePath ? statePath : "selectedPrescription.prescriptions[" + index + "]"));
