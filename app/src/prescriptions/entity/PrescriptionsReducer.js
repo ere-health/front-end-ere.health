@@ -42,7 +42,7 @@ const initialState = {
 export const prescriptions = createReducer(initialState, (builder) => {
   //Add prescription to the unsigned list
   builder.addCase(addPrescriptionAction, (state, { payload: prescription }) => {
-    if(prescription.length == 0) {
+    if (prescription.length == 0) {
       console.warn("Try to add prescriptions with empty array. Ignoring.");
       return;
     }
@@ -97,7 +97,7 @@ export const prescriptions = createReducer(initialState, (builder) => {
       const abortTasksMessage = {
         type: "AbortTasks",
         payload: prescriptions.filter(p => p?.bundle?.identifier?.value).map(p => {
-          return {accessCode: p.accessCode, id: p.bundle.identifier.value};
+          return { accessCode: p.accessCode, id: p.bundle.identifier.value };
         })
       };
       serverWebSocketActionForwarder.send(abortTasksMessage);
@@ -141,17 +141,21 @@ export const prescriptions = createReducer(initialState, (builder) => {
       state.list = state.list.concat([[JSON.parse(bundleTemplate)]]);
     })
     .addCase(updatePrescriptionAction, (state, { payload: { name, value, key, statePath, index } }) => {
-      index = index ?? 0;
-      if (statePath?.indexOf("prescriptions") === 0) {
-        statePath = statePath.replace("prescriptions.", "");
-      }
+      if (name === 'wop') {
+        setWop(value, state.selectedPrescription.prescriptions);
+      } else {
 
-      //state.selectedPrescription.updatedProps[name] = value;
-      // Clone object, Redux Toolkit does not support updateing object with Indexer.
-      const _state = new Mapper(JSON.parse(JSON.stringify(state)));
-      const _psp = new Mapper(_state.read(statePath ? statePath : "selectedPrescription.prescriptions[" + index + "]"));
-      if (key) {
-        _psp.write(key, value);
+        index = index ?? 0;
+        if (statePath?.indexOf("prescriptions") === 0) {
+          statePath = statePath.replace("prescriptions.", "");
+        }
+
+        //state.selectedPrescription.updatedProps[name] = value;
+        // Clone object, Redux Toolkit does not support updateing object with Indexer.
+        const _state = new Mapper(JSON.parse(JSON.stringify(state)));
+        const _psp = new Mapper(_state.read(statePath ? statePath : "selectedPrescription.prescriptions[" + index + "]"));
+        if (key) {
+          _psp.write(key, value);
           Object.keys(_state.mapObject).forEach(k => {
             state[k] = _state.mapObject[k];
           })
@@ -161,6 +165,7 @@ export const prescriptions = createReducer(initialState, (builder) => {
               _[index] = state.selectedPrescription.prescriptions[index];
             }
           })
+        }
       }
     })
     .addCase(signAndUploadBundlesAction, (state, { payload: bundles }) => {
@@ -307,12 +312,12 @@ export const prescriptions = createReducer(initialState, (builder) => {
 
     writer = psp.read("entry[resource.resourceType?Patient].resource.address[0]");
     if (writer.line) {
-      while(writer.line.length) {
+      while (writer.line.length) {
         writer.line.pop();
       }
       writer.line.push(`${state.PatientPopup.patientStreetName} ${state.PatientPopup.patientStreetNumber}`);
     }
-    
+
     try {
       writer = psp.read("entry[resource.resourceType?Patient].resource.address[0]._line[extension[url?additionalLocator]].extension[url?additionalLocator]");
       writer.valueString = state.PatientPopup.patientStreetAdditional;
@@ -397,7 +402,7 @@ export const prescriptions = createReducer(initialState, (builder) => {
   });
 
   // MedicEdit Popup
-  builder.addCase(showPopupEditMedikamentAction, (state, {payload: index}) => {
+  builder.addCase(showPopupEditMedikamentAction, (state, { payload: index }) => {
     console.info("showPopupEditMedikamentAction", state.MedikamentPopup.index);
     const psp = new Mapper(state.selectedPrescription.prescriptions[index]);
     state.MedikamentPopup = {
@@ -412,7 +417,7 @@ export const prescriptions = createReducer(initialState, (builder) => {
     resetErrorsInMainWindow(state);
   });
   builder.addCase(cancelPopupEditMedikamentAction, (state) => {
-    
+
     const psp = new Mapper(state.selectedPrescription.prescriptions[state.MedikamentPopup.index]);
     state.MedikamentPopup = {
       index: state.MedikamentPopup.index,
@@ -435,12 +440,12 @@ export const prescriptions = createReducer(initialState, (builder) => {
     try {
       psp.write("entry[resource.resourceType?Medication].resource.extension[url?normgroesse].valueCode", state.MedikamentPopup.norm);
 
-    } catch(ex) {
+    } catch (ex) {
       let writer = psp.read("entry[resource.resourceType?Medication].resource.extension");
       writer.push({
-            "url": "http://fhir.de/StructureDefinition/normgroesse",
-            "valueCode": state.MedikamentPopup.norm
-          });
+        "url": "http://fhir.de/StructureDefinition/normgroesse",
+        "valueCode": state.MedikamentPopup.norm
+      });
     }
     psp.write("entry[resource.resourceType?Medication].resource.form.coding[system?KBV_CS_SFHIR_KBV_DARREICHUNGSFORM].code", state.MedikamentPopup.form);
     psp.write("entry[resource.resourceType?MedicationRequest].resource.dosageInstruction[0].text", state.MedikamentPopup.dosageInstruction);
@@ -492,7 +497,7 @@ export const prescriptions = createReducer(initialState, (builder) => {
 
           refreshErrorMessages(state.currentValidationErrors);
         }
-      } catch(e) {
+      } catch (e) {
         console.log(e);
       }
     }
@@ -533,6 +538,7 @@ export const prescriptions = createReducer(initialState, (builder) => {
     });
   }
 
+  //Optional values needing their own structure
   const setPrefix = (psp, namePath, value) => {
     const patientName = psp.read(namePath);
     if (value == "") {
@@ -560,3 +566,32 @@ export const prescriptions = createReducer(initialState, (builder) => {
     }
   }
 })
+
+const setWop = (value, selectedPrescriptionBundles) => {
+  for (const prescription of selectedPrescriptionBundles) {
+    const psp = new Mapper(prescription);
+    const coverageResource = psp.read("entry[resource.resourceType?Coverage].resource");
+
+    console.info("extension wop:" + JSON.stringify(coverageResource.extension.find(elt => elt.url == "http://fhir.de/StructureDefinition/gkv/wop")));
+    const wopExtension = coverageResource.extension.find(elt => elt.url == "http://fhir.de/StructureDefinition/gkv/wop");
+    console.info("Extension length:" + coverageResource.extension.length);
+    if (value == "") {
+      const indexOfWopExtension = coverageResource.extension.indexOf(wopExtension);
+      if (indexOfWopExtension > -1) {
+        coverageResource.extension.splice(indexOfWopExtension, 1);
+      }
+    } else {
+      if (wopExtension) {
+        wopExtension.valueCoding.code = value;
+      } else {
+        let newWopExtension = new Object();
+        newWopExtension.url = "http://fhir.de/StructureDefinition/gkv/wop";
+        newWopExtension.valueCoding = new Object();
+        newWopExtension.valueCoding.system = "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_ITA_WOP";
+        newWopExtension.valueCoding.code = value;
+
+        coverageResource.extension.push(newWopExtension);
+      }
+    }
+  }
+}
