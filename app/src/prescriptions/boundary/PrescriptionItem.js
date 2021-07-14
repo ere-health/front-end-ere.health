@@ -94,10 +94,10 @@ class Prescription extends BElement {
 
   doesClientHasToPay(boolean) {
     if (boolean) {
-      updatePrescription("geb-pfl", 0, "entry[1].resource.extension[0].valueCoding.code", undefined, undefined, this.state.selectedPrescription.prescriptions.length);
+      updatePrescription("geb-pfl", 0, "entry[resource.resourceType?MedicationRequest].resource.extension[url?StatusCoPayment].valueCoding.code", undefined, undefined, undefined);
       document.getElementById("gebührenfrei").checked = false;
     } else {
-      updatePrescription("gebührenfrei", 1, "entry[1].resource.extension[0].valueCoding.code", undefined, undefined, this.state.selectedPrescription.prescriptions.length);
+      updatePrescription("gebührenfrei", 1, "entry[resource.resourceType?MedicationRequest].resource.extension[url?StatusCoPayment].valueCoding.code", undefined, undefined, undefined);
       document.getElementById("geb-pfl").checked = false;
     }
   }
@@ -168,7 +168,7 @@ class Prescription extends BElement {
                     type     = "checkbox"
                     id       = "gebührenfrei"
                     name     = "tollFree"
-                    .checked = "${_psp.read("entry[1].resource.extension[0].valueCoding.code") == 1}"
+                    .checked = "${_psp.read("entry[resource.resourceType?MedicationRequest].resource.extension[url?StatusCoPayment].valueCoding.code") == 1}"
                     @change  = "${_ => this.doesClientHasToPay(false)}"
                     value    = "Gebührenfrei"
                   />
@@ -182,7 +182,7 @@ class Prescription extends BElement {
                     name     = "gebpfl"
                     value    = "Geb. -pfl."
                     name     = "gebpfl"
-                    .checked = "${_psp.read("entry[1].resource.extension[0].valueCoding.code") == 0}"
+                    .checked = "${_psp.read("entry[resource.resourceType?MedicationRequest].resource.extension[url?StatusCoPayment].valueCoding.code") == 0}"
                     @change  = "${_ => this.doesClientHasToPay(true)}"
                   />
                   <label for="geb-pfl">Geb. -pfl.</label>

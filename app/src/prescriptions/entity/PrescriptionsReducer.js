@@ -141,31 +141,59 @@ export const prescriptions = createReducer(initialState, (builder) => {
       state.list = state.list.concat([[JSON.parse(bundleTemplate)]]);
     })
     .addCase(updatePrescriptionAction, (state, { payload: { name, value, key, statePath, index } }) => {
-      if (name === 'wop') {
-        setWop(value, state.selectedPrescription.prescriptions);
-      } else {
+      console.info("key:" + key + " with value:" + value + " with name:" + name + " with statePath:" + statePath + " with index:" + index);
 
+      //Non-popup values
+      if (statePath === undefined) {
+        for (const prescription of state.selectedPrescription.prescriptions) {
+          const psp = new Mapper(prescription);
+
+          //Optional values with their own structure to add 
+          if (name === 'wop') {
+            setWop(psp, value);
+
+            // Required values
+          } else {
+            psp.write(key, value);
+          }
+        }
+
+        //Popup values, some code could be cleaned here
+      } else {
         index = index ?? 0;
         if (statePath?.indexOf("prescriptions") === 0) {
           statePath = statePath.replace("prescriptions.", "");
         }
+        console.info("New state path:" + statePath);
 
-        //state.selectedPrescription.updatedProps[name] = value;
         // Clone object, Redux Toolkit does not support updateing object with Indexer.
         const _state = new Mapper(JSON.parse(JSON.stringify(state)));
-        const _psp = new Mapper(_state.read(statePath ? statePath : "selectedPrescription.prescriptions[" + index + "]"));
-        if (key) {
-          _psp.write(key, value);
-          Object.keys(_state.mapObject).forEach(k => {
-            state[k] = _state.mapObject[k];
-          })
-          //state.selectedPrescription.prescriptions[0] = _psp.mapObject;
-          state.list.forEach((_, idx) => {
-            if (_[0].id === state.selectedPrescription.prescriptions[0].id) {
-              _[index] = state.selectedPrescription.prescriptions[index];
-            }
-          })
+
+        if (statePath == "selectedPrescription.prescriptions") {
+          for (const prescription of state.selectedPrescription.prescriptions) {
+            const psp = new Mapper(prescription);
+            console.info("Value to change:" + psp.read(key) + " to:" + value);
+            psp.write(key, value);
+            Object.keys(_state.mapObject).forEach(k => {
+              state[k] = _state.mapObject[k];
+            })
+            console.info("Value changed:" + psp.read(key));
+          }
+        } else {
+          const _psp = new Mapper(_state.read(statePath ? statePath : "selectedPrescription.prescriptions[" + index + "]"));
+          if (key) {
+            _psp.write(key, value);
+            Object.keys(_state.mapObject).forEach(k => {
+              state[k] = _state.mapObject[k];
+            })
+          }
         }
+        //state.selectedPrescription.prescriptions[0] = _psp.mapObject;
+        state.list.forEach((_, idx) => {
+          if (_[0].id === state.selectedPrescription.prescriptions[0].id) {
+            _[index] = state.selectedPrescription.prescriptions[index];
+          }
+        })
       }
     })
     .addCase(signAndUploadBundlesAction, (state, { payload: bundles }) => {
@@ -186,7 +214,7 @@ export const prescriptions = createReducer(initialState, (builder) => {
   builder.addCase(cancelPopupEditClinicAction, (state) => {
     const psp = new Mapper(state.selectedPrescription.prescriptions[0]);
     state.clinicPopup = {
-      type: psp.read("entry[resource.resourceType?Organization].resource.identifier[0].value"),
+      type: psp.read("entry[resource.resourceType?Organization].resource.identifier[0].type.coding[0].code"),
       value: psp.read("entry[resource.resourceType?Organization].resource.identifier[0].value")
     }
   });
@@ -205,17 +233,20 @@ export const prescriptions = createReducer(initialState, (builder) => {
         "http://fhir.de/CodeSystem/identifier-type-de-basis"
       ]
     })();
-    const psp = new Mapper(state.selectedPrescription.prescriptions[0]);
-    const elt = psp.read("entry[resource.resourceType?Organization].resource.identifier[0]");
-    elt.type.coding[0].code = _typeCode;
-    elt.type.coding[0].system = _typeSystem;
-    elt.system = _system;
-    elt.value = state.clinicPopup.value;
 
-    const selectedPrescriptionId = state.selectedPrescription.prescriptions[0].id;
-    for (const prescriptionList of state.list) {
-      if (selectedPrescriptionId == prescriptionList[0].id) {
-        prescriptionList[0] = state.selectedPrescription.prescriptions[0];
+    for (const prescription of state.selectedPrescription.prescriptions) {
+      const psp = new Mapper(prescription);
+      const elt = psp.read("entry[resource.resourceType?Organization].resource.identifier[0]");
+      elt.type.coding[0].code = _typeCode;
+      elt.type.coding[0].system = _typeSystem;
+      elt.system = _system;
+      elt.value = state.clinicPopup.value;
+
+      const selectedPrescriptionId = state.selectedPrescription.prescriptions[0].id;
+      for (const prescriptionList of state.list) {
+        if (selectedPrescriptionId == prescriptionList[0].id) {
+          prescriptionList[0] = state.selectedPrescription.prescriptions[0];
+        }
       }
     }
   });
@@ -233,7 +264,7 @@ export const prescriptions = createReducer(initialState, (builder) => {
   builder.addCase(cancelPopupEditPractIdAction, (state) => {
     const psp = new Mapper(state.selectedPrescription.prescriptions[0]);
     state.PractIdPopup = {
-      type: psp.read("entry[resource.resourceType?Practitioner].resource.identifier[0].value"),
+      type: psp.read("entry[resource.resourceType?Practitioner].resource.identifier[0].type.coding[0].code"),
       value: psp.read("entry[resource.resourceType?Practitioner].resource.identifier[0].value")
     }
   });
@@ -252,17 +283,20 @@ export const prescriptions = createReducer(initialState, (builder) => {
         "http://fhir.de/CodeSystem/identifier-type-de-basis"
       ]
     })();
-    const psp = new Mapper(state.selectedPrescription.prescriptions[0]);
-    const elt = psp.read("entry[resource.resourceType?Practitioner].resource.identifier[0]");
-    elt.type.coding[0].code = _typeCode;
-    elt.type.coding[0].system = _typeSystem;
-    elt.system = _system;
-    elt.value = state.PractIdPopup.value;
 
-    const selectedPrescriptionId = state.selectedPrescription.prescriptions[0].id;
-    for (const prescriptionList of state.list) {
-      if (selectedPrescriptionId == prescriptionList[0].id) {
-        prescriptionList[0] = state.selectedPrescription.prescriptions[0];
+    for (const prescription of state.selectedPrescription.prescriptions) {
+      const psp = new Mapper(prescription);
+      const elt = psp.read("entry[resource.resourceType?Practitioner].resource.identifier[0]");
+      elt.type.coding[0].code = _typeCode;
+      elt.type.coding[0].system = _typeSystem;
+      elt.system = _system;
+      elt.value = state.PractIdPopup.value;
+
+      const selectedPrescriptionId = state.selectedPrescription.prescriptions[0].id;
+      for (const prescriptionList of state.list) {
+        if (selectedPrescriptionId == prescriptionList[0].id) {
+          prescriptionList[0] = state.selectedPrescription.prescriptions[0];
+        }
       }
     }
   });
@@ -297,39 +331,41 @@ export const prescriptions = createReducer(initialState, (builder) => {
   });
 
   builder.addCase(savePopupEditPatientAction, (state) => {
-    const psp = new Mapper(state.selectedPrescription.prescriptions[0]);
-    let writer = null;
+    for (const prescription of state.selectedPrescription.prescriptions) {
+      const psp = new Mapper(prescription);
+      let writer = null;
 
-    setPrefix(psp, "entry[resource.resourceType?Patient].resource.name[0]", state.PatientPopup.patientPrefix);
-    psp.write("entry[resource.resourceType?Patient].resource.name[0].given[0]", state.PatientPopup.patientGiven);
-    psp.write("entry[resource.resourceType?Patient].resource.name[0].family", state.PatientPopup.patientFamily);
+      setPrefix(psp, "entry[resource.resourceType?Patient].resource.name[0]", state.PatientPopup.patientPrefix);
+      psp.write("entry[resource.resourceType?Patient].resource.name[0].given[0]", state.PatientPopup.patientGiven);
+      psp.write("entry[resource.resourceType?Patient].resource.name[0].family", state.PatientPopup.patientFamily);
 
-    writer = psp.read("entry[resource.resourceType?Patient].resource.address[0]._line[extension[url?streetName]].extension[url?streetName]");
-    writer.valueString = state.PatientPopup.patientStreetName;
+      writer = psp.read("entry[resource.resourceType?Patient].resource.address[0]._line[extension[url?streetName]].extension[url?streetName]");
+      writer.valueString = state.PatientPopup.patientStreetName;
 
-    writer = psp.read("entry[resource.resourceType?Patient].resource.address[0]._line[extension[url?houseNumber]].extension[url?houseNumber]");
-    writer.valueString = state.PatientPopup.patientStreetNumber;
+      writer = psp.read("entry[resource.resourceType?Patient].resource.address[0]._line[extension[url?houseNumber]].extension[url?houseNumber]");
+      writer.valueString = state.PatientPopup.patientStreetNumber;
 
-    writer = psp.read("entry[resource.resourceType?Patient].resource.address[0]");
-    if (writer.line) {
-      while (writer.line.length) {
-        writer.line.pop();
+      writer = psp.read("entry[resource.resourceType?Patient].resource.address[0]");
+      if (writer.line) {
+        while (writer.line.length) {
+          writer.line.pop();
+        }
+        writer.line.push(`${state.PatientPopup.patientStreetName} ${state.PatientPopup.patientStreetNumber}`);
       }
-      writer.line.push(`${state.PatientPopup.patientStreetName} ${state.PatientPopup.patientStreetNumber}`);
-    }
 
-    try {
-      writer = psp.read("entry[resource.resourceType?Patient].resource.address[0]._line[extension[url?additionalLocator]].extension[url?additionalLocator]");
-      writer.valueString = state.PatientPopup.patientStreetAdditional;
-    } catch (ex) {/* Field not found in teh bundle */ }
+      try {
+        writer = psp.read("entry[resource.resourceType?Patient].resource.address[0]._line[extension[url?additionalLocator]].extension[url?additionalLocator]");
+        writer.valueString = state.PatientPopup.patientStreetAdditional;
+      } catch (ex) {/* Field not found in teh bundle */ }
 
-    psp.write("entry[resource.resourceType?Patient].resource.address[0].postalCode", state.PatientPopup.patientPostalCode);
-    psp.write("entry[resource.resourceType?Patient].resource.address[0].city", state.PatientPopup.patientCity);
+      psp.write("entry[resource.resourceType?Patient].resource.address[0].postalCode", state.PatientPopup.patientPostalCode);
+      psp.write("entry[resource.resourceType?Patient].resource.address[0].city", state.PatientPopup.patientCity);
 
-    const selectedPrescriptionId = state.selectedPrescription.prescriptions[0].id;
-    for (const prescriptionList of state.list) {
-      if (selectedPrescriptionId == prescriptionList[0].id) {
-        prescriptionList[0] = state.selectedPrescription.prescriptions[0];
+      const selectedPrescriptionId = state.selectedPrescription.prescriptions[0].id;
+      for (const prescriptionList of state.list) {
+        if (selectedPrescriptionId == prescriptionList[0].id) {
+          prescriptionList[0] = state.selectedPrescription.prescriptions[0];
+        }
       }
     }
   });
@@ -375,35 +411,36 @@ export const prescriptions = createReducer(initialState, (builder) => {
   });
 
   builder.addCase(savePopupEditOrgaAction, (state) => {
-    const psp = new Mapper(state.selectedPrescription.prescriptions[0]);
-    let writer = null;
+    for (const prescription of state.selectedPrescription.prescriptions) {
+      const psp = new Mapper(prescription);
+      let writer = null;
 
-    setPrefix(psp, "entry[resource.resourceType?Practitioner].resource.name[0]", state.OrgaPopup.practitionerPrefix);
-    psp.write("entry[resource.resourceType?Practitioner].resource.name[0].given[0]", state.OrgaPopup.practitionerGiven);
-    psp.write("entry[resource.resourceType?Practitioner].resource.name[0].family", state.OrgaPopup.practitionerFamily);
-    psp.write("entry[resource.resourceType?Practitioner].resource.qualification[code.coding[system?Qualification_Type]].code.coding[system?Qualification_Type].code", state.OrgaPopup.qualifikation);
-    psp.write("entry[resource.resourceType?Practitioner].resource.qualification[code.coding[system?Qualification_Type]].code.text", state.OrgaPopup.berufsbezeichnung);
-    setOrganizationName(psp, state.OrgaPopup.organizationName);
-    psp.write("entry[resource.resourceType?Organization].resource.address[0]._line[extension[url?streetName]].extension[url?streetName].valueString", state.OrgaPopup.organizationStreetName);
-    psp.write("entry[resource.resourceType?Organization].resource.address[0]._line[extension[url?houseNumber]].extension[url?houseNumber].valueString", state.OrgaPopup.organizationStreetNumber);
-    try {
-      psp.write("entry[resource.resourceType?Organization].resource.address[0]._line[extension[url?additionalLocator]].extension[url?additionalLocator].valueString", state.OrgaPopup.organizationStreetAdditional);
-    } catch (ex) { }
-    psp.write("entry[resource.resourceType?Organization].resource.address[0].postalCode", state.OrgaPopup.organizationPostalCode);
-    psp.write("entry[resource.resourceType?Organization].resource.address[0].city", state.OrgaPopup.organizationCity);
-    psp.write("entry[resource.resourceType?Organization].resource.telecom[system?phone].value", state.OrgaPopup.organizationPhone);
+      setPrefix(psp, "entry[resource.resourceType?Practitioner].resource.name[0]", state.OrgaPopup.practitionerPrefix);
+      psp.write("entry[resource.resourceType?Practitioner].resource.name[0].given[0]", state.OrgaPopup.practitionerGiven);
+      psp.write("entry[resource.resourceType?Practitioner].resource.name[0].family", state.OrgaPopup.practitionerFamily);
+      psp.write("entry[resource.resourceType?Practitioner].resource.qualification[code.coding[system?Qualification_Type]].code.coding[system?Qualification_Type].code", state.OrgaPopup.qualifikation);
+      psp.write("entry[resource.resourceType?Practitioner].resource.qualification[code.coding[system?Qualification_Type]].code.text", state.OrgaPopup.berufsbezeichnung);
+      setOrganizationName(psp, state.OrgaPopup.organizationName);
+      psp.write("entry[resource.resourceType?Organization].resource.address[0]._line[extension[url?streetName]].extension[url?streetName].valueString", state.OrgaPopup.organizationStreetName);
+      psp.write("entry[resource.resourceType?Organization].resource.address[0]._line[extension[url?houseNumber]].extension[url?houseNumber].valueString", state.OrgaPopup.organizationStreetNumber);
+      try {
+        psp.write("entry[resource.resourceType?Organization].resource.address[0]._line[extension[url?additionalLocator]].extension[url?additionalLocator].valueString", state.OrgaPopup.organizationStreetAdditional);
+      } catch (ex) { }
+      psp.write("entry[resource.resourceType?Organization].resource.address[0].postalCode", state.OrgaPopup.organizationPostalCode);
+      psp.write("entry[resource.resourceType?Organization].resource.address[0].city", state.OrgaPopup.organizationCity);
+      psp.write("entry[resource.resourceType?Organization].resource.telecom[system?phone].value", state.OrgaPopup.organizationPhone);
 
-    const selectedPrescriptionId = state.selectedPrescription.prescriptions[0].id;
-    for (const prescriptionList of state.list) {
-      if (selectedPrescriptionId == prescriptionList[0].id) {
-        prescriptionList[0] = state.selectedPrescription.prescriptions[0];
+      const selectedPrescriptionId = state.selectedPrescription.prescriptions[0].id;
+      for (const prescriptionList of state.list) {
+        if (selectedPrescriptionId == prescriptionList[0].id) {
+          prescriptionList[0] = state.selectedPrescription.prescriptions[0];
+        }
       }
     }
   });
 
   // MedicEdit Popup
   builder.addCase(showPopupEditMedikamentAction, (state, { payload: index }) => {
-    console.info("showPopupEditMedikamentAction", state.MedikamentPopup.index);
     const psp = new Mapper(state.selectedPrescription.prescriptions[index]);
     state.MedikamentPopup = {
       index,
@@ -428,11 +465,8 @@ export const prescriptions = createReducer(initialState, (builder) => {
       form: psp.read("entry[resource.resourceType?Medication].resource.form.coding[system?KBV_CS_SFHIR_KBV_DARREICHUNGSFORM].code"),
       dosageInstruction: psp.read("entry[resource.resourceType?MedicationRequest].resource.dosageInstruction[0].text")
     }
-    console.info("cancelPopupEditMedikamentAction", state.MedikamentPopup.index);
   });
   builder.addCase(savePopupEditMedikamentAction, (state) => {
-    console.info("savePopupEditMedikamentAction", state.MedikamentPopup.index);
-
     const psp = new Mapper(state.selectedPrescription.prescriptions[state.MedikamentPopup.index]);
     psp.write("entry[resource.resourceType=Medication].resource.code.text", state.MedikamentPopup.medicationText);
     psp.write("entry[resource.resourceType=Medication].resource.code.coding[system?pzn].code", state.MedikamentPopup.pzn);
@@ -567,31 +601,26 @@ export const prescriptions = createReducer(initialState, (builder) => {
   }
 })
 
-const setWop = (value, selectedPrescriptionBundles) => {
-  for (const prescription of selectedPrescriptionBundles) {
-    const psp = new Mapper(prescription);
-    const coverageResource = psp.read("entry[resource.resourceType?Coverage].resource");
+const setWop = (psp, value) => {
+  const coverageResource = psp.read("entry[resource.resourceType?Coverage].resource");
+  const wopExtension = coverageResource.extension.find(elt => elt.url == "http://fhir.de/StructureDefinition/gkv/wop");
 
-    console.info("extension wop:" + JSON.stringify(coverageResource.extension.find(elt => elt.url == "http://fhir.de/StructureDefinition/gkv/wop")));
-    const wopExtension = coverageResource.extension.find(elt => elt.url == "http://fhir.de/StructureDefinition/gkv/wop");
-    console.info("Extension length:" + coverageResource.extension.length);
-    if (value == "") {
-      const indexOfWopExtension = coverageResource.extension.indexOf(wopExtension);
-      if (indexOfWopExtension > -1) {
-        coverageResource.extension.splice(indexOfWopExtension, 1);
-      }
+  if (value == "") {
+    const indexOfWopExtension = coverageResource.extension.indexOf(wopExtension);
+    if (indexOfWopExtension > -1) {
+      coverageResource.extension.splice(indexOfWopExtension, 1);
+    }
+  } else {
+    if (wopExtension) {
+      wopExtension.valueCoding.code = value;
     } else {
-      if (wopExtension) {
-        wopExtension.valueCoding.code = value;
-      } else {
-        let newWopExtension = new Object();
-        newWopExtension.url = "http://fhir.de/StructureDefinition/gkv/wop";
-        newWopExtension.valueCoding = new Object();
-        newWopExtension.valueCoding.system = "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_ITA_WOP";
-        newWopExtension.valueCoding.code = value;
+      let newWopExtension = new Object();
+      newWopExtension.url = "http://fhir.de/StructureDefinition/gkv/wop";
+      newWopExtension.valueCoding = new Object();
+      newWopExtension.valueCoding.system = "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_ITA_WOP";
+      newWopExtension.valueCoding.code = value;
 
-        coverageResource.extension.push(newWopExtension);
-      }
+      coverageResource.extension.push(newWopExtension);
     }
   }
 }
