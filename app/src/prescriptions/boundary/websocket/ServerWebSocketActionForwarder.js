@@ -7,27 +7,31 @@ class _ServerWebSocketActionForwarder {
         window.__socket = this.socket;
         this.socket.onmessage = (event) => {
             console.log("ws", event)
-            const eventData = JSON.parse(event.data);
-            if(eventData.type === "Bundles") {
-                addPrescription(eventData.payload);
-            } else if(eventData.type === "AbortTasksStatus") {
-                try {
-                    eventData.payload.filter(o => o.status == "ERROR").forEach(o => alert(o.throwable.localizedMessage))
-                } catch(e) {
-                    alert(e);
+            try {
+                const eventData = JSON.parse(event.data);
+                if(eventData.type === "Bundles") {
+                    addPrescription(eventData.payload);
+                } else if(eventData.type === "AbortTasksStatus") {
+                    try {
+                        eventData.payload.filter(o => o.status == "ERROR").forEach(o => alert(o.throwable.localizedMessage))
+                    } catch(e) {
+                        alert(e);
+                    }
+                    abortTasksStatus(eventData.payload);
+                } else if(eventData.type === "ERezeptWithDocuments") {
+                    if("pdfDocument" in eventData.payload[0]) {
+                        const blob = this.b64toBlob(eventData.payload[0].pdfDocument.content, "application/pdf");
+                        const blobUrl = URL.createObjectURL(blob);
+                        window.open(blobUrl);
+                        addSigned(eventData.payload);
+                    } else {
+                        alert("Could not process e prescription");
+                    }
+                } else if(eventData.type === "Exception") {
+                    alert(JSON.stringify(eventData.payload));
                 }
-                abortTasksStatus(eventData.payload);
-            } else if(eventData.type === "ERezeptWithDocuments") {
-                if("pdfDocument" in eventData.payload[0]) {
-                    const blob = this.b64toBlob(eventData.payload[0].pdfDocument.content, "application/pdf");
-                    const blobUrl = URL.createObjectURL(blob);
-                    window.open(blobUrl);
-                    addSigned(eventData.payload);
-                } else {
-                    alert("Could not process e prescription");
-                }
-            } else if(eventData.type === "Exception") {
-                alert(JSON.stringify(eventData.payload));
+            } catch(e) {
+                alert("Could not process message. "+e);
             }
         };
     }
