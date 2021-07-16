@@ -6,7 +6,7 @@ import {
 } from "../../../libs/helper/helper.js";
 import { i18n } from "../../../libs/i18n/i18n.js";
 import { signAndUploadBundles, signedPrescription } from "../../../prescriptions/control/UnsignedPrescriptionControl.js";
-import { _hidePopup, showPopupId, showPopupFatig, showPopupProgress } from "../control/PopupControl.js";
+import { _hidePopup, showPopupId, showPopupFatig, showPopupProgress, closeErrorPopup } from "../control/PopupControl.js";
 import { initialPath } from "../../../libs/helper/helper.js";
 import { PatientEditPopup } from "./PrescriptionEditPopup.js";
 
@@ -32,7 +32,7 @@ class Popup extends BElement {
   }
 
   hideAll() {
-    ["id", "processing", "fatig", "patientEdit", "statusEdit", "organizationEdit", "clinicEdit", "PractIdEdit", "medicEdit"].forEach(_ => this.hidePopup(_));
+    ["id", "processing", "fatig", "patientEdit", "statusEdit", "organizationEdit", "clinicEdit", "PractIdEdit", "medicEdit", "error"].forEach(_ => this.hidePopup(_));
   }
 
   doSign() {
@@ -97,6 +97,19 @@ class Popup extends BElement {
           </div>
           <div class="modal-buttons">
             <a href="${initialPath}/print" id="print" @click="${() => this.doSign()}"class="grow-in-wealth"> ${i18n("popupGenerateBtnReady")}</a>
+          </div>
+        </div>
+
+        <div class="modal" id="error">
+          <!-- TODO: Can set Icon here depending on status value -->
+          <div class="modal-image" style="margin-bottom: 40px">
+            <img src="./assets/images/popup-warning.png" alt="popup" />
+          </div>
+          <div class="modal-title" style="margin-bottom: 40px">
+            <p>${this.state.popupReducer?.errorBody?.simpleLogMessage}</p>
+          </div>
+          <div class="modal-buttons">
+            <a @click="${() => closeErrorPopup()}" class="grow-in-wealth">OK, Schließen</a>
           </div>
         </div>
 

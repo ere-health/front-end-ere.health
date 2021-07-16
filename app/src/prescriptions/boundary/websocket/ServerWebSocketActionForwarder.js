@@ -1,5 +1,5 @@
 
-import { showPopupFatig } from "../../../components/popup/control/PopupControl.js";
+import { showErrorPopup, showPopupFatig } from "../../../components/popup/control/PopupControl.js";
 import { addPrescription, addSigned, abortTasksStatus } from "../../control/UnsignedPrescriptionControl.js";
 
 class _ServerWebSocketActionForwarder {
@@ -32,7 +32,8 @@ class _ServerWebSocketActionForwarder {
                     alert("Could not process e prescription");
                 }
             } else if(eventData.type === "Exception") {
-                alert(JSON.stringify(eventData.payload));
+                //alert(JSON.stringify(eventData.payload));
+                showErrorPopup(eventData.payload);
             }
         };
     }

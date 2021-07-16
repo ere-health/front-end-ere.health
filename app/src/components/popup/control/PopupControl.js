@@ -141,3 +141,15 @@ export const cancelSignAction = createAction("cancelSignAction");
 export const cancelSign = () => {
     store.dispatch(cancelSignAction());
 }
+
+// Error Popup
+export const showErrorPopupAction = createAction("showErrorPopupAction");
+export const showErrorPopup = (error) => {
+    store.dispatch(showErrorPopupAction(error));
+}
+
+
+export const closeErrorPopupAction = createAction("closeErrorPopupAction");
+export const closeErrorPopup = () => {
+    store.dispatch(closeErrorPopupAction());
+}

@@ -77,10 +77,25 @@ async function startServer() {
 
   io.on('connection', function (socket) {
     console.log("connection")
+
     socket.send(JSON.stringify({
+      type: "Exception",
+      payload: {
+        "systemContextList": [
+            "Connector",
+            "Card Terminal"
+        ],
+        "simpleLogMessage": "SMC-B Card NotPresent",
+        "status": "ERROR",
+        "logMessage": "Simple logging test with context and simple message Ok.",
+        "logMessageDetails": []
+    }
+  }))
+    
+    /*socket.send(JSON.stringify({
       type    : "Bundles",
       payload : [validBundle]   
-    }));
+    }));*/
 
     /*socket.send(JSON.stringify({
       type    : "Bundles",
