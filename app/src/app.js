@@ -2,6 +2,7 @@ import { Router } from "./libs/vaadin-router.js";
 import store      from "./store.js";             
 import './components/popup/boundary/popup.js';
 import './components/layout/boundary/main.js';
+import './components/settings/boundary/settings.js';
 import './prescriptions/boundary/websocket/ServerWebSocketActionForwarder.js';
 import loadVosBundleAndConvertToPrescriptionBundle from './prescriptions/boundary/vos/VOSBoundary.js';
 import './prescriptions/boundary/PrescriptionEmpty.js';
@@ -27,14 +28,14 @@ var browser = (function (agent) {
 })(window.navigator.userAgent.toLowerCase());
 
 if (browser !== "chrome") {
-function addActiveClass(modal) {
-  if (modal == null) return
-  modal.classList.add('active')
-}
-const overlay = document.getElementById("overlay");
-const modal = document.querySelector("#browser-error");
-addActiveClass(modal);
-addActiveClass(overlay);
+  function addActiveClass(modal) {
+    if (modal == null) return
+    modal.classList.add('active')
+  }
+  const overlay = document.getElementById("overlay");
+  const modal = document.querySelector("#browser-error");
+  addActiveClass(modal);
+  addActiveClass(overlay);
 } else {
 
   store.subscribe(_ => { 
@@ -56,7 +57,8 @@ addActiveClass(overlay);
     { path: `${initialPath}/index.html`                 , component: 'prescription-empty' },
     { path: `${initialPath}/print`                      , component: 'prescription-empty' },
     { path: `${initialPath}/prescription/:prescription` , component: 'prescription-item'  },
-    { path: `${initialPath}/previous/:prescription`     , component: 'prescription-pdf'  }
+    { path: `${initialPath}/previous/:prescription`     , component: 'prescription-pdf'  },
+    { path: `${initialPath}/settings`                   , component: 'settings-layout'  }
   ]);
   console.log("router initialized");
 }

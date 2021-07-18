@@ -24,8 +24,11 @@ class MainLayout extends BElement {
               <a href="${initialPath}/index.html">
               <img
 								src = "assets/images/ere.health-logo.svg"
-								alt = "Taleclinic Logo"
+								alt = "ere.helath Logo"
               /></a>
+            </div>
+            <div>
+              <a href="settings" style="justify-content: left;" class="link-button">Einstellungen</a>
             </div>
             <div>
               <unsigned-prescription-list />
@@ -41,15 +44,12 @@ class MainLayout extends BElement {
                 <img src="assets/images/arrow-down.svg" alt="" /> Rezepte
                 signieren und für Patienten direkt ausstellen.
               </p>
-              <button  
+              <button
                 data-modal-target = "#modal"                                                                     
                 @click            = "${this.state.prescriptions.list.length ? () => this.doClickId() : void 0}"  
                 class             = "jet-btn ${this.state.prescriptions.list.length ? "" : "btn-inactive"}">
                 Jetzt alle Rezepte signieren
               </button>
-            </div>
-            <div>
-              <load-examples />
             </div>
           </div>
         </header>

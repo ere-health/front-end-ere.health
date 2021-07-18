@@ -68,11 +68,11 @@ class PrescriptionPdf extends BElement {
         ">${displayName}</span>
 
       </span>
-    <button data-close-button class="cancel" style="
+    <!-- <button data-close-button class="cancel" style="
       filter        : drop-shadow(2px 4px 6px rgba(0,0,0,.25));
       margin-right  : 45px;            
       margin-bottom : 0px;                         
-    " @click="${() => this.sendPdfErixa()}">Direkt an Apotheke senden</button>
+    " @click="${() => this.sendPdfErixa()}">Direkt an Apotheke senden</button> -->
     </div>
     <iframe
       src    = "data:application/pdf;base64, ${document}"

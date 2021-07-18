@@ -1,10 +1,15 @@
-
 import { addPrescription, addSigned, abortTasksStatus } from "../../control/UnsignedPrescriptionControl.js";
+import { updateSettingsFromServer } from "../../../components/settings/control/SettingsControl.js";
 
 class _ServerWebSocketActionForwarder {
     constructor() {
         this.socket = new ReconnectingWebSocket("ws"+(window.location.protocol === "https:" ? "s" : "")+"://"+window.location.host+"/websocket");
         window.__socket = this.socket;
+
+        this.socket.onopen = (event) => {
+            this.send({ type: "RequestSettings"});
+        };
+
         this.socket.onmessage = (event) => {
             console.log("ws", event)
             try {
@@ -27,6 +32,8 @@ class _ServerWebSocketActionForwarder {
                     } else {
                         alert("Could not process e prescription");
                     }
+                } else if(eventData.type === "Settings") {
+                    updateSettingsFromServer(eventData.payload);
                 } else if(eventData.type === "Exception") {
                     alert(JSON.stringify(eventData.payload));
                 }

@@ -15,6 +15,7 @@ $primary-font    : 'Quicksand', sans-serif;
 body {
     font-weight : 700;           
     color       : $primary-color;
+    background-color: #FCFAF9;
     @include em(16px, 20px);
     font-family : $primary-font;
     height      : 100%;         
@@ -896,6 +897,10 @@ edit-field {
       transition : all .3s ease;
       cursor     : pointer;     
     }
+}
+
+settings-layout {
+    flex: 0 0 100%;
 }
 
 @import "responsive";

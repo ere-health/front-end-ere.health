@@ -8,6 +8,7 @@
 body {
   font-weight: 700;
   color: #11142D;
+  background-color: #FCFAF9;
   font-size: 1rem;
   line-height: 1.25;
   font-family: "Quicksand", sans-serif;
@@ -798,6 +799,10 @@ edit-field {
   opacity: 1;
   transition: all 0.3s ease;
   cursor: pointer;
+}
+
+settings-layout {
+  flex: 0 0 100%;
 }
 
 @media only screen and (max-width: 1394px) {
