@@ -34,6 +34,8 @@ class _ServerWebSocketActionForwarder {
                     }
                 } else if(eventData.type === "Settings") {
                     updateSettingsFromServer(eventData.payload);
+                } else if(eventData.type === "BundlesValidationResult") {
+                    alert(JSON.stringify(eventData.payload));
                 } else if(eventData.type === "Exception") {
                     alert(JSON.stringify(eventData.payload));
                 }

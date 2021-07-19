@@ -58,9 +58,6 @@ export const popupReducer = createReducer(initialState, (builder) => {
   builder.addCase(showPopupEditStatusAction, (state) => {
     state.showPopup = "statusEdit";
   });
-
-
-
   builder.addCase(showPopupEditClinicAction, (state) => {
     state.showPopup = "clinicEdit";
   });
@@ -72,8 +69,6 @@ export const popupReducer = createReducer(initialState, (builder) => {
     state.showPopup = "";
     state.currentValidationErrors = {};
   });
-
-
   builder.addCase(showPopupEditPractIdAction, (state) => {
     state.showPopup = "PractIdEdit";
   });
@@ -85,8 +80,6 @@ export const popupReducer = createReducer(initialState, (builder) => {
     state.showPopup = "";
     state.currentValidationErrors = {};
   });
-
-
   builder.addCase(showPopupEditMedikamentAction, (state) => {
     state.showPopup = "medicEdit";
   });
@@ -98,7 +91,6 @@ export const popupReducer = createReducer(initialState, (builder) => {
     state.showPopup = "";
     state.currentValidationErrors = {};
   });
-
   builder.addCase(showPopupEditPatientAction, (state) => {
     state.showPopup = "patientEdit";
   });
@@ -110,7 +102,6 @@ export const popupReducer = createReducer(initialState, (builder) => {
     state.showPopup = "";
     state.currentValidationErrors = {};
   });
-
   builder.addCase(showPopupEditOrgaAction, (state) => {
     state.showPopup = "organizationEdit";
   });
@@ -122,8 +113,6 @@ export const popupReducer = createReducer(initialState, (builder) => {
     state.showPopup = "";
     state.currentValidationErrors = {};
   });
-
-  
   builder.addCase(addValidationErrorForCurrentPopupAction, (state, { payload: { fieldId, error } }) => {
     state.currentValidationErrors[fieldId] = error;
 
