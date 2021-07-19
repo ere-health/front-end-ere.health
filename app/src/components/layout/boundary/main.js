@@ -28,7 +28,7 @@ class MainLayout extends BElement {
               /></a>
             </div>
             <div>
-              <a href="settings" style="justify-content: left;" class="link-button">Einstellungen</a>
+              <a href="${initialPath}/settings" style="justify-content: left;" class="link-button">Einstellungen</a>
             </div>
             <div>
               <unsigned-prescription-list />

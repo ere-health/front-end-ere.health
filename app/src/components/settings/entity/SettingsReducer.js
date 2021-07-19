@@ -11,24 +11,21 @@ import {
 
 const initialState = {
   settings: {
-    connector: {
-        "base-uri": "",
-        "verify-hostname": false,
-        "mandant-id": "",
-        "client-system-id": "",
-        "workplace-id": "",
-        "user-id": "" 
-    }
+    "connector.base-url": "",
+    "connector.mandant-id": "",
+    "connector.client-system-id": "",
+    "connector.workplace-id": "",
+    "connector.user-id": "",
+    "connector.client-certificate": "",
+    "connector.client-certificate-password": "",
+    "connector.basic-auth-username": "",
+    "connector.basic-auth-password": "",
   }
 };
   
 export const settingsReducer = createReducer(initialState, (builder) => {
     builder.addCase(updateSettingAction,  (state, {payload: {path,value}}) => {
-        const [group, key] = path.split(/\./);
-        if(!state.settings[group]) {
-            state.settings[group]= {};
-        }
-        state.settings[group][key] = value;
+        state.settings[path] = value;
     });
     builder.addCase(resetSettingsAction, (state) => {
         // Send a list of a list of a list    
@@ -43,12 +40,6 @@ export const settingsReducer = createReducer(initialState, (builder) => {
         serverWebSocketActionForwarder.send({ type: "CheckSettings", payload: state.settings});
     });
     builder.addCase(updateSettingsFromServerAction,  (state, {payload: {settings}}) => {
-        for(let entry of Object.entries(settings)) {
-            const [group, settingKey] = entry[0].split(/\./);
-            if(!state.settings[group]) {
-                state.settings[group] = {};
-            }
-            state.settings[group][settingKey] = entry[1];
-        }
+        state.settings = settings;
     });
 });

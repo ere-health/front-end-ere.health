@@ -44,8 +44,9 @@ class PreviousPrescriptionList extends BElement {
                     return html`<div class="prescription-list-item"><a 
                       href    = "${initialPath}/previous/${previousPrescription.id}" 
                       class   = "unsigned-button link-button"
+                      style   = "display: inline-block; min-width: 10rem;"
                       @click  = "${() => this.onNavigate(previousPrescriptionBundles)}"
-                      data-id = "#unsigned_1"><img src="/assets/images/tik-.svg" alt="" />${displayName}</button><a class="link-button remove-button" title="Stornieren" @click="${() => this.onAbort(previousPrescriptionBundles)}" href="${initialPath}/index.html">X</a></div>`
+                      data-id = "#unsigned_1"><img src="/assets/images/tik-.svg" alt="" />${displayName}</button><a class="link-button remove-button" title="Stornieren" @click="${() => this.onAbort(previousPrescriptionBundles)}" href="${initialPath}/index.html" style="color: #f00; border: 1px solid; margin: 0.3em; padding: 0.1rem 0.3rem; width: 4%; display: inline-block;">X</a></div>`
                     }
                 )}
             </div>

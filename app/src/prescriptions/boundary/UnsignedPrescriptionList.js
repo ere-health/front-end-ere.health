@@ -19,7 +19,6 @@ class UnsignedPrescriptionList extends BElement {
 
   onDelete(id) {
     deletePrescription(id);
-    
   }
   
 
