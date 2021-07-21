@@ -72,3 +72,8 @@ export const ValidateAllFieldsInMainWindowAction = createAction("ValidateAllFiel
 export const ValidateAllFieldsInMainWindow = () => {
     store.dispatch(ValidateAllFieldsInMainWindowAction());
 }
+
+export const showHTMLBundlesAction = createAction("showHTMLBundlesAction");
+export const showHTMLBundles = (bundles) => {
+    store.dispatch(showHTMLBundlesAction(bundles));
+}

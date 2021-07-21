@@ -1,4 +1,4 @@
-import { addPrescription, addSigned, abortTasksStatus } from "../../control/UnsignedPrescriptionControl.js";
+import { addPrescription, addSigned, abortTasksStatus, showHTMLBundles } from "../../control/UnsignedPrescriptionControl.js";
 import { updateSettingsFromServer } from "../../../components/settings/control/SettingsControl.js";
 
 class _ServerWebSocketActionForwarder {
@@ -34,6 +34,8 @@ class _ServerWebSocketActionForwarder {
                     }
                 } else if(eventData.type === "Settings") {
                     updateSettingsFromServer(eventData.payload);
+                } else if(eventData.type === "HTMLBundles") {
+                    showHTMLBundles(eventData.payload);
                 } else if(eventData.type === "BundlesValidationResult") {
                     alert(JSON.stringify(eventData.payload));
                 } else if(eventData.type === "Exception") {

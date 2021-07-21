@@ -62,6 +62,9 @@ class Popup extends BElement {
           <div class="modal-image">
             <img src="./assets/images/popup-icon.png" alt="popup" />
           </div>
+          <div>
+          ${this.state.prescritionReducer.HTMLBundles.map(item => html`<iframe src="data:text/html;charset=utf-8,` + encodeURI(item) + `"></iframe>`)}
+          </div>
           <div class="modal-buttons">
             <button data-close-button class="cancel" @click="${() => _hidePopup()}">${i18n("popupLoginBtnCancel")}</button>
             <button data-modal-target-processing="#processing" @click="${() => showPopupProgress()}" class="ok-next">${i18n("popupLoginBtnNext")}</button>
