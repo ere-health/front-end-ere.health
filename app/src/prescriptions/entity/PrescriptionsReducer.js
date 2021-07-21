@@ -16,7 +16,8 @@ import {
   addValidationErrorForMainWindowAction,
   removeValidationErrorForMainWindowAction,
   createNewPrescriptionAction,
-  ValidateAllFieldsInMainWindowAction
+  ValidateAllFieldsInMainWindowAction,
+  showHTMLBundlesAction
 } from "../control/UnsignedPrescriptionControl.js";
 import {
   MainWindowValidationRules,
@@ -30,6 +31,8 @@ const initialState = {
   selectedPrescription: {},
   isPrevious: false,
   currentValidationErrors: {},
+
+  HTMLBundles : [],
 
   //Popups
   clinicPopup: {},

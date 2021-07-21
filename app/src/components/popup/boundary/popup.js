@@ -53,7 +53,7 @@ class Popup extends BElement {
         ? this.showPopup(this.state.popupReducer.showPopup)
         : this.hideAll()}
       <section class="popup">
-        <div class="modal" id="id">
+        <div class="modal" style="max-width: 1200px; width: 1200px;">
           <div class="modal-title">
             <p>
               ${i18n("popupLoginText")[0]}<strong>${i18n("popupLoginText")[1]}</strong>${i18n("popupLoginText")[2]}
@@ -63,7 +63,11 @@ class Popup extends BElement {
             <img src="./assets/images/popup-icon.png" alt="popup" />
           </div>
           <div>
-          ${this.state.prescritionReducer.HTMLBundles.map(item => html`<iframe src="data:text/html;charset=utf-8,` + encodeURI(item) + `"></iframe>`)}
+          ${this.state.prescriptions.HTMLBundles ? this.state.prescriptions.HTMLBundles.map(item => {
+            const blob = new Blob([item], {type: "text/html; charset=utf-8"});
+            const htmlBundleXsltResultUrl = URL.createObjectURL(blob);
+            return html`<iframe src="${htmlBundleXsltResultUrl}" style="height: 560px; width: 1000px;"></iframe>`;
+          }) : ""}
           </div>
           <div class="modal-buttons">
             <button data-close-button class="cancel" @click="${() => _hidePopup()}">${i18n("popupLoginBtnCancel")}</button>
