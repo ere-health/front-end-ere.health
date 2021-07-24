@@ -53,7 +53,7 @@ class Popup extends BElement {
         ? this.showPopup(this.state.popupReducer.showPopup)
         : this.hideAll()}
       <section class="popup">
-        <div class="modal" style="max-width: 1200px; width: 1200px;">
+        <div class="modal" id="id" style="max-width: 1200px; width: 1200px; max-height: 80vh; overflow-x: auto;">
           <div class="modal-title">
             <p>
               ${i18n("popupLoginText")[0]}<strong>${i18n("popupLoginText")[1]}</strong>${i18n("popupLoginText")[2]}

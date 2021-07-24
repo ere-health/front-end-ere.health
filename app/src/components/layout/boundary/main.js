@@ -1,11 +1,15 @@
 import BElement         from "../../../models/BElement.js";
 import { html }         from "../../../libs/lit-html.js";
 import { showPopupAll } from "../../../components/popup/control/PopupControl.js";
+import {
+  signAndUploadBundles
+} from "../../../prescriptions/control/UnsignedPrescriptionControl.js";
 import {  } from "../../../components/popup/boundary/PrescriptionEditPopup.js";
-import { initialPath } from "../../..//libs/helper/helper.js";
+import { initialPath } from "../../../libs/helper/helper.js";
 
 class MainLayout extends BElement {
   doClickId() {
+    signAndUploadBundles(this.state.prescriptions.list);
     showPopupAll();
   }
 

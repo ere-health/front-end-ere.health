@@ -197,8 +197,10 @@ export const prescriptions = createReducer(initialState, (builder) => {
       }
     })
     .addCase(signAndUploadBundlesAction, (state, { payload: bundles }) => {
-      // Send a list of a list of a list    
-      serverWebSocketActionForwarder.send({ type: "SignAndUploadBundles", bearerToken: window.bearerToken, payload: [bundles] });
+      // if bundles is already list of a list keep it, otherwise create one
+      const payload = "length" in bundles[0] ? bundles : [bundles];
+      // Send a list of a list of a list
+      serverWebSocketActionForwarder.send({ type: "SignAndUploadBundles", bearerToken: window.bearerToken, payload });
     })
     .addCase(showHTMLBundlesAction, (state, { payload: bundles }) => {
       state.HTMLBundles = bundles; 
