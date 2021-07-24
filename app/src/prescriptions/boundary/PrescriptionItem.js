@@ -438,13 +438,13 @@ class Prescription extends BElement {
 
               <ul class="zet-check-list" style="margin-left: 15px">
                 <div class="zet-title"></div>
-                <!-- <li class="art-list-item">
+                <li class="art-list-item">
                   <input
-                    type     = "checkbox"
-                    id       = "bvg"
-                    name     = "BVG"
-                   
-                    value    = "BVG"
+                    type   = "checkbox"
+                    id     = "bvg"
+                    name   = "bvg"
+                    .checked = "${_psp.read("entry[resource.resourceType=MedicationRequest].resource.extension[url?KBV_EX_ERP_BVG].valueBoolean")}"
+                    @change  = "${_ => updatePrescription("Impf-stoff", _.target.checked, "entry[resource.resourceType=MedicationRequest].resource.extension[url?KBV_EX_ERP_BVG].valueBoolean")}"
                   />
                   <label for="bvg">BVG</label>
                   <span class="checkmark"></span>
@@ -458,15 +458,15 @@ class Prescription extends BElement {
                            />
                   <label for="hilfsmittel">Hilfs-mittel</label>
                   <span class="checkmark" ></span>
-                </li> -->
+                </li>
 
                 <li class="art-list-item">
                   <input
                     type     = "checkbox"
                     id       = "Impf-stoff"
                     name     = "Impf-stoff"
-                    .checked = "${_psp.read("entry[resource.resourceType=Medication].resource.extension[url?KBV_EX_ERP_Medication_Vaccine].valueBoolean")}"
-                    @change  = "${_ => updatePrescription("Impf-stoff", _.target.checked, "entry[resource.resourceType=Medication].resource.extension[url?KBV_EX_ERP_Medication_Vaccine].valueBoolean")}"
+                    .checked  = "${_psp.read("entry[resource.resourceType=Medication].resource.extension[url?KBV_EX_ERP_Medication_Vaccine].valueBoolean")}"
+                    @keyup = "${_ => updatePrescription("Impf-stoff", _.target.checked, "entry[resource.resourceType=Medication].resource.extension[url?KBV_EX_ERP_Medication_Vaccine].valueBoolean")}"
                   />
                   <label for="Impf-stoff">Impf-stoff</label>
                   <span class="checkmark" @click="${() => document.getElementById("Impf-stoff").click()}"></span>
@@ -544,7 +544,7 @@ class Prescription extends BElement {
                           class="duration" 
                           id="dosage-instructions-${medIndex}"
                           value="${medicationRequestResource.dosageInstruction != undefined && medicationRequestResource.dosageInstruction.length > 0 && medicationRequestResource.dosageInstruction[0].text != undefined ? medicationRequestResource.dosageInstruction[0].text : ""}"
-                          @keyup="${_ => this.onUserInput(_, "entry[1].resource.dosageInstruction[0].text")}"
+                          @keyup="${_ => this.onUserInput(_, "entry[resource.resourceType?Medication].resource.dosageInstruction[0].text")}"
                           placeholder="" 
                         />
                         <input 
