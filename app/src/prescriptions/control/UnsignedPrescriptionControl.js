@@ -58,6 +58,11 @@ export const signAndUploadBundles = (bundles) => {
     store.dispatch(signAndUploadBundlesAction(bundles));
 }
 
+export const showSignFormAction = createAction("showSignFormAction");
+export const showSignForm = (bundles) => {
+    store.dispatch(showSignFormAction(bundles));
+}
+
 export const addValidationErrorForMainWindowAction = createAction("addValidationErrorForMainWindowAction");
 export const addValidationErrorForMainWindow = (fieldId, error) => {
     store.dispatch(addValidationErrorForMainWindowAction({fieldId, error}));

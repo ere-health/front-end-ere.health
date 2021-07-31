@@ -5,6 +5,7 @@ import { save } from "../../localstorage/control/StorageControl.js";
 import serverWebSocketActionForwarder from "../../prescriptions/boundary/websocket/ServerWebSocketActionForwarder.js";
 import {
   addPrescriptionAction,
+  showSignFormAction,
   signedPrescriptionAction,
   abortTasksAction,
   abortTasksStatusAction,
@@ -201,6 +202,12 @@ export const prescriptions = createReducer(initialState, (builder) => {
       const payload = "length" in bundles[0] ? bundles : [bundles];
       // Send a list of a list of a list
       serverWebSocketActionForwarder.send({ type: "SignAndUploadBundles", bearerToken: window.bearerToken, payload });
+    })
+    .addCase(showSignFormAction, (state, { payload: bundles }) => {
+      // if bundles is already list of a list keep it, otherwise create one
+      const payload = "length" in bundles[0] ? bundles : [bundles];
+      // Send a list of a list of a list
+      serverWebSocketActionForwarder.send({ type: "ReadyToSignBundles", bearerToken: window.bearerToken, payload });
     })
     .addCase(showHTMLBundlesAction, (state, { payload: bundles }) => {
       state.HTMLBundles = bundles; 

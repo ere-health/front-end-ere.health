@@ -12,6 +12,7 @@ import {
   showPopupEditMedikament
 } from "../../components/popup/control/PopupControl.js";
 import {
+  showSignForm,
   signAndUploadBundles,
   updatePrescription,
   addValidationErrorForMainWindow,
@@ -92,6 +93,11 @@ class Prescription extends BElement {
     }
   }
 
+  onShowSignForm() {
+    showSignForm(this.state.selectedPrescription.prescriptions);
+    showPopupId();
+  }
+
   doesClientHasToPay(boolean) {
     if (boolean) {
       updatePrescription("geb-pfl", 0, "entry[resource.resourceType?MedicationRequest].resource.extension[url?StatusCoPayment].valueCoding.code", undefined, undefined, undefined);
@@ -142,6 +148,12 @@ class Prescription extends BElement {
       <div class="recipe-wrapper active" id="unsigned_1">
         <div class="title-rezept-button">
           <h2>${i18n("RecipeFor")} <strong>${displayName}</strong></h2>
+          <button
+            id     = "show-sign-form"
+            @click = "${() => this.onShowSignForm()}"
+            class  = "open-modal jet-btn" style="display: none">
+            Signaturformular zeigen
+          </button>
           <button
             id     = "check-errors-button"
             @click = "${() => ValidateAllFieldsInMainWindow()}"
