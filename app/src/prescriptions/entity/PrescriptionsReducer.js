@@ -315,15 +315,23 @@ export const prescriptions = createReducer(initialState, (builder) => {
   // Patient Popup
   builder.addCase(showPopupEditPatientAction, (state) => {
     const psp = new Mapper(state.selectedPrescription.prescriptions[0]);
+    const patientPrefix = psp.read("entry[resource.resourceType?Patient].resource.name[0].prefix[0]");
+    const patientGiven = psp.read("entry[resource.resourceType?Patient].resource.name[0].given[0]");
+    const patientFamily = psp.read("entry[resource.resourceType?Patient].resource.name[0].family");
+    const patientStreetName = psp.read("entry[resource.resourceType?Patient].resource.address[0]._line[0].extension[url?streetName].valueString");
+    const patientStreetNumber = psp.read("entry[resource.resourceType?Patient].resource.address[0]._line[0].extension[url?houseNumber].valueString");
+    const patientStreetAdditional = psp.read("entry[resource.resourceType?Patient].resource.address[0]._line[1].extension[url?additionalLocator].valueString", "");
+    const patientPostalCode = psp.read("entry[resource.resourceType?Patient].resource.address[0].postalCode");
+    const patientCity = psp.read("entry[resource.resourceType?Patient].resource.address[0].city")
     state.PatientPopup = {
-      "patientPrefix": psp.read("entry[resource.resourceType?Patient].resource.name[0].prefix[0]"),
-      "patientGiven": psp.read("entry[resource.resourceType?Patient].resource.name[0].given[0]"),
-      "patientFamily": psp.read("entry[resource.resourceType?Patient].resource.name[0].family"),
-      "patientStreetName": psp.read("entry[resource.resourceType?Patient].resource.address[0]._line[extension[url?streetName]].extension[url?streetName].valueString"),
-      "patientStreetNumber": psp.read("entry[resource.resourceType?Patient].resource.address[0]._line[extension[url?houseNumber]].extension[url?houseNumber].valueString"),
-      "patientStreetAdditional": psp.read("entry[resource.resourceType?Patient].resource.address[0]._line[extension[url?additionalLocator]].extension[url?additionalLocator].valueString", ""),
-      "patientPostalCode": psp.read("entry[resource.resourceType?Patient].resource.address[0].postalCode"),
-      "patientCity": psp.read("entry[resource.resourceType?Patient].resource.address[0].city")
+      patientPrefix,
+      patientGiven,
+      patientFamily,
+      patientStreetName,
+      patientStreetNumber,
+      patientStreetAdditional,
+      patientPostalCode,
+      patientCity
     };
     resetErrorsInMainWindow(state);
   });
@@ -334,9 +342,9 @@ export const prescriptions = createReducer(initialState, (builder) => {
       "patientPrefix": psp.read("entry[resource.resourceType?Patient].resource.name[0].prefix[0]"),
       "patientGiven": psp.read("entry[resource.resourceType?Patient].resource.name[0].given[0]"),
       "patientFamily": psp.read("entry[resource.resourceType?Patient].resource.name[0].family"),
-      "patientStreetName": psp.read("entry[resource.resourceType?Patient].resource.address[0]._line[extension[url?streetName]].extension[url?streetName].valueString"),
-      "patientStreetNumber": psp.read("entry[resource.resourceType?Patient].resource.address[0]._line[extension[url?houseNumber]].extension[url?houseNumber].valueString"),
-      "patientStreetAdditional": psp.read("entry[resource.resourceType?Patient].resource.address[0]._line[extension[url?additionalLocator]].extension[url?additionalLocator].valueString", ""),
+      "patientStreetName": psp.read("entry[resource.resourceType?Patient].resource.address[0]._line[0].extension[url?streetName].valueString"),
+      "patientStreetNumber": psp.read("entry[resource.resourceType?Patient].resource.address[0]._line[0].extension[url?houseNumber].valueString"),
+      "patientStreetAdditional": psp.read("entry[resource.resourceType?Patient].resource.address[0]._line[1].extension[url?additionalLocator].valueString", ""),
       "patientPostalCode": psp.read("entry[resource.resourceType?Patient].resource.address[0].postalCode"),
       "patientCity": psp.read("entry[resource.resourceType?Patient].resource.address[0].city")
     }
@@ -351,10 +359,10 @@ export const prescriptions = createReducer(initialState, (builder) => {
       psp.write("entry[resource.resourceType?Patient].resource.name[0].given[0]", state.PatientPopup.patientGiven);
       psp.write("entry[resource.resourceType?Patient].resource.name[0].family", state.PatientPopup.patientFamily);
 
-      writer = psp.read("entry[resource.resourceType?Patient].resource.address[0]._line[extension[url?streetName]].extension[url?streetName]");
+      writer = psp.read("entry[resource.resourceType?Patient].resource.address[0]._line[0].extension[url?streetName]");
       writer.valueString = state.PatientPopup.patientStreetName;
 
-      writer = psp.read("entry[resource.resourceType?Patient].resource.address[0]._line[extension[url?houseNumber]].extension[url?houseNumber]");
+      writer = psp.read("entry[resource.resourceType?Patient].resource.address[0]._line[0].extension[url?houseNumber]");
       writer.valueString = state.PatientPopup.patientStreetNumber;
 
       writer = psp.read("entry[resource.resourceType?Patient].resource.address[0]");
@@ -394,9 +402,9 @@ export const prescriptions = createReducer(initialState, (builder) => {
       "qualifikation": psp.read("entry[resource.resourceType?Practitioner].resource.qualification[code.coding[system?Qualification_Type]].code.coding[system?Qualification_Type].code", ""),
       "berufsbezeichnung": psp.read("entry[resource.resourceType?Practitioner].resource.qualification[code.coding[system?Qualification_Type]].code.text", ""),
       "organizationName": psp.read("entry[resource.resourceType?Organization].resource.name", ""),
-      "organizationStreetName": psp.read("entry[resource.resourceType?Organization].resource.address[0]._line[extension[url?streetName]].extension[url?streetName].valueString", ""),
-      "organizationStreetNumber": psp.read("entry[resource.resourceType?Organization].resource.address[0]._line[extension[url?houseNumber]].extension[url?houseNumber].valueString", ""),
-      "organizationStreetAdditional": psp.read("entry[resource.resourceType?Organization].resource.address[0]._line[extension[url?additionalLocator]].extension[url?additionalLocator].valueString", ""),
+      "organizationStreetName": psp.read("entry[resource.resourceType?Organization].resource.address[0]._line[0].extension[url?streetName].valueString", ""),
+      "organizationStreetNumber": psp.read("entry[resource.resourceType?Organization].resource.address[0]._line[0].extension[url?houseNumber].valueString", ""),
+      "organizationStreetAdditional": psp.read("entry[resource.resourceType?Organization].resource.address[0]._line[1].extension[url?additionalLocator].valueString", ""),
       "organizationPostalCode": psp.read("entry[resource.resourceType?Organization].resource.address[0].postalCode", ""),
       "organizationCity": psp.read("entry[resource.resourceType?Organization].resource.address[0].city", ""),
       "organizationPhone": psp.read("entry[resource.resourceType?Organization].resource.telecom[system?phone].value", ""),
@@ -413,9 +421,9 @@ export const prescriptions = createReducer(initialState, (builder) => {
       "qualifikation": psp.read("entry[resource.resourceType?Practitioner].resource.qualification[code.coding[system?Qualification_Type]].code.coding[system?Qualification_Type].code", ""),
       "berufsbezeichnung": psp.read("entry[resource.resourceType?Practitioner].resource.qualification[code.coding[system?Qualification_Type]].code.text", ""),
       "organizationName": psp.read("entry[resource.resourceType?Organization].resource.name", ""),
-      "organizationStreetName": psp.read("entry[resource.resourceType?Organization].resource.address[0]._line[extension[url?streetName]].extension[url?streetName].valueString", ""),
-      "organizationStreetNumber": psp.read("entry[resource.resourceType?Organization].resource.address[0]._line[extension[url?houseNumber]].extension[url?houseNumber].valueString", ""),
-      "organizationStreetAdditional": psp.read("entry[resource.resourceType?Organization].resource.address[0]._line[extension[url?additionalLocator]].extension[url?additionalLocator].valueString", ""),
+      "organizationStreetName": psp.read("entry[resource.resourceType?Organization].resource.address[0]._line[0].extension[url?streetName].valueString", ""),
+      "organizationStreetNumber": psp.read("entry[resource.resourceType?Organization].resource.address[0]._line[0].extension[url?houseNumber].valueString", ""),
+      "organizationStreetAdditional": psp.read("entry[resource.resourceType?Organization].resource.address[0]._line[1].extension[url?additionalLocator].valueString", ""),
       "organizationPostalCode": psp.read("entry[resource.resourceType?Organization].resource.address[0].postalCode", ""),
       "organizationCity": psp.read("entry[resource.resourceType?Organization].resource.address[0].city", ""),
       "organizationPhone": psp.read("entry[resource.resourceType?Organization].resource.telecom[system?phone].value", ""),
@@ -433,10 +441,10 @@ export const prescriptions = createReducer(initialState, (builder) => {
       psp.write("entry[resource.resourceType?Practitioner].resource.qualification[code.coding[system?Qualification_Type]].code.coding[system?Qualification_Type].code", state.OrgaPopup.qualifikation);
       psp.write("entry[resource.resourceType?Practitioner].resource.qualification[code.coding[system?Qualification_Type]].code.text", state.OrgaPopup.berufsbezeichnung);
       setOrganizationName(psp, state.OrgaPopup.organizationName);
-      psp.write("entry[resource.resourceType?Organization].resource.address[0]._line[extension[url?streetName]].extension[url?streetName].valueString", state.OrgaPopup.organizationStreetName);
-      psp.write("entry[resource.resourceType?Organization].resource.address[0]._line[extension[url?houseNumber]].extension[url?houseNumber].valueString", state.OrgaPopup.organizationStreetNumber);
+      psp.write("entry[resource.resourceType?Organization].resource.address[0]._line[0].extension[url?streetName].valueString", state.OrgaPopup.organizationStreetName);
+      psp.write("entry[resource.resourceType?Organization].resource.address[0]._line[0].extension[url?houseNumber].valueString", state.OrgaPopup.organizationStreetNumber);
       try {
-        psp.write("entry[resource.resourceType?Organization].resource.address[0]._line[extension[url?additionalLocator]].extension[url?additionalLocator].valueString", state.OrgaPopup.organizationStreetAdditional);
+        psp.write("entry[resource.resourceType?Organization].resource.address[0]._line[1].extension[url?additionalLocator].valueString", state.OrgaPopup.organizationStreetAdditional);
       } catch (ex) { }
       psp.write("entry[resource.resourceType?Organization].resource.address[0].postalCode", state.OrgaPopup.organizationPostalCode);
       psp.write("entry[resource.resourceType?Organization].resource.address[0].city", state.OrgaPopup.organizationCity);

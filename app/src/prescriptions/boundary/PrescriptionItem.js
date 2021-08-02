@@ -289,8 +289,8 @@ class Prescription extends BElement {
                         _psp.read("entry[resource.resourceType?Patient].resource.name[0].prefix[0]", "") + " " +
                         _psp.read("entry[resource.resourceType?Patient].resource.name[0].given[0]", "") + " " +
                         _psp.read("entry[resource.resourceType?Patient].resource.name[0].family", "") + ", " +
-                        _psp.read("entry[resource.resourceType?Patient].resource.address[0]._line[extension[url?streetName]].extension[url?streetName].valueString", "") + " " +
-                        _psp.read("entry[resource.resourceType?Patient].resource.address[0]._line[extension[url?houseNumber]].extension[url?houseNumber].valueString", "") + ", " +
+                        _psp.read("entry[resource.resourceType?Patient].resource.address[0]._line[0].extension[url?streetName].valueString", "") + " " +
+                        _psp.read("entry[resource.resourceType?Patient].resource.address[0]._line[0].extension[url?houseNumber].valueString", "") + ", " +
                         _psp.read("entry[resource.resourceType?Patient].resource.address[0].postalCode", "") + " " +
                         _psp.read("entry[resource.resourceType?Patient].resource.address[0].city", "").trim()}
                       </textarea>
@@ -599,8 +599,8 @@ class Prescription extends BElement {
       _psp.read("entry[resource.resourceType?Practitioner].resource.qualification[code.coding[system?Qualification_Type]].code.coding[system?Qualification_Type].code") + " " +
       _psp.read("entry[resource.resourceType?Practitioner].resource.qualification[code.text].code.text", "") + ", " +
       _psp.read("entry[resource.resourceType?Organization].resource.name", "") + ", " +
-      _psp.read("entry[resource.resourceType?Organization].resource.address[0]._line[extension[url?streetName]].extension[url?streetName].valueString") + " " +
-      _psp.read("entry[resource.resourceType?Organization].resource.address[0]._line[extension[url?houseNumber]].extension[url?houseNumber].valueString") + ", " +
+      _psp.read("entry[resource.resourceType?Organization].resource.address[0]._line[0].extension[url?streetName].valueString") + " " +
+      _psp.read("entry[resource.resourceType?Organization].resource.address[0]._line[0].extension[url?houseNumber].valueString") + ", " +
       _psp.read("entry[resource.resourceType?Organization].resource.address[0].postalCode") + " " +
       _psp.read("entry[resource.resourceType?Organization].resource.address[0].city") + ", " +
       _psp.read("entry[resource.resourceType?Organization].resource.telecom[system?phone].value")}
