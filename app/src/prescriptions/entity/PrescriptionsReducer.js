@@ -43,6 +43,16 @@ const initialState = {
   OrgaPopup: {}
 }
 
+function setPrescriptionInState(state, prescription) {
+  state.list.forEach((_) => {
+    _.forEach((_2, idx) => {
+      if (_2.id === prescription.id) {
+        _[idx] = prescription;
+      }
+    });
+  });
+}
+
 export const prescriptions = createReducer(initialState, (builder) => {
   //Add prescription to the unsigned list
   builder.addCase(addPrescriptionAction, (state, { payload: prescription }) => {
@@ -162,6 +172,8 @@ export const prescriptions = createReducer(initialState, (builder) => {
               psp.write(key, value);
             }
           }
+          //state.selectedPrescription.prescriptions[] = _psp.mapObject;
+          setPrescriptionInState(state, prescription);
         }
 
         //Popup values, some code could be cleaned here
@@ -179,22 +191,21 @@ export const prescriptions = createReducer(initialState, (builder) => {
           for (const prescription of state.selectedPrescription.prescriptions) {
             const psp = new Mapper(prescription);
             psp.write(key, value);
+            //state.selectedPrescription.prescriptions[0] = _psp.mapObject;
+            setPrescriptionInState(state, prescription);
           }
         } else {
           const _psp = new Mapper(_state.read(statePath ? statePath : "selectedPrescription.prescriptions[" + index + "]"));
+          const prescription = _psp.mapObject;
           if (key) {
             _psp.write(key, value);
             Object.keys(_state.mapObject).forEach(k => {
               state[k] = _state.mapObject[k];
             })
           }
+          //state.selectedPrescription.prescriptions[0] = _psp.mapObject;
+          setPrescriptionInState(state, prescription);
         }
-        //state.selectedPrescription.prescriptions[0] = _psp.mapObject;
-        state.list.forEach((_, idx) => {
-          if (_[0].id === state.selectedPrescription.prescriptions[0].id) {
-            _[index] = state.selectedPrescription.prescriptions[index];
-          }
-        })
       }
     })
     .addCase(signAndUploadBundlesAction, (state, { payload: bundles }) => {
