@@ -18,6 +18,9 @@ class PrescriptionPdf extends BElement {
   }
 
   view() {
+    if(!this.state.prescriptions.selectedPrescription.prescriptions.pdfDocument) {
+      return;
+    }
     const document = this.state.prescriptions.selectedPrescription.prescriptions.pdfDocument.content;
     const firstPrescription = this.state.prescriptions.selectedPrescription.prescriptions.bundleWithAccessCodeOrThrowables[0].bundle;
      const _psp = new Mapper(firstPrescription);

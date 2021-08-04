@@ -97,10 +97,10 @@ class Prescription extends BElement {
 
   doesClientHasToPay(boolean) {
     if (boolean) {
-      updatePrescription("geb-pfl", 0, "entry[resource.resourceType?MedicationRequest].resource.extension[url?StatusCoPayment].valueCoding.code", undefined, undefined, undefined);
+      updatePrescription("geb-pfl", "0", "entry[resource.resourceType?MedicationRequest].resource.extension[url?StatusCoPayment].valueCoding.code", undefined, undefined, undefined);
       document.getElementById("gebührenfrei").checked = false;
     } else {
-      updatePrescription("gebührenfrei", 1, "entry[resource.resourceType?MedicationRequest].resource.extension[url?StatusCoPayment].valueCoding.code", undefined, undefined, undefined);
+      updatePrescription("gebührenfrei", "1", "entry[resource.resourceType?MedicationRequest].resource.extension[url?StatusCoPayment].valueCoding.code", undefined, undefined, undefined);
       document.getElementById("geb-pfl").checked = false;
     }
   }
