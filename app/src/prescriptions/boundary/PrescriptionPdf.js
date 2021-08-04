@@ -1,26 +1,16 @@
 import BElement from "../../models/BElement.js";
+import { sendToPharmacy } from "../control/UnsignedPrescriptionControl.js"
 import { html } from "../../libs/lit-html.js";
 
 class PrescriptionPdf extends BElement {
 
-  async sendPdfErixa() {
-    const document = this.state.prescriptions.selectedPrescription.prescriptions.pdfDocument.content;
-    const firstPrescription = this.state.prescriptions.selectedPrescription.prescriptions.bundleWithAccessCodeOrThrowables[0].bundle;
-    const _psp = new Mapper(firstPrescription);
-
-    let displayName = [
-      _psp.read("entry[resource.resourceType?Patient].resource.name[0].given", []).join(" "),
-      _psp.read("entry[resource.resourceType?Patient].resource.name[0].family")]
-      .filter(_ => _).join(" ");
-
+  async sendToPharmacy() {
       try {
-
-        await fetch("/erixa/sync", {
-          method: "post",
-          headers: { "Content-type" : "application/json" },
-          body: JSON.stringify({ patient: displayName, document })
+        sendToPharmacy({
+          prescriptions: this.state.prescriptions.selectedPrescription.prescriptions,
+          patientEmail: prompt("Patient E-Mail"),
+          surgeryDate: prompt("OP Termin")
         });
-        
         alert("Dokument gesendet");
       } catch(ex) {
         console.info(ex)
@@ -72,7 +62,7 @@ class PrescriptionPdf extends BElement {
       filter        : drop-shadow(2px 4px 6px rgba(0,0,0,.25));
       margin-right  : 45px;            
       margin-bottom : 0px;                         
-    " @click="${() => this.sendPdfErixa()}">Direkt an Apotheke senden</button>
+    " @click="${() => this.sendToPharmacy()}">Direkt an Apotheke senden</button>
     </div>
     <iframe
       src    = "data:application/pdf;base64, ${document}"

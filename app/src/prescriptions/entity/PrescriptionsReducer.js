@@ -1,7 +1,6 @@
 import { cancelPopupEditClinicAction, cancelPopupEditMedikamentAction, cancelPopupEditOrgaAction, cancelPopupEditPatient, cancelPopupEditPatientAction, cancelPopupEditPractIdAction, savePopupEditClinicAction, savePopupEditMedikamentAction, savePopupEditOrgaAction, savePopupEditPatient, savePopupEditPatientAction, savePopupEditPractIdAction, showPopupEditClinicAction, showPopupEditMedikamentAction, showPopupEditOrgaAction, showPopupEditPatientAction, showPopupEditPractIdAction } from "../../components/popup/control/PopupControl.js";
 import { Mapper } from "../../libs/helper/Mapper.js";
 import { createReducer } from "../../libs/redux-toolkit.esm.js"
-import { save } from "../../localstorage/control/StorageControl.js";
 import serverWebSocketActionForwarder from "../../prescriptions/boundary/websocket/ServerWebSocketActionForwarder.js";
 import {
   addPrescriptionAction,
@@ -18,7 +17,8 @@ import {
   removeValidationErrorForMainWindowAction,
   createNewPrescriptionAction,
   ValidateAllFieldsInMainWindowAction,
-  showHTMLBundlesAction
+  showHTMLBundlesAction,
+  sendToPharmacyAction
 } from "../control/UnsignedPrescriptionControl.js";
 import {
   MainWindowValidationRules,
@@ -565,6 +565,48 @@ export const prescriptions = createReducer(initialState, (builder) => {
       } catch (e) {
         console.log(e);
       }
+    }
+  });
+  builder.addCase(sendToPharmacyAction, (state, { payload: { prescriptions: { prescriptions, patientEmail, surgeryDate } } }) => {
+    const document = prescriptions.pdfDocument.content;
+    const firstPrescription = prescriptions.bundleWithAccessCodeOrThrowables[0].bundle;
+    const patient = firstPrescription.entry.filter(e => e.resource.resourceType == "Patient")[0].resource;
+    const coverage = firstPrescription.entry.filter(e => e.resource.resourceType == "Coverage")[0].resource;
+    const medication = firstPrescription.entry.filter(e => e.resource.resourceType == "Medication")[0].resource;
+    const medicationRequest = firstPrescription.entry.filter(e => e.resource.resourceType == "MedicationRequest")[0].resource;
+    const KBV_EX_ERP_StatusCoPayment = medicationRequest.extension.filter(e => e.url == "https://fhir.kbv.de/StructureDefinition/KBV_EX_ERP_StatusCoPayment")[0]?.valueCoding?.code == "0";
+    const name = patient?.name[0];
+    const address = patient.address[0];
+    try {
+      serverWebSocketActionForwarder.send({
+        "type": "ErixaEvent",
+        "processType": "SendToPharmacy",
+        "payload": {
+          "document": document,
+          "details": {
+            "firstName": name?.given[0],
+            "lastName": name?.family,
+            "salutation": name?.prefix[0],
+            "birthday": patient.birthDate,
+            "street": address.line[0],
+            "postcode": address.postalCode,
+            "city": address.city,
+            "emailAddress": patientEmail,
+            "insuranceType": coverage?.type?.coding[0]?.code,
+            "healthInsurance": coverage?.payor[0]?.display,
+            "healthInsuranceNumber": coverage?.payor[0]?.identifier.value,
+            "pzn": medication?.code?.coding[0]?.code,
+            "autIdem": medicationRequest?.substitution?.allowedBoolean,
+            "dosage": medicationRequest?.dosageInstruction[0]?.text,
+            "medicineDescription": medication?.code?.text,
+            "extraPaymentNecessary": KBV_EX_ERP_StatusCoPayment,
+            "creationDateTime": new Date().toISOString().split('.').shift() + 'Z',
+            "surgeryDate": surgeryDate
+          }
+        }
+      });
+    } catch(e) {
+      alert("Konnte server socket Nachricht nicht erstellen "+e);
     }
   });
 

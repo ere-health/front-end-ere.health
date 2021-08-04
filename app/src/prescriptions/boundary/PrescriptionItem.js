@@ -23,9 +23,6 @@ import { initialPath } from "../../libs/helper/helper.js";
 import { Mapper } from "../../libs/helper/Mapper.js";
 import { MainWindowValidationRules, MainWindowErrorMessages } from "./ValidationRules.js";
 
-let impfStoffInit = false;
-let drug1chkInit = false;
-
 function getFromRes(source, resourceType, key) {
   const resource = source.entry.filter(
     (oEntry) => oEntry.resource.resourceType === resourceType
@@ -524,16 +521,16 @@ class Prescription extends BElement {
               
               <ul class="zet-check-list">
               
-              ${prescriptions.map((medicationLine, medIndex) => {
-        const medicationResource = medicationLine.entry.filter(
-          (oEntry) => oEntry.resource.resourceType === "Medication"
-        )[0].resource;
-        const medicationRequestResource = medicationLine.entry.filter(
-          (oEntry) => oEntry.resource.resourceType === "MedicationRequest"
-        )[0].resource;
+              ${"map" in prescriptions ? prescriptions.map((medicationLine, medIndex) => {
+                const medicationResource = medicationLine.entry.filter(
+                  (oEntry) => oEntry.resource.resourceType === "Medication"
+                )[0].resource;
+                const medicationRequestResource = medicationLine.entry.filter(
+                  (oEntry) => oEntry.resource.resourceType === "MedicationRequest"
+                )[0].resource;
 
-        const p = new Mapper(this.state.selectedPrescription.prescriptions[medIndex]);
-        return html`
+                const p = new Mapper(this.state.selectedPrescription.prescriptions[medIndex]);
+                return html`
                     <li class="art-list-item">
                     <div class="edit-btn" @click="${() => showPopupEditMedikament(medIndex)}" style="left: 40px; background-image: url(${initialPath}/assets/images/edit-btn.png);"></div>
                         <input
@@ -568,8 +565,7 @@ class Prescription extends BElement {
                         />
                         <span class="checkmark" @click="${() => document.getElementById(`drug-1-chk-${medIndex}`).click()}"></span>
                       </li>`;
-      })}
-
+                  }) : ""}
                 </ul>
               </form>
             </div>
@@ -587,23 +583,23 @@ class Prescription extends BElement {
           <div class="edit-btn" @click="${() => showPopupEditOrga()}" style="background-image: url(${initialPath}/assets/images/edit-btn.png);"></div>
 
           <div class="zet-title first-col">Vertragsarztdaten</div>
-          <textarea
+            <textarea
                         name   = "organization-summary"
                         id     = "organization-summary"
                         rows="5" 
                         cols="30"
                         style="background: transparent; border: none;"
                       >${_psp.read("entry[resource.resourceType?Practitioner].resource.name[0].prefix[0]", "") + " " +
-      _psp.read("entry[resource.resourceType?Practitioner].resource.name[0].given[0]") + " " +
-      _psp.read("entry[resource.resourceType?Practitioner].resource.name[0].family") + ", " +
-      _psp.read("entry[resource.resourceType?Practitioner].resource.qualification[code.coding[system?Qualification_Type]].code.coding[system?Qualification_Type].code") + " " +
-      _psp.read("entry[resource.resourceType?Practitioner].resource.qualification[code.text].code.text", "") + ", " +
-      _psp.read("entry[resource.resourceType?Organization].resource.name", "") + ", " +
-      _psp.read("entry[resource.resourceType?Organization].resource.address[0]._line[0].extension[url?streetName].valueString") + " " +
-      _psp.read("entry[resource.resourceType?Organization].resource.address[0]._line[0].extension[url?houseNumber].valueString") + ", " +
-      _psp.read("entry[resource.resourceType?Organization].resource.address[0].postalCode") + " " +
-      _psp.read("entry[resource.resourceType?Organization].resource.address[0].city") + ", " +
-      _psp.read("entry[resource.resourceType?Organization].resource.telecom[system?phone].value")}
+                      _psp.read("entry[resource.resourceType?Practitioner].resource.name[0].given[0]") + " " +
+                      _psp.read("entry[resource.resourceType?Practitioner].resource.name[0].family") + ", " +
+                      _psp.read("entry[resource.resourceType?Practitioner].resource.qualification[code.coding[system?Qualification_Type]].code.coding[system?Qualification_Type].code") + " " +
+                      _psp.read("entry[resource.resourceType?Practitioner].resource.qualification[code.text].code.text", "") + ", " +
+                      _psp.read("entry[resource.resourceType?Organization].resource.name", "") + ", " +
+                      _psp.read("entry[resource.resourceType?Organization].resource.address[0]._line[0].extension[url?streetName].valueString") + " " +
+                      _psp.read("entry[resource.resourceType?Organization].resource.address[0]._line[0].extension[url?houseNumber].valueString") + ", " +
+                      _psp.read("entry[resource.resourceType?Organization].resource.address[0].postalCode") + " " +
+                      _psp.read("entry[resource.resourceType?Organization].resource.address[0].city") + ", " +
+                      _psp.read("entry[resource.resourceType?Organization].resource.telecom[system?phone].value")}
             </textarea>
           </div>
         </div>

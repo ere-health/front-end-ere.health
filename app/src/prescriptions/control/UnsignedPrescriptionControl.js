@@ -82,3 +82,8 @@ export const showHTMLBundlesAction = createAction("showHTMLBundlesAction");
 export const showHTMLBundles = (bundles) => {
     store.dispatch(showHTMLBundlesAction(bundles));
 }
+
+export const sendToPharmacyAction = createAction("sendToPharmacyAction");
+export const sendToPharmacy = (prescriptions, patientEmail, surgeryDate) => {
+    store.dispatch(sendToPharmacyAction({prescriptions, patientEmail, surgeryDate}));
+}
