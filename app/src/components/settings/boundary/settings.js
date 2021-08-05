@@ -46,13 +46,27 @@ class Settings extends BElement {
     }
     updateSetting(path, value);
   }
+  toggleFieldset(e, fieldset) {
+    e.preventDefault();
+    document.getElementById('connector').style.display = 'none';
+    document.getElementById('document-service').style.display = 'none';
+    document.getElementById(fieldset).style.display = 'block';
+  }
   
   view() {
     return html`
       <section class="settings" style="padding: 2.5rem">
             <form>
                 <h2>Einstellungen</h2>
-                <fieldset style="border: 0;margin-top: 2rem;border-radius: 1rem;background-color: white;padding: 1.5rem;">
+                <ul style="margin-top: 2rem;">
+                    <li style="display: inline-block"><button style="
+                            background-color: #E4E4E4;
+                        " @click="${_ => this.toggleFieldset(_, 'connector')}">Konnektor</button></li>
+                    <li style="display: inline-block"><button style="
+                            background-color: #E4E4E4;
+                        " @click="${_ => this.toggleFieldset(_, 'document-service')}">Dokumenterkennung</button></li>
+                </ul>
+                <fieldset id="connector" style="border: 0;border-radius: 1rem;background-color: white;padding: 1.5rem;">
                     <div style="display:flex; flex-direction:column;flex-grow: 1;padding: 7px;margin-top:5px"> 
                         <label for="--settings-connector.base-url">Adresse des Konnektordienstverzeichnis*</label>
                         <input type="text" id="--settings-connector.base-url" .value="${this.state['connector.base-url']}" style="
@@ -178,7 +192,30 @@ class Settings extends BElement {
                             >
                         </div>
                     </div>
-                    <div style="padding: 7px;margin-top:5px;">
+                </fieldset>
+                <fieldset id="document-service"  style="display: none; border: 0;border-radius: 1rem;background-color: white;padding: 1.5rem;">
+                    <label for="muster16TemplateProfile">Einstellung für Dokumenterkennung</label>
+                    <select id="muster16TemplateProfile" style="
+                        height        : 56px;
+                        background    : #E4E4E44D;
+                        border-radius : 4px;
+                        border        : none;
+                        width         : 100%;
+                        font-family   : Quicksand;
+                        font-style    : normal;
+                        font-weight   : 500;
+                        font-size     : 18px;
+                        line-height   : 22px;
+                    "
+                    @change="${_ => this.onUpdateSetting("extractor.template.profile", _.target.value)}"
+                    >
+                        <option value="CGM_TURBO_MED" ?selected=${this.state['extractor.template.profile'] === 'CGM_TURBO_MED'}>CGM_TURBO_MED</option>
+                        <option value="CGM_Z1" ?selected=${this.state['extractor.template.profile'] === 'CGM_Z1'}>CGM_Z1</option>
+                        <option value="APRAXOS" ?selected=${this.state['extractor.template.profile'] === 'APRAXOS'}>APRAXOS</option>
+                        <option value="DENS" ?selected=${this.state['extractor.template.profile'] === 'DENS'}>DENS</option>
+                    </select>
+                </fieldset>
+                <div style="padding: 7px;margin-top:5px;">
                         <button
                             style="float: left; background: #E4E4E4;"                                                                  
                             @click            = "${_ => this.resetSettings(_)}"  
@@ -198,8 +235,7 @@ class Settings extends BElement {
                         Konfiguration prüfen
                         </button> -->
                     </div>
-                </fieldset>
-                <div>
+                <div style="clear: both">
                     * Pflichtfelder
                 </div>
             </form>
