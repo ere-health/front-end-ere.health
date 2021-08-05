@@ -212,18 +212,6 @@ class Prescription extends BElement {
                 <li class="art-list-item">
                   <input
                     type     = "checkbox"
-                    id       = "sonstige"
-                    value    = "Sonstige"
-                    name     = "sonstige"
-                    .checked = "${this.state.selectedPrescription.updatedProps?.sonstige ?? false}"
-                    @change  = "${(_) => this.onUserCheckArt(_)}"
-                  />
-                  <label for="sonstige">${i18n("Other")}</label>
-                  <span class="checkmark" @click="${() => document.getElementById("sonstige").click()}"></span>
-                </li>
-                <li class="art-list-item">
-                  <input
-                    type     = "checkbox"
                     id       = "unfall"
                     value    = "Unfall"
                     name     = "accident"
@@ -453,29 +441,18 @@ class Prescription extends BElement {
                     id     = "bvg"
                     name   = "bvg"
                     .checked = "${_psp.read("entry[resource.resourceType=MedicationRequest].resource.extension[url?KBV_EX_ERP_BVG].valueBoolean")}"
-                    @change  = "${_ => updatePrescription("Impf-stoff", _.target.checked, "entry[resource.resourceType=MedicationRequest].resource.extension[url?KBV_EX_ERP_BVG].valueBoolean")}"
+                    @change  = "${_ => updatePrescription("bvg", _.target.checked, "entry[resource.resourceType=MedicationRequest].resource.extension[url?KBV_EX_ERP_BVG].valueBoolean")}"
                   />
                   <label for="bvg">BVG</label>
-                  <span class="checkmark"></span>
+                  <span class="checkmark" @click="${() => document.getElementById("bvg").click()}"></span>
                 </li>
-                <li class="art-list-item">
-                  <input
-                    type     = "checkbox"
-                    id       = "hilfsmittel"
-                    name     = "hilfsmittel"
-                    name     = "hilfsmittel"
-                           />
-                  <label for="hilfsmittel">Hilfs-mittel</label>
-                  <span class="checkmark" ></span>
-                </li>
-
                 <li class="art-list-item">
                   <input
                     type     = "checkbox"
                     id       = "Impf-stoff"
                     name     = "Impf-stoff"
                     .checked  = "${_psp.read("entry[resource.resourceType=Medication].resource.extension[url?KBV_EX_ERP_Medication_Vaccine].valueBoolean")}"
-                    @keyup = "${_ => updatePrescription("Impf-stoff", _.target.checked, "entry[resource.resourceType=Medication].resource.extension[url?KBV_EX_ERP_Medication_Vaccine].valueBoolean")}"
+                    @change = "${_ => updatePrescription("Impf-stoff", _.target.checked, "entry[resource.resourceType=Medication].resource.extension[url?KBV_EX_ERP_Medication_Vaccine].valueBoolean")}"
                   />
                   <label for="Impf-stoff">Impf-stoff</label>
                   <span class="checkmark" @click="${() => document.getElementById("Impf-stoff").click()}"></span>
@@ -490,16 +467,6 @@ class Prescription extends BElement {
                   />
                   <label for="spr-st-bedarf">Spr. St. Bedarf</label>
                   <span class="checkmark" ></span>
-                </li>
-                <li class="art-list-item">
-                  <input
-                    type     = "checkbox"
-                    id       = "begr-pflicht"
-                    name     = "begr-pflicht"
-                    
-                  />
-                  <label for="begr-pflicht">Begr. Pflicht</label>
-                  <span class="checkmark"></span>
                 </li>-->
               </ul>
             </form>
