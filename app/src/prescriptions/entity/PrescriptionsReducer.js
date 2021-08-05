@@ -18,7 +18,8 @@ import {
   createNewPrescriptionAction,
   ValidateAllFieldsInMainWindowAction,
   showHTMLBundlesAction,
-  sendToPharmacyAction
+  sendToPharmacyAction,
+  addMedicationLineAction
 } from "../control/UnsignedPrescriptionControl.js";
 import {
   MainWindowValidationRules,
@@ -525,6 +526,23 @@ export const prescriptions = createReducer(initialState, (builder) => {
       if (selectedPrescriptionId == prescriptionList[0].id) {
         prescriptionList[state.MedikamentPopup.index] = state.selectedPrescription.prescriptions[state.MedikamentPopup.index];
       }
+    }
+  });
+  builder.addCase(addMedicationLineAction, (state) => {
+    const bundle = JSON.parse(JSON.stringify(state.selectedPrescription.prescriptions[0]));
+    try {
+      const medicationRequest = bundle.entry.filter(e => e.resource.resourceType == "MedicationRequest")[0];
+      const medicationRequestId = uuidv4();
+      const medicationId = uuidv4();
+      medicationRequest.fullUrl = "http://pvs.praxis.local/fhir/MedicationRequest/"+medicationRequestId;
+      medicationRequest.resource.id = medicationRequestId;
+      medicationRequest.resource.medicationReference.reference = "Medication/"+medicationId;
+      const medication = bundle.entry.filter(e => e.resource.resourceType == "Medication")[0];
+      medication.fullUrl = "http://pvs.praxis.local/fhir/Medication/"+medicationId;
+      medication.resource.id = medicationId;
+      state.selectedPrescription.prescriptions.push(bundle);
+    } catch(e) {
+      alert(e);
     }
   });
 

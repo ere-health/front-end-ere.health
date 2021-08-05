@@ -44,7 +44,7 @@ export const updatePrescription = (name, value, key, statePath, index, amountOfB
             store.dispatch(updatePrescriptionAction({name, value, key, statePath, i}));
         }
     } else {
-        store.dispatch(updatePrescriptionAction({name, value, key, statePath, index}));
+        store.dispatch(updatePrescriptionAction({name, value, key, statePath}));
     }
 }
 
@@ -86,4 +86,9 @@ export const showHTMLBundles = (bundles) => {
 export const sendToPharmacyAction = createAction("sendToPharmacyAction");
 export const sendToPharmacy = (prescriptions, patientEmail, surgeryDate) => {
     store.dispatch(sendToPharmacyAction({prescriptions, patientEmail, surgeryDate}));
+}
+
+export const addMedicationLineAction = createAction("addMedicationLineAction");
+export const addMedicationLine = () => {
+    store.dispatch(addMedicationLineAction());
 }

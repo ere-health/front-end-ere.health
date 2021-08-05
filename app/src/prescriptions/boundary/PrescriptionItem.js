@@ -15,6 +15,7 @@ import {
   showSignForm,
   signAndUploadBundles,
   updatePrescription,
+  addMedicationLine,
   addValidationErrorForMainWindow,
   removeValidationErrorForMainWindow,
   ValidateAllFieldsInMainWindow
@@ -126,6 +127,11 @@ class Prescription extends BElement {
     }
 
     return dateArray[2] + "-" + month + "-" + day;
+  }
+
+  addMedicationLine(_) {
+    _.preventDefault();
+    addMedicationLine();
   }
 
 
@@ -534,6 +540,7 @@ class Prescription extends BElement {
                       </li>`;
                   }) : ""}
                 </ul>
+                <Button ?disabled="${prescriptions.length > 2}" @click="${_ => this.addMedicationLine(_)}" style="float: right;">+</Button>
               </form>
             </div>
           </div>
