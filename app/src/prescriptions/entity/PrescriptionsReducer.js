@@ -19,7 +19,10 @@ import {
   ValidateAllFieldsInMainWindowAction,
   showHTMLBundlesAction,
   sendToPharmacyAction,
-  addMedicationLineAction
+  addMedicationLineAction,
+  showGetSignatureModeResponseAction,
+  activateComfortSignatureAction,
+  deactivateComfortSignatureAction
 } from "../control/UnsignedPrescriptionControl.js";
 import {
   MainWindowValidationRules,
@@ -223,6 +226,9 @@ export const prescriptions = createReducer(initialState, (builder) => {
     })
     .addCase(showHTMLBundlesAction, (state, { payload: bundles }) => {
       state.HTMLBundles = bundles; 
+    })
+    .addCase(showGetSignatureModeResponseAction, (state, { payload: showGetSignatureModeResponse }) => {
+      state.GetSignatureModeResponse = showGetSignatureModeResponse; 
     });
 
 
@@ -622,6 +628,26 @@ export const prescriptions = createReducer(initialState, (builder) => {
             "surgeryDate": surgeryDate
           }
         }
+      });
+    } catch(e) {
+      alert("Konnte server socket Nachricht nicht erstellen "+e);
+    }
+  });
+
+  builder.addCase(activateComfortSignatureAction, (state) => {
+    try {
+      serverWebSocketActionForwarder.send({
+        "type": "ActivateComfortSignature"
+      });
+    } catch(e) {
+      alert("Konnte server socket Nachricht nicht erstellen "+e);
+    }
+  });
+
+  builder.addCase(deactivateComfortSignatureAction, (state) => {
+    try {
+      serverWebSocketActionForwarder.send({
+        "type": "DeactivateComfortSignature"
       });
     } catch(e) {
       alert("Konnte server socket Nachricht nicht erstellen "+e);

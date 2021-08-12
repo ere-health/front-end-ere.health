@@ -83,6 +83,11 @@ export const showHTMLBundles = (bundles) => {
     store.dispatch(showHTMLBundlesAction(bundles));
 }
 
+export const showGetSignatureModeResponseAction = createAction("showGetSignatureModeResponseAction");
+export const showGetSignatureModeResponse = (getSignatureModeResponse) => {
+    store.dispatch(showGetSignatureModeResponseAction(getSignatureModeResponse));
+}
+
 export const sendToPharmacyAction = createAction("sendToPharmacyAction");
 export const sendToPharmacy = (prescriptions, patientEmail, surgeryDate) => {
     store.dispatch(sendToPharmacyAction({prescriptions, patientEmail, surgeryDate}));
@@ -91,4 +96,14 @@ export const sendToPharmacy = (prescriptions, patientEmail, surgeryDate) => {
 export const addMedicationLineAction = createAction("addMedicationLineAction");
 export const addMedicationLine = () => {
     store.dispatch(addMedicationLineAction());
+}
+
+export const activateComfortSignatureAction = createAction("activateComfortSignatureAction");
+export const activateComfortSignature = () => {
+    store.dispatch(activateComfortSignatureAction());
+}
+
+export const deactivateComfortSignatureAction = createAction("deactivateComfortSignatureAction");
+export const deactivateComfortSignature = () => {
+    store.dispatch(deactivateComfortSignatureAction());
 }
