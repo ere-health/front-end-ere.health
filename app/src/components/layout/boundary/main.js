@@ -74,11 +74,11 @@ class MainLayout extends BElement {
                 </tr>
                 <tr>
                   <td>Noch möglich</td>
-                  <td>${this.state.prescriptions.GetSignatureModeResponse.sessionInfo.countRemaining}</td>
+                  <td>${this.state.prescriptions.GetSignatureModeResponse.sessionInfo?.countRemaining}</td>
                 </tr>
                 <tr>
                   <td>In Zeitraum</td>
-                  <td>${this.state.prescriptions.GetSignatureModeResponse.sessionInfo.timeRemaining}</td>
+                  <td>${this.state.prescriptions.GetSignatureModeResponse.sessionInfo?.timeRemaining}</td>
                 </tr>
               </table>
             ` : ""}
