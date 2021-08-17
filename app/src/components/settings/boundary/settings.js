@@ -213,6 +213,7 @@ class Settings extends BElement {
                         <option value="CGM_Z1" ?selected=${this.state['extractor.template.profile'] === 'CGM_Z1'}>CGM_Z1</option>
                         <option value="APRAXOS" ?selected=${this.state['extractor.template.profile'] === 'APRAXOS'}>APRAXOS</option>
                         <option value="DENS" ?selected=${this.state['extractor.template.profile'] === 'DENS'}>DENS</option>
+                        <option value="DENS_LANDSCAPE" ?selected=${this.state['extractor.template.profile'] === 'DENS_LANDSCAPE'}>DENS_LANDSCAPE</option>
                     </select>
                 </fieldset>
                 <div style="padding: 7px;margin-top:5px;">
