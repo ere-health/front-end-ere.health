@@ -87,6 +87,7 @@ const FIELD_NORMGROBE_TYPE = [
 
 //awk '{printf "{ value: \""$1"\", label: \""$1; $1 = ""; print " -" $0 "\" },"}'
 const FIELD_DARREICH_TYPE = [
+  { value: "", label: "" },
   { value: "AEO", label: "AEO - Ätherisches Öl" },
   { value: "AMP", label: "AMP - Ampullen" },
   { value: "APA", label: "APA - Ampullenpaare" },

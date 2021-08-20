@@ -64,6 +64,8 @@ export const prescriptions = createReducer(initialState, (builder) => {
       console.warn("Try to add prescriptions with empty array. Ignoring.");
       return;
     }
+    // remove values without length property
+    state.list = state.list.filter(p => !( "length" in p));
     if (!state.list.filter(_ => _[0].id === prescription[0].id).length) {
 
       /*//Check if need to be merged
@@ -87,11 +89,11 @@ export const prescriptions = createReducer(initialState, (builder) => {
       })
 
 
-      !merged &&*/ (state.list = state.list.concat([prescription]));
+      !merged &&*/ (state.list = [prescription].concat(state.list));
     }
   })
   builder.addCase(addSignedAction, (state, { payload: prescription }) => {
-    state.signedList = state.signedList.concat(prescription);
+    state.signedList = prescription.concat(state.signedList);
     // This should be done automatically in app.js
     // save(state);
   })
@@ -156,7 +158,7 @@ export const prescriptions = createReducer(initialState, (builder) => {
       bundleTemplate = bundleTemplate.replaceAll('$MEDICATION_ID', uuidv4());
 
       //Add prescription action, you need to inject a list of list
-      state.list = state.list.concat([[JSON.parse(bundleTemplate)]]);
+      state.list = [[JSON.parse(bundleTemplate)]].concat(state.list);
     })
     .addCase(updatePrescriptionAction, (state, { payload: { name, value, key, statePath, index } }) => {
       // console.info("key:" + key + " with value:" + value + " with name:" + name + " with statePath:" + statePath + " with index:" + index);

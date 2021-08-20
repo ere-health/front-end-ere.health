@@ -93,66 +93,64 @@ export const PopupRules = {
 
 
 export const MainWindowErrorMessages = {
-    //AUF DEUTSCH BITTE :)
     'coverage-payor-display': {
-        required: 'The insurance name must be present',
-        regex: 'The insurance name must be between 1 and 50 characters long'
+        required: 'Es muss eine Versicherung angegeben werden',
+        regex: 'Der Name der Versicherung muss zwischen 1 und 50 Zeichen lang sein'
     },
     'medicationText': {
-        required: 'The medication name must be present',
-        regex: 'The medication name must be between 1 and 50 characters long'
+        required: 'Es muss ein Medikamentenname angegeben werden',
+        regex: 'Der Medikamentenname muss zwischen 1 bis 50 Zeichen lang sein'
     },
     'pzn' : {
-        required: 'The pzn number must be present',
-        regex: 'The pzn number must be between 6 and 8 numbers long'
+        required: 'Es muss eine PZN-Nummer angegbene werden',
+        regex: 'Die PZN Nummer muss zwischen 6 und 8 Ziffern lang sein'
     },
     'dosage-instructions' : {
-        regex: 'The dosage instructions must be between 1 and 30 characters long'
+        regex: 'Die Dosierungsintruktions muss zwischen 1 und 30 Zeichen lang sein'
     },
     'full-patient-address' :{
-        required: "Please open the popup related to the patient's data to fill its details",
-        regex: "The full patient address seems to be wrong, Please open the popup related to the patient's data to fill its details"
+        required: "Bitte öffnen Sie das Popup für die Patiendaten um diese zu ändern",
+        regex: "Die Adressdaten des Patienten sind unvollständig. Bitte öffnen Sie das Popup für die Patiendaten um diese zu ändern"
     },
     'organization-summary' :{
-        required: "Please open the popup related to the organization's data to fill its details",
-        regex: "The full organization details seems to be wrong, Please open the popup related to the organization's data to fill its details"
+        required: "Bitte öffnen Sie das Popup für die Organisationsdaten um diese zu ändern",
+        regex: "Die Daten der Organisation sind unvollständig. Bitte öffnen Sie das Popup für die Organistion um diese zu ändern"
     },
     'betriebsstätten' :{
-        required: "The id of the practitioner's company must be present",
-        regex: "The id of the practitioner's company must be between 8 and 9 numbers long"
+        required: "Es muss eine Betriebsstättennummer der Oraganisation angegeben werden",
+        regex: "Die Betriebsstättennummer muss zwischen 8 und 9 Ziffern lang sein"
     },
     'kvid': {
-        required: 'The kvid must be present',
-        regex: 'The kvid must be 10 characters long and composed by numbers or common letters'
+        required: 'Es muss eine Krankenkassennummer angegeben werden',
+        regex: 'Die Krankenkassennummer muss 10 Zeichen lang sein long und besteht aus einem Buchstaben und Ziffern'
     },
     'coverage-payor-iknr': {
-        required: 'The iknr must be present',
-        regex: 'The iknr must be composed by 9 numbers'
+        required: 'Die IK Nummer der Versucherung muss angegeben werden',
+        regex: 'Die IK Nummer muss 9 Ziffern lang sein'
     },
     'doctor-number': {
-        required: 'The doctor number must be present',
-        regex: 'The practitioner id must be between 6 and 8 numbers long'
+        required: 'Die LANR  des Arztes oder 999999991 für  einen Zahnarzt muss angegeben werden',
+        regex: 'Die LANR muss zwischen 6 und 8 Ziffern lang sein'
     },
     'wop': {
-        regex: 'The WOP must be 1 or 2 numbers long'
+        regex: 'Das WOP muss 1 bis 2 Ziffern lang sein'
     },
     'birthdate': {
-        required: 'The patient birthday must be present',
-        regex: 'The patient birtday must be of format D(D).M(M).YYYY'
+        required: 'Das Geburtsdatum des Patienten muss angegeben werden',
+        regex: 'Das Geburtsdatum des Patienten muss das Format  D(D).M(M).YYYY haben'
     },
     'authoredOn': {
-        required: 'The prescription date must be present',
-        regex: 'The prescription date must be of format D(D).M(M).YYYY'
+        required: 'Das Erstellungsdatum der Verordnung muss angegben werden',
+        regex: 'Das Erstellungsdatum der Verordnung muss das Format D(D).M(M).YYYY haben'
     }
 };
 
 export const PatientPopupErrorMessages = {
-    //AUF DEUTSCH BITTE :)
     'patient-prefix': {
-        regex: "The patient name's prefix must be between 1 and 20 letters long and can only contain a - or a ."
+        regex: "Der Titel des Patienten muss zwischen 1 und 2 Buchstaben haben und nur a - z oder A - Z enthalten."
     },
     'patient-given': {
-        required: 'The patient first name must be present',
+        required: 'Der Patient muss einen Vornamen haben',
         regex: 'The patient first name must be between 1 and 50 letters long and can only contain a - or a .'
     },
     'patient-family': {

@@ -43,7 +43,7 @@ class UnsignedPrescriptionList extends BElement {
         const unsignedPrescription = unsignedPrescriptionBundles[0];
         const _psp = new Mapper(unsignedPrescription);
 
-        let displayName = "New prescription";
+        let displayName = "Neues Rezept";
         if (_psp.read("entry[resource.resourceType?Patient].resource.name[0].family", "")) {
           displayName = [
             _psp.read("entry[resource.resourceType?Patient].resource.name[0].given", []).join(" "),

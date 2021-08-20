@@ -50,6 +50,7 @@ class Settings extends BElement {
     e.preventDefault();
     document.getElementById('connector').style.display = 'none';
     document.getElementById('document-service').style.display = 'none';
+    document.getElementById('kbv').style.display = 'none';
     document.getElementById(fieldset).style.display = 'block';
   }
   
@@ -65,6 +66,9 @@ class Settings extends BElement {
                     <li style="display: inline-block"><button style="
                             background-color: #E4E4E4;
                         " @click="${_ => this.toggleFieldset(_, 'document-service')}">Dokumenterkennung</button></li>
+                    <li style="display: inline-block"><button style="
+                            background-color: #E4E4E4;
+                        " @click="${_ => this.toggleFieldset(_, 'kbv')}">KBV Prüfnummer</button></li>
                 </ul>
                 <fieldset id="connector" style="border: 0;border-radius: 1rem;background-color: white;padding: 1.5rem;">
                     <div style="display:flex; flex-direction:column;flex-grow: 1;padding: 7px;margin-top:5px"> 
@@ -215,6 +219,20 @@ class Settings extends BElement {
                         <option value="DENS" ?selected=${this.state['extractor.template.profile'] === 'DENS'}>DENS</option>
                         <option value="DENS_LANDSCAPE" ?selected=${this.state['extractor.template.profile'] === 'DENS_LANDSCAPE'}>DENS_LANDSCAPE</option>
                     </select>
+                </fieldset>
+                <fieldset id="kbv"  style="display: none; border: 0;border-radius: 1rem;background-color: white;padding: 1.5rem;">
+                    <div style="display:flex; flex-direction:column;flex-grow: 1;padding: 7px;margin-top:5px"> 
+                        <label for="--settings-kbv.pruefnummer">KBV Prüfnummer*</label>
+                        <input type="text" id="--settings-kbv.pruefnummer" .value="${this.state['kbv.pruefnummer']}" style="
+                            height        : 56px;     
+                            background    : #E4E4E44D;
+                            border-radius : 4px;      
+                            border        : none;     
+                            width         : 100%;
+                        "
+                        @keyup="${_ => this.onUpdateSetting("kbv.pruefnummer", _.target.value)}"
+                        >
+                    </div>
                 </fieldset>
                 <div style="padding: 7px;margin-top:5px;">
                         <button
