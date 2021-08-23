@@ -53,7 +53,6 @@ class Prescription extends BElement {
       value = this.convertGermanDateToFhirFormat(value);
     } else if (name === 'authoredOn') {
       value = this.convertGermanDateToFhirFormat(value);
-      value += "T00:00:00.000Z";
     }
 
     let validation = this.validateInput(name, value);
@@ -397,7 +396,7 @@ class Prescription extends BElement {
                         id     = "authoredOn"
                         class  = "bright"
                         name   = "authoredOn"
-                        value  = "${this.extractDate(_psp.read("entry[resource.resourceType?MedicationRequest].resource.authoredOn", "").split("T")[0])}"
+                        value  = "${this.extractDate(_psp.read("entry[resource.resourceType?MedicationRequest].resource.authoredOn", ""))}"
                         @keyup = "${_ => {
         this.onUserInput({ target: { name: "authoredOn", value: _.target.value} }, "entry[resource.resourceType?MedicationRequest].resource.authoredOn")
       }}"/>

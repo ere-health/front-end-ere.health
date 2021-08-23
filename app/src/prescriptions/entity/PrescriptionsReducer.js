@@ -386,17 +386,28 @@ export const prescriptions = createReducer(initialState, (builder) => {
       writer.valueString = state.PatientPopup.patientStreetNumber;
 
       writer = psp.read("entry[resource.resourceType?Patient].resource.address[0]");
-      if (writer.line) {
-        while (writer.line.length) {
-          writer.line.pop();
+      writer.line = [];
+      writer.line.push(`${state.PatientPopup.patientStreetName} ${state.PatientPopup.patientStreetNumber}`);
+      if(state.PatientPopup.patientStreetAdditional) {
+        writer.line.push(`${state.PatientPopup.patientStreetAdditional}`);
+        try {
+          writer = psp.read("entry[resource.resourceType?Patient].resource.address[0]._line[extension[url?additionalLocator]].extension[url?additionalLocator]");
+          writer.valueString = state.PatientPopup.patientStreetAdditional;
+        } catch (ex) {
+          /* Field not found in the bundle */
+          writer = psp.read("entry[resource.resourceType?Patient].resource.address[0]");
+          writer._line.push({
+            extension: [{
+              "url": "http://hl7.org/fhir/StructureDefinition/iso21090-ADXP-additionalLocator",
+              "valueString": state.PatientPopup.patientStreetAdditional
+            }]
+          });
         }
-        writer.line.push(`${state.PatientPopup.patientStreetName} ${state.PatientPopup.patientStreetNumber}`);
+      } else {
+        // remote additionalLocator extension
+        writer._line = writer._line.filter(o => o.extension && o.extension[0].url != "http://hl7.org/fhir/StructureDefinition/iso21090-ADXP-additionalLocator");
       }
 
-      try {
-        writer = psp.read("entry[resource.resourceType?Patient].resource.address[0]._line[extension[url?additionalLocator]].extension[url?additionalLocator]");
-        writer.valueString = state.PatientPopup.patientStreetAdditional;
-      } catch (ex) {/* Field not found in teh bundle */ }
 
       psp.write("entry[resource.resourceType?Patient].resource.address[0].postalCode", state.PatientPopup.patientPostalCode);
       psp.write("entry[resource.resourceType?Patient].resource.address[0].city", state.PatientPopup.patientCity);
@@ -419,8 +430,8 @@ export const prescriptions = createReducer(initialState, (builder) => {
       "practitionerPrefix": psp.read("entry[resource.resourceType?Practitioner].resource.name[0].prefix[0]", ""),
       "practitionerGiven": psp.read("entry[resource.resourceType?Practitioner].resource.name[0].given[0]", ""),
       "practitionerFamily": psp.read("entry[resource.resourceType?Practitioner].resource.name[0].family", ""),
-      "qualifikation": psp.read("entry[resource.resourceType?Practitioner].resource.qualification[code.coding[system?Qualification_Type]].code.coding[system?Qualification_Type].code", ""),
-      "berufsbezeichnung": psp.read("entry[resource.resourceType?Practitioner].resource.qualification[code.coding[system?Qualification_Type]].code.text", ""),
+      "qualifikation": psp.read("entry[resource.resourceType?Practitioner].resource.qualification[0].code.coding[system?Qualification_Type].code", ""),
+      "berufsbezeichnung": psp.read("entry[resource.resourceType?Practitioner].resource.qualification[1].code.text", ""),
       "organizationName": psp.read("entry[resource.resourceType?Organization].resource.name", ""),
       "organizationStreetName": psp.read("entry[resource.resourceType?Organization].resource.address[0]._line[0].extension[url?streetName].valueString", ""),
       "organizationStreetNumber": psp.read("entry[resource.resourceType?Organization].resource.address[0]._line[0].extension[url?houseNumber].valueString", ""),
@@ -438,8 +449,8 @@ export const prescriptions = createReducer(initialState, (builder) => {
       "practitionerPrefix": psp.read("entry[resource.resourceType?Practitioner].resource.name[0].prefix[0]", ""),
       "practitionerGiven": psp.read("entry[resource.resourceType?Practitioner].resource.name[0].given[0]", ""),
       "practitionerFamily": psp.read("entry[resource.resourceType?Practitioner].resource.name[0].family", ""),
-      "qualifikation": psp.read("entry[resource.resourceType?Practitioner].resource.qualification[code.coding[system?Qualification_Type]].code.coding[system?Qualification_Type].code", ""),
-      "berufsbezeichnung": psp.read("entry[resource.resourceType?Practitioner].resource.qualification[code.coding[system?Qualification_Type]].code.text", ""),
+      "qualifikation": psp.read("entry[resource.resourceType?Practitioner].resource.qualification[0].code.coding[system?Qualification_Type].code", ""),
+      "berufsbezeichnung": psp.read("entry[resource.resourceType?Practitioner].resource.qualification[1].code.text", ""),
       "organizationName": psp.read("entry[resource.resourceType?Organization].resource.name", ""),
       "organizationStreetName": psp.read("entry[resource.resourceType?Organization].resource.address[0]._line[0].extension[url?streetName].valueString", ""),
       "organizationStreetNumber": psp.read("entry[resource.resourceType?Organization].resource.address[0]._line[0].extension[url?houseNumber].valueString", ""),
@@ -458,14 +469,38 @@ export const prescriptions = createReducer(initialState, (builder) => {
       setPrefix(psp, "entry[resource.resourceType?Practitioner].resource.name[0]", state.OrgaPopup.practitionerPrefix);
       psp.write("entry[resource.resourceType?Practitioner].resource.name[0].given[0]", state.OrgaPopup.practitionerGiven);
       psp.write("entry[resource.resourceType?Practitioner].resource.name[0].family", state.OrgaPopup.practitionerFamily);
-      psp.write("entry[resource.resourceType?Practitioner].resource.qualification[code.coding[system?Qualification_Type]].code.coding[system?Qualification_Type].code", state.OrgaPopup.qualifikation);
-      psp.write("entry[resource.resourceType?Practitioner].resource.qualification[code.coding[system?Qualification_Type]].code.text", state.OrgaPopup.berufsbezeichnung);
+      psp.write("entry[resource.resourceType?Practitioner].resource.qualification[0].code.coding[system?Qualification_Type].code", state.OrgaPopup.qualifikation);
+      psp.write("entry[resource.resourceType?Practitioner].resource.qualification[1].code.text", state.OrgaPopup.berufsbezeichnung);
       setOrganizationName(psp, state.OrgaPopup.organizationName);
       psp.write("entry[resource.resourceType?Organization].resource.address[0]._line[0].extension[url?streetName].valueString", state.OrgaPopup.organizationStreetName);
       psp.write("entry[resource.resourceType?Organization].resource.address[0]._line[0].extension[url?houseNumber].valueString", state.OrgaPopup.organizationStreetNumber);
-      try {
-        psp.write("entry[resource.resourceType?Organization].resource.address[0]._line[1].extension[url?additionalLocator].valueString", state.OrgaPopup.organizationStreetAdditional);
-      } catch (ex) { }
+
+      writer = psp.read("entry[resource.resourceType?Organization].resource.address[0]");
+      if (!("line" in writer)) {
+        writer.line = [];
+      }
+      while (writer.line.length) {
+        writer.line.pop();
+      }
+      writer.line.push(`${state.OrgaPopup.organizationStreetName} ${state.OrgaPopup.organizationStreetNumber}`);
+      if(state.OrgaPopup.organizationStreetAdditional) {
+        writer.line.push(`${state.OrgaPopup.organizationStreetAdditional}`);
+        try {
+          writer = psp.read("entry[resource.resourceType?Organization].resource.address[0]._line[extension[url?additionalLocator]].extension[url?additionalLocator]");
+          writer.valueString = state.OrgaPopup.organizationStreetAdditional;
+        } catch (ex) {
+          writer = psp.read("entry[resource.resourceType?Organization].resource.address[0]");
+          writer._line.push({
+            extension: [{
+              "url": "http://hl7.org/fhir/StructureDefinition/iso21090-ADXP-additionalLocator",
+              "valueString": state.OrgaPopup.organizationStreetAdditional
+            }]
+          });
+        }
+      } else {
+        // remote additionalLocator extension
+        writer._line = writer._line.filter(o => o.extension && o.extension[0].url != "http://hl7.org/fhir/StructureDefinition/iso21090-ADXP-additionalLocator");
+      }
       psp.write("entry[resource.resourceType?Organization].resource.address[0].postalCode", state.OrgaPopup.organizationPostalCode);
       psp.write("entry[resource.resourceType?Organization].resource.address[0].city", state.OrgaPopup.organizationCity);
       psp.write("entry[resource.resourceType?Organization].resource.telecom[system?phone].value", state.OrgaPopup.organizationPhone);
@@ -694,7 +729,7 @@ export const prescriptions = createReducer(initialState, (builder) => {
   //Optional values needing their own structure
   const setPrefix = (psp, namePath, value) => {
     const patientName = psp.read(namePath);
-    if (value == "") {
+    if (value == "" || value === undefined) {
       delete patientName._prefix;
       delete patientName.prefix;
     } else {

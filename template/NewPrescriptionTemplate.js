@@ -315,13 +315,17 @@ export const NewPrescriptionTemplate = `
         "qualification": [
           {
             "code": {
-              "text": "",
               "coding": [
                 {
                   "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_FOR_Qualification_Type",
                   "code": "00"
                 }
               ]
+            }
+          },
+          {
+            "code": {
+              "text": "Arzt"
             }
           }
         ]

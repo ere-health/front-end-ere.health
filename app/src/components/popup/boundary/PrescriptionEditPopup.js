@@ -586,7 +586,7 @@ export class PractIdEditPopup extends BElement {
         <div style="text-align:left">
           <div class="fieldRow">
             <select-field statePath="prescriptions.PractIdPopup" mapKey="type" label="Type" items="${JSON.stringify(FIELD_PRACTID_TYPE)}"></select-field> 
-            <edit-field statePath="prescriptions.PractIdPopup" mapKey="value" id="practId-doctor-number" label="Betriebsstätten-Nr" />
+            <edit-field statePath="prescriptions.PractIdPopup" mapKey="value" id="practId-doctor-number" label="Lebenslange Arztnummer" />
           </div>
         </div>
         <div class="modal-buttons">
