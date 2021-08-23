@@ -65,7 +65,7 @@ export const prescriptions = createReducer(initialState, (builder) => {
       return;
     }
     // remove values without length property
-    state.list = state.list.filter(p => !( "length" in p));
+    state.list = state.list.filter(p => ("length" in p));
     if (!state.list.filter(_ => _[0].id === prescription[0].id).length) {
 
       /*//Check if need to be merged
