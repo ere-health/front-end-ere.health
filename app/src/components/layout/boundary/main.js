@@ -91,7 +91,7 @@ class MainLayout extends BElement {
                 data-modal-target = "#modal"                                                                     
                 @click            = "${this.state.prescriptions.list.length ? () => this.doClickId() : void 0}"  
                 class             = "jet-btn ${this.state.prescriptions.list.length ? "" : "btn-inactive"}">
-                Jetzt alle Rezepte signieren
+                Jetzt alle Rezepte im Stapel signieren
               </button>
             </div>
           </div>
