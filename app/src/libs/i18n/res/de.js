@@ -27,17 +27,5 @@ export const de = {
     "und geben Sie ihre Pin ein.",
   ],
   popupLoginBtnNext   : "Ok, Weiter" ,
-  popupLoginBtnCancel : "Abbrechen"  ,
-
-  //popup processing
-  popupProcessingText: [
-    "Arztausweis erkannt.",
-    "Rezepte werden erzeugt. ",
-    "Bitte warten.",
-  ],
-  popupProcessingBtnWait: "Bitte warten",
-
-  //popup generate and send
-  popupGenerateText     : ["Rezept erzeugt und ", "an Patient versandt"],
-  popupGenerateBtnReady : "Fertig",
+  popupLoginBtnCancel : "Abbrechen"  
 };
