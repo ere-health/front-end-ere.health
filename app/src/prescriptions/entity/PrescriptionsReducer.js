@@ -230,7 +230,11 @@ export const prescriptions = createReducer(initialState, (builder) => {
       state.HTMLBundles = bundles; 
     })
     .addCase(showGetSignatureModeResponseAction, (state, { payload: showGetSignatureModeResponse }) => {
-      state.GetSignatureModeResponse = showGetSignatureModeResponse; 
+      if("sessionInfo" in showGetSignatureModeResponse) {
+        state.GetSignatureModeResponse = showGetSignatureModeResponse; 
+      } else {
+        state.GetSignatureModeResponse = {};
+      }
     });
 
 

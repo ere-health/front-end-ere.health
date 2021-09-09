@@ -8,6 +8,7 @@ class _ServerWebSocketActionForwarder {
 
         this.socket.onopen = (event) => {
             this.send({ type: "RequestSettings"});
+            setInterval(() => this.send({ type: "GetSignatureMode"}), 10000);
         };
 
         this.socket.onmessage = (event) => {
