@@ -292,16 +292,16 @@ export const prescriptions = createReducer(initialState, (builder) => {
   builder.addCase(showPopupEditPractIdAction, (state) => {
     const psp = new Mapper(state.selectedPrescription.prescriptions[0]);
     state.PractIdPopup = {
-      type: psp.read("entry[resource.resourceType?Practitioner].resource.identifier[0].type.coding[0].code"),
-      value: psp.read("entry[resource.resourceType?Practitioner].resource.identifier[0].value")
+      type: psp.read("entry[resource.resourceType=Practitioner].resource.identifier[0].type.coding[0].code"),
+      value: psp.read("entry[resource.resourceType=Practitioner].resource.identifier[0].value")
     };
     resetErrorsInMainWindow(state);
   });
   builder.addCase(cancelPopupEditPractIdAction, (state) => {
     const psp = new Mapper(state.selectedPrescription.prescriptions[0]);
     state.PractIdPopup = {
-      type: psp.read("entry[resource.resourceType?Practitioner].resource.identifier[0].type.coding[0].code"),
-      value: psp.read("entry[resource.resourceType?Practitioner].resource.identifier[0].value")
+      type: psp.read("entry[resource.resourceType=Practitioner].resource.identifier[0].type.coding[0].code"),
+      value: psp.read("entry[resource.resourceType=Practitioner].resource.identifier[0].value")
     }
   });
   builder.addCase(savePopupEditPractIdAction, (state) => {
@@ -322,11 +322,15 @@ export const prescriptions = createReducer(initialState, (builder) => {
 
     for (const prescription of state.selectedPrescription.prescriptions) {
       const psp = new Mapper(prescription);
-      const elt = psp.read("entry[resource.resourceType?Practitioner].resource.identifier[0]");
-      elt.type.coding[0].code = _typeCode;
-      elt.type.coding[0].system = _typeSystem;
-      elt.system = _system;
-      elt.value = state.PractIdPopup.value;
+      try {
+        const elt = psp.read("entry[resource.resourceType=Practitioner].resource.identifier[0]");
+        elt.type.coding[0].code = _typeCode;
+        elt.type.coding[0].system = _typeSystem;
+        elt.system = _system;
+        elt.value = state.PractIdPopup.value;
+      } catch(e) {
+        alert("Can't update Practitioner: "+e);
+      }
 
       const selectedPrescriptionId = state.selectedPrescription.prescriptions[0].id;
       for (const prescriptionList of state.list) {
@@ -382,6 +386,12 @@ export const prescriptions = createReducer(initialState, (builder) => {
       setPrefix(psp, "entry[resource.resourceType?Patient].resource.name[0]", state.PatientPopup.patientPrefix);
       psp.write("entry[resource.resourceType?Patient].resource.name[0].given[0]", state.PatientPopup.patientGiven);
       psp.write("entry[resource.resourceType?Patient].resource.name[0].family", state.PatientPopup.patientFamily);
+      try {
+        writer = psp.read("entry[resource.resourceType?Patient].resource.name[0]._family.extension[url?humanname-own-name][0]");
+        writer.valueString = state.PatientPopup.patientFamily;
+      } catch(e) {
+        console.error(e);
+      }
 
       writer = psp.read("entry[resource.resourceType?Patient].resource.address[0]._line[0].extension[url?streetName]");
       writer.valueString = state.PatientPopup.patientStreetName;
@@ -431,11 +441,11 @@ export const prescriptions = createReducer(initialState, (builder) => {
   builder.addCase(showPopupEditOrgaAction, (state) => {
     const psp = new Mapper(state.selectedPrescription.prescriptions[0]);
     state.OrgaPopup = {
-      "practitionerPrefix": psp.read("entry[resource.resourceType?Practitioner].resource.name[0].prefix[0]", ""),
-      "practitionerGiven": psp.read("entry[resource.resourceType?Practitioner].resource.name[0].given[0]", ""),
-      "practitionerFamily": psp.read("entry[resource.resourceType?Practitioner].resource.name[0].family", ""),
-      "qualifikation": psp.read("entry[resource.resourceType?Practitioner].resource.qualification[0].code.coding[system?Qualification_Type].code", ""),
-      "berufsbezeichnung": psp.read("entry[resource.resourceType?Practitioner].resource.qualification[1].code.text", ""),
+      "practitionerPrefix": psp.read("entry[resource.resourceType=Practitioner].resource.name[0].prefix[0]", ""),
+      "practitionerGiven": psp.read("entry[resource.resourceType=Practitioner].resource.name[0].given[0]", ""),
+      "practitionerFamily": psp.read("entry[resource.resourceType=Practitioner].resource.name[0].family", ""),
+      "qualifikation": psp.read("entry[resource.resourceType=Practitioner].resource.qualification[0].code.coding[system?Qualification_Type].code", ""),
+      "berufsbezeichnung": psp.read("entry[resource.resourceType=Practitioner].resource.qualification[1].code.text", ""),
       "organizationName": psp.read("entry[resource.resourceType?Organization].resource.name", ""),
       "organizationStreetName": psp.read("entry[resource.resourceType?Organization].resource.address[0]._line[0].extension[url?streetName].valueString", ""),
       "organizationStreetNumber": psp.read("entry[resource.resourceType?Organization].resource.address[0]._line[0].extension[url?houseNumber].valueString", ""),
@@ -450,11 +460,11 @@ export const prescriptions = createReducer(initialState, (builder) => {
   builder.addCase(cancelPopupEditOrgaAction, (state) => {
     const psp = new Mapper(state.selectedPrescription.prescriptions[0]);
     state.OrgaPopup = {
-      "practitionerPrefix": psp.read("entry[resource.resourceType?Practitioner].resource.name[0].prefix[0]", ""),
-      "practitionerGiven": psp.read("entry[resource.resourceType?Practitioner].resource.name[0].given[0]", ""),
-      "practitionerFamily": psp.read("entry[resource.resourceType?Practitioner].resource.name[0].family", ""),
-      "qualifikation": psp.read("entry[resource.resourceType?Practitioner].resource.qualification[0].code.coding[system?Qualification_Type].code", ""),
-      "berufsbezeichnung": psp.read("entry[resource.resourceType?Practitioner].resource.qualification[1].code.text", ""),
+      "practitionerPrefix": psp.read("entry[resource.resourceType=Practitioner].resource.name[0].prefix[0]", ""),
+      "practitionerGiven": psp.read("entry[resource.resourceType=Practitioner].resource.name[0].given[0]", ""),
+      "practitionerFamily": psp.read("entry[resource.resourceType=Practitioner].resource.name[0].family", ""),
+      "qualifikation": psp.read("entry[resource.resourceType=Practitioner].resource.qualification[0].code.coding[system?Qualification_Type].code", ""),
+      "berufsbezeichnung": psp.read("entry[resource.resourceType=Practitioner].resource.qualification[1].code.text", ""),
       "organizationName": psp.read("entry[resource.resourceType?Organization].resource.name", ""),
       "organizationStreetName": psp.read("entry[resource.resourceType?Organization].resource.address[0]._line[0].extension[url?streetName].valueString", ""),
       "organizationStreetNumber": psp.read("entry[resource.resourceType?Organization].resource.address[0]._line[0].extension[url?houseNumber].valueString", ""),
@@ -470,11 +480,17 @@ export const prescriptions = createReducer(initialState, (builder) => {
       const psp = new Mapper(prescription);
       let writer = null;
 
-      setPrefix(psp, "entry[resource.resourceType?Practitioner].resource.name[0]", state.OrgaPopup.practitionerPrefix);
-      psp.write("entry[resource.resourceType?Practitioner].resource.name[0].given[0]", state.OrgaPopup.practitionerGiven);
-      psp.write("entry[resource.resourceType?Practitioner].resource.name[0].family", state.OrgaPopup.practitionerFamily);
-      psp.write("entry[resource.resourceType?Practitioner].resource.qualification[0].code.coding[system?Qualification_Type].code", state.OrgaPopup.qualifikation);
-      psp.write("entry[resource.resourceType?Practitioner].resource.qualification[1].code.text", state.OrgaPopup.berufsbezeichnung);
+      setPrefix(psp, "entry[resource.resourceType=Practitioner].resource.name[0]", state.OrgaPopup.practitionerPrefix);
+      psp.write("entry[resource.resourceType=Practitioner].resource.name[0].given[0]", state.OrgaPopup.practitionerGiven);
+      psp.write("entry[resource.resourceType=Practitioner].resource.name[0].family", state.OrgaPopup.practitionerFamily);
+      try {
+        writer = psp.read("entry[resource.resourceType=Practitioner].resource.name[0]._family.extension[url?humanname-own-name][0]");
+        writer.valueString = state.OrgaPopup.practitionerFamily;
+      } catch(e) {
+        console.error(e);
+      }
+      psp.write("entry[resource.resourceType=Practitioner].resource.qualification[0].code.coding[system?Qualification_Type].code", state.OrgaPopup.qualifikation);
+      psp.write("entry[resource.resourceType=Practitioner].resource.qualification[1].code.text", state.OrgaPopup.berufsbezeichnung);
       setOrganizationName(psp, state.OrgaPopup.organizationName);
       psp.write("entry[resource.resourceType?Organization].resource.address[0]._line[0].extension[url?streetName].valueString", state.OrgaPopup.organizationStreetName);
       psp.write("entry[resource.resourceType?Organization].resource.address[0]._line[0].extension[url?houseNumber].valueString", state.OrgaPopup.organizationStreetNumber);
@@ -561,11 +577,14 @@ export const prescriptions = createReducer(initialState, (builder) => {
       });
     }
     psp.write("entry[resource.resourceType?Medication].resource.form.coding[system?KBV_CS_SFHIR_KBV_DARREICHUNGSFORM].code", state.MedikamentPopup.form);
-    psp.write("entry[resource.resourceType?MedicationRequest].resource.dosageInstruction[0].text", state.MedikamentPopup.dosageInstruction);
     if (state.MedikamentPopup.dosageInstruction) {
       psp.write("entry[resource.resourceType?MedicationRequest].resource.dosageInstruction[0].extension[url?KBV_EX_ERP_DosageFlag].valueBoolean", true);
+      let dosage = psp.read("entry[resource.resourceType?MedicationRequest].resource.dosageInstruction[0]");
+      dosage = {"text": state.MedikamentPopup.dosageInstruction};
     } else {
       psp.write("entry[resource.resourceType?MedicationRequest].resource.dosageInstruction[0].extension[url?KBV_EX_ERP_DosageFlag].valueBoolean", false);
+      let dosage = psp.read("entry[resource.resourceType?MedicationRequest].resource.dosageInstruction[0]");
+      delete dosage.text;
     }
 
     const selectedPrescriptionId = state.selectedPrescription.prescriptions[0].id;

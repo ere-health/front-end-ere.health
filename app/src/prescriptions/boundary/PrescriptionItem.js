@@ -381,8 +381,8 @@ class Prescription extends BElement {
                         name   = "doctor-number"
                         id     = "doctor-number"
                         class  = "bright"
-                        value  = "${_psp.read("entry[resource.resourceType?Practitioner].resource.identifier[0].value", "")}"
-                        @keyup = "${_ => this.onUserInput(_, "entry[resource.resourceType?Practitioner].resource.identifier[0].value")}"
+                        value  = "${_psp.read("entry[resource.resourceType=Practitioner].resource.identifier[0].value", "")}"
+                        @keyup = "${_ => this.onUserInput(_, "entry[resource.resourceType=Practitioner].resource.identifier[0].value")}"
                       />
                       <span></span>
                     </div>

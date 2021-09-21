@@ -170,7 +170,7 @@ export const NewPrescriptionTemplate = `
           }
         },
         "substitution": {
-          "allowedBoolean": false
+          "allowedBoolean": true
         }
       }
     },
@@ -214,7 +214,7 @@ export const NewPrescriptionTemplate = `
           "coding": [
             {
               "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_KBV_DARREICHUNGSFORM",
-              "code": "AEO"
+              "code": "TAB"
             }
           ]
         }
@@ -248,6 +248,14 @@ export const NewPrescriptionTemplate = `
           {
             "use": "official",
             "family": "",
+            "_family": {
+              "extension": [
+                  {
+                      "url": "http://hl7.org/fhir/StructureDefinition/humanname-own-name",
+                      "valueString": ""
+                  }
+              ]
+            },
             "given": [
               ""
             ]
@@ -307,6 +315,14 @@ export const NewPrescriptionTemplate = `
           {
             "use": "official",
             "family": "",
+            "_family": {
+              "extension": [
+                  {
+                      "url": "http://hl7.org/fhir/StructureDefinition/humanname-own-name",
+                      "valueString": ""
+                  }
+              ]
+            },
             "given": [
               ""
             ]
@@ -414,7 +430,7 @@ export const NewPrescriptionTemplate = `
             "url": "http://fhir.de/StructureDefinition/gkv/versichertenart",
             "valueCoding": {
               "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_KBV_VERSICHERTENSTATUS",
-              "code": "1"
+              "code": "0"
             }
           }
         ],
