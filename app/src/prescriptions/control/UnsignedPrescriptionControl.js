@@ -39,12 +39,12 @@ export const signedPrescription = (prescription) => {
 
 export const updatePrescriptionAction = createAction("updatePrescriptionAction");
 export const updatePrescription = (name, value, key, statePath, index, amountOfBundles) => {
-    if(!index && amountOfBundles) {
+    if(index === undefined && amountOfBundles) {
         for(let i=0;i<amountOfBundles;i++) {
             store.dispatch(updatePrescriptionAction({name, value, key, statePath, i}));
         }
     } else {
-        store.dispatch(updatePrescriptionAction({name, value, key, statePath}));
+        store.dispatch(updatePrescriptionAction({name, value, key, statePath, index}));
     }
 }
 

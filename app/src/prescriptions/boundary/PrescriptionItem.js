@@ -532,10 +532,10 @@ class Prescription extends BElement {
                         type="checkbox" 
                         id="drug-1-chk-${medIndex}" 
                         style="display:none"
-                        .checked = "${p.read("entry[resource.resourceType?MedicationRequest].resource.substitution.allowedBoolean")}"
-                        @change  = "${_ => updatePrescription("", _.target.checked, "entry[resource.resourceType?MedicationRequest].resource.substitution.allowedBoolean", "", medIndex)}"
+                        .checked = "${!p.read("entry[resource.resourceType?MedicationRequest].resource.substitution.allowedBoolean")}"
+                        @change  = "${_ => updatePrescription("", !_.target.checked, "entry[resource.resourceType?MedicationRequest].resource.substitution.allowedBoolean", "", medIndex)}"
                         />
-                        <span class="checkmark" @click="${() => document.getElementById(`drug-1-chk-${medIndex}`).click()}"></span>
+                        <span class="checkmark" data-med-index="drug-1-chk-${medIndex}" @click="${(_) => document.getElementById(_.target.dataset.medIndex).click()}"></span>
                       </li>`;
                   }) : ""}
                 </ul>
