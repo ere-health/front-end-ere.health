@@ -580,7 +580,7 @@ export const prescriptions = createReducer(initialState, (builder) => {
     if (state.MedikamentPopup.dosageInstruction) {
       psp.write("entry[resource.resourceType?MedicationRequest].resource.dosageInstruction[0].extension[url?KBV_EX_ERP_DosageFlag].valueBoolean", true);
       let dosage = psp.read("entry[resource.resourceType?MedicationRequest].resource.dosageInstruction[0]");
-      dosage = {"text": state.MedikamentPopup.dosageInstruction};
+      dosage.text = state.MedikamentPopup.dosageInstruction;
     } else {
       psp.write("entry[resource.resourceType?MedicationRequest].resource.dosageInstruction[0].extension[url?KBV_EX_ERP_DosageFlag].valueBoolean", false);
       let dosage = psp.read("entry[resource.resourceType?MedicationRequest].resource.dosageInstruction[0]");

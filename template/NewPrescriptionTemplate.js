@@ -430,7 +430,7 @@ export const NewPrescriptionTemplate = `
             "url": "http://fhir.de/StructureDefinition/gkv/versichertenart",
             "valueCoding": {
               "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_KBV_VERSICHERTENSTATUS",
-              "code": "0"
+              "code": "1"
             }
           }
         ],
