@@ -147,105 +147,103 @@ export const MainWindowErrorMessages = {
 
 export const PatientPopupErrorMessages = {
     'patient-prefix': {
-        regex: "Der Titel des Patienten muss zwischen 1 und 2 Buchstaben haben und nur a - z oder A - Z enthalten."
+        regex: "Der Titel des Patienten muss zwischen 1 und 2 Buchstaben haben und nur a - z oder A - Z enthalten"
     },
     'patient-given': {
         required: 'Der Patient muss einen Vornamen haben',
-        regex: 'The patient first name must be between 1 and 50 letters long and can only contain a - or a .'
+        regex: 'Der Vorname des Patienten muss zwischen 1 und 50 Buchstaben haben und nur a - z oder A - Z enthalten'
     },
     'patient-family': {
-        required: 'The patient last name must be present',
-        regex: 'The patient last name must be between 1 and 50 letters long and can only contain a - or a .'
+        required: 'Der Patient muss einen Nachnamen haben',
+        regex: 'Der Nachname des Patienten muss zwischen 1 und 50 Buchstaben haben und nur a - z oder A - Z enthalten'
     },
     'patient-street-name': {
-        required: 'The patient street name must be present',
-        regex: 'The patient street name must be between 1 and 50 characters long and can only contain letters, numbers, a - or a .'
+        required: 'Der Patient muss eine Straße haben',
+        regex: 'Die Straßen des Patienten muss zwischen 1 und 50 Buchstaben haben und nur a - z oder A - Z enthalten'
     },
     'patient-street-number': {
-        required: 'The patient street number must be present',
-        regex: 'The patient street name must be between 1 and 10 characters long and can only contain letters, numbers, a - or a .'
+        required: 'Der Patient muss eine Straßennummer haben',
+        regex: 'Die Straßennummer des Patienten muss zwischen 1 und 10 Buchstaben haben und nur a - z, 0-  9 oder A - Z enthalten'
     },
     'patient-city': {
-        required: 'The patient city must be present',
-        regex: 'The patient city must be between 1 and 32 letters long and can only contain a -'
+        required: 'Der Patient muss eine Stadt haben',
+        regex: 'Die Stadt des Patienten muss zwischen 1 und 32 Buchstaben haben und nur a - z oder A - Z enthalten'
     },
     'patient-postal-code': {
-        required: 'The patient postal code must be present',
-        regex: 'The patient postal code must be 5 numbers long'
+        required: 'Der Patient muss eine Postleizhal haben',
+        regex: 'Die Postleizahl des Patienten muss auf 5 Ziffern stehen'
     }
 };
 
 export const OrganizationPopupErrorMessages = {
-    //AUF DEUTSCH BITTE :)
     'practitioner-prefix': {
-        regex: "The practitioner name's prefix must be between 1 and 20 letters long and can only contain a - or a ."
+        regex: "Der Titel des Arztes muss zwischen 1 und 20 Buchstaben haben und nur a - z oder A - Z enthalten"
     },
     'practitioner-given': {
-        required: 'The practitioner first name must be present',
-        regex: 'The practitioner first name must be between 1 and 50 letters long and can only contain a - or a .'
+        required: 'Der Arzt muss einen Vornamen haben',
+        regex: 'Der Vorname des Arztes muss zwischen 1 und 50 Buchstaben haben und nur a - z oder A - Z enthalten'
     },
     'practitioner-family': {
-        required: 'The practitioner last name must be present',
-        regex: 'The practitioner last name must be between 1 and 50 letters long and can only contain a - or a .'
+        required: 'Der Arzt muss einen Nachnamen haben',
+        regex: 'Der Nachname des Arztes muss zwischen 1 und 50 Buchstaben haben und nur a - z oder A - Z enthalten'
     },
     'practitioner-qualification-text': {
-        required: 'The practitioner qualification text must be present',
-        regex: 'The practitioner qualification text must be between 1 and 50 letters long and can only contain a - or a .'
+        required: 'Der Arzt muss eine Qualifizierung haben',
+        regex: 'Die Qualifizierung des Arztes muss zwischen 1 und 50 Buchstaben haben und nur a - z oder A - Z enthalten'
     },
     'organization-street-name': {
-        required: 'The organization street name must be present',
-        regex: 'The organization street name must be between 1 and 50 characters long and can only contain letters, numbers, a - or a .'
+        required: 'Die Organisation muss eine Straße haben',
+        regex: 'Die Straße der Organisation muss zwischen 1 und 50 Buchstaben haben und nur a - z oder A - Z enthalten'
     },
     'organization-street-number': {
-        required: 'The organization street number must be present',
-        regex: 'The organization street name must be between 1 and 10 characters long and can only contain letters, numbers, a - or a .'
+        required: 'Die Organisation muss eine Straßennummer haben',
+        regex: 'Die Straßennummer der Organisation muss zwischen 1 und 10 Buchstaben haben und nur a - z, 0 - 9 oder A - Z enthalten'
     },
     'organization-city': {
-        required: 'The organization city must be present',
-        regex: 'The organization city must be between 1 and 32 letters long and can only contain a -'
+        required: 'Die Organisation muss einen Ort haben',
+        regex: 'Der Ort der Organisation muss zwischen 1 und 32 Buchstaben haben und nur a - z oder A - Z enthalten'
     },
     'organization-postal-code': {
-        required: 'The organization postal code must be present',
-        regex: 'The organization postal code must be 5 numbers long'
+        required: 'Die Organisation muss eine Postleitzahl haben',
+        regex: 'Die Postleitzahl der Organisation muss aus genau 5 Ziffern bestehen'
     },
     'organization-phone': {
-        required: 'The organization phone number must be present',
-        regex: 'The organization phone number must be between 6 and 15 numbers long'
+        required: 'Die Organisation muss eine Telefonnummer haben',
+        regex: 'Die Telefonnummer der Organisation muss zwischen 6 bis 15 Ziffern lang sein'
     },
     'organization-name': {
-        regex: 'The organization name must be between 1 and 50 characters long'
+        regex: 'Der Namen der Organisation muss zwischen 1 bis 50 Buchstaben haben'
     }
 };
 
 export const ClinicPopupErrorMessages = {
     'clinic-betriebsstätten': {
-        required: "The id of the practitioner's company must be present",
-        regex: "The id of the practitioner's company must be between 8 and 9 numbers long"
+        required: "Die Betriebsstättennummer des Arztes muss angegeben werden",
+        regex: "Die Betriebsstättennummer des Arztes muss zwischen 8 und 9 Ziffern lang sein"
     }
 };
 
 export const PractIdErrorMessages = {
     'practId-doctor-number': {
-        required: "The practitioner id must be present",
-        regex: 'The practitioner id must be between 6 and 8 numbers long'
+        required: "Die lebenslange Arztnummer des Arztes muss angegeben werden",
+        regex: 'Die lebenslange Arztnummer des Arztes muss zwischen 6 bis 8 Ziffern lang sein'
     }
 };
 
 export const MedicPopupErrorMessages = {
-    //AUF DEUTSCH BITTE :)
     'medic-medicationText': {
-        required: 'The medication name must be present',
-        regex: 'The medication name must be between 1 and 50 characters long'
+        required: 'Der Medikamentenname muss angegeben werden',
+        regex: 'Der Medikamentenname muss zwischen 1 bis 50 Buchstaben lang sein'
     },
     'medic-pzn' : {
-        required: 'The pzn number must be present',
-        regex: 'The pzn number must be between 6 and 8 numbers long'
+        required: 'Die PZN muss vorhanden sein',
+        regex: 'Die PZN muss zwischen 6 und 8 Ziffern land sein'
     },
     'medic-dosage-instructions' : {
-        regex: 'The dosage instructions must be between 1 and 30 characters long'
+        regex: 'Die Dosierungsanweisung muss zwischen 1 bis 30 Buchstaben lang sein'
     },
     'medic-quantity': {
-        regex: 'The quantity of medication must be between 1 and 3 numbers long'
+        regex: 'Die Anzahl des Medikaments muss zwischen 1 und 3 Ziffern lang sein'
     }
 };
 

@@ -357,6 +357,7 @@ export const NewPrescriptionTemplate = `
             "https://fhir.kbv.de/StructureDefinition/KBV_PR_FOR_Organization|1.0.3"
           ]
         },
+        "name": "",
         "identifier": [
           {
             "type": {
