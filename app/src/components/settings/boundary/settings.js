@@ -191,6 +191,7 @@ class Settings extends BElement {
                                 background    : #E4E4E44D;
                                 border-radius : 4px;
                                 border        : none;
+                                width: 95%;
                             "
                             @keyup="${_ => this.onUpdateSetting("connector.user-id", _.target.value)}"
                             >
