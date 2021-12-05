@@ -542,8 +542,8 @@ export const prescriptions = createReducer(initialState, (builder) => {
       medicationText: psp.read("entry[resource.resourceType=Medication].resource.code.text"),
       pzn: psp.read("entry[resource.resourceType=Medication].resource.code.coding[system?pzn].code"),
       quantityValue: psp.read("entry[resource.resourceType?MedicationRequest].resource.dispenseRequest.quantity.value"),
-      norm: psp.read("entry[resource.resourceType?Medication].resource.extension[url?normgroesse].valueCode"),
-      form: psp.read("entry[resource.resourceType?Medication].resource.form.coding[system?KBV_CS_SFHIR_KBV_DARREICHUNGSFORM].code"),
+      norm: psp.read("entry[resource.resourceType=Medication].resource.extension[url?normgroesse].valueCode"),
+      form: psp.read("entry[resource.resourceType=Medication].resource.form.coding[system?KBV_CS_SFHIR_KBV_DARREICHUNGSFORM].code"),
       dosageInstruction: psp.read("entry[resource.resourceType?MedicationRequest].resource.dosageInstruction[0].text")
     };
     resetErrorsInMainWindow(state);
@@ -556,8 +556,8 @@ export const prescriptions = createReducer(initialState, (builder) => {
       medicationText: psp.read("entry[resource.resourceType=Medication].resource.code.text"),
       pzn: psp.read("entry[resource.resourceType=Medication].resource.code.coding[system?pzn].code"),
       quantityValue: psp.read("entry[resource.resourceType?MedicationRequest].resource.dispenseRequest.quantity.value"),
-      norm: psp.read("entry[resource.resourceType?Medication].resource.extension[url?normgroesse].valueCode"),
-      form: psp.read("entry[resource.resourceType?Medication].resource.form.coding[system?KBV_CS_SFHIR_KBV_DARREICHUNGSFORM].code"),
+      norm: psp.read("entry[resource.resourceType=Medication].resource.extension[url?normgroesse].valueCode"),
+      form: psp.read("entry[resource.resourceType=Medication].resource.form.coding[system?KBV_CS_SFHIR_KBV_DARREICHUNGSFORM].code"),
       dosageInstruction: psp.read("entry[resource.resourceType?MedicationRequest].resource.dosageInstruction[0].text")
     }
   });
@@ -567,7 +567,7 @@ export const prescriptions = createReducer(initialState, (builder) => {
     psp.write("entry[resource.resourceType=Medication].resource.code.coding[system?pzn].code", state.MedikamentPopup.pzn);
     psp.write("entry[resource.resourceType?MedicationRequest].resource.dispenseRequest.quantity.value", Number(state.MedikamentPopup.quantityValue));
     try {
-      psp.write("entry[resource.resourceType?Medication].resource.extension[url?normgroesse].valueCode", state.MedikamentPopup.norm);
+      psp.write("entry[resource.resourceType=Medication].resource.extension[url?normgroesse].valueCode", state.MedikamentPopup.norm);
 
     } catch (ex) {
       let writer = psp.read("entry[resource.resourceType?Medication].resource.extension");
@@ -576,7 +576,7 @@ export const prescriptions = createReducer(initialState, (builder) => {
         "valueCode": state.MedikamentPopup.norm
       });
     }
-    psp.write("entry[resource.resourceType?Medication].resource.form.coding[system?KBV_CS_SFHIR_KBV_DARREICHUNGSFORM].code", state.MedikamentPopup.form);
+    psp.write("entry[resource.resourceType=Medication].resource.form.coding[system?KBV_CS_SFHIR_KBV_DARREICHUNGSFORM].code", state.MedikamentPopup.form);
     if (state.MedikamentPopup.dosageInstruction) {
       psp.write("entry[resource.resourceType?MedicationRequest].resource.dosageInstruction[0].extension[url?KBV_EX_ERP_DosageFlag].valueBoolean", true);
       let dosage = psp.read("entry[resource.resourceType?MedicationRequest].resource.dosageInstruction[0]");
