@@ -65,7 +65,7 @@ class CardsSection extends BElement {
             class             = "jet-btn">
         Karten laden
         </button>
-        <label for="current-cards">Karten</label><br />
+        <label for="current-cards">Pin Typ</label><br />
         <select id="change-pin" style="
             height        : 56px;
             border-radius : 4px;
