@@ -4,13 +4,15 @@ import { prescriptions }  from "./prescriptions/entity/PrescriptionsReducer.js";
 import { popupReducer }   from "./components/popup/entity/PopupReducer.js";     
 import { mainReducer }   from "./components/layout/entity/MainReducer.js";   
 import { settingsReducer }   from "./components/settings/entity/SettingsReducer.js";     
+import { cardsReducer }   from "./components/cards/entity/CardsReducer.js";     
 import { showPopupId }    from "./components/popup/control/PopupControl.js";    
 
 const reducer = {
   prescriptions,
   popupReducer,
   settingsReducer,
-  mainReducer
+  mainReducer,
+  cardsReducer
 };
 
 const preloadedState = load();

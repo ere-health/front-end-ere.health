@@ -1,5 +1,6 @@
 import { addPrescription, addSigned, abortTasksStatus, showHTMLBundles, showGetSignatureModeResponse } from "../../control/UnsignedPrescriptionControl.js";
 import { updateSettingsFromServer } from "../../../components/settings/control/SettingsControl.js";
+import { updateCardsFromServer } from "../../../components/cards/control/CardsControl.js";
 
 class _ServerWebSocketActionForwarder {
     constructor() {
@@ -8,6 +9,7 @@ class _ServerWebSocketActionForwarder {
 
         this.socket.onopen = (event) => {
             this.send({ type: "RequestSettings"});
+            this.send({ type: "GetCards"});
             setInterval(() => this.send({ type: "GetSignatureMode"}), 10000);
         };
 
@@ -39,7 +41,11 @@ class _ServerWebSocketActionForwarder {
                     showHTMLBundles(eventData.payload);
                 } else if(eventData.type === "GetSignatureModeResponse") {
                     showGetSignatureModeResponse(eventData.payload);
+                } else if(eventData.type === "GetCardsResponse") {
+                    updateCardsFromServer(eventData.payload.getCardsResponse.cards.card);
                 } else if(eventData.type === "BundlesValidationResult") {
+                    alert(JSON.stringify(eventData.payload));
+                } else if(eventData.type === "ChangePinResponse") {
                     alert(JSON.stringify(eventData.payload));
                 } else if(eventData.type === "Exception") {
                     alert(JSON.stringify(eventData.payload));
