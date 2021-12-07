@@ -107,3 +107,9 @@ export const deactivateComfortSignatureAction = createAction("deactivateComfortS
 export const deactivateComfortSignature = () => {
     store.dispatch(deactivateComfortSignatureAction());
 }
+
+export const deleteMedicationAction = createAction("deleteMedicationAction");
+export const deleteMedication = (medIndex) => {
+    alert(medIndex);
+    store.dispatch(deleteMedicationAction(medIndex));
+}
