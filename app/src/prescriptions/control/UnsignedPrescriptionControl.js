@@ -98,6 +98,12 @@ export const addMedicationLine = () => {
     store.dispatch(addMedicationLineAction());
 }
 
+export const removeMedicationLineAction = createAction("removeMedicationLineAction");
+export const removeMedicationLine = (medIndex) => {
+    alert(medIndex);
+    store.dispatch(removeMedicationLineAction(medIndex));
+}
+
 export const activateComfortSignatureAction = createAction("activateComfortSignatureAction");
 export const activateComfortSignature = () => {
     store.dispatch(activateComfortSignatureAction());
@@ -106,10 +112,4 @@ export const activateComfortSignature = () => {
 export const deactivateComfortSignatureAction = createAction("deactivateComfortSignatureAction");
 export const deactivateComfortSignature = () => {
     store.dispatch(deactivateComfortSignatureAction());
-}
-
-export const deleteMedicationAction = createAction("deleteMedicationAction");
-export const deleteMedication = (medIndex) => {
-    alert(medIndex);
-    store.dispatch(deleteMedicationAction(medIndex));
 }

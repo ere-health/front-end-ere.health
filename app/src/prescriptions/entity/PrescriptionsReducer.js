@@ -20,6 +20,7 @@ import {
   showHTMLBundlesAction,
   sendToPharmacyAction,
   addMedicationLineAction,
+  removeMedicationLineAction,
   showGetSignatureModeResponseAction,
   activateComfortSignatureAction,
   deactivateComfortSignatureAction
@@ -611,6 +612,14 @@ export const prescriptions = createReducer(initialState, (builder) => {
       alert(e);
     }
   });
+  builder.addCase(removeMedicationLineAction, (state, { payload: index }) => {
+    const bundle = JSON.parse(JSON.stringify(state.selectedPrescription.prescriptions[0]));
+    try {
+      const medicationRequest = bundle.entry.filter(e => e.resource.resourceType == "MedicationRequest")[0];
+    } catch(e) {
+      alert(e);
+    }
+  });  
 
   //Validations
   builder.addCase(addValidationErrorForMainWindowAction, (state, { payload: { fieldId, error } }) => {

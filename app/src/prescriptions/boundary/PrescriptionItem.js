@@ -16,7 +16,7 @@ import {
   signAndUploadBundles,
   updatePrescription,
   addMedicationLine,
-  deleteMedication,
+  removeMedicationLine,
   addValidationErrorForMainWindow,
   removeValidationErrorForMainWindow,
   ValidateAllFieldsInMainWindow
@@ -134,11 +134,10 @@ class Prescription extends BElement {
     addMedicationLine();
   }
 
-
-  deleteMedication(_, medIndex) {
+  removeMedicationLine(_, medIndex) {
     _.preventDefault();
     _.stopPropagation()
-    deleteMedication(medIndex);
+    removeMedicationLine(medIndex);
   }
 
 
@@ -512,7 +511,9 @@ class Prescription extends BElement {
                 const p = new Mapper(this.state.selectedPrescription.prescriptions[medIndex]);
                 return html`
                     <li class="art-list-item">
-                    <div class="edit-btn" @click="${() => showPopupEditMedikament(medIndex)}" style="left: 40px; background-image: url(${initialPath}/assets/images/edit-btn.png);"><button @click="${(_) => this.deleteMedication(_, medIndex)}">Hello World</button></div>
+                        <div class="edit-btn" @click="${() => showPopupEditMedikament(medIndex)}" style="left: 40px; background-image: url(${initialPath}/assets/images/edit-btn.png);">
+                          <button @click="${(_) => this.removeMedicationLine(_, medIndex)}">Löschen</button>
+                        </div>
                         <input
                           type        = "text"
                           class       = "drug-name"
