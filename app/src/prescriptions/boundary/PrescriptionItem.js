@@ -511,9 +511,9 @@ class Prescription extends BElement {
                 const p = new Mapper(this.state.selectedPrescription.prescriptions[medIndex]);
                 return html`
                     <li class="art-list-item">
-                        <div class="edit-btn" @click="${() => showPopupEditMedikament(medIndex)}" style="left: 40px; background-image: url(${initialPath}/assets/images/edit-btn.png);">
-                          <button @click="${(_) => this.removeMedicationLine(_, medIndex)}">Löschen</button>
-                        </div>
+                      <div class="edit-btn" @click="${() => showPopupEditMedikament(medIndex)}" style="left: 40px; background-image: url(${initialPath}/assets/images/edit-btn.png);">
+                      <button class="remove-meditem-btn" @click="${(_) => this.removeMedicationLine(_, medIndex)}" style="background-image: url(${initialPath}/assets/images/remove-btn.png);"></button>
+                      </div>
                         <input
                           type        = "text"
                           class       = "drug-name"
