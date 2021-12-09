@@ -513,7 +513,10 @@ class Prescription extends BElement {
                 return html`
                     <li class="art-list-item">
                       <div class="edit-btn" @click="${() => showPopupEditMedikament(medIndex)}" style="left: 40px; background-image: url(${initialPath}/assets/images/edit-btn.png);">
-                      <button class="remove-meditem-btn" style="background-image: url(${initialPath}/assets/images/remove-btn.png);${(this.state.selectedPrescription.prescriptions.length == 1 ? "display: none;" : "")}" @click="${(_) => this.removeMedicationLine(_, medIndex)}"></button>
+                      <button class="remove-meditem-btn" 
+                          style="background-image: url(${initialPath}/assets/images/remove-btn.png);${(this.state.selectedPrescription.prescriptions.length == 1 ? "display: none;" : "")}" 
+                          @click="${(_) => this.removeMedicationLine(_, medIndex)}">
+                      </button>
                       </div>
                         <input
                           type        = "text"

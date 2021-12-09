@@ -228,18 +228,6 @@ button.active, button:hover, button:focus, .link-button.active, .link-button:hov
   display: inline-block;
   width: 65%;
 }
-.header-wrapper .header .unsigned-prescription .unsignierte-list > div.prescription-list-item .remove-button {
-  color: #f00;
-  border: 1px solid;
-  margin: 0.3em;
-  padding: 0.1rem 0.3rem;
-  width: 4%;
-  display: inline-block;
-}
-.header-wrapper .header .unsigned-prescription .unsignierte-list > div.prescription-list-item .remove-button.active, .header-wrapper .header .unsigned-prescription .unsignierte-list > div.prescription-list-item .remove-button:hover, .header-wrapper .header .unsigned-prescription .unsignierte-list > div.prescription-list-item .remove-button:focus {
-  background: #f00;
-  color: #fff;
-}
 .header-wrapper .header .unsigned-prescription .unsignierte-list .file {
   display: flex;
   flex-wrap: wrap;
@@ -277,6 +265,17 @@ button.active, button:hover, button:focus, .link-button.active, .link-button:hov
 .header-wrapper .header .jetzt-area .jet-btn {
   font-size: 1.125rem;
   line-height: 1.2222222222;
+}
+.remove-prescr-btn {
+  display: inline-block;
+  vertical-align: top;
+  padding: 18px;
+  background-color: #00404600;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+remove-prescr-btn.active, remove-prescr-btn:hover, remove-prescr-btn:focus {
+  background-color: #00000000;
 }
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
