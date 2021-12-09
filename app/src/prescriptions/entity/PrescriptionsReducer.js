@@ -613,9 +613,8 @@ export const prescriptions = createReducer(initialState, (builder) => {
     }
   });
   builder.addCase(removeMedicationLineAction, (state, { payload: index }) => {
-    const bundle = JSON.parse(JSON.stringify(state.selectedPrescription.prescriptions[0]));
     try {
-      const medicationRequest = bundle.entry.filter(e => e.resource.resourceType == "MedicationRequest")[0];
+      state.selectedPrescription.prescriptions.splice(index,1);
     } catch(e) {
       alert(e);
     }

@@ -839,7 +839,6 @@ edit-field {
   bottom: 0px;
   right: 0px;
   background-position: center;
-  background-position-y: calc(50% + 10px);
   background-repeat: no-repeat;
   opacity: 0;
   transition: all 0.3s ease;

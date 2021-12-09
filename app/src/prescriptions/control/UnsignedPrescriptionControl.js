@@ -100,7 +100,6 @@ export const addMedicationLine = () => {
 
 export const removeMedicationLineAction = createAction("removeMedicationLineAction");
 export const removeMedicationLine = (medIndex) => {
-    alert(medIndex);
     store.dispatch(removeMedicationLineAction(medIndex));
 }
 
