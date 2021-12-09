@@ -509,10 +509,11 @@ class Prescription extends BElement {
                 )[0].resource;
 
                 const p = new Mapper(this.state.selectedPrescription.prescriptions[medIndex]);
+
                 return html`
                     <li class="art-list-item">
                       <div class="edit-btn" @click="${() => showPopupEditMedikament(medIndex)}" style="left: 40px; background-image: url(${initialPath}/assets/images/edit-btn.png);">
-                      <button class="remove-meditem-btn" @click="${(_) => this.removeMedicationLine(_, medIndex)}" style="background-image: url(${initialPath}/assets/images/remove-btn.png);"></button>
+                      <button class="remove-meditem-btn" style="background-image: url(${initialPath}/assets/images/remove-btn.png);${(this.state.selectedPrescription.prescriptions.length == 1 ? "display: none;" : "")}" @click="${(_) => this.removeMedicationLine(_, medIndex)}"></button>
                       </div>
                         <input
                           type        = "text"

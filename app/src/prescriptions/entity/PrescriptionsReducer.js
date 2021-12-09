@@ -58,6 +58,25 @@ function setPrescriptionInState(state, prescription) {
   });
 }
 
+function addPrescriptionInState(state, prescription, newPrescription) {
+  state.list.forEach((_) => {
+    _.forEach((_2, idx) => {
+      if (_2.id === prescription.id) {
+        _.push(newPrescription);
+      }
+    });
+  });
+}
+function removePrescriptionFromState(state, prescription) {
+  state.list.forEach((_) => {
+    _.forEach((_2, idx) => {
+      if (_2.id === prescription.id) {
+        _.splice(idx, 1);
+      }
+    });
+  });
+}
+
 export const prescriptions = createReducer(initialState, (builder) => {
   //Add prescription to the unsigned list
   builder.addCase(addPrescriptionAction, (state, { payload: prescription }) => {
@@ -608,12 +627,15 @@ export const prescriptions = createReducer(initialState, (builder) => {
       medication.fullUrl = "http://pvs.praxis.local/fhir/Medication/"+medicationId;
       medication.resource.id = medicationId;
       state.selectedPrescription.prescriptions.push(bundle);
+      addPrescriptionInState(state, state.selectedPrescription.prescriptions[0], bundle);
     } catch(e) {
       alert(e);
     }
   });
   builder.addCase(removeMedicationLineAction, (state, { payload: index }) => {
     try {
+      let bundle = state.selectedPrescription.prescriptions[index];
+      removePrescriptionFromState(state, bundle);
       state.selectedPrescription.prescriptions.splice(index,1);
     } catch(e) {
       alert(e);
