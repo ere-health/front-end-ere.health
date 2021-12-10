@@ -125,7 +125,7 @@ button, .link-button {
     }
     
     &.active, &:hover, &:focus {
-        background : #59BAC3;
+        background-color : #59BAC3;
         color      : #fff;   
     }
 }
@@ -250,29 +250,18 @@ button, .link-button {
             margin-bottom: 45px;
         }
 
+        div.prescription-list-item {
+            width: 100%;
+            .link-button {
+                display: inline-block;
+                width: 60%;
+            }
+        }
+
         .unsigned-prescription {
 
             .unsignierte-list {
 
-                > div.prescription-list-item {
-                    width: 100%;
-                    .link-button {
-                        display: inline-block;
-                        width: 65%;
-                    }
-                    .remove-button {
-                        color: #f00;
-                        border: 1px solid;
-                        margin: 0.3em;
-                        padding: 0.1rem 0.3rem;
-                        width: 4%;
-                        display: inline-block;
-                        &.active, &:hover, &:focus {
-                            background : #f00;
-                            color      : #fff;   
-                        }  
-                    }
-                }
 
                 .file {
                     display         : flex;      
@@ -293,10 +282,6 @@ button, .link-button {
 
         .generated-pdf {
             padding: 70px 0;
-            
-            .generated-list > div {
-                height: 3rem;
-            }
         }
 
         .jetzt-area {
@@ -322,6 +307,19 @@ button, .link-button {
             }
         }
     }
+}
+
+.remove-prescr-btn {
+    display: inline-block;
+    vertical-align: top;
+    padding: 1.8rem;
+    background-color: #00404600;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.remove-prescr-btn.active, .remove-prescr-btn:hover, .remove-prescr-btn:focus {
+    filter: brightness(1.50);
+    background-color: #00000000;
 }
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -530,7 +528,7 @@ button, .link-button {
                 @include placeholder(#004046, 16px, 700);
 
                 &.drug-name {
-                    margin-left: 60px;
+                    margin-left: 20px;
                     flex: 0 0 42%;
                 }
 
@@ -576,7 +574,7 @@ button, .link-button {
         padding          : 49px 69px 33px;                    
         text-align       : center;                            
         box-shadow       : 0px 4px 16px rgba(16, 24, 32, 0.1);
-        border-radius    : 20px;                              
+        border-radius    : 20px;                     
         box-sizing       : border-box;                        
     
         &.active {
@@ -623,7 +621,7 @@ button, .link-button {
     
                 &.active, &:hover, &:focus {
                     color      : #fff;                 
-                    background : rgba(53, 158, 173, 1);
+                    background-color : rgba(53, 158, 173, 1);
                 }
     
                 &.cancel {
@@ -936,7 +934,6 @@ edit-field {
   bottom                : 0px;             
   right                 : 0px;             
   background-position   : center;          
-  background-position-y : calc(50% + 10px);
   background-repeat     : no-repeat;       
   opacity               : 0;               
   transition            : all .3s ease;    
@@ -951,6 +948,20 @@ edit-field {
 
 settings-layout {
     flex: 0 0 100%;
+}
+
+.remove-meditem-btn {
+    position: relative;
+    height: 100%;
+    width: 5rem;
+    margin: 0;
+    background-color: #00404600;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.remove-meditem-btn:hover {
+    background-color: #00000000;
 }
 
 @import "responsive";
