@@ -47,18 +47,19 @@ class Settings extends BElement {
     }
     updateSetting(path, value);
   }
+
   toggleFieldset(e, fieldset) {
     e.preventDefault();
+    document.getElementById('status').style.display = 'none';
     document.getElementById('cards').style.display = 'none';
     document.getElementById('connector').style.display = 'none';
     document.getElementById('document-service').style.display = 'none';
     document.getElementById('kbv').style.display = 'none';
 
-    document.getElementById('reset-settings-button').style.display = (fieldset != "cards") ? 'inline-block' : 'none';
-    document.getElementById('save-settings-button').style.display = (fieldset != "cards") ? 'inline-block' : 'none';
+    document.getElementById('reset-settings-button').style.display = (fieldset != "cards" && fieldset != "status") ? 'inline-block' : 'none';
+    document.getElementById('save-settings-button').style.display = (fieldset != "cards" && fieldset != "status") ? 'inline-block' : 'none';
     
     document.getElementById(fieldset).style.display = 'block';    
-
   }
   
   view() {
@@ -67,20 +68,21 @@ class Settings extends BElement {
             <form>
                 <h2>Einstellungen</h2>
                 <ul style="margin-top: 2rem;">
-                    <li style="display: inline-block"><button style="
-                            background-color: #E4E4E4;
-                        " @click="${_ => this.toggleFieldset(_, 'cards')}">Karten</button></li>
-                    <li style="display: inline-block"><button style="
-                            background-color: #E4E4E4;
-                        " @click="${_ => this.toggleFieldset(_, 'connector')}">Konnektor</button></li>
-                    <li style="display: inline-block"><button style="
-                            background-color: #E4E4E4;
-                        " @click="${_ => this.toggleFieldset(_, 'document-service')}">Dokumenterkennung</button></li>
-                    <li style="display: inline-block"><button style="
-                            background-color: #E4E4E4;
-                        " @click="${_ => this.toggleFieldset(_, 'kbv')}">KBV Prüfnummer</button></li>
+                    <li style="display: inline-block"><button style="background-color: #E4E4E4;"
+                        @click="${_ => this.toggleFieldset(_, 'status')}">Status</button></li>
+                    <li style="display: inline-block"><button style="background-color: #E4E4E4;"
+                        @click="${_ => this.toggleFieldset(_, 'cards')}">Karten</button></li>
+                    <li style="display: inline-block"><button style="background-color: #E4E4E4;"
+                        @click="${_ => this.toggleFieldset(_, 'connector')}">Konnektor</button></li>
+                    <li style="display: inline-block"><button style="background-color: #E4E4E4;"
+                        @click="${_ => this.toggleFieldset(_, 'document-service')}">Dokumenterkennung</button></li>
+                    <li style="display: inline-block"><button style="background-color: #E4E4E4;"
+                        @click="${_ => this.toggleFieldset(_, 'kbv')}">KBV Prüfnummer</button></li>
                 </ul>
-                <fieldset id="cards" style="border: 0;border-radius: 1rem;background-color: white;padding: 1.5rem;">
+                <fieldset id="status" style="border: 0;border-radius: 1rem;background-color: white;padding: 1.5rem;">
+                    <status-report />
+                </fieldset>
+                <fieldset id="cards" style="display: none; border: 0;border-radius: 1rem;background-color: white;padding: 1.5rem;">
                     <cards-section />
                 </fieldset>
                 <fieldset id="connector" style="display: none; border: 0;border-radius: 1rem;background-color: white;padding: 1.5rem;">

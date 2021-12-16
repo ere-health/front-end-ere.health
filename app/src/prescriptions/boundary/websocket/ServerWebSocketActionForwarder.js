@@ -1,5 +1,6 @@
 import { addPrescription, addSigned, abortTasksStatus, showHTMLBundles, showGetSignatureModeResponse } from "../../control/UnsignedPrescriptionControl.js";
 import { updateSettingsFromServer } from "../../../components/settings/control/SettingsControl.js";
+import { updateStatusFromServer } from "../../../components/status/control/StatusControl.js";
 import { updateCardsFromServer } from "../../../components/cards/control/CardsControl.js";
 
 class _ServerWebSocketActionForwarder {
@@ -8,6 +9,7 @@ class _ServerWebSocketActionForwarder {
         window.__socket = this.socket;
 
         this.socket.onopen = (event) => {
+            this.send({ type: "RequestStatus"});
             this.send({ type: "RequestSettings"});
             this.send({ type: "GetCards"});
             setInterval(() => this.send({ type: "GetSignatureMode"}), 10000);
@@ -37,6 +39,8 @@ class _ServerWebSocketActionForwarder {
                     }
                 } else if(eventData.type === "Settings") {
                     updateSettingsFromServer(eventData.payload);
+                } else if(eventData.type === "Status") {
+                    updateStatusFromServer(eventData.payload);
                 } else if(eventData.type === "HTMLBundles") {
                     showHTMLBundles(eventData.payload);
                 } else if(eventData.type === "GetSignatureModeResponse") {
