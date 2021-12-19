@@ -1,5 +1,6 @@
 import BElement from "../../../models/BElement.js";
 import { html } from "../../../libs/lit-html.js";
+import {unsafeHTML} from 'https://unpkg.com/lit-html@latest/directives/unsafe-html.js?module';
 
 import {
     requestStatus
@@ -16,17 +17,34 @@ class Status extends BElement {
     requestStatus();
   }
 
-  
+  getHealthStateSymbol(healthState) {
+    switch (healthState) {
+              // chosen blue because red–green color blindness
+        case true: return "<span style=\"color: blue;\">&check;</span>";
+        case false: return "<span style=\"color: red;\">&cross;</span>";
+        case null:
+        default: return "<span style=\"color: red;\">&quest;</span>";
+    }
+  }
+
   view() {
     return html`
       <section class="status" style="padding: 2.5rem">
       <table>
-        <tr><th>Text</th><th>Wert</th></tr>
-        <tr><td>Connector Reachable</td><td>${this.state.connectorReachable}</td></tr>
+        <tr>
+          <th>Komponent</th>
+          <th>Status</th>
+          <th>Bemerkung</th>
+        </tr>
+        <tr>
+          <td>Connector Reachable</td>
+          <td>${unsafeHTML(this.getHealthStateSymbol(this.state.connectorReachable))}</td>
+          <td>${this.state.informationConnectorReachable}</td></tr>
       </table>
       </section>
     `;
   }
+
 }
 
 customElements.define("status-report", Status);

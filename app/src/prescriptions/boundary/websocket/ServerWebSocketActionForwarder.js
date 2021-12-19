@@ -9,9 +9,9 @@ class _ServerWebSocketActionForwarder {
         window.__socket = this.socket;
 
         this.socket.onopen = (event) => {
-            this.send({ type: "RequestStatus"});
             this.send({ type: "RequestSettings"});
             this.send({ type: "GetCards"});
+            this.send({ type: "RequestStatus"});
             setInterval(() => this.send({ type: "GetSignatureMode"}), 10000);
         };
 
@@ -39,7 +39,7 @@ class _ServerWebSocketActionForwarder {
                     }
                 } else if(eventData.type === "Settings") {
                     updateSettingsFromServer(eventData.payload);
-                } else if(eventData.type === "Status") {
+                } else if(eventData.type === "StatusResponse") {
                     updateStatusFromServer(eventData.payload);
                 } else if(eventData.type === "HTMLBundles") {
                     showHTMLBundles(eventData.payload);
