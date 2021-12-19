@@ -20,17 +20,17 @@ class Status extends BElement {
   getHealthStateSymbol(healthState) {
     switch (healthState) {
               // chosen blue because red–green color blindness
-        case true: return "<span style=\"color: blue;\">&check;</span>";
-        case false: return "<span style=\"color: red;\">&cross;</span>";
+        case true: return html`<span style="color: blue;">&check;</span>`;
+        case false: return html`<span style="color: red;">&cross;</span>`;
         case null:
-        default: return "<span style=\"color: red;\">&quest;</span>";
+        default: return html`<span style="color: red;">&quest;</span>`;
     }
   }
 
   view() {
     return html`
       <section class="status" style="padding: 2.5rem">
-      <table>
+      <table style="padding: 1.5rem">
         <tr>
           <th>Komponent</th>
           <th>Status</th>
@@ -38,7 +38,7 @@ class Status extends BElement {
         </tr>
         <tr>
           <td>Connector Reachable</td>
-          <td>${unsafeHTML(this.getHealthStateSymbol(this.state.connectorReachable))}</td>
+          <td>${this.getHealthStateSymbol(this.state.connectorReachable)}</td>
           <td>${this.state.informationConnectorReachable}</td></tr>
       </table>
       </section>
