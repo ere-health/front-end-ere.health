@@ -946,10 +946,6 @@ edit-field {
     }
 }
 
-settings-layout {
-    flex: 0 0 100%;
-}
-
 .remove-meditem-btn {
     position: relative;
     height: 100%;
@@ -963,5 +959,26 @@ settings-layout {
 .remove-meditem-btn:hover {
     background-color: #00000000;
 }
+
+/****************************************************************************
+                            Settings
+****************************************************************************/
+settings-layout {
+    flex: 0 0 100%;
+}
+
+.status {
+
+    th {
+        background-color: #E4E4E4;
+        padding: 1rem;
+        text-align: left;
+    }
+
+    td {
+       padding: 1.5rem;
+    }
+}
+
 
 @import "responsive";

@@ -29,16 +29,16 @@ class Status extends BElement {
 
   view() {
     return html`
-      <section class="status" style="padding: 2.5rem">
-      <table style="padding: 1.5rem">
+      <section class="status">
+      <table>
         <tr>
           <th>Komponent</th>
-          <th>Status</th>
+          <th style="padding: 0;text-align: center;">Status</th>
           <th>Bemerkung</th>
         </tr>
         <tr>
           <td>Connector Reachable</td>
-          <td>${this.getHealthStateSymbol(this.state.connectorReachable)}</td>
+          <td style="text-align: center;">${this.getHealthStateSymbol(this.state.connectorReachable)}</td>
           <td>${this.state.informationConnectorReachable}</td></tr>
       </table>
       </section>
