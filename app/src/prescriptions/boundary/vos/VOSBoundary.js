@@ -36,7 +36,7 @@ function convertVosBundleToERezeptBundle(vosBundle) {
         "meta": {
             "lastUpdated": new Date().toISOString(),
             "profile":  [
-                "https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Bundle|1.0.1"
+                "https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Bundle|1.0.2"
             ]
         },
         "identifier": {
@@ -53,7 +53,7 @@ function convertVosBundleToERezeptBundle(vosBundle) {
                     "id": compositionId,
                     "meta": {
                         "profile":  [
-                            "https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Composition|1.0.1"
+                            "https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Composition|1.0.2"
                         ]
                     },
                     "extension":  [
@@ -136,7 +136,7 @@ function convertVosBundleToERezeptBundle(vosBundle) {
                     "id": medicationRequestId,
                     "meta": {
                         "profile":  [
-                            "https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Prescription|1.0.1"
+                            "https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Prescription|1.0.2"
                         ]
                     },
                     "extension":  [
@@ -212,7 +212,7 @@ function convertVosBundleToERezeptBundle(vosBundle) {
                     "id": ""+medicationId,
                     "meta": {
                         "profile":  [
-                            "https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Medication_PZN|1.0.1"
+                            "https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Medication_PZN|1.0.2"
                         ]
                     },
                     "extension":  [

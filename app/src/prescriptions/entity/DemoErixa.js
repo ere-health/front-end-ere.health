@@ -4,7 +4,7 @@ export const TEST_ERIXA_BUNDLE = {
   "meta": {
       "lastUpdated": "2021-06-14T14:49:59.174+00:00",
       "profile": [
-          "https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Bundle|1.0.1"
+          "https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Bundle|1.0.2"
       ]
   },
   "type": "document",
@@ -17,7 +17,7 @@ export const TEST_ERIXA_BUNDLE = {
               "id": "727fd1f2-3a3f-4ba6-a99f-272646e08edc",
               "meta": {
                   "profile": [
-                      "https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Composition|1.0.1"
+                      "https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Composition|1.0.2"
                   ]
               },
               "extension": [
@@ -109,7 +109,7 @@ export const TEST_ERIXA_BUNDLE = {
               "meta": {
                   "lastUpdated": "2021-06-14T14:49:59.134+00:00",
                   "profile": [
-                      "https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Prescription|1.0.1"
+                      "https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Prescription|1.0.2"
                   ]
               },
               "extension": [
@@ -183,7 +183,7 @@ export const TEST_ERIXA_BUNDLE = {
               "id": "e105d2b8-a429-4c34-a302-ef3c9dfb137e",
               "meta": {
                   "profile": [
-                      "https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Medication_PZN|1.0.1"
+                      "https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Medication_PZN|1.0.2"
                   ]
               },
               "extension": [

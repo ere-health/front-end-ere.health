@@ -5,7 +5,7 @@ export const NewPrescriptionTemplate = `
   "meta": {
     "lastUpdated": "$LAST_UPDATED",
     "profile": [
-      "https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Bundle|1.0.1"
+      "https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Bundle|1.0.2"
     ]
   },
   "identifier": {
@@ -22,7 +22,7 @@ export const NewPrescriptionTemplate = `
         "id": "$COMPOSITION_ID",
         "meta": {
           "profile": [
-            "https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Composition|1.0.1"
+            "https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Composition|1.0.2"
           ]
         },
         "extension": [
@@ -105,7 +105,7 @@ export const NewPrescriptionTemplate = `
         "id": "$MEDICATION_REQUEST_ID",
         "meta": {
           "profile": [
-            "https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Prescription|1.0.1"
+            "https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Prescription|1.0.2"
           ]
         },
         "extension": [
@@ -181,7 +181,7 @@ export const NewPrescriptionTemplate = `
         "id": "$MEDICATION_ID",
         "meta": {
           "profile": [
-            "https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Medication_PZN|1.0.1"
+            "https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Medication_PZN|1.0.2"
           ]
         },
         "extension": [
