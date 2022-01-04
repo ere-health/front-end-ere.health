@@ -9,7 +9,9 @@ import {
 const initialState = {
   status: {
       connectorReachable:false,
-      informationConnectorReachable:"<<FrontEnd Initial State>>"
+      connectorInformation:"<<FrontEnd Initial State>>",
+      idpReachable:false,
+      idpInformation:"<<FrontEnd Initial State>>"
   }
 };
   

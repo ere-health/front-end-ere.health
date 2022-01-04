@@ -1,10 +1,6 @@
 import BElement from "../../../models/BElement.js";
 import { html } from "../../../libs/lit-html.js";
-import {unsafeHTML} from 'https://unpkg.com/lit-html@latest/directives/unsafe-html.js?module';
-
-import {
-    requestStatus
-} from "../control/StatusControl.js";
+import { requestStatus } from "../control/StatusControl.js";
 
 class Status extends BElement {
 
@@ -19,11 +15,13 @@ class Status extends BElement {
 
   getHealthStateSymbol(healthState) {
     switch (healthState) {
-              // chosen blue because red–green color blindness
-        case true: return html`<span style="color: blue;">&check;</span>`;
-        case false: return html`<span style="color: red;">&cross;</span>`;
-        case null:
-        default: return html`<span style="color: red;">&quest;</span>`;
+        // chosen blue instead of green because of red–green color blindness
+        case true:  
+          return html`<span style="color: blue;">&check;</span>`;
+        case false: 
+          return html`<span style="color: red;">&cross;</span>`;
+        default:    
+          return html`<span style="color: red;">&quest;</span>`;
     }
   }
 
@@ -39,7 +37,13 @@ class Status extends BElement {
         <tr>
           <td>Connector Reachable</td>
           <td style="text-align: center;">${this.getHealthStateSymbol(this.state.connectorReachable)}</td>
-          <td>${this.state.informationConnectorReachable}</td></tr>
+          <td>${this.state.connectorInformation}</td>
+        </tr>
+        <tr>
+          <td>Identity Provider Reachable</td>
+          <td style="text-align: center;">${this.getHealthStateSymbol(this.state.idpReachable)}</td>
+          <td>${this.state.idpInformation}</td>
+        </tr>
       </table>
       </section>
     `;
