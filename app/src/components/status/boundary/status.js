@@ -35,17 +35,17 @@ class Status extends BElement {
           <th>Bemerkung</th>
         </tr>
         <tr>
-          <td>Connector Reachable</td>
+          <td>Connector is Reachable</td>
           <td style="text-align: center;">${this.getHealthStateSymbol(this.state.connectorReachable)}</td>
           <td>${this.state.connectorInformation}</td>
         </tr>
         <tr>
-          <td>Identity Provider Reachable</td>
+          <td>Identity Provider is Reachable</td>
           <td style="text-align: center;">${this.getHealthStateSymbol(this.state.idpReachable)}</td>
           <td>${this.state.idpInformation}</td>
         </tr>
         <tr>
-          <td>SMC-B is Avaiable</td>
+          <td>SMC-B is Available</td>
           <td style="text-align: center;">${this.getHealthStateSymbol(this.smcbAvailable)}</td>
           <td>${this.state.smcbInformation}</td>
         </tr>        
