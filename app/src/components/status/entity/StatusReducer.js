@@ -7,12 +7,7 @@ import {
 
 
 const initialState = {
-  status: {
-      connectorReachable:false,
-      connectorInformation:"<<FrontEnd Initial State>>",
-      idpReachable:false,
-      idpInformation:"<<FrontEnd Initial State>>"
-  }
+  status: { }
 };
   
 export const statusReducer = createReducer(initialState, (builder) => {
