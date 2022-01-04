@@ -994,7 +994,7 @@ settings-layout {
 }
 
 .status td {
-  padding: 1.5rem;
+  padding: 1rem;
 }
 
 @media only screen and (max-width: 1394px) {
