@@ -45,33 +45,33 @@ class Status extends BElement {
           <td>${this.state.idpInformation}</td>
         </tr>
         <tr>
+          <td>IdP Access Token is Obtainable</td>
+          <td style="text-align: center;">${this.getHealthStateSymbol(this.state.idpaccesstokenObtainable)}</td>
+          <td>${this.state.idpaccesstokenInformation}</td>
+        </tr>        
+        <tr>
           <td>SMC-B is Available</td>
-          <td style="text-align: center;">${this.getHealthStateSymbol(this.smcbAvailable)}</td>
+          <td style="text-align: center;">${this.getHealthStateSymbol(this.state.smcbAvailable)}</td>
           <td>${this.state.smcbInformation}</td>
         </tr>        
         <tr>
           <td>C.AUT certificate from SMC-B is Readable</td>
-          <td style="text-align: center;">${this.getHealthStateSymbol(this.cautReadable)}</td>
+          <td style="text-align: center;">${this.getHealthStateSymbol(this.state.cautReadable)}</td>
           <td>${this.state.cautInformation}</td>
         </tr>
         <tr>
           <td>E-HBA is Available</td>
-          <td style="text-align: center;">${this.getHealthStateSymbol(this.ehbaAvailable)}</td>
+          <td style="text-align: center;">${this.getHealthStateSymbol(this.state.ehbaAvailable)}</td>
           <td>${this.state.ehbaInformation}</td>
         </tr>
         <tr>
           <td>Comfort Signature is Available</td>
-          <td style="text-align: center;">${this.getHealthStateSymbol(this.comfortsignatureAvailable)}</td>
+          <td style="text-align: center;">${this.getHealthStateSymbol(this.state.comfortsignatureAvailable)}</td>
           <td>${this.state.comfortsignatureInformation}</td>
         </tr>
         <tr>
-          <td>IdP Access Token is Obtainable</td>
-          <td style="text-align: center;">${this.getHealthStateSymbol(this.idpaccesstokenObtainable)}</td>
-          <td>${this.state.idpaccesstokenInformation}</td>
-        </tr>
-        <tr>
           <td>Fachdienst is Reachable</td>
-          <td style="text-align: center;">${this.getHealthStateSymbol(this.fachdienstReachable)}</td>
+          <td style="text-align: center;">${this.getHealthStateSymbol(this.state.fachdienstReachable)}</td>
           <td>${this.state.fachdienstInformation}</td>
         </tr>
       </table>
