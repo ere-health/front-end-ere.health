@@ -47,7 +47,7 @@ class Status extends BElement {
         <tr>
           <td>IdP Access Token is Obtainable</td>
           <td style="text-align: center;">${this.getHealthStateSymbol(this.state.idpaccesstokenObtainable)}</td>
-          <td>${this.state.idpaccesstokenInformation}</td>
+          <td style="max-width: 200px;overflow: hidden;text-overflow: ellipsis;">${this.state.idpaccesstokenInformation}</td>
         </tr>        
         <tr>
           <td>SMC-B is Available</td>
