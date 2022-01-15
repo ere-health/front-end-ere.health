@@ -57,7 +57,7 @@ class UnsignedPrescriptionList extends BElement {
                             @click  = "${() => this.onNavigate(unsignedPrescriptionBundles)}"
                             class   = "unsigned-button link-button"
                             data-id = "#unsigned_1">
-                            <img src="assets/images/pending-icon.svg" alt="" />${displayName}
+                            <img src="${initialPath}/assets/images/pending-icon.svg" alt="" />${displayName}
                         </a>
                         <button class="remove-prescr-btn" 
                             @click="${() => this.onDelete(unsignedPrescription.id)}" 

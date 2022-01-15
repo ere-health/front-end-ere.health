@@ -192,6 +192,13 @@ export const prescriptions = createReducer(initialState, (builder) => {
           if (name === 'wop') {
             setWop(psp, value);
 
+          } else if(name === 'accident') {
+			const medicationRequest = psp.read("entry[resource.resourceType?MedicationRequest].resource");
+			// Remove accident extension
+			medicationRequest.extension = medicationRequest.extension.filter(e => e.url != "https://fhir.kbv.de/StructureDefinition/KBV_EX_ERP_Accident");
+			if(value) {
+				medicationRequest.extension.push(value);
+			}
             // Required values
           } else {
             if (key) {
@@ -334,7 +341,7 @@ export const prescriptions = createReducer(initialState, (builder) => {
         ];
       }
       return [
-        "https://fhir.kbv.de/NamingSystem/KBV_NS_Base_BSNR",
+        "http://fhir.de/NamingSystem/kzbv/zahnarztnummer",
         "ZANR",
         "http://fhir.de/CodeSystem/identifier-type-de-basis"
       ]
@@ -666,6 +673,8 @@ export const prescriptions = createReducer(initialState, (builder) => {
           currentValue = psp.read("entry[resource.resourceType?Patient].resource.birthDate", "");
         } else if (key === 'authoredOn') {
           currentValue = psp.read("entry[resource.resourceType?MedicationRequest].resource.authoredOn", "");
+        } else if (key === 'unfalltag') {
+          currentValue = psp.read("entry[resource.resourceType?MedicationRequest].resource.extension[url?KBV_EX_ERP_Accident].extension[url?unfalltag].valueDate", "");
         }
 
         let validation = validateInput(key, currentValue, MainWindowValidationRules);

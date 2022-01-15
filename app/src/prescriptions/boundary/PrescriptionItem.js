@@ -54,6 +54,8 @@ class Prescription extends BElement {
       value = this.convertGermanDateToFhirFormat(value);
     } else if (name === 'authoredOn') {
       value = this.convertGermanDateToFhirFormat(value);
+    } else if (name === 'unfalltag') {
+      value = this.convertGermanDateToFhirFormat(value);
     }
 
     let validation = this.validateInput(name, value);
@@ -98,12 +100,42 @@ class Prescription extends BElement {
 
   doesClientHasToPay(boolean) {
     if (boolean) {
-      updatePrescription("geb-pfl", "0", "entry[resource.resourceType?MedicationRequest].resource.extension[url?StatusCoPayment].valueCoding.code", undefined, undefined, undefined);
+      updatePrescription("geb-pfl", "0", "entry[resource.resourceType?MedicationRequest].resource.extension[url?StatusCoPayment].valueCoding.code", undefined, undefined, this.state.selectedPrescription.prescriptions.length);
       document.getElementById("gebührenfrei").checked = false;
     } else {
-      updatePrescription("gebührenfrei", "1", "entry[resource.resourceType?MedicationRequest].resource.extension[url?StatusCoPayment].valueCoding.code", undefined, undefined, undefined);
+      updatePrescription("gebührenfrei", "1", "entry[resource.resourceType?MedicationRequest].resource.extension[url?StatusCoPayment].valueCoding.code", undefined, undefined, this.state.selectedPrescription.prescriptions.length);
       document.getElementById("geb-pfl").checked = false;
     }
+  }
+  
+  toggleAccident(unfallkennzeichen, boolean) {
+	if(boolean) {
+		let accidentExtension = {
+	        url: 'https://fhir.kbv.de/StructureDefinition/KBV_EX_ERP_Accident',
+	        extension: [
+	          {
+	            url: 'unfallkennzeichen',
+	            valueCoding: {
+	              system: 'https://fhir.kbv.de/CodeSystem/KBV_CS_FOR_Ursache_Type',
+	              code: unfallkennzeichen
+	            }
+	          },
+	          {
+	            url: 'unfalltag',
+	            valueDate: ''
+	          }
+	        ]
+	      };
+		if(unfallkennzeichen == "2") {
+			accidentExtension.extension.push({
+	            url: 'unfallbetrieb',
+	            valueString: ''
+	        });
+		}
+		updatePrescription("accident", accidentExtension, "entry[resource.resourceType?MedicationRequest].resource.extension", undefined, undefined, this.state.selectedPrescription.prescriptions.length);
+	} else {
+		updatePrescription("accident", false, "entry[resource.resourceType?MedicationRequest].resource.extension", undefined, undefined, this.state.selectedPrescription.prescriptions.length);
+	}
   }
 
   extractDate(date) {
@@ -213,10 +245,10 @@ class Prescription extends BElement {
                   <input
                     type     = "checkbox"
                     id       = "noctu"
-                    value    = "noctu"
+                    value    = "true"
                     name     = "noctu"
-                    .checked = "${this.state.selectedPrescription.updatedProps?.noctu ?? false}"
-                    @change  = "${(_) => this.onUserCheckArt(_)}"
+                    .checked = "${_psp.read("entry[resource.resourceType?MedicationRequest].resource.extension[url?KBV_EX_ERP_EmergencyServicesFee].valueBoolean") == "true"}"
+                    @change  = "${(_) => this.onUserInput({target: {name:"noctu", value: _.target.checked}}, "entry[resource.resourceType?MedicationRequest].resource.extension[url?KBV_EX_ERP_EmergencyServicesFee].valueBoolean")}"
                   />
                   <label for="noctu">noctu</label>
                   <span class="checkmark" @click="${() => document.getElementById("noctu").click()}"></span>
@@ -227,8 +259,8 @@ class Prescription extends BElement {
                     id       = "unfall"
                     value    = "Unfall"
                     name     = "accident"
-                    .checked = "${this.state.selectedPrescription.updatedProps?.accident ?? false}"
-                    @change  = "${(_) => this.onUserCheckArt(_)}"
+                    .checked = "${_psp.read("entry[resource.resourceType?MedicationRequest].resource.extension[url?KBV_EX_ERP_Accident]") && _psp.read("entry[resource.resourceType?MedicationRequest].resource.extension[url?KBV_EX_ERP_Accident].extension[url?unfallkennzeichen].valueCoding.code") == "1"}"
+                    @change  = "${(_) => this.toggleAccident("1", _.target.checked)}"
                   />
                   <label for="unfall">${i18n("Accident")}</label>
                   <span class="checkmark" @click="${() => document.getElementById("unfall").click()}"></span>
@@ -239,8 +271,8 @@ class Prescription extends BElement {
                     id       = "arbeitsunfall"
                     value    = "Arbeitsunfall"
                     name     = "industrialAccident"
-                    .checked = "${this.state.selectedPrescription.updatedProps?.industrialAccident ?? false}"
-                    @change  = "${(_) => this.onUserCheckArt(_)}"
+                    .checked = "${_psp.read("entry[resource.resourceType?MedicationRequest].resource.extension[url?KBV_EX_ERP_Accident]") && _psp.read("entry[resource.resourceType?MedicationRequest].resource.extension[url?KBV_EX_ERP_Accident].extension[url?unfallkennzeichen].valueCoding.code") == "2"}"
+                    @change  = "${(_) => this.toggleAccident("2", _.target.checked)}"
                   />
                   <label for="arbeitsunfall">${i18n("IndustrialAccident")}</label>
                   <span class="checkmark" @click="${() => document.getElementById("arbeitsunfall").click()}"></span>
@@ -414,14 +446,14 @@ class Prescription extends BElement {
                 <div class="column-2 col-reverse">
                   <div class="form-group">
                     <div class="input-wrapper">
-                      <label for="Unfalltag">${i18n("AccidentDay")}</label>
+                      <label for="unfalltag">${i18n("AccidentDay")}</label>
                       <input
-                        industrialAccident
+                        ?disabled="${_psp.read("entry[resource.resourceType?MedicationRequest].resource.extension[url?KBV_EX_ERP_Accident].extension[url?unfalltag].valueDate") === undefined}"
                         type   = "text"
-                        name   = "Unfalltag"
-                        id     = "Unfalltag"
-                        value  = "${_psp.read("entry[resource.resourceType?Accident].resource.extension[url?unfalltag].value[0].valueDate", "")}"
-                        @keyup = "${_ => this.onUserInput(_, "entry[resource.resourceType?Accident].resource.extension[url?unfalltag].value[0].valueDate")}"
+                        name   = "unfalltag"
+                        id     = "unfalltag"
+                        value  = "${this.extractDate(_psp.read("entry[resource.resourceType?MedicationRequest].resource.extension[url?KBV_EX_ERP_Accident].extension[url?unfalltag].valueDate", ""))}"
+                        @keyup = "${_ => this.onUserInput(_, "entry[resource.resourceType?MedicationRequest].resource.extension[url?KBV_EX_ERP_Accident].extension[url?unfalltag].valueDate")}"
                            />
                       <span class="long-border"></span>
                     </div>
@@ -429,16 +461,16 @@ class Prescription extends BElement {
 
                   <div class="form-group">
                     <div class="input-wrapper">
-                      <label for="Unfallbetrieb1"
+                      <label for="unfallbetrieb"
                         >${i18n("AccidentCompanyNum")}</label
                       >
                       <input
+                        ?disabled="${_psp.read("entry[resource.resourceType?MedicationRequest].resource.extension[url?KBV_EX_ERP_Accident].extension[url?unfallbetrieb].valueString") === undefined}"
                         type   = "text"
-                        readonly
-                        id     = "Unfallbetrieb1"
-                        name   = "Unfallbetrieb"
-                        value  = "${_psp.read("entry[resource.resourceType?Accident].resource.extension[url?unfallbetrieb].value[0].valueDate", "")}"
-                        @keyup = "${_ => this.onUserInput(_, "entry[resource.resourceType?Accident].resource.extension[url?unfallbetrieb].value[0].valueDate")}"
+                        id     = "unfallbetrieb"
+                        name   = "unfallbetrieb"
+                        value  = "${_psp.read("entry[resource.resourceType?MedicationRequest].resource.extension[url?KBV_EX_ERP_Accident].extension[url?unfallbetrieb].valueString", "")}"
+                        @keyup = "${_ => this.onUserInput(_, "entry[resource.resourceType?MedicationRequest].resource.extension[url?KBV_EX_ERP_Accident].extension[url?unfallbetrieb].valueString")}"
                        />
                     </div>
                   </div>
@@ -453,7 +485,7 @@ class Prescription extends BElement {
                     id     = "bvg"
                     name   = "bvg"
                     .checked = "${_psp.read("entry[resource.resourceType=MedicationRequest].resource.extension[url?KBV_EX_ERP_BVG].valueBoolean")}"
-                    @change  = "${_ => updatePrescription("bvg", _.target.checked, "entry[resource.resourceType=MedicationRequest].resource.extension[url?KBV_EX_ERP_BVG].valueBoolean")}"
+                    @change  = "${_ => updatePrescription("bvg", _.target.checked, "entry[resource.resourceType=MedicationRequest].resource.extension[url?KBV_EX_ERP_BVG].valueBoolean", undefined, undefined, this.state.selectedPrescription.prescriptions.length)}"
                   />
                   <label for="bvg">BVG</label>
                   <span class="checkmark" @click="${() => document.getElementById("bvg").click()}"></span>
@@ -464,7 +496,7 @@ class Prescription extends BElement {
                     id       = "Impf-stoff"
                     name     = "Impf-stoff"
                     .checked  = "${_psp.read("entry[resource.resourceType=Medication].resource.extension[url?KBV_EX_ERP_Medication_Vaccine].valueBoolean")}"
-                    @change = "${_ => updatePrescription("Impf-stoff", _.target.checked, "entry[resource.resourceType=Medication].resource.extension[url?KBV_EX_ERP_Medication_Vaccine].valueBoolean")}"
+                    @change = "${_ => updatePrescription("Impf-stoff", _.target.checked, "entry[resource.resourceType=Medication].resource.extension[url?KBV_EX_ERP_Medication_Vaccine].valueBoolean", undefined, undefined, this.state.selectedPrescription.prescriptions.length)}"
                   />
                   <label for="Impf-stoff">Impf-stoff</label>
                   <span class="checkmark" @click="${() => document.getElementById("Impf-stoff").click()}"></span>
