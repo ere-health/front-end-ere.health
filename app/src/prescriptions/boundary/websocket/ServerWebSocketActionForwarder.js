@@ -3,7 +3,9 @@ import { updateSettingsFromServer } from "../../../components/settings/control/S
 import { updateCardsFromServer } from "../../../components/cards/control/CardsControl.js";
 
 class _ServerWebSocketActionForwarder {
+	
     constructor() {
+		this.errorHandlerForMessage = {};
         this.socket = new ReconnectingWebSocket("ws"+(window.location.protocol === "https:" ? "s" : "")+"://"+window.location.host+"/websocket");
         window.__socket = this.socket;
 
@@ -48,7 +50,12 @@ class _ServerWebSocketActionForwarder {
                 } else if(eventData.type === "ChangePinResponse") {
                     alert(JSON.stringify(eventData.payload));
                 } else if(eventData.type === "Exception") {
-                    alert(JSON.stringify(eventData.payload));
+					if(eventData.replyToMessageId in this.errorHandlerForMessage) {
+						this.errorHandlerForMessage[eventData.replyToMessageId](eventData);
+						delete this.errorHandlerForMessage[eventData.replyToMessageId];
+					} else {						
+                    	alert(JSON.stringify(eventData.payload));
+					}
                 }
             } catch(e) {
                 alert("Could not process message. "+e);
@@ -84,9 +91,15 @@ class _ServerWebSocketActionForwarder {
     }
 
     send(message) {
-        message.id = this.uuidv4();
+        if(!("id" in message)) {
+	        message.id = this.uuidv4();
+		}
         this.socket.send(JSON.stringify(message));
     }
+    
+    registerErrorHandlerForMessage(messageId, fn) {
+		this.errorHandlerForMessage[messageId] = fn;
+	}
 }
 
 const ServerWebSocketActionForwarder = new _ServerWebSocketActionForwarder();
