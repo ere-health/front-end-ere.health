@@ -29,7 +29,7 @@ var browser = (function (agent) {
   }
 })(window.navigator.userAgent.toLowerCase());
 
-if (browser !== "chrome") {
+if (browser === "ie") {
   function addActiveClass(modal) {
     if (modal == null) return
     modal.classList.add('active')

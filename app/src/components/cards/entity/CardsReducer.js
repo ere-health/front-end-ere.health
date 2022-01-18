@@ -1,27 +1,24 @@
 import { createReducer } from "../../../libs/redux-toolkit.esm.js"
-import {selectCardAction,selectPinAction,loadCardsAction,changePinAction,updateCardsFromServerAction} from "../control/CardsControl.js";
+import {selectCardAction,selectPinAction,loadCardsAction,changePinAction,verifyPinAction,updateCardsFromServerAction} from "../control/CardsControl.js";
 import serverWebSocketActionForwarder from "../../../prescriptions/boundary/websocket/ServerWebSocketActionForwarder.js";
 
 const initialState = {
     cards  : [],
     selectedCard: {
-        cardHandle: "",
-        pinType: "PIN.CH"
-    }
+        cardHandle: ""
+    },
+    pinType: "PIN.CH"
 }
 
 export const cardsReducer = createReducer(initialState, (builder) => {
-    builder.addCase(selectCardAction, (state, {payload: cardHandle}) => {
+    builder.addCase(selectCardAction, (state, {payload: card}) => {
         if(!state.selectedCard) {
             state.selectedCard = {};
         }
-        state.selectedCard.cardHandle = cardHandle;
+        state.selectedCard = card;
     });
     builder.addCase(selectPinAction, (state, {payload: pinType}) => {
-        if(!state.selectedCard) {
-            state.selectedCard = {};
-        }
-        state.selectedCard.pinType = pinType;
+        state.pinType = pinType;
     });
     builder.addCase(loadCardsAction, (state) => {
         serverWebSocketActionForwarder.send({ type: "GetCards"});
@@ -29,16 +26,21 @@ export const cardsReducer = createReducer(initialState, (builder) => {
     builder.addCase(changePinAction, (state) => {
         serverWebSocketActionForwarder.send({ type: "ChangePin", payload: {
             cardHandle: state.selectedCard.cardHandle,
-            pinType: state.selectedCard.pinType}
+            pinType: state.pinType}
+        });
+    });
+    builder.addCase(verifyPinAction, (state) => {
+        serverWebSocketActionForwarder.send({ type: "VerifyPin", payload: {
+            cardHandle: state.selectedCard.cardHandle}
         });
     });
     builder.addCase(updateCardsFromServerAction, (state, {payload: cards}) => {
         if(cards.length > 0) {
             state.cards = cards;
-            state.selectedCard = {
-                cardHandle : cards[0].cardHandle,
-                pinType: 'PIN.CH'
-            }
-        } 
+            state.selectedCard = cards[0];
+        }
+        if(!state.pinType) {
+			state.pinType = "PIN.CH";
+		}
     });
 })

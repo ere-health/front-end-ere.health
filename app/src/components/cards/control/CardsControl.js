@@ -2,8 +2,8 @@ import { createAction } from "../../../libs/redux-toolkit.esm.js";
 import store from "../../../store.js";
 
 export const selectCardAction = createAction("selectCardAction");
-export const selectCard = (cardHandle) => {
-    store.dispatch(selectCardAction(cardHandle));
+export const selectCard = (card) => {
+    store.dispatch(selectCardAction(card));
 }
 
 export const selectPinAction = createAction("selectPinAction");
@@ -19,6 +19,11 @@ export const loadCards = () => {
 export const changePinAction = createAction("changePinAction");
 export const changePin = () => {
     store.dispatch(changePinAction());
+}
+
+export const verifyPinAction = createAction("verifyPinAction");
+export const verifyPin = () => {
+    store.dispatch(verifyPinAction());
 }
 
 export const updateCardsFromServerAction = createAction("updateCardsFromServerAction");

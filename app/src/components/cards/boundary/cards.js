@@ -5,7 +5,8 @@ import {
     selectCard,
     selectPin,
     loadCards,
-    changePin
+    changePin,
+    verifyPin
 } from "../control/CardsControl.js";
 
 class CardsSection extends BElement {
@@ -14,14 +15,14 @@ class CardsSection extends BElement {
     if(!cardsReducer.cards) {
       cardsReducer.cards = [];
     }
-    if(!cardsReducer.selecedCard) {
-      cardsReducer.selecedCard;
+    if(!cardsReducer.selectedCard) {
+      cardsReducer.selectedCard;
     }
     return cardsReducer;
   }
 
-  onSelectCard(card) {
-    selectCard(card);
+  onSelectCard(cardHandle) {
+    selectCard(this.state.cards.filter(c => c.cardHandle === cardHandle)[0]);
   }
 
   onSelectPin(pin) {
@@ -36,6 +37,11 @@ class CardsSection extends BElement {
   onChangePin(e) {
     e.preventDefault();
     changePin();
+  }
+
+  onVerifyPin(e) {
+    e.preventDefault();
+    verifyPin();
   }
 
   view() {
@@ -64,6 +70,13 @@ class CardsSection extends BElement {
             @click            = "${_ => this.onLoadCards(_)}"  
             class             = "jet-btn">
         Karten laden
+        </button>
+        <button 
+            style="margin: 1rem 0;"                                                                  
+            @click            = "${_ => this.onVerifyPin(_)}"
+            ?disabled         = ${this.state.selectedCard.cardType != 'SMC_B'}
+            class             = "jet-btn">
+        Verify Pin
         </button>
         <label for="current-cards">Pin Typ</label><br />
         <select id="change-pin" style="

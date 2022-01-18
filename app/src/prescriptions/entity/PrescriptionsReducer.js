@@ -3,6 +3,7 @@ import { Mapper } from "../../libs/helper/Mapper.js";
 import { createReducer } from "../../libs/redux-toolkit.esm.js"
 import serverWebSocketActionForwarder from "../../prescriptions/boundary/websocket/ServerWebSocketActionForwarder.js";
 import {
+  addPrescription,
   addPrescriptionAction,
   showSignFormAction,
   signedPrescriptionAction,
@@ -160,25 +161,35 @@ export const prescriptions = createReducer(initialState, (builder) => {
     })
     //Create an empty prescription
     .addCase(createNewPrescriptionAction, (state) => {
-      let bundleTemplate = NewPrescriptionTemplate;
-
-      const currentDate = new Date().toISOString();
-      bundleTemplate = bundleTemplate.replaceAll('$LAST_UPDATED', currentDate);
-      bundleTemplate = bundleTemplate.replaceAll('$TIMESTAMP', currentDate);
-      bundleTemplate = bundleTemplate.replaceAll('$COMPOSITION_DATE', currentDate);
-
-      bundleTemplate = bundleTemplate.replaceAll('$BUNDLE_ID', uuidv4());
-      bundleTemplate = bundleTemplate.replaceAll('$PRESCRIPTION_ID', uuidv4());
-      bundleTemplate = bundleTemplate.replaceAll('$PATIENT_ID', uuidv4());
-      bundleTemplate = bundleTemplate.replaceAll('$PRACTITIONER_ID', uuidv4());
-      bundleTemplate = bundleTemplate.replaceAll('$ORGANIZATION_ID', uuidv4());
-      bundleTemplate = bundleTemplate.replaceAll('$MEDICATION_REQUEST_ID', uuidv4());
-      bundleTemplate = bundleTemplate.replaceAll('$COVERAGE_ID', uuidv4());
-      bundleTemplate = bundleTemplate.replaceAll('$COMPOSITION_ID', uuidv4());
-      bundleTemplate = bundleTemplate.replaceAll('$MEDICATION_ID', uuidv4());
-
-      //Add prescription action, you need to inject a list of list
-      state.list = [[JSON.parse(bundleTemplate)]].concat(state.list);
+	  let id = uuidv4();
+	  serverWebSocketActionForwarder.send({
+        id: id,
+        type: "PrefillBundle"
+      });
+      
+      serverWebSocketActionForwarder.registerErrorHandlerForMessage(id, function(exceptionMessage) {
+		  console.log("Error while prefilling bundle: ");
+		  console.log(exceptionMessage);
+	      let bundleTemplate = NewPrescriptionTemplate;
+	
+	      const currentDate = new Date().toISOString();
+	      bundleTemplate = bundleTemplate.replaceAll('$LAST_UPDATED', currentDate);
+	      bundleTemplate = bundleTemplate.replaceAll('$TIMESTAMP', currentDate);
+	      bundleTemplate = bundleTemplate.replaceAll('$COMPOSITION_DATE', currentDate);
+	
+	      bundleTemplate = bundleTemplate.replaceAll('$BUNDLE_ID', uuidv4());
+	      bundleTemplate = bundleTemplate.replaceAll('$PRESCRIPTION_ID', uuidv4());
+	      bundleTemplate = bundleTemplate.replaceAll('$PATIENT_ID', uuidv4());
+	      bundleTemplate = bundleTemplate.replaceAll('$PRACTITIONER_ID', uuidv4());
+	      bundleTemplate = bundleTemplate.replaceAll('$ORGANIZATION_ID', uuidv4());
+	      bundleTemplate = bundleTemplate.replaceAll('$MEDICATION_REQUEST_ID', uuidv4());
+	      bundleTemplate = bundleTemplate.replaceAll('$COVERAGE_ID', uuidv4());
+	      bundleTemplate = bundleTemplate.replaceAll('$COMPOSITION_ID', uuidv4());
+	      bundleTemplate = bundleTemplate.replaceAll('$MEDICATION_ID', uuidv4());
+	      
+	      //Add prescription action, you need to inject a list of list
+	      addPrescription([JSON.parse(bundleTemplate)]);
+      });
     })
     .addCase(updatePrescriptionAction, (state, { payload: { name, value, key, statePath, index } }) => {
       // console.info("key:" + key + " with value:" + value + " with name:" + name + " with statePath:" + statePath + " with index:" + index);
@@ -192,6 +203,13 @@ export const prescriptions = createReducer(initialState, (builder) => {
           if (name === 'wop') {
             setWop(psp, value);
 
+          } else if(name === 'accident') {
+			const medicationRequest = psp.read("entry[resource.resourceType?MedicationRequest].resource");
+			// Remove accident extension
+			medicationRequest.extension = medicationRequest.extension.filter(e => e.url != "https://fhir.kbv.de/StructureDefinition/KBV_EX_ERP_Accident");
+			if(value) {
+				medicationRequest.extension.push(value);
+			}
             // Required values
           } else {
             if (key) {
@@ -334,7 +352,7 @@ export const prescriptions = createReducer(initialState, (builder) => {
         ];
       }
       return [
-        "https://fhir.kbv.de/NamingSystem/KBV_NS_Base_BSNR",
+        "http://fhir.de/NamingSystem/kzbv/zahnarztnummer",
         "ZANR",
         "http://fhir.de/CodeSystem/identifier-type-de-basis"
       ]
@@ -626,6 +644,9 @@ export const prescriptions = createReducer(initialState, (builder) => {
       const medication = bundle.entry.filter(e => e.resource.resourceType == "Medication")[0];
       medication.fullUrl = "http://pvs.praxis.local/fhir/Medication/"+medicationId;
       medication.resource.id = medicationId;
+      
+      bundle.entry[0].resource.section[0].entry[0].reference = "MedicationRequest/"+medicationRequestId;
+      
       state.selectedPrescription.prescriptions.push(bundle);
       addPrescriptionInState(state, state.selectedPrescription.prescriptions[0], bundle);
     } catch(e) {
@@ -666,6 +687,8 @@ export const prescriptions = createReducer(initialState, (builder) => {
           currentValue = psp.read("entry[resource.resourceType?Patient].resource.birthDate", "");
         } else if (key === 'authoredOn') {
           currentValue = psp.read("entry[resource.resourceType?MedicationRequest].resource.authoredOn", "");
+        } else if (key === 'unfalltag') {
+          currentValue = psp.read("entry[resource.resourceType?MedicationRequest].resource.extension[url?KBV_EX_ERP_Accident].extension[url?unfalltag].valueDate", "");
         }
 
         let validation = validateInput(key, currentValue, MainWindowValidationRules);

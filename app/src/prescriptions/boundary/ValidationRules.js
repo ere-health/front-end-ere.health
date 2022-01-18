@@ -18,14 +18,16 @@ export const MainWindowValidationRules = {
     'betriebsstätten': ['required', 'regex:/^[0-9]{8,9}$/'],
     'kvid': ['required', 'regex:/^[a-zA-Z0-9]{10}$/'],
     'coverage-payor-iknr': ['required', 'regex:/^[0-9]{9}$/'],
-    'doctor-number': ['required', 'regex:/^[0-9]{6,9}$/'],
+    'doctor-number': ['required', 'regex:/^[0-9]{9}$/'],
     'wop': ['regex:/^[0-9]{1,2}$/'],
 
     //Dates, entered as DD.MM.YYYY but converted into YYYY-MM-DD for the bundle.
     'birthdate': ['required', 'regex:/^[0-9]{4}\\-[0-9]{1,2}\\-[0-9]{1,2}$/'],
     'authoredOn': ['required', 'regex:/^[0-9]{4}\\-[0-9]{1,2}\\-[0-9]{1,2}$/'],
 
-    'Unfalltag': ['regex:/^[0-9]{4}\\-[0-9]{1,2}\\-[0-9]{1,2}$/']
+    'unfalltag': ['regex:/^[0-9]{4}\\-[0-9]{1,2}\\-[0-9]{1,2}$/'],
+    'noctu': [],
+    'unfallbetrieb': [],
 
 };
 
@@ -70,7 +72,7 @@ export const ClinicPopupValidationRules = {
 
 export const PractIdPopupValidationRules = {
     //Numbers, copy of MainWindows value
-    'practId-doctor-number': ['required', 'regex:/^[0-9]{6,9}$/']
+    'practId-doctor-number': ['required', 'regex:/^[0-9]{9}$/']
 };
 
 export const MedicPopupValidationRules = {
@@ -130,7 +132,7 @@ export const MainWindowErrorMessages = {
     },
     'doctor-number': {
         required: 'Die LANR  des Arztes oder 999999991 für  einen Zahnarzt muss angegeben werden',
-        regex: 'Die LANR muss zwischen 6 und 8 Ziffern lang sein'
+        regex: 'Die LANR muss 9 Ziffern lang sein'
     },
     'wop': {
         regex: 'Das WOP muss 1 bis 2 Ziffern lang sein'
@@ -226,7 +228,7 @@ export const ClinicPopupErrorMessages = {
 export const PractIdErrorMessages = {
     'practId-doctor-number': {
         required: "Die lebenslange Arztnummer des Arztes muss angegeben werden",
-        regex: 'Die lebenslange Arztnummer des Arztes muss zwischen 6 bis 8 Ziffern lang sein'
+        regex: 'Die lebenslange Arztnummer des Arztes muss 9 Ziffern lang sein'
     }
 };
 
