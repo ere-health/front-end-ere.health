@@ -16,11 +16,6 @@ export const saveSettings = () => {
     store.dispatch(saveSettingsAction());
 }
 
-export const checkSettingsAction = createAction("checkSettingsAction");
-export const checkSettings = () => {
-    store.dispatch(checkSettingsAction());
-}
-
 export const updateSettingsFromServerAction = createAction("updateSettingsFromServerAction");
 export const updateSettingsFromServer = (settings) => {
     store.dispatch(updateSettingsFromServerAction({settings}));

@@ -2,7 +2,6 @@ import { createReducer } from "../../../libs/redux-toolkit.esm.js"
 import serverWebSocketActionForwarder from "../../../prescriptions/boundary/websocket/ServerWebSocketActionForwarder.js";
 import {
     updateSettingAction,
-    checkSettingsAction,
     saveSettingsAction,
     resetSettingsAction,
     updateSettingsFromServerAction
@@ -34,10 +33,9 @@ export const settingsReducer = createReducer(initialState, (builder) => {
     builder.addCase(saveSettingsAction, (state) => {
         // Send a list of a list of a list    
         serverWebSocketActionForwarder.send({ type: "SaveSettings", payload: state.settings});
-    });
-    builder.addCase(checkSettingsAction, (state) => {
-        // Send a list of a list of a list    
-        serverWebSocketActionForwarder.send({ type: "CheckSettings", payload: state.settings});
+        setTimeout(() => serverWebSocketActionForwarder.send({ type: "RequestStatus", payload: {}}), 1000)
+        
+        
     });
     builder.addCase(updateSettingsFromServerAction,  (state, {payload: {settings}}) => {
         state.settings = settings;

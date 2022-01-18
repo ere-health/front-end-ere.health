@@ -4,7 +4,6 @@ import {  } from "../../cards/boundary/cards.js";
 
 import {
     updateSetting,
-    checkSettings,
     saveSettings,
     resetSettings
 } from "../control/SettingsControl.js";
@@ -18,11 +17,6 @@ class Settings extends BElement {
   resetSettings(e) {
     e.preventDefault();
     resetSettings();
-  }
-
-  checkSettings(e) {
-    e.preventDefault();
-    checkSettings();
   }
 
   saveSettings(e) {
@@ -265,12 +259,6 @@ class Settings extends BElement {
                             class             = "jet-btn">
                         Konfiguration speichern
                         </button>
-                        <!-- <button 
-                            style="float: right; background: #E4E4E4;"                                                                    
-                            @click            = "${_ => this.checkSettings(_)}"  
-                            class             = "jet-btn">
-                        Konfiguration prüfen
-                        </button> -->
                     </div>
                 <div style="clear: both">
                     * Pflichtfelder
