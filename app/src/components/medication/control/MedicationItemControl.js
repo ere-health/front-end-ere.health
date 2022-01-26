@@ -1,9 +1,19 @@
-import { createAction } from "../../libs/redux-toolkit.esm.js";
-import store from "../../store.js";
+import { createAction } from "../../../libs/redux-toolkit.esm.js";
+import store from "../../../store.js";
 
-export const medicationItemUpdatedAction = createAction("MedicationItemUpdatedAction");
-export const medicationItemUpdated = (name, value) => {
-    store.dispatch(medicationItemUpdatedAction({name,value}));
+export const openMedicationPopupAction = createAction("openMedicationPopupAction");
+export const openMedicationPopup = (medication) => {
+    store.dispatch(openMedicationPopupAction(medication));
+}
+
+export const changeMedicationItemProfileAction = createAction("changeMedicationItemProfileAction");
+export const changeMedicationItemProfile = (medication) => {
+    store.dispatch(changeMedicationItemProfileAction(medication));
+}
+
+export const updateMedicationItemAction = createAction("MedicationItemUpdatedAction");
+export const updateMedicationItem = (name, value) => {
+    store.dispatch(updateMedicationItemAction({name,value}));
 }
 
 export const saveMedicationItemAction = createAction("saveMedicationItemAction");
@@ -25,3 +35,4 @@ export const deleteMedicationItemAction = createAction("deleteMedicationItemActi
 export const deleteMedicationItem = (id) => {
     store.dispatch(deleteMedicationItemAction(id));
 }
+
