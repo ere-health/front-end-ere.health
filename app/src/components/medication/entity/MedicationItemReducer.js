@@ -6,12 +6,12 @@ import {
     cancelMedicationItemAction,
     deleteMedicationItemAction,
     openMedicationPopupAction,
-    changeMedicationProfileAction
+    changeMedicationItemProfileAction
 } from "../control/MedicationItemControl.js";
 import {
     buildFhirPzn,
     buildFhirFreeText
-} from "MedicationItemType.js";
+} from "./MedicationItemType.js";
 
 const initialState = {
     medicationItem: {},
@@ -45,10 +45,10 @@ export const medicationItemReducer = createReducer(initialState, (builder) => {
     }).addCase(openMedicationPopupAction, (state, { payload }) => {
         state.medicationItem = payload;
 
-    }).addCase(changeMedicationProfileAction, (state, { payload }) => {
+    }).addCase(changeMedicationItemProfileAction, (state, { payload }) => {
+        // reuse UUID from bundle
         let uuid = state.medicationItem.resource.id;
         if(payload === "https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Medication_FreeText|1.0.2") {
-            // TODO use the UUID from the medication nefore
             state.medicationItem = buildFhirFreeText(uuid,"","");
 
         } else if(payload === "https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Medication_PZN|1.0.2") {

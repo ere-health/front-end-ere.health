@@ -1,0 +1,31 @@
+<!-- get instant update of webpage upon changes:
+  start terminal from project folder ere-ps-app
+  > CD src/main/resources/META-INF/resources/frontend
+  > python3 -m http.server 9000
+-->
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>ere.health E-Rezept signieren, hinterlegen und drucken</title>
+    <link rel="stylesheet" href="../../../assets/css/main-style.css">
+    <script src="../../../libs/reconnecting-websocket.js"></script>
+    
+</head>
+<body class="home-page">
+  <medication-popup>
+  <script type="module" src="../../../init.js"></script>
+  <script type="module">
+    import "../boundary/MedicationItemPopup.js";
+    import { openMedicationPopup } from "../control/MedicationItemControl.js";
+    import { buildFhirFreeText } from "../entity/MedicationItemType.js";
+
+    openMedicationPopup(
+      buildFhirFreeText('0d93504e-c6a7-47c1-8ad5-b0c5cf1b8920',
+                        'freitext',
+                        'Metformin 850mg Tabletten N3')
+    );    
+  </script>
+</body>
+</html>

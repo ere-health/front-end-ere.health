@@ -1,0 +1,34 @@
+<!-- get instant update of webpage upon changes:
+  start terminal from project folder ere-ps-app
+  > CD src/main/resources/META-INF/resources/frontend
+  > python3 -m http.server 9000
+  in Google Chrome start this page: http://localhost:9000/app/src/components/medication/test/medicationItemPZN.html 
+-->
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>ere.health E-Rezept signieren, hinterlegen und drucken</title>
+    <link rel="stylesheet" href="../../../assets/css/main-style.css">
+    <script src="../../../libs/reconnecting-websocket.js"></script>
+    
+</head>
+<body class="home-page">
+  <medication-popup>
+  <script type="module" src="../../../init.js"></script>
+  <script type="module">
+    import "../boundary/MedicationItemPopup.js";
+    import { openMedicationPopup } from "../control/MedicationItemControl.js";
+    import { buildFhirPzn } from "../entity/MedicationItemType.js";
+
+    openMedicationPopup(
+      buildFhirPzn('f568397d-7ba2-46ac-904b-02caec933b42',
+                   'N1',
+                   '08585997',
+                   'Prospan® Hustensaft 100ml N1',
+                   'FLE')
+    );    
+  </script>
+</body>
+</html>
