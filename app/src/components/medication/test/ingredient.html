@@ -1,8 +1,8 @@
-<!-- get instant update of webpage upon changes:
+<!-- serve this test page by:
   start terminal from project folder ere-ps-app
   > CD src/main/resources/META-INF/resources/frontend
   > python3 -m http.server 9000
-  in Google Chrome start this page: http://localhost:9000/app/src/components/medication/test/medicationItemPZN.html 
+  in Google Chrome start this page: http://localhost:9000/app/src/components/medication/test/ingredient.html 
 -->
 <!DOCTYPE html>
 <html lang="de">
@@ -20,14 +20,15 @@
   <script type="module">
     import "../boundary/MedicationItemPopup.js";
     import { openMedicationPopup } from "../control/MedicationItemControl.js";
-    import { buildFhirPzn } from "../entity/MedicationItemType.js";
+    import { MedicationItemTypeIngredient } from "../MedicationItemType.js";
 
     openMedicationPopup(
-      buildFhirPzn('f568397d-7ba2-46ac-904b-02caec933b42',
-                   'N1',
-                   '08585997',
-                   'Prospan® Hustensaft 100ml N1',
-                   'FLE')
+      MedicationItemTypeIngredient.buildFHIR({
+        uuid: '255b49de-6cd5-4ac1-b6fb-c8d0128cf1b3', 
+        normgroesseCode: 'N3',
+        formText: 'Tabletten',
+        ingredients: [{itemCode:'23816', itemText:'Simvastatin', ingredientForm:null, strengthText:null, numeratorValue:20, numeratorUnit:'mg', denominatorValue:1}]
+      })
     );    
   </script>
 </body>

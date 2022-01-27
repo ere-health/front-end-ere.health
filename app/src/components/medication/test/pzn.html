@@ -1,8 +1,8 @@
-<!-- get instant update of webpage upon changes:
+<!-- serve this test page by:
   start terminal from project folder ere-ps-app
   > CD src/main/resources/META-INF/resources/frontend
   > python3 -m http.server 9000
-  in Google Chrome start this page: http://localhost:9000/app/src/components/medication/test/medicationItemFreeText.html 
+  in Google Chrome start this page: http://localhost:9000/app/src/components/medication/test/pzn.html 
 -->
 <!DOCTYPE html>
 <html lang="de">
@@ -20,12 +20,17 @@
   <script type="module">
     import "../boundary/MedicationItemPopup.js";
     import { openMedicationPopup } from "../control/MedicationItemControl.js";
-    import { buildFhirFreeText } from "../entity/MedicationItemType.js";
+    import { MedicationItemTypePZN } from "../MedicationItemType.js";
 
     openMedicationPopup(
-      buildFhirFreeText('0d93504e-c6a7-47c1-8ad5-b0c5cf1b8920',
-                        'Metformin 850mg Tabletten N3')
-    );    
+      MedicationItemTypePZN.buildFHIR({
+        uuid: 'f568397d-7ba2-46ac-904b-02caec933b42',
+        normgroesseCode: 'N1',
+        pznCode: '08585997',
+        pznText: 'Prospan® Hustensaft 100ml N1',
+        dformCode: 'FLE'
+      })
+    );
   </script>
 </body>
 </html>
