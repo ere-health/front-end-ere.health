@@ -7,7 +7,7 @@ export const MedicationItemType = {
       case MedicationItemTypePZN.profile:
           return MedicationItemTypePZN.buildEmptyFHIR(uuid);
       case MedicationItemTypeIngredient.profile:
-          return MedicationItemTypeIngredient.buildFHIR(uuid);
+          return MedicationItemTypeIngredient.buildEmptyFHIR(uuid);
       case MedicationItemTypeCompounding.profile:
           return MedicationItemTypeCompounding.buildEmptyFHIR(uuid);
       default:

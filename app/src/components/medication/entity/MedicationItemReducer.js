@@ -27,6 +27,7 @@ function setObjectAttribute(object,path,value){
 }
 
 export const medicationItemReducer = createReducer(initialState, (builder) => {
+    
     builder.addCase(changeMedicationItemProfileAction, (state, { payload }) => {
         state.medicationItem = MedicationItemType.buildEmptyFHIR(payload, state.medicationItem.resource.id);
 

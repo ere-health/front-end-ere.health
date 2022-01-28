@@ -26,26 +26,34 @@ class MedicationPopup extends BElement {
     getProfileForm(profile) {
         switch (profile){
             case MedicationItemTypeFreeText.profile:
-                return html`Freetext Form`;
+                return html`<!-- Show this form for FreeText  -->
+                <div style="text-align:left">
+                    <div class="fieldRow">
+                        <label for="free.medicationText">Freitext</label>
+                        <input id="free.medicationText" .value="${this.state?.resource?.code?.text}" @change="${_ => this.onUserInput(_,"resource.code.text")}" />
+                    </div>
+                </div>`;
 
             case MedicationItemTypePZN.profile:
                 return html`<!-- Show this form for PZN  -->
                 <div style="text-align:left">
                     <div class="fieldRow">
-                        <input .value="${this.state?.resource?.code?.text}" @change="${_ => this.onUserInput(_,"resource.code.text")}" />
-                        <edit-field statePath="prescriptions.MedikamentPopup" mapKey="medicationText" label="Handelsname" id="medic-medicationText"</edit-field>
+                        <label for="pzn.pznText">Handelsname</label>
+                        <input id="pzn.pznText" .value="${this.state?.resource?.code?.text}" @change="${_ => this.onUserInput(_,"resource.code.text")}" />
                     </div>
                     <div class="fieldRow">
-                        <edit-field statePath="prescriptions.MedikamentPopup" mapKey="pzn" label="PZN" ratio="0.5" id="medic-pzn"></edit-field>
+                        <label for="pzn.pznCode">PZN</label>
+                        <input id="pzn.pznCode" .value="${this.state?.resource?.code?.coding[0]?.code}" @change="${_ => this.onUserInput(_,"rresource.code.coding.code")}" />
+                        <!-- <edit-field statePath="prescriptions.MedikamentPopup" mapKey="pzn" label="PZN" ratio="0.5" id="medic-pzn"></edit-field> -->
                     </div>
-                    <div class="fieldRow">
+                    <!-- <div class="fieldRow">
                         <edit-field statePath="prescriptions.MedikamentPopup" mapKey="quantityValue" label="Menge" id="medic-quantity"></edit-field>
                         <select-field statePath="prescriptions.MedikamentPopup" mapKey="norm" label="Normgröße" items="${JSON.stringify(FIELD_NORMGROESSE_TYPE)}"></select-field> 
                         <select-field statePath="prescriptions.MedikamentPopup" mapKey="form" label="Darreichungsform" items="${JSON.stringify(FIELD_DARREICH_TYPE)}"></select-field> 
                     </div>
                     <div class="fieldRow"> 
                         <edit-field statePath="prescriptions.MedikamentPopup" mapKey="dosageInstruction" label="Dosierungsanweisung" id="medic-dosage-instructions"</edit-field>
-                    </div>
+                    </div> -->
                 </div>`;
 
             case MedicationItemTypeIngredient.profile:
