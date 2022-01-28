@@ -12,8 +12,8 @@ export const changeMedicationItemProfile = (medication) => {
 }
 
 export const updateMedicationItemAction = createAction("MedicationItemUpdatedAction");
-export const updateMedicationItem = (name, value) => {
-    store.dispatch(updateMedicationItemAction({name,value}));
+export const updateMedicationItem = (path, value) => {
+    store.dispatch(updateMedicationItemAction({path,value}));
 }
 
 export const saveMedicationItemAction = createAction("saveMedicationItemAction");

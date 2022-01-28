@@ -19,8 +19,8 @@ import { FIELD_NORMGROESSE_TYPE, FIELD_DARREICH_TYPE } from "./fieldselectoption
 
 class MedicationPopup extends BElement {
 
-    extractState({medicationItemReducer: {medicationItem}}) {
-        return medicationItem;
+    extractState({medicationItemReducer}) {
+        return medicationItemReducer;
     }
 
     getProfileForm(profile) {
@@ -30,7 +30,7 @@ class MedicationPopup extends BElement {
                 <div style="text-align:left">
                     <div class="fieldRow">
                         <label for="free.medicationText">Freitext</label>
-                        <input id="free.medicationText" .value="${this.state?.resource?.code?.text}" @change="${_ => this.onUserInput(_,"resource.code.text")}" />
+                        <input id="free.medicationText" .value="${this.state?.medicationItem.resource?.code?.text}" @change="${_ => this.onUserInput(_,"resource.code.text")}" />
                     </div>
                 </div>`;
 
@@ -39,11 +39,17 @@ class MedicationPopup extends BElement {
                 <div style="text-align:left">
                     <div class="fieldRow">
                         <label for="pzn.pznText">Handelsname</label>
-                        <input id="pzn.pznText" .value="${this.state?.resource?.code?.text}" @change="${_ => this.onUserInput(_,"resource.code.text")}" />
+                        <input id="pzn.pznText"
+                               list="pzn.pznTexts"
+                               .value="${this.state?.medicationItem.resource?.code?.text}" 
+                               @change="${_ => this.onUserInput(_,"resource.code.text")}" />
+                        <datalist id="pzn.pznTexts">
+                        ${Object.keys(this.state.pznLookup).map((pznName)=>html`<option value="${pznName}">`)}
+                        </datalist>
                     </div>
                     <div class="fieldRow">
                         <label for="pzn.pznCode">PZN</label>
-                        <input id="pzn.pznCode" .value="${this.state?.resource?.code?.coding[0]?.code}" @change="${_ => this.onUserInput(_,"rresource.code.coding.code")}" />
+                        <input id="pzn.pznCode" .value="${this.state?.medicationItem.resource?.code?.coding[0]?.code}" @change="${_ => this.onUserInput(_,"resource.code.coding.0.code")}" />
                         <!-- <edit-field statePath="prescriptions.MedikamentPopup" mapKey="pzn" label="PZN" ratio="0.5" id="medic-pzn"></edit-field> -->
                     </div>
                     <!-- <div class="fieldRow">
@@ -67,12 +73,14 @@ class MedicationPopup extends BElement {
     }
 
     view() {
-        let profile = this.state.resource?.meta?.profile[0];
+        let profile = this.state?.medicationItem.resource?.meta?.profile[0];
         return html`
             <div class="modal" id="medicEdit" style="max-width: 800px;">
+                <!-- header -->
                 <div class="modal-title" style="text-align:left">
                     <p style="text-align:left"><strong>Medikament</strong></p>
                 </div>
+                <!-- profile changer -->
                 <select @change="${_ => changeMedicationItemProfile(_.target.value)}">
                     <option value=${MedicationItemTypePZN.profile}         ?selected=${profile === MedicationItemTypePZN.profile}>PZN</option>
                     <option value=${MedicationItemTypeFreeText.profile}    ?selected=${profile === MedicationItemTypeFreeText.profile}>Freitext</option>
@@ -80,7 +88,7 @@ class MedicationPopup extends BElement {
                     <option value=${MedicationItemTypeCompounding.profile} ?selected=${profile === MedicationItemTypeCompounding.profile}>Rezeptur</option>
                 </select>
                 <!-- include the Profile's corresponding Form -->
-                ${this.getProfileForm(this.state.resource?.meta?.profile[0])}
+                ${this.getProfileForm(profile)}
                 <!-- Cancel and Save buttons -->
                 <div class="modal-buttons">
                     <button class="cancel"  @click="${() => this.onCancelButtonClick()}">Abbrechen</button>

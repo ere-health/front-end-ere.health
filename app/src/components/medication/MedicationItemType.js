@@ -1,5 +1,6 @@
 // MedicationItemType
 export const MedicationItemType = {
+
   buildEmptyFHIR: (profile, uuid) => {
     switch (profile){
       case MedicationItemTypeFreeText.profile:
@@ -12,7 +13,38 @@ export const MedicationItemType = {
           return MedicationItemTypeCompounding.buildEmptyFHIR(uuid);
       default:
     }
-  }
+  },
+
+  setObjectAttribute: (object,path,value) => {
+    let parts = path.split(/\./);
+    for (let i=0; i<parts.length; i++){
+        let actualElement = parts[i];
+        if (Number.isInteger(actualElement)) actualElement = Number.parseInt(actualElement);
+        if (i<parts.length-1)
+            object = object[actualElement];
+        else
+            object[actualElement] = value;
+    }
+  },
+
+  loadPznRecords: (filePath, delimiter)=>{
+    var result = null;
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.open("GET", filePath, false);
+    xmlhttp.send();
+    if (xmlhttp.status==200) {
+      const str = xmlhttp.responseText;
+      // const headers = str.slice(0, str.indexOf("\n")).split(delimiter);
+      const rows = str.slice(str.indexOf("\n") + 1).split("\n");
+      result = rows.reduce((rowMap,row,_) => {
+          const values = row.split(delimiter);
+          const pznText = values[1];
+          rowMap[pznText] = [values[0], ...values.slice(2)];
+          return rowMap;
+      }, {});  
+    }
+    return result;
+  },
 }
 
 // PZN
@@ -105,7 +137,7 @@ export const MedicationItemTypeFreeText = {
 
 // INGREDIENT
 export const MedicationItemTypeIngredient = {
-  profile : 'https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Medication_Ingredient|1.0.1',
+  profile : 'https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Medication_Ingredient|1.0.2',
 
   buildFHIR : function ({uuid, normgroesseCode, formText, ingredients}){
     return {
