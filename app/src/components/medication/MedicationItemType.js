@@ -27,24 +27,6 @@ export const MedicationItemType = {
     }
   },
 
-  loadPznRecords: (filePath, delimiter)=>{
-    var result = null;
-    var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open("GET", filePath, false);
-    xmlhttp.send();
-    if (xmlhttp.status==200) {
-      const str = xmlhttp.responseText;
-      // const headers = str.slice(0, str.indexOf("\n")).split(delimiter);
-      const rows = str.slice(str.indexOf("\n") + 1).split("\n");
-      result = rows.reduce((rowMap,row,_) => {
-          const values = row.split(delimiter);
-          const pznText = values[1];
-          rowMap[pznText] = [values[0], ...values.slice(2)];
-          return rowMap;
-      }, {});  
-    }
-    return result;
-  },
 }
 
 // PZN

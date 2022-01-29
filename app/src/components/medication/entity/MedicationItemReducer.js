@@ -11,7 +11,6 @@ import {
 import { MedicationItemType } from "../MedicationItemType.js";
 
 const initialState = {
-    pznLookup : MedicationItemType.loadPznRecords("../medication-data.csv", ","),
     medicationItem: {},
 }
 

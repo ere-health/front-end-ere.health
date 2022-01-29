@@ -15,12 +15,16 @@ import {
     MedicationItemTypeCompounding
 } from "../MedicationItemType.js";
 
-import { FIELD_NORMGROESSE_TYPE, FIELD_DARREICH_TYPE } from "./fieldselectoptions.js";
+import { 
+    FIELD_NORMGROESSE_TYPE, 
+    FIELD_DARREICH_TYPE, 
+    FIELD_PZN_TYPE 
+} from "./fieldselectoptions.js";
 
 class MedicationPopup extends BElement {
 
-    extractState({medicationItemReducer}) {
-        return medicationItemReducer;
+    extractState({medicationItemReducer: {medicationItem}}) {
+        return medicationItem;
     }
 
     getProfileForm(profile) {
@@ -30,7 +34,7 @@ class MedicationPopup extends BElement {
                 <div style="text-align:left">
                     <div class="fieldRow">
                         <label for="free.medicationText">Freitext</label>
-                        <input id="free.medicationText" .value="${this.state?.medicationItem.resource?.code?.text}" @change="${_ => this.onUserInput(_,"resource.code.text")}" />
+                        <input id="free.medicationText" .value="${this.state?.resource?.code?.text}" @change="${_ => this.onUserInput(_,"resource.code.text")}" />
                     </div>
                 </div>`;
 
@@ -41,15 +45,21 @@ class MedicationPopup extends BElement {
                         <label for="pzn.pznText">Handelsname</label>
                         <input id="pzn.pznText"
                                list="pzn.pznTexts"
-                               .value="${this.state?.medicationItem.resource?.code?.text}" 
+                               .value="${this.state?.resource?.code?.text}" 
                                @change="${_ => this.onUserInput(_,"resource.code.text")}" />
                         <datalist id="pzn.pznTexts">
-                        ${Object.keys(this.state.pznLookup).map((pznName)=>html`<option value="${pznName}">`)}
+                          ${FIELD_PZN_TYPE.map(pznRow=>html`<option value="${pznRow.label}">${pznRow.value}`)}
                         </datalist>
                     </div>
                     <div class="fieldRow">
                         <label for="pzn.pznCode">PZN</label>
-                        <input id="pzn.pznCode" .value="${this.state?.medicationItem.resource?.code?.coding[0]?.code}" @change="${_ => this.onUserInput(_,"resource.code.coding.0.code")}" />
+                        <input id="pzn.pznCode"
+                                list="pzn.pznCodes"
+                               .value="${this.state?.resource?.code?.coding[0]?.code}" 
+                               @change="${_ => this.onUserInput(_,"resource.code.coding.0.code")}" />
+                        <datalist id="pzn.pznCodes">
+                          ${FIELD_PZN_TYPE.map(pznRow=>html`<option value="${pznRow.value}">${pznRow.label}`)}
+                        </datalist>
                         <!-- <edit-field statePath="prescriptions.MedikamentPopup" mapKey="pzn" label="PZN" ratio="0.5" id="medic-pzn"></edit-field> -->
                     </div>
                     <!-- <div class="fieldRow">
@@ -73,7 +83,7 @@ class MedicationPopup extends BElement {
     }
 
     view() {
-        let profile = this.state?.medicationItem.resource?.meta?.profile[0];
+        let profile = this.state?.resource?.meta?.profile[0];
         return html`
             <div class="modal" id="medicEdit" style="max-width: 800px;">
                 <!-- header -->
