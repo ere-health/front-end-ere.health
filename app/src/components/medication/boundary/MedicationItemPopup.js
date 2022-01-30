@@ -4,7 +4,6 @@ import {
   changeMedicationItemProfile,
   updateMedicationItem,
   saveMedicationItem,
-  clearMedicationItem,
   cancelMedicationItem,
   deleteMedicationItem
 } from "../control/MedicationItemControl.js";
@@ -29,35 +28,35 @@ class MedicationPopup extends BElement {
 
     getProfileForm(profile) {
         switch (profile){
-            case MedicationItemTypeFreeText.profile:
+            case MedicationItemTypeFreeText.urlProfile:
                 return html`<!-- Show this form for FreeText  -->
                 <div style="text-align:left">
                     <div class="fieldRow">
-                        <label for="free.medicationText">Freitext</label>
-                        <input id="free.medicationText" .value="${this.state?.resource?.code?.text}" @change="${_ => this.onUserInput(_,"resource.code.text")}" />
+                        <label for="medicationText">Freitext</label>
+                        <input id="medicationText" .value="${this.state.medicationText}" @change="${_ => this.onUserInput(_)}" />
                     </div>
                 </div>`;
 
-            case MedicationItemTypePZN.profile:
+            case MedicationItemTypePZN.urlProfile:
                 return html`<!-- Show this form for PZN  -->
                 <div style="text-align:left">
                     <div class="fieldRow">
-                        <label for="pzn.pznText">Handelsname</label>
-                        <input id="pzn.pznText"
-                               list="pzn.pznTexts"
-                               .value="${this.state?.resource?.code?.text}" 
+                        <label for="pznText">Handelsname</label>
+                        <input id="pznText"
+                               list="pznTexts"
+                               .value="${this.state.pznText}" 
                                @change="${_ => this.onUserInput(_,"resource.code.text")}" />
-                        <datalist id="pzn.pznTexts">
+                        <datalist id="pznTexts">
                           ${FIELD_PZN_TYPE.map(pznRow=>html`<option value="${pznRow.label}">${pznRow.value}`)}
                         </datalist>
                     </div>
                     <div class="fieldRow">
-                        <label for="pzn.pznCode">PZN</label>
-                        <input id="pzn.pznCode"
-                                list="pzn.pznCodes"
-                               .value="${this.state?.resource?.code?.coding[0]?.code}" 
+                        <label for="pznCode">PZN</label>
+                        <input id="pznCode"
+                                list="pznCodes"
+                               .value="${this.state.pznCode}" 
                                @change="${_ => this.onUserInput(_,"resource.code.coding.0.code")}" />
-                        <datalist id="pzn.pznCodes">
+                        <datalist id="pznCodes">
                           ${FIELD_PZN_TYPE.map(pznRow=>html`<option value="${pznRow.value}">${pznRow.label}`)}
                         </datalist>
                         <!-- <edit-field statePath="prescriptions.MedikamentPopup" mapKey="pzn" label="PZN" ratio="0.5" id="medic-pzn"></edit-field> -->
@@ -72,10 +71,10 @@ class MedicationPopup extends BElement {
                     </div> -->
                 </div>`;
 
-            case MedicationItemTypeIngredient.profile:
+            case MedicationItemTypeIngredient.urlProfile:
 
 
-            case MedicationItemTypeCompounding.profile:
+            case MedicationItemTypeCompounding.urlProfile:
 
 
             default:
@@ -83,34 +82,33 @@ class MedicationPopup extends BElement {
     }
 
     view() {
-        let profile = this.state?.resource?.meta?.profile[0];
         return html`
-            <div class="modal" id="medicEdit" style="max-width: 800px;">
+            <form class="modal" id="medicEdit" style="max-width: 800px;">
                 <!-- header -->
                 <div class="modal-title" style="text-align:left">
                     <p style="text-align:left"><strong>Medikament</strong></p>
                 </div>
                 <!-- profile changer -->
                 <select @change="${_ => changeMedicationItemProfile(_.target.value)}">
-                    <option value=${MedicationItemTypePZN.profile}         ?selected=${profile === MedicationItemTypePZN.profile}>PZN</option>
-                    <option value=${MedicationItemTypeFreeText.profile}    ?selected=${profile === MedicationItemTypeFreeText.profile}>Freitext</option>
-                    <option value=${MedicationItemTypeIngredient.profile}  ?selected=${profile === MedicationItemTypeIngredient.profile}>Wirkstoff</option>
-                    <option value=${MedicationItemTypeCompounding.profile} ?selected=${profile === MedicationItemTypeCompounding.profile}>Rezeptur</option>
+                    <option value=${MedicationItemTypePZN.urlProfile}         ?selected=${this.state.profile === MedicationItemTypePZN.urlProfile}>PZN</option>
+                    <option value=${MedicationItemTypeFreeText.urlProfile}    ?selected=${this.state.profile === MedicationItemTypeFreeText.urlProfile}>Freitext</option>
+                    <option value=${MedicationItemTypeIngredient.urlProfile}  ?selected=${this.state.profile === MedicationItemTypeIngredient.urlProfile}>Wirkstoff</option>
+                    <option value=${MedicationItemTypeCompounding.urlProfile} ?selected=${this.state.profile === MedicationItemTypeCompounding.urlProfile}>Rezeptur</option>
                 </select>
                 <!-- include the Profile's corresponding Form -->
-                ${this.getProfileForm(profile)}
+                ${this.getProfileForm(this.state.profile)}
                 <!-- Cancel and Save buttons -->
                 <div class="modal-buttons">
                     <button class="cancel"  @click="${() => this.onCancelButtonClick()}">Abbrechen</button>
                     <button class="ok-next" @click="${e => this.onSaveButtonClick(e)}">Speichern</button>
                 </div>
                 <div id="medicEdit-error-messages"/>
-            </div>
+            </form>
         `;
     }
 
-    onUserInput({ target: { value } }, path) { 
-        updateMedicationItem(path,value);
+    onUserInput({ target: { id, value } }) { 
+        updateMedicationItem(id,value);
     }
 
     onCancelButtonClick() {
@@ -124,8 +122,6 @@ class MedicationPopup extends BElement {
         form.reportValidity();
         if(form.checkValidity()){
             saveMedicationItem();
-            clearMedicationItem();
-            form.reset();
         }
     }
 }

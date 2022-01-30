@@ -1,18 +1,46 @@
 // MedicationItemType
 export const MedicationItemType = {
-
-  buildEmptyFHIR: (profile, uuid) => {
+  getType: (profile) => {
     switch (profile){
-      case MedicationItemTypeFreeText.profile:
-          return MedicationItemTypeFreeText.buildEmptyFHIR(uuid);
-      case MedicationItemTypePZN.profile:
-          return MedicationItemTypePZN.buildEmptyFHIR(uuid);
-      case MedicationItemTypeIngredient.profile:
-          return MedicationItemTypeIngredient.buildEmptyFHIR(uuid);
-      case MedicationItemTypeCompounding.profile:
-          return MedicationItemTypeCompounding.buildEmptyFHIR(uuid);
+      case MedicationItemTypeFreeText.urlProfile:
+          return MedicationItemTypeFreeText;
+      case MedicationItemTypePZN.urlProfile:
+          return MedicationItemTypePZN;
+      case MedicationItemTypeIngredient.urlProfile:
+          return MedicationItemTypeIngredient;
+      case MedicationItemTypeCompounding.urlProfile:
+          return MedicationItemTypeCompounding;
       default:
     }
+  },
+
+  buildEmptyFHIR: (profile, uuid) => {
+    let medicationItemType = MedicationItemType.getType(profile);
+    if (medicationItemType) 
+        return medicationItemType?.buildEmptyFHIR(uuid);
+    return {};
+  },
+
+  buildFHIR: (medicationItem) => {
+    let medicationItemType = MedicationItemType.getType(medicationItem?.profile);
+    if (medicationItemType) 
+        return medicationItemType.buildFHIR(medicationItem);
+    return {};
+  },
+
+  getProfileFromFHIR: (medicationItemFHIR) => {
+    return medicationItemFHIR?.resource?.meta?.profile[0];
+  },
+  getUUIDfromFHIR: (medicationItemFHIR) => {
+    return medicationItemFHIR?.resource?.id;
+  },
+
+  getValuesFromFHIR: (medicationItemFHIR) =>{
+    let profile = MedicationItemType.getProfileFromFHIR(medicationItemFHIR);
+    let medicationItemType = MedicationItemType.getType(profile);
+    if (medicationItemType) 
+        return medicationItemType?.getValuesFromFHIR(medicationItemFHIR);
+    return {};
   },
 
   setObjectAttribute: (object,path,value) => {
@@ -31,15 +59,31 @@ export const MedicationItemType = {
 
 // PZN
 export const MedicationItemTypePZN = {
-  profile : 'https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Medication_PZN|1.0.2',
+  urlProfile : 'https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Medication_PZN|1.0.2',
+  urlNormgroesse : 'http://fhir.de/StructureDefinition/normgroesse',
 
-  buildFHIR : function ({uuid, normgroesseCode, pznCode, pznText, dformCode}) {
+  getValuesFromFHIR: (medicationItemFHIR) =>{
+    return {
+      profile:         MedicationItemType.getProfileFromFHIR(medicationItemFHIR),
+      uuid:            MedicationItemType.getUUIDfromFHIR(medicationItemFHIR),
+      normgroesseCode: medicationItemFHIR
+                        ?.resource
+                        ?.extension
+                        ?.filter(object=>object.url==MedicationItemTypePZN.urlNormgroesse)[0]
+                        ?.valueCode,
+      pznText:         medicationItemFHIR?.resource?.code?.text,
+      pznCode:         medicationItemFHIR?.resource?.code?.coding[0]?.code,
+      dformCode:       medicationItemFHIR?.resource?.form?.coding[0]?.code,
+    }
+  },
+
+  buildFHIR : ({uuid, normgroesseCode, pznCode, pznText, dformCode}) => {
     return {
       fullUrl: 'http://pvs.praxis.local/fhir/Medication/'+uuid,
       resource: {
         resourceType: 'Medication',
         id: uuid,
-        meta: {profile: [this.profile]},
+        meta: {profile: [MedicationItemTypePZN.urlProfile]},
         extension: [
           { url: 'https://fhir.kbv.de/StructureDefinition/KBV_EX_ERP_Medication_Category',
             valueCoding: {
@@ -80,7 +124,15 @@ export const MedicationItemTypePZN = {
 
 // FREETEXT
 export const MedicationItemTypeFreeText = {
-  profile : 'https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Medication_FreeText|1.0.2',
+  urlProfile : 'https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Medication_FreeText|1.0.2',
+
+  getValuesFromFHIR: (medicationItemFHIR) =>{
+    return {
+      profile: MedicationItemType.getProfileFromFHIR(medicationItemFHIR),
+      uuid: medicationItemFHIR?.resource?.id,
+      medicationText: medicationItemFHIR?.resource?.code?.text,
+    }
+  },
 
   buildFHIR : function ({uuid, medicationText}) {
     return {
@@ -88,7 +140,7 @@ export const MedicationItemTypeFreeText = {
       resource: {
         resourceType: 'Medication',
         id: uuid,
-        meta: {profile: [this.profile]},
+        meta: {profile: [this.urlProfile]},
         extension: [
           { url: 'https://fhir.kbv.de/StructureDefinition/KBV_EX_ERP_Medication_Category',
             valueCoding: {
@@ -119,7 +171,7 @@ export const MedicationItemTypeFreeText = {
 
 // INGREDIENT
 export const MedicationItemTypeIngredient = {
-  profile : 'https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Medication_Ingredient|1.0.2',
+  urlProfile : 'https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Medication_Ingredient|1.0.2',
 
   buildFHIR : function ({uuid, normgroesseCode, formText, ingredients}){
     return {
@@ -127,7 +179,7 @@ export const MedicationItemTypeIngredient = {
       resource: {
         resourceType: 'Medication',
         id: uuid,
-        meta: { profile: [this.profile] },
+        meta: { profile: [this.urlProfile] },
         extension: [
           { url: 'https://fhir.kbv.de/StructureDefinition/KBV_EX_ERP_Medication_Category',
             valueCoding: {
@@ -164,7 +216,7 @@ export const MedicationItemTypeIngredient = {
 
 // COMPOUNDING
 export const MedicationItemTypeCompounding = {
-  profile : 'https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Medication_Compounding|1.0.2',
+  urlProfile : 'https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Medication_Compounding|1.0.2',
 
   buildFHIR : function ({uuid, packagingText, typeText, formText, 
                          amountNumeratorValue, amountNumeratorUnit, amountDenominatorValue,
@@ -174,7 +226,7 @@ export const MedicationItemTypeCompounding = {
       resource: {
         resourceType: 'Medication',
         id: uuid,
-        meta: { profile: [this.profile] },
+        meta: { profile: [this.urlProfile] },
         extension: [
           { url: 'https://fhir.kbv.de/StructureDefinition/KBV_EX_ERP_Medication_Category',
             valueCoding: {

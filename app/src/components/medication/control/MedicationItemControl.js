@@ -21,11 +21,6 @@ export const saveMedicationItem = (id) => {
     store.dispatch(saveMedicationItemAction(id));
 }
 
-export const clearMedicationItemAction = createAction("clearMedicationItemAction");
-export const clearMedicationItem = _ => {
-    store.dispatch(clearMedicationItemAction());
-}
-
 export const cancelMedicationItemAction = createAction("cancelMedicationItemAction");
 export const cancelMedicationItem = _ => {
     store.dispatch(cancelMedicationItemAction());
