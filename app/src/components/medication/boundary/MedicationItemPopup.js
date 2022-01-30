@@ -18,7 +18,7 @@ import {
     FIELD_NORMGROESSE_TYPE, 
     FIELD_DARREICH_TYPE, 
     FIELD_PZN_TYPE 
-} from "./fieldselectoptions.js";
+} from "../fieldselectoptions.js";
 
 class MedicationPopup extends BElement {
 

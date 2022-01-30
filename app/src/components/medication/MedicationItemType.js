@@ -1,3 +1,7 @@
+import { 
+  FIELD_PZN_TYPE 
+} from "./fieldselectoptions.js";
+
 // MedicationItemType
 export const MedicationItemType = {
   urlNormgroesse : 'http://fhir.de/StructureDefinition/normgroesse',
@@ -15,6 +19,13 @@ export const MedicationItemType = {
           return MedicationItemTypeCompounding;
       default:
     }
+  },
+
+  buildEmpty: (profile, uuid) => {
+    let medicationItemType = MedicationItemType.getType(profile);
+    if (medicationItemType) 
+        return medicationItemType?.buildEmpty(uuid);
+    return {};
   },
 
   buildEmptyFHIR: (profile, uuid) => {
@@ -46,15 +57,26 @@ export const MedicationItemType = {
     return {};
   },
 
-  setObjectAttribute: (object,path,value) => {
+  setObjectAttribute: (medicationItem,path,value) => {
     let parts = path.split(/\./);
     for (let i=0; i<parts.length; i++){
         let actualElement = parts[i];
         if (Number.isInteger(actualElement)) actualElement = Number.parseInt(actualElement);
         if (i<parts.length-1)
-            object = object[actualElement];
-        else
-            object[actualElement] = value;
+            medicationItem = medicationItem[actualElement];
+        else {
+            medicationItem[actualElement] = value;
+            switch (actualElement){
+              case 'pznCode':
+                let pznText = FIELD_PZN_TYPE.filter(pznRow=>pznRow.value===value)?.[0]?.label;
+                if (pznText) medicationItem['pznText'] = pznText;
+                break;
+              case 'pznText':
+                let pznCode = FIELD_PZN_TYPE.filter(pznRow=>pznRow.label===value)?.[0]?.value;
+                if (pznCode) medicationItem['pznCode'] = pznCode;
+                break;
+            }
+        }
     }
   },
 
@@ -77,6 +99,21 @@ export const MedicationItemTypePZN = {
       dformCode:       medicationItemFHIR?.resource?.form?.coding?.[0]?.code,
     }
   },
+
+  buildEmpty: (uuid) => {
+    return {
+      profile:         MedicationItemTypePZN.urlProfile,    
+      uuid:            uuid, 
+      normgroesseCode: '',
+      pznCode:         '',
+      pznText:         '',
+      dformCode:       '',
+    };
+  },
+
+  buildEmptyFHIR: (uuid) => MedicationItemTypePZN.buildFHIR(
+    MedicationItemTypePZN.buildEmpty(uuid)
+  ),
 
   buildFHIR : ({uuid, normgroesseCode, pznCode, pznText, dformCode}) => {
     return {
@@ -112,15 +149,6 @@ export const MedicationItemTypePZN = {
     }
   },
 
-  buildEmptyFHIR: (uuid) => {
-    return MedicationItemTypePZN.buildFHIR({
-      uuid:            uuid, 
-      normgroesseCode: '',
-      pznCode:         '',
-      pznText:         '',
-      dformCode:       '',
-    })
-  }    
 }
 
 // FREETEXT
@@ -134,6 +162,18 @@ export const MedicationItemTypeFreeText = {
       medicationText: medicationItemFHIR?.resource?.code?.text,
     }
   },
+
+  buildEmpty: (uuid) => {
+    return {
+      profile:        MedicationItemTypeFreeText.urlProfile,      
+      uuid:           uuid, 
+      medicationText: '',
+    };
+  }, 
+
+  buildEmptyFHIR: (uuid) => MedicationItemTypeFreeText.buildFHIR(
+    MedicationItemTypeFreeText.buildEmpty(uuid)
+  ),
 
   buildFHIR : function ({uuid, medicationText}) {
     return {
@@ -160,14 +200,7 @@ export const MedicationItemTypeFreeText = {
         }
       }
     }
-  },
-
-  buildEmptyFHIR: (uuid) => {
-    return MedicationItemTypeFreeText.buildFHIR({
-      uuid:            uuid, 
-      medicationText: '',
-    })
-  }  
+  }, 
 }
 
 // INGREDIENT
@@ -185,6 +218,20 @@ export const MedicationItemTypeIngredient = {
       ingredients:     Ingredients.getValuesFromFHIR(medicationItemFHIR?.resource?.ingredient),
     }
   },
+
+  buildEmpty: (uuid) => {
+    return {
+      profile:         MedicationItemTypeIngredient.urlProfile,
+      uuid:            uuid, 
+      normgroesseCode: '',
+      formText:        '',
+      ingredients: [{itemCode:'', itemText:'', ingredientForm:'', strengthText:'', numeratorValue:1, numeratorUnit:'', denominatorValue:1}]
+    };
+  },
+
+  buildEmptyFHIR: (uuid) => MedicationItemTypeIngredient.buildFHIR(
+    MedicationItemTypeIngredient.buildEmpty(uuid)
+  ),
 
   buildFHIR : ({uuid, normgroesseCode, formText, ingredients}) => {
     return {
@@ -217,14 +264,6 @@ export const MedicationItemTypeIngredient = {
     }
   },
 
-  buildEmptyFHIR: (uuid) => {
-    return MedicationItemTypeIngredient.buildFHIR({
-      uuid:            uuid, 
-      normgroesseCode: '',
-      formText:        '',
-      ingredients: [{itemCode:'', itemText:'', ingredientForm:'', strengthText:'', numeratorValue:1, numeratorUnit:'', denominatorValue:1}]
-    })
-  }
 }
 
 // COMPOUNDING
@@ -246,6 +285,24 @@ export const MedicationItemTypeCompounding = {
       ingredients:   Ingredients.getValuesFromFHIR(medicationItemFHIR?.resource?.ingredient),
     }
   },
+
+  buildEmpty: (uuid) => {
+    return {
+      profile:       MedicationItemTypeCompounding.urlProfile,
+      uuid:          uuid, 
+      packagingText: '',
+      typeText:      '',
+      formText:      '',
+      amountNumeratorValue: 1,
+      amountNumeratorUnit:  '',
+      amountDenominatorValue: 1,
+      ingredients: [{itemCode:'', itemText:'', formText:'', strengthText:'', numeratorValue:1, numeratorUnit:'', denominatorValue:1}]
+    }
+  },
+
+  buildEmptyFHIR: (uuid) => MedicationItemTypeCompounding.buildFHIR(
+    MedicationItemTypeCompounding.buildEmpty(uuid)
+  ),
 
   buildFHIR : ({uuid, packagingText, typeText, formText, 
                 amountNumeratorValue, amountNumeratorUnit, amountDenominatorValue,
@@ -281,19 +338,6 @@ export const MedicationItemTypeCompounding = {
       }
     }
   },
-
-  buildEmptyFHIR: (uuid) => {
-    return MedicationItemTypeCompounding.buildFHIR({
-      uuid:          uuid, 
-      packagingText: '',
-      typeText:      '',
-      formText:      '',
-      amountNumeratorValue: 1,
-      amountNumeratorUnit:  '',
-      amountDenominatorValue: 1,
-      ingredients: [{itemCode:'', itemText:'', formText:'', strengthText:'', numeratorValue:1, numeratorUnit:'', denominatorValue:1}]
-    })
-  }
 }
 
 const Ingredients = {

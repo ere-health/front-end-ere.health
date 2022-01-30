@@ -23,7 +23,7 @@ export const medicationItemReducer = createReducer(initialState, (builder) => {
         state.medicationItem = MedicationItemType.getValuesFromFHIR(payload);
 
     }).addCase(changeMedicationItemProfileAction, (state, { payload }) => {
-        state.medicationItem = MedicationItemType.buildEmptyFHIR(payload, state.medicationItem.uuid);
+        state.medicationItem = MedicationItemType.buildEmpty(payload, state.medicationItem.uuid);
 
     }).addCase(updateMedicationItemAction, (state, { payload: { path, value } }) => {
         MedicationItemType.setObjectAttribute(state.medicationItem, path, value);
