@@ -23,7 +23,17 @@ import {
 import { Mapper } from "../../../libs/helper/Mapper.js";
 import { updatePrescription } from "../../../prescriptions/control/UnsignedPrescriptionControl.js";
 import { PopupRules, PopupErrorMessages } from "../../../prescriptions/boundary/ValidationRules.js";
-import { FIELD_CLINIC_TYPE, FIELD_PRACTID_TYPE, FIELD_NORMGROBE_TYPE, FIELD_DARREICH_TYPE, FIELD_PRACTQUALI_CODE, FIELD_STATUS_VERSICHERTENART, FIELD_STATUS_BESONDERE, FIELD_STATUS_ZUORDNUNG, FIELD_STATUS_STATUSKENNZEICHEN } from "./fieldselectoptions";
+import { 
+  FIELD_CLINIC_TYPE, 
+  FIELD_PRACTID_TYPE, 
+  FIELD_NORMGROBE_TYPE, 
+  FIELD_DARREICH_TYPE, 
+  FIELD_PRACTQUALI_CODE, 
+  FIELD_STATUS_VERSICHERTENART, 
+  FIELD_STATUS_BESONDERE, 
+  FIELD_STATUS_ZUORDNUNG, 
+  FIELD_STATUS_STATUSKENNZEICHEN 
+} from "./fieldselectoptions.js";
 
 
 export class BasePopup extends BElement {

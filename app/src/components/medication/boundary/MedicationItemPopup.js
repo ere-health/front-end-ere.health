@@ -15,9 +15,9 @@ import {
 } from "../MedicationItemType.js";
 
 import { 
+    FIELD_PZN_TYPE,
     FIELD_NORMGROESSE_TYPE, 
     FIELD_DARREICH_TYPE, 
-    FIELD_PZN_TYPE 
 } from "../fieldselectoptions.js";
 
 class MedicationPopup extends BElement {
@@ -82,8 +82,6 @@ class MedicationPopup extends BElement {
                                .value="${this.state.pznText}"
                                @change="${event=> this.onUserInput(event)}"
                         />
-                    </div>
-                    <div class="fieldRow">
                         <label for="pznCode">PZN</label>
                         <input id="pznCode"
                                list="pznCodes"
@@ -92,10 +90,21 @@ class MedicationPopup extends BElement {
                         />
                     </div>
                     <div class="fieldRow">
+                    <label for="nominatorValue">Menge</label>
+                        <input id="nominatorValue"
+                               type="number" min="0" max="10000"
+                               .value="${this.state.nominatorValue}"
+                               @change="${event=> this.onUserInput(event)}"
+                        />
                         <label for="pznText">Normgröße</label>
                         <select id="normgroesseCode" @change="${event => this.onUserInput(event)}">
                             ${FIELD_NORMGROESSE_TYPE.map(row=>html`<option value="${row.value}" ?selected=${this.state.normgroesseCode === row.value}>${row.label}</option>`)}
-                        </select>                        
+                        </select>
+                        <label for="dformCode">Darreichungsform</label>
+                        <select id="dformCode" @change="${event => this.onUserInput(event)}">
+                            ${FIELD_DARREICH_TYPE.map(row=>html`<option value="${row.value}" ?selected=${this.state.dformCode === row.value}>${row.label}</option>`)}
+                        </select>  
+
                         <edit-field statePath="prescriptions.MedikamentPopup" mapKey="quantityValue" label="Menge" id="medic-quantity"></edit-field>
                         <select-field statePath="prescriptions.MedikamentPopup" mapKey="form" label="Darreichungsform" items="${JSON.stringify(FIELD_DARREICH_TYPE)}"></select-field> 
                     </div>
