@@ -57,23 +57,23 @@ export const MedicationItemType = {
     return {};
   },
 
-  setObjectAttribute: (medicationItem,path,value) => {
+  setObjectAttribute: (object,path,value) => {
     let parts = path.split(/\./);
     for (let i=0; i<parts.length; i++){
         let actualElement = parts[i];
         if (Number.isInteger(actualElement)) actualElement = Number.parseInt(actualElement);
         if (i<parts.length-1)
-            medicationItem = medicationItem[actualElement];
+            object = object?.[actualElement];
         else {
-            medicationItem[actualElement] = value;
+            object[actualElement] = value;
             switch (actualElement){
               case 'pznCode':
                 let pznText = FIELD_PZN_TYPE.filter(pznRow=>pznRow.value===value)?.[0]?.label;
-                if (pznText) medicationItem['pznText'] = pznText;
+                if (pznText) object['pznText'] = pznText;
                 break;
               case 'pznText':
                 let pznCode = FIELD_PZN_TYPE.filter(pznRow=>pznRow.label===value)?.[0]?.value;
-                if (pznCode) medicationItem['pznCode'] = pznCode;
+                if (pznCode) object['pznCode'] = pznCode;
                 break;
             }
         }
