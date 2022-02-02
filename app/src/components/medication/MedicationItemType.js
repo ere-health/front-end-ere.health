@@ -82,7 +82,7 @@ export const MedicationItemType = {
 
 }
 
-// PZN
+// PZN: https://simplifier.net/erezept/kbvprerpmedicationpzn
 export const MedicationItemTypePZN = {
   urlProfile : 'https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Medication_PZN|1.0.2',
 
@@ -151,7 +151,7 @@ export const MedicationItemTypePZN = {
 
 }
 
-// FREETEXT
+// FREETEXT: https://simplifier.net/erezept/kbvprerpmedicationfreetext
 export const MedicationItemTypeFreeText = {
   urlProfile : 'https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Medication_FreeText|1.0.2',
 
@@ -203,7 +203,7 @@ export const MedicationItemTypeFreeText = {
   }, 
 }
 
-// INGREDIENT
+// INGREDIENT: https://simplifier.net/erezept/kbvprerpmedicationingredient
 export const MedicationItemTypeIngredient = {
   urlProfile : 'https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Medication_Ingredient|1.0.2',
 
@@ -266,7 +266,7 @@ export const MedicationItemTypeIngredient = {
 
 }
 
-// COMPOUNDING
+// COMPOUNDING: https://simplifier.net/erezept/kbvprerpmedicationcompounding
 export const MedicationItemTypeCompounding = {
   urlProfile : 'https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Medication_Compounding|1.0.2',
 
@@ -405,4 +405,33 @@ const Amount = {
         denominator: { value: denominatorValue }
       }
   }
+}
+
+// MedicationRequest.PRESCRIPTION: https://simplifier.net/erezept/kbvprerpprescription
+export const MedicationRequestPrescription = {
+  urlProfile : 'https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Medication_Compounding|1.0.2',
+
+  getValuesFromFHIR: (medicationRequestFHIR) =>{
+    return {
+      profile:       MedicationItemType.getProfileFromFHIR(medicationRequestFHIR),
+      uuid:          MedicationItemType.getUUIDfromFHIR(medicationRequestFHIR),
+   }
+  },
+
+  buildEmpty: (uuid) => {
+    return {
+      profile:       MedicationRequestPrescription.urlProfile,
+      uuid:          uuid, 
+    }
+  },
+
+  buildEmptyFHIR: (uuid) => MedicationRequestPrescription.buildFHIR(
+    MedicationRequestPrescription.buildEmpty(uuid)
+  ),
+
+  buildFHIR : ({uuid, }) => {
+    return {
+
+    }
+  },
 }

@@ -204,12 +204,12 @@ export const prescriptions = createReducer(initialState, (builder) => {
             setWop(psp, value);
 
           } else if(name === 'accident') {
-			const medicationRequest = psp.read("entry[resource.resourceType?MedicationRequest].resource");
-			// Remove accident extension
-			medicationRequest.extension = medicationRequest.extension.filter(e => e.url != "https://fhir.kbv.de/StructureDefinition/KBV_EX_ERP_Accident");
-			if(value) {
-				medicationRequest.extension.push(value);
-			}
+            const medicationRequest = psp.read("entry[resource.resourceType?MedicationRequest].resource");
+            // Remove accident extension
+            medicationRequest.extension = medicationRequest.extension.filter(e => e.url != "https://fhir.kbv.de/StructureDefinition/KBV_EX_ERP_Accident");
+            if(value) {
+              medicationRequest.extension.push(value);
+            }
             // Required values
           } else {
             if (key) {
@@ -220,7 +220,7 @@ export const prescriptions = createReducer(initialState, (builder) => {
           setPrescriptionInState(state, prescription);
         }
 
-        //Popup values, some code could be cleaned here
+      //Popup values, some code could be cleaned here
       } else {
         index = index ?? 0;
         if (statePath?.indexOf("prescriptions") === 0) {
@@ -578,10 +578,10 @@ export const prescriptions = createReducer(initialState, (builder) => {
     state.MedikamentPopup = {
       index,
       medicationText: psp.read("entry[resource.resourceType=Medication].resource.code.text"),
-      pzn: psp.read("entry[resource.resourceType=Medication].resource.code.coding[system?pzn].code"),
-      quantityValue: psp.read("entry[resource.resourceType?MedicationRequest].resource.dispenseRequest.quantity.value"),
-      norm: psp.read("entry[resource.resourceType=Medication].resource.extension[url?normgroesse].valueCode"),
-      form: psp.read("entry[resource.resourceType=Medication].resource.form.coding[system?KBV_CS_SFHIR_KBV_DARREICHUNGSFORM].code"),
+      pznCode: psp.read("entry[resource.resourceType=Medication].resource.code.coding[system?pzn].code"),
+      dispenseQuantity: psp.read("entry[resource.resourceType?MedicationRequest].resource.dispenseRequest.quantity.value"),
+      normgroesseCode: psp.read("entry[resource.resourceType=Medication].resource.extension[url?normgroesse].valueCode"),
+      dformCode: psp.read("entry[resource.resourceType=Medication].resource.form.coding[system?KBV_CS_SFHIR_KBV_DARREICHUNGSFORM].code"),
       dosageInstruction: psp.read("entry[resource.resourceType?MedicationRequest].resource.dosageInstruction[0].text")
     };
     resetErrorsInMainWindow(state);
@@ -592,29 +592,29 @@ export const prescriptions = createReducer(initialState, (builder) => {
     state.MedikamentPopup = {
       index: state.MedikamentPopup.index,
       medicationText: psp.read("entry[resource.resourceType=Medication].resource.code.text"),
-      pzn: psp.read("entry[resource.resourceType=Medication].resource.code.coding[system?pzn].code"),
-      quantityValue: psp.read("entry[resource.resourceType?MedicationRequest].resource.dispenseRequest.quantity.value"),
-      norm: psp.read("entry[resource.resourceType=Medication].resource.extension[url?normgroesse].valueCode"),
-      form: psp.read("entry[resource.resourceType=Medication].resource.form.coding[system?KBV_CS_SFHIR_KBV_DARREICHUNGSFORM].code"),
+      pznCode: psp.read("entry[resource.resourceType=Medication].resource.code.coding[system?pzn].code"),
+      dispenseQuantity: psp.read("entry[resource.resourceType?MedicationRequest].resource.dispenseRequest.quantity.value"),
+      normgroesseCode: psp.read("entry[resource.resourceType=Medication].resource.extension[url?normgroesse].valueCode"),
+      dformCode: psp.read("entry[resource.resourceType=Medication].resource.form.coding[system?KBV_CS_SFHIR_KBV_DARREICHUNGSFORM].code"),
       dosageInstruction: psp.read("entry[resource.resourceType?MedicationRequest].resource.dosageInstruction[0].text")
     }
   });
   builder.addCase(savePopupEditMedikamentAction, (state) => {
     const psp = new Mapper(state.selectedPrescription.prescriptions[state.MedikamentPopup.index]);
     psp.write("entry[resource.resourceType=Medication].resource.code.text", state.MedikamentPopup.medicationText);
-    psp.write("entry[resource.resourceType=Medication].resource.code.coding[system?pzn].code", state.MedikamentPopup.pzn);
-    psp.write("entry[resource.resourceType?MedicationRequest].resource.dispenseRequest.quantity.value", Number(state.MedikamentPopup.quantityValue));
+    psp.write("entry[resource.resourceType=Medication].resource.code.coding[system?pzn].code", state.MedikamentPopup.pznCode);
+    psp.write("entry[resource.resourceType?MedicationRequest].resource.dispenseRequest.quantity.value", Number(state.MedikamentPopup.dispenseQuantity));
     try {
-      psp.write("entry[resource.resourceType=Medication].resource.extension[url?normgroesse].valueCode", state.MedikamentPopup.norm);
+      psp.write("entry[resource.resourceType=Medication].resource.extension[url?normgroesse].valueCode", state.MedikamentPopup.normgroesseCode);
 
     } catch (ex) {
       let writer = psp.read("entry[resource.resourceType?Medication].resource.extension");
       writer.push({
         "url": "http://fhir.de/StructureDefinition/normgroesse",
-        "valueCode": state.MedikamentPopup.norm
+        "valueCode": state.MedikamentPopup.normgroesseCode
       });
     }
-    psp.write("entry[resource.resourceType=Medication].resource.form.coding[system?KBV_CS_SFHIR_KBV_DARREICHUNGSFORM].code", state.MedikamentPopup.form);
+    psp.write("entry[resource.resourceType=Medication].resource.form.coding[system?KBV_CS_SFHIR_KBV_DARREICHUNGSFORM].code", state.MedikamentPopup.dformCode);
     if (state.MedikamentPopup.dosageInstruction) {
       psp.write("entry[resource.resourceType?MedicationRequest].resource.dosageInstruction[0].extension[url?KBV_EX_ERP_DosageFlag].valueBoolean", true);
       let dosage = psp.read("entry[resource.resourceType?MedicationRequest].resource.dosageInstruction[0]");

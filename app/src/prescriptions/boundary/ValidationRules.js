@@ -5,8 +5,8 @@ export const MainWindowValidationRules = {
     'coverage-payor-display': ['required', 'regex:/^.{1,50}$/'],
     
     'medicationText-0': ['required', 'regex:/^.{1,1048576}$/'],
-    'pzn-0': ['required', 'regex:/((^[0-9]{6,8}$)|(^freitext$)|(^wirkstoff$))/'],
-    'dosage-instructions-0': ['regex:/^.{1,30}$/'],
+    'pznCode-0': ['required', 'regex:/((^[0-9]{6,8}$)|(^freitext$)|(^wirkstoff$))/'],
+    'dosageInstruction-0': ['regex:/^.{1,30}$/'],
     
     'full-patient-address': ['required',
         'regex:/^[a-z A-ZäöüÄÖÜß\\-\\.]{0,20} ?[a-z A-ZäöüÄÖÜß\'\\-]{1,50} [a-z A-ZäöüÄÖÜß\\-\\.]{1,50}, [a-z A-ZäöüÄÖÜß\\-\\.0-9]{1,50} [a-z A-ZäöüÄÖÜß\\-\\.0-9]{1,10}, [0-9]{5} [a-z A-ZäöüÄÖÜß\\-\\.]{1,32}$/'],
@@ -77,12 +77,12 @@ export const PractIdPopupValidationRules = {
 
 export const MedicPopupValidationRules = {
     //String, copy of MainWindows value
-    'medic-medicationText': ['required', 'regex:/^.{1,50}$/'],
-    'medic-pzn': ['required', 'regex:/^[0-9]{6,8}$/'],
-    'medic-dosage-instructions': ['regex:/^.{1,30}$/'],
+    'medicEdit-medicationText': ['required', 'regex:/^.{1,50}$/'],
+    'medicEdit-pznCode': ['required', 'regex:/^[0-9]{6,8}$/'],
+    'medicEdit-dosageInstruction': ['regex:/^.{1,30}$/'],
 
     //Number
-    'medic-quantity': ['regex:/^[0-9]{1,3}$/']
+    'medicEdit-dispenseQuantity': ['regex:/^[0-9]{1,3}$/']
 };
 
 export const PopupRules = {
@@ -103,11 +103,11 @@ export const MainWindowErrorMessages = {
         required: 'Es muss ein Medikamentenname angegeben werden',
         regex: 'Der Medikamentenname muss zwischen 1 bis 50 Zeichen lang sein'
     },
-    'pzn' : {
+    'pznCode' : {
         required: 'Es muss eine PZN-Nummer angegbene werden',
         regex: 'Die PZN Nummer muss zwischen 6 und 8 Ziffern lang sein'
     },
-    'dosage-instructions' : {
+    'dosageInstruction' : {
         regex: 'Die Dosierungsintruktions muss zwischen 1 und 30 Zeichen lang sein'
     },
     'full-patient-address' :{
@@ -233,18 +233,18 @@ export const PractIdErrorMessages = {
 };
 
 export const MedicPopupErrorMessages = {
-    'medic-medicationText': {
+    'medicEdit-medicationText': {
         required: 'Der Medikamentenname muss angegeben werden',
         regex: 'Der Medikamentenname muss zwischen 1 bis 50 Buchstaben lang sein'
     },
-    'medic-pzn' : {
+    'medicEdit-pznCode' : {
         required: 'Die PZN muss vorhanden sein',
         regex: 'Die PZN muss zwischen 6 und 8 Ziffern land sein'
     },
-    'medic-dosage-instructions' : {
+    'medicEdit-dosageInstruction' : {
         regex: 'Die Dosierungsanweisung muss zwischen 1 bis 30 Buchstaben lang sein'
     },
-    'medic-quantity': {
+    'medicEdit-dispenseQuantity': {
         regex: 'Die Anzahl des Medikaments muss zwischen 1 und 3 Ziffern lang sein'
     }
 };

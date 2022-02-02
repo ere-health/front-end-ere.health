@@ -1,17 +1,15 @@
 import BElement from "../../../models/BElement.js";
 import { html } from "../../../libs/lit-html.js";
-import {
-  addActiveClass,
-  removeActiveClass,
-} from "../../../libs/helper/helper.js";
+// import {
+//   addActiveClass,
+//   removeActiveClass,
+// } from "../../../libs/helper/helper.js";
 import {
   cancelPopupEditClinic,
   savePopupEditClinic,
   _hidePopup,
   cancelPopupEditPractId,
   savePopupEditPractId,
-  savePopupEditMedikament,
-  cancelPopupEditMedikament,
   addValidationErrorForCurrentPopup,
   removeValidationErrorForCurrentPopup,
   savePopupEditPatient,
@@ -26,47 +24,13 @@ import { PopupRules, PopupErrorMessages } from "../../../prescriptions/boundary/
 import { 
   FIELD_CLINIC_TYPE, 
   FIELD_PRACTID_TYPE, 
-  FIELD_NORMGROBE_TYPE, 
-  FIELD_DARREICH_TYPE, 
   FIELD_PRACTQUALI_CODE, 
   FIELD_STATUS_VERSICHERTENART, 
   FIELD_STATUS_BESONDERE, 
   FIELD_STATUS_ZUORDNUNG, 
   FIELD_STATUS_STATUSKENNZEICHEN 
 } from "./fieldselectoptions.js";
-
-
-export class BasePopup extends BElement {
-  constructor() {
-    super();
-    this.id = "genPopup";
-  }
-
-  showPopup() {
-    // Open selected popup
-    const overlay = document.getElementById("overlayGen");
-    const modal = document.querySelector("#" + this.id);
-    addActiveClass(modal);
-    addActiveClass(overlay);
-  }
-
-  hidePopup() {
-    const overlay = document.getElementById("overlayGen");
-    const modal = document.querySelector("#" + this.id);
-    removeActiveClass(modal);
-    removeActiveClass(overlay);
-  }
-
-  view() {
-    //this.showPopup();
-    return html`
-      <section class="popup">
-        <div class="modal" id="genPopup"></div>
-        <div id="overlayGen" class="overlay"></div>
-      </section>
-    `;
-  }
-}
+import {MedicamentEditPopup} from "./MedicamentEditPopup.js";
 
 export class EditField extends BElement {
   constructor() {
@@ -80,9 +44,16 @@ export class EditField extends BElement {
     this.useWindow = this.getAttribute('useWindow');
   }
 
-  validateInput(name, value) {
+  validateInput(currentPopupName, name, value) {
     let data = new Object();
     let rule = new Object();
+    data[name] = value;
+    rule[name] = PopupRules[currentPopupName][name];
+    // Validator is from index.html:libs/validator.js
+    return new Validator(data, rule, PopupErrorMessages[currentPopupName][name]);
+  }
+
+  onUserInput(label, value, key, statePath, useWindow, id) {
     let currentPopupName = "";
 
     if (this.id.startsWith('patient')) {
@@ -97,14 +68,7 @@ export class EditField extends BElement {
       currentPopupName = 'medicEdit';
     }
 
-    data[name] = value;
-    rule[name] = PopupRules[currentPopupName][name];
-
-    return new Validator(data, rule, PopupErrorMessages[currentPopupName][name]);
-  }
-
-  onUserInput(label, value, key, statePath, useWindow, id) {
-    let validation = this.validateInput(id, value);
+    let validation = this.validateInput(currentPopupName, id, value);
 
     if (validation.passes()) {
       removeValidationErrorForCurrentPopup(id);
@@ -115,7 +79,7 @@ export class EditField extends BElement {
       } else if ((id.startsWith("practId")) && ((document.getElementById("PractIdEdit-error-messages").innerHTML.trim().length == 0))) {
         document.getElementById("practId-save-button").disabled = false;
       } else if ((id.startsWith("medic")) && ((document.getElementById("medicEdit-error-messages").innerHTML.trim().length == 0))) {
-        document.getElementById("medic-save-button").disabled = false;
+        document.getElementById("medicEdit-save-button").disabled = false;
       } else if ((id.startsWith("patient")) && ((document.getElementById("patientEdit-error-messages").innerHTML.trim().length == 0))) {
         document.getElementById("patient-save-button").disabled = false;
       } else if ((id.startsWith("organization")) && ((document.getElementById("organizationEdit-error-messages").innerHTML.trim().length == 0))) {
@@ -266,41 +230,6 @@ export class PractIdEditPopup extends BElement {
   }
 }
 customElements.define("pract-id-edit-popup", PractIdEditPopup);
-
-export class MedicamentEditPopup extends BElement {
-
-  view() {
-    return html`
-      <div class="modal" id="medicEdit" style="max-width: 800px;">
-        <div class="modal-title" style="text-align:left">
-          <p style="text-align:left"><strong>Medikament</strong></p>
-        </div>
-        <div style="text-align:left">
-          <div class="fieldRow"> 
-            <edit-field statePath="prescriptions.MedikamentPopup" mapKey="medicationText" label="Handelsname" id="medic-medicationText"</edit-field>
-          </div>
-          <div class="fieldRow">
-            <edit-field statePath="prescriptions.MedikamentPopup" mapKey="pzn" label="PZN" ratio="0.5" id="medic-pzn"></edit-field>
-          </div>
-          <div class="fieldRow">
-            <edit-field statePath="prescriptions.MedikamentPopup" mapKey="quantityValue" label="Menge" id="medic-quantity"></edit-field>
-            <select-field statePath="prescriptions.MedikamentPopup" mapKey="norm" label="Normgröße" items="${JSON.stringify(FIELD_NORMGROBE_TYPE)}"></select-field> 
-            <select-field statePath="prescriptions.MedikamentPopup" mapKey="form" label="Darreichungsform" items="${JSON.stringify(FIELD_DARREICH_TYPE)}"></select-field> 
-          </div>
-          <div class="fieldRow"> 
-            <edit-field statePath="prescriptions.MedikamentPopup" mapKey="dosageInstruction" label="Dosierungsanweisung" id="medic-dosage-instructions"</edit-field>
-          </div>
-        </div>
-        <div class="modal-buttons">
-        <button data-close-button class="cancel" @click="${() => cancelPopupEditMedikament()}">Abbrechen</button>
-        <button data-modal-target-processing="#processing" @click="${() => savePopupEditMedikament()}" class="ok-next" id="medic-save-button">Speichern</button>
-    </div>
-    <div id="medicEdit-error-messages"/>
-      </div>
-    `;
-  }
-}
-customElements.define("medicament-edit-popup", MedicamentEditPopup);
 
 export class PatientEditPopup extends BElement {
   cancelPopupEditPatient() {
