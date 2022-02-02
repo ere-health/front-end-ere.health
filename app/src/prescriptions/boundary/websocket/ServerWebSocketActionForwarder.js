@@ -2,6 +2,7 @@ import { addPrescription, addSigned, abortTasksStatus, showHTMLBundles, showGetS
 import { updateSettingsFromServer } from "../../../components/settings/control/SettingsControl.js";
 import { updateStatusFromServer } from "../../../components/status/control/StatusControl.js";
 import { updateCardsFromServer } from "../../../components/cards/control/CardsControl.js";
+import { sshTunnelWorked } from "../../../components/setup/control/WizardControl.js";
 
 class _ServerWebSocketActionForwarder {
 	
@@ -49,6 +50,8 @@ class _ServerWebSocketActionForwarder {
                     showGetSignatureModeResponse(eventData.payload);
                 } else if(eventData.type === "GetCardsResponse") {
                     updateCardsFromServer(eventData.payload.getCardsResponse.cards.card);
+                } else if(eventData.type === "SSHClientPortForwardEvent") {
+                    sshTunnelWorked();
                 } else if(eventData.type === "BundlesValidationResult") {
                     alert(JSON.stringify(eventData.payload));
                 } else if(eventData.type === "ChangePinResponse") {
@@ -86,6 +89,10 @@ class _ServerWebSocketActionForwarder {
         const blob = new Blob(byteArrays, {type: contentType});
         return blob;
     }
+    
+    runtimeConfig(runtimeConfig) {
+		this.runtimeConfig = runtimeConfig;
+	}
 
     uuidv4() {
         return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
@@ -97,6 +104,9 @@ class _ServerWebSocketActionForwarder {
     send(message) {
         if(!("id" in message)) {
 	        message.id = this.uuidv4();
+		}
+		if(this.runtimeConfig) {
+			message.runtimeConfig = this.runtimeConfig;
 		}
         this.socket.send(JSON.stringify(message));
     }

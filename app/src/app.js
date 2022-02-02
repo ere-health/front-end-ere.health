@@ -5,6 +5,7 @@ import './components/layout/boundary/main.js';
 import './components/settings/boundary/settings.js';
 import './components/status/boundary/status.js';
 import './components/cards/boundary/cards.js';
+import './components/setup/boundary/wizard.js';
 import './prescriptions/boundary/websocket/ServerWebSocketActionForwarder.js';
 import loadVosBundleAndConvertToPrescriptionBundle from './prescriptions/boundary/vos/VOSBoundary.js';
 import './prescriptions/boundary/PrescriptionEmpty.js';
@@ -14,7 +15,6 @@ import './prescriptions/boundary/PreviousPresciptionList.js';
 import './prescriptions/boundary/PrescriptionPdf.js';
 import { save } from "./localstorage/control/StorageControl.js";
 import { initialPath } from "./libs/helper/helper.js";
-import { Mapper } from "./libs/helper/Mapper.js";
 
 var browser = (function (agent) {
   switch (true) {

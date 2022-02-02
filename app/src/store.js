@@ -6,6 +6,7 @@ import { mainReducer }   from "./components/layout/entity/MainReducer.js";
 import { settingsReducer }   from "./components/settings/entity/SettingsReducer.js";     
 import { statusReducer }   from "./components/status/entity/StatusReducer.js";     
 import { cardsReducer }   from "./components/cards/entity/CardsReducer.js";     
+import { wizardReducer }   from "./components/setup/entity/WizardReducer.js";
 import { showPopupId }    from "./components/popup/control/PopupControl.js";    
 
 const reducer = {
@@ -14,7 +15,8 @@ const reducer = {
   settingsReducer,
   mainReducer,
   statusReducer,
-  cardsReducer
+  cardsReducer,
+  wizardReducer
 };
 
 const preloadedState = load();

@@ -11,7 +11,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="libs/reconnecting-websocket.js"></script>
     <script src="libs/bundle.js"></script>
-    <script src="libs/pouchdb.min.js"></script>
     <script src="libs/validator.js"></script>
 </head>
 <body class="home-page">
@@ -48,8 +47,12 @@
   </div>
   <div id="overlay"></div>
   </section>
-
-  <main-layout />
+  <div>
+	  <setup-wizard />
+  </div>
+  <div>
+	  <main-layout />
+  </div>
   
   <script src="init.js"></script>
   <script src="app.js" type="module"></script>
