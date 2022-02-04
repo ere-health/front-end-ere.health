@@ -16,6 +16,7 @@ import {
   cancelPopupEditMedikamentAction, 
   savePopupEditMedikamentAction, 
 } from "../../components/popup/control/PopupControl.js";
+import { MedicamentProfile } from "../../components/popup/boundary/MedicamentProfile.js"
 import { Mapper } from "../../libs/helper/Mapper.js";
 import { createReducer } from "../../libs/redux-toolkit.esm.js"
 import serverWebSocketActionForwarder from "../../prescriptions/boundary/websocket/ServerWebSocketActionForwarder.js";
@@ -594,6 +595,7 @@ export const prescriptions = createReducer(initialState, (builder) => {
     const psp = new Mapper(state.selectedPrescription.prescriptions[index]);
     state.MedikamentPopup = {
       index,
+      uuid: psp.read("entry[resource.resourceType=Medication].resource.id"),
       profile: psp.read("entry[resource.resourceType=Medication].resource.meta.profile[0]")?.split('|')[0].split('_').pop(),
       medicationText: psp.read("entry[resource.resourceType=Medication].resource.code.text"),
       pznCode: psp.read("entry[resource.resourceType=Medication].resource.code.coding[system?pzn].code"),
@@ -605,15 +607,9 @@ export const prescriptions = createReducer(initialState, (builder) => {
     resetErrorsInMainWindow(state);
   });
   builder.addCase(changeProfilePopupEditMedikamentAction, (state, { payload: profile }) => {
-    const psp = new Mapper(state.selectedPrescription.prescriptions[state.MedikamentPopup.index]);
-    // MedicationItemType.buildEmpty(payload, state.medicationItem.uuid);
-    state.MedikamentPopup = {
-      index: state.MedikamentPopup.index,
-      profile: profile,
-    }
-  }); 
+    state.MedikamentPopup = MedicamentProfile.buildEmpty(profile, state.MedikamentPopup.index, state.MedikamentPopup.uuid);
+  });
   builder.addCase(cancelPopupEditMedikamentAction, (state) => {
-    const psp = new Mapper(state.selectedPrescription.prescriptions[state.MedikamentPopup.index]);
     state.MedikamentPopup = {};
   }); 
   builder.addCase(savePopupEditMedikamentAction, (state) => {

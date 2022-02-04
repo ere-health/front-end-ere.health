@@ -12,20 +12,23 @@
                           ?.filter(object=>object.url==MedicamentProfile.urlNormgroesse)
                           ?.[0]
                           ?.valueCode,
-        pznText:         medicationItemFHIR?.resource?.code?.text,
+        medicationText:  medicationItemFHIR?.resource?.code?.text,
         pznCode:         medicationItemFHIR?.resource?.code?.coding?.[0]?.code,
         dformCode:       medicationItemFHIR?.resource?.form?.coding?.[0]?.code,
       }
     },
   
-    buildEmpty: (uuid) => {
+    buildEmpty: (index, uuid) => {
       return {
-        profile:         MedicamentProfilePZN.urlProfile,    
-        uuid:            uuid, 
-        normgroesseCode: '',
-        pznCode:         '',
-        pznText:         '',
-        dformCode:       '',
+        index:               index,
+        profile:             MedicamentProfilePZN.profile,    
+        uuid:                uuid, 
+        normgroesseCode:     '',
+        pznCode:             '',
+        pznTemedicationText: '',
+        dformCode:           '',
+        dispenseQuantity:    '',
+        dosageInstruction:   '',
       };
     },
   
@@ -77,17 +80,20 @@
   
     getValuesFromFHIR: (medicationItemFHIR) =>{
       return {
-        profile: MedicamentProfile.getProfileFromFHIR(medicationItemFHIR),
-        uuid: medicationItemFHIR?.resource?.id,
+        profile:        MedicamentProfile.getProfileFromFHIR(medicationItemFHIR),
+        uuid:           medicationItemFHIR?.resource?.id,
         medicationText: medicationItemFHIR?.resource?.code?.text,
       }
     },
   
-    buildEmpty: (uuid) => {
+    buildEmpty: (index, uuid) => {
       return {
-        profile:        MedicamentProfileFreeText.urlProfile,      
+        index:          index,
+        profile:        MedicamentProfileFreeText.profile,      
         uuid:           uuid, 
         medicationText: '',
+        dispenseQuantity:    '',
+        dosageInstruction:   '',
       };
     }, 
   
@@ -141,12 +147,15 @@
       }
     },
   
-    buildEmpty: (uuid) => {
+    buildEmpty: (index, uuid) => {
       return {
-        profile:         MedicamentProfileIngredient.urlProfile,
+        index:           index,
+        profile:         MedicamentProfileIngredient.profile,
         uuid:            uuid, 
         normgroesseCode: '',
         formText:        '',
+        dispenseQuantity:    '',
+        dosageInstruction:   '',
         ingredients: [{itemCode:'', itemText:'', ingredientForm:'', strengthText:'', numeratorValue:1, numeratorUnit:'', denominatorValue:1}]
       };
     },
@@ -210,13 +219,16 @@
       }
     },
   
-    buildEmpty: (uuid) => {
+    buildEmpty: (index, uuid) => {
       return {
-        profile:       MedicamentProfileCompounding.urlProfile,
+        index:         index,
+        profile:       MedicamentProfileCompounding.profile,
         uuid:          uuid, 
         packagingText: '',
         typeText:      '',
         formText:      '',
+        dispenseQuantity:    '',
+        dosageInstruction:   '',        
         amountNumeratorValue: 1,
         amountNumeratorUnit:  '',
         amountDenominatorValue: 1,
@@ -333,6 +345,7 @@
   
   // MedicationRequest.PRESCRIPTION: https://simplifier.net/erezept/kbvprerpprescription
   export const MedicationRequestPrescription = {
+    profile: 'Prescription',
     urlProfile : 'https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Medication_Compounding|1.0.2',
   
     getValuesFromFHIR: (medicationRequestFHIR) =>{
@@ -344,7 +357,7 @@
   
     buildEmpty: (uuid) => {
       return {
-        profile:       MedicationRequestPrescription.urlProfile,
+        profile:       MedicationRequestPrescription.profile,
         uuid:          uuid, 
       }
     },
@@ -373,36 +386,36 @@ export const MedicamentProfile = {
   
   getType: (profile) => {
     switch (profile){
-      case MedicamentProfileFreeText.urlProfile:
+      case MedicamentProfileFreeText.profile:
           return MedicamentProfileFreeText;
-      case MedicamentProfilePZN.urlProfile:
+      case MedicamentProfilePZN.profile:
           return MedicamentProfilePZN;
-      case MedicamentProfileIngredient.urlProfile:
+      case MedicamentProfileIngredient.profile:
           return MedicamentProfileIngredient;
-      case MedicamentProfileCompounding.urlProfile:
+      case MedicamentProfileCompounding.profile:
           return MedicamentProfileCompounding;
       default:
     }
   },
 
-  buildEmpty: (profile, uuid) => {
-    let MedicamentProfile = MedicamentProfile.getType(profile);
-    if (MedicamentProfile) 
-        return MedicamentProfile?.buildEmpty(uuid);
+  buildEmpty: (profile, index, uuid) => {
+    let medicamentProfile = MedicamentProfile.getType(profile);
+    if (medicamentProfile) 
+        return medicamentProfile?.buildEmpty(index, uuid);
     return {};
   },
 
   buildEmptyFHIR: (profile, uuid) => {
-    let MedicamentProfile = MedicamentProfile.getType(profile);
-    if (MedicamentProfile) 
-        return MedicamentProfile?.buildEmptyFHIR(uuid);
+    let medicamentProfile = MedicamentProfile.getType(profile);
+    if (medicamentProfile) 
+        return medicamentProfile?.buildEmptyFHIR(uuid);
     return {};
   },
 
   buildFHIR: (medicationItem) => {
-    let MedicamentProfile = MedicamentProfile.getType(medicationItem?.profile);
-    if (MedicamentProfile) 
-        return MedicamentProfile.buildFHIR(medicationItem);
+    let medicamentProfile = MedicamentProfile.getType(medicationItem?.profile);
+    if (medicamentProfile) 
+        return medicamentProfile.buildFHIR(medicationItem);
     return {};
   },
 
@@ -415,9 +428,9 @@ export const MedicamentProfile = {
 
   getValuesFromFHIR: (medicationItemFHIR) =>{
     let profile = MedicamentProfile.getProfileFromFHIR(medicationItemFHIR);
-    let MedicamentProfile = MedicamentProfile.getType(profile);
-    if (MedicamentProfile) 
-        return MedicamentProfile.getValuesFromFHIR(medicationItemFHIR);
+    let medicamentProfile = MedicamentProfile.getType(profile);
+    if (medicamentProfile) 
+        return medicamentProfile.getValuesFromFHIR(medicationItemFHIR);
     return {};
   },
 
@@ -430,16 +443,6 @@ export const MedicamentProfile = {
             object = object?.[actualElement];
         else {
             object[actualElement] = value;
-            switch (actualElement){
-              case 'pznCode':
-                let pznText = FIELD_PZN_TYPE.filter(pznRow=>pznRow.value===value)?.[0]?.label;
-                if (pznText) object['pznText'] = pznText;
-                break;
-              case 'pznText':
-                let pznCode = FIELD_PZN_TYPE.filter(pznRow=>pznRow.label===value)?.[0]?.value;
-                if (pznCode) object['pznCode'] = pznCode;
-                break;
-            }
         }
     }
   },
