@@ -31,7 +31,7 @@ export class MedicamentEditPopup extends BElement {
         return medikamentPopupState;
     }
  
-    onUserInput(event) {
+    onUserInputValidateAndStore(event) {
         const value = event.target.value;
         const id = event.target.id;
         const mapKey = event.target.name;
@@ -115,7 +115,7 @@ export class MedicamentEditPopup extends BElement {
                                 border        : none;     
                                 width         : 100%;"
                         list="pznTexts"
-                        @change="${_ => this.onUserInput(_)}"
+                        @change="${_ => this.onUserInputValidateAndStore(_)}"
                     >
                 </div>
             </div>
@@ -133,7 +133,7 @@ export class MedicamentEditPopup extends BElement {
                                 border        : none;     
                                 width         : 100%;"
                         list="pznCodes"
-                        @change="${_ => this.onUserInput(_)}"
+                        @change="${_ => this.onUserInputValidateAndStore(_)}"
                     >
                 </div>
             </div>
@@ -150,7 +150,7 @@ export class MedicamentEditPopup extends BElement {
                                 border-radius : 4px;      
                                 border        : none;     
                                 width         : 100%;"
-                        @change="${_ => this.onUserInput(_)}"
+                        @change="${_ => this.onUserInputValidateAndStore(_)}"
                     >
                 </div>
                 <!-- normgroesseCode -->
@@ -168,7 +168,7 @@ export class MedicamentEditPopup extends BElement {
                                     font-weight   : 500;
                                     font-size     : 18px;
                                     line-height   : 22px;"
-                            @change="${_ => this.onUserInput(_)}"
+                            @change="${_ => this.onUserInputValidateAndStore(_)}"
                     >
                     ${FIELD_NORMGROESSE_TYPE.map(row=>html`<option value="${row.value}" ?selected=${this.state.normgroesseCode === row.value}>${row.label}</option>`)}
                     </select>
@@ -187,7 +187,7 @@ export class MedicamentEditPopup extends BElement {
                                     font-weight   : 500;
                                     font-size     : 18px;
                                     line-height   : 22px;"
-                            @change="${_ => this.onUserInput(_)}"
+                            @change="${_ => this.onUserInputValidateAndStore(_)}"
                     >
                     ${FIELD_DARREICH_TYPE.map(row=>html`<option value="${row.value}" ?selected=${this.state.dformCode === row.value}>${row.label}</option>`)}
                     </select>
