@@ -1,4 +1,21 @@
-import { cancelPopupEditClinicAction, cancelPopupEditMedikamentAction, cancelPopupEditOrgaAction, cancelPopupEditPatient, cancelPopupEditPatientAction, cancelPopupEditPractIdAction, savePopupEditClinicAction, savePopupEditMedikamentAction, savePopupEditOrgaAction, savePopupEditPatient, savePopupEditPatientAction, savePopupEditPractIdAction, showPopupEditClinicAction, showPopupEditMedikamentAction, showPopupEditOrgaAction, showPopupEditPatientAction, showPopupEditPractIdAction } from "../../components/popup/control/PopupControl.js";
+import { 
+  showPopupEditClinicAction, 
+  cancelPopupEditClinicAction, 
+  savePopupEditClinicAction,
+  showPopupEditOrgaAction, 
+  cancelPopupEditOrgaAction, 
+  savePopupEditOrgaAction, 
+  showPopupEditPatientAction,
+  cancelPopupEditPatientAction, 
+  savePopupEditPatientAction, 
+  showPopupEditPractIdAction,
+  cancelPopupEditPractIdAction,
+  savePopupEditPractIdAction, 
+  showPopupEditMedikamentAction, 
+  changeProfilePopupEditMedikamentAction, 
+  cancelPopupEditMedikamentAction, 
+  savePopupEditMedikamentAction, 
+} from "../../components/popup/control/PopupControl.js";
 import { Mapper } from "../../libs/helper/Mapper.js";
 import { createReducer } from "../../libs/redux-toolkit.esm.js"
 import serverWebSocketActionForwarder from "../../prescriptions/boundary/websocket/ServerWebSocketActionForwarder.js";
@@ -577,6 +594,7 @@ export const prescriptions = createReducer(initialState, (builder) => {
     const psp = new Mapper(state.selectedPrescription.prescriptions[index]);
     state.MedikamentPopup = {
       index,
+      profile: psp.read("entry[resource.resourceType=Medication].resource.meta.profile[0]")?.split('|')[0].split('_').pop(),
       medicationText: psp.read("entry[resource.resourceType=Medication].resource.code.text"),
       pznCode: psp.read("entry[resource.resourceType=Medication].resource.code.coding[system?pzn].code"),
       dispenseQuantity: psp.read("entry[resource.resourceType?MedicationRequest].resource.dispenseRequest.quantity.value"),
@@ -586,19 +604,18 @@ export const prescriptions = createReducer(initialState, (builder) => {
     };
     resetErrorsInMainWindow(state);
   });
-  builder.addCase(cancelPopupEditMedikamentAction, (state) => {
-
+  builder.addCase(changeProfilePopupEditMedikamentAction, (state, { payload: profile }) => {
     const psp = new Mapper(state.selectedPrescription.prescriptions[state.MedikamentPopup.index]);
+    // MedicationItemType.buildEmpty(payload, state.medicationItem.uuid);
     state.MedikamentPopup = {
       index: state.MedikamentPopup.index,
-      medicationText: psp.read("entry[resource.resourceType=Medication].resource.code.text"),
-      pznCode: psp.read("entry[resource.resourceType=Medication].resource.code.coding[system?pzn].code"),
-      dispenseQuantity: psp.read("entry[resource.resourceType?MedicationRequest].resource.dispenseRequest.quantity.value"),
-      normgroesseCode: psp.read("entry[resource.resourceType=Medication].resource.extension[url?normgroesse].valueCode"),
-      dformCode: psp.read("entry[resource.resourceType=Medication].resource.form.coding[system?KBV_CS_SFHIR_KBV_DARREICHUNGSFORM].code"),
-      dosageInstruction: psp.read("entry[resource.resourceType?MedicationRequest].resource.dosageInstruction[0].text")
+      profile: profile,
     }
-  });
+  }); 
+  builder.addCase(cancelPopupEditMedikamentAction, (state) => {
+    const psp = new Mapper(state.selectedPrescription.prescriptions[state.MedikamentPopup.index]);
+    state.MedikamentPopup = {};
+  }); 
   builder.addCase(savePopupEditMedikamentAction, (state) => {
     const psp = new Mapper(state.selectedPrescription.prescriptions[state.MedikamentPopup.index]);
     psp.write("entry[resource.resourceType=Medication].resource.code.text", state.MedikamentPopup.medicationText);
