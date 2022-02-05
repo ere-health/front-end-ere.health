@@ -596,17 +596,21 @@ export const prescriptions = createReducer(initialState, (builder) => {
   // MedicEdit Popup
   // SHOW
   builder.addCase(showPopupEditMedikamentAction, (state, { payload: index }) => {
+    resetErrorsInMainWindow(state);
     state.MedikamentPopup = {index};
     const prescription = state.selectedPrescription.prescriptions[index];
     const medication = prescription.entry.filter(row=>row.resource.resourceType=='Medication')[0];
     Object.assign(state.MedikamentPopup, MedicamentProfile.getValuesFromFHIR(medication));
     const medicationRequest = prescription.entry.filter(row=>row.resource.resourceType=='MedicationRequest')[0];
     Object.assign(state.MedikamentPopup, MedicationRequestPrescription.getValuesFromFHIR(medicationRequest));
-    resetErrorsInMainWindow(state);
   });
   // CHANGE PROFILE
   builder.addCase(changeProfilePopupEditMedikamentAction, (state, { payload: profile }) => {
-    state.MedikamentPopup = MedicamentProfile.buildEmpty(profile, state.MedikamentPopup.index, state.MedikamentPopup.uuid);
+    const index = state.MedikamentPopup.index;
+    const uuid  = state.MedikamentPopup.uuid;
+    state.MedikamentPopup = {index, profile, uuid};
+    Object.assign(state.MedikamentPopup, MedicamentProfile.buildEmpty(profile));
+    Object.assign(state.MedikamentPopup, MedicationRequestPrescription.buildEmpty());
   });
   // CANCEL
   builder.addCase(cancelPopupEditMedikamentAction, (state) => {

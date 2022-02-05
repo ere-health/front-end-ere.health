@@ -6,37 +6,19 @@ export const MedicamentProfilePZN = {
 
   getValuesFromFHIR: (medicationFHIR) =>{
     return {
-      profile:         MedicamentProfile.getProfileFromFHIR(medicationFHIR),
-      uuid:            MedicamentProfile.getUUIDfromFHIR(medicationFHIR),
+      medicationText:  medicationFHIR?.resource?.code?.text ?? '',
+      pznCode:         medicationFHIR?.resource?.code?.coding?.[0]?.code ?? '',
       normgroesseCode: medicationFHIR?.resource?.extension
                         ?.filter(object=>object.url==MedicamentProfile.urlNormgroesse)
                         ?.[0]
-                        ?.valueCode,
-      medicationText:  medicationFHIR?.resource?.code?.text,
-      pznCode:         medicationFHIR?.resource?.code?.coding?.[0]?.code,
-      dformCode:       medicationFHIR?.resource?.form?.coding?.[0]?.code,
+                        ?.valueCode ?? '',
+      dformCode:       medicationFHIR?.resource?.form?.coding?.[0]?.code ?? '',
     }
   },
 
-  buildEmpty: (index, uuid) => {
-    return {
-      index:            index,
-      profile:          MedicamentProfilePZN.profile,    
-      uuid:             uuid, 
-      normgroesseCode:  '',
-      pznCode:          '',
-      medicationText:   '',
-      dformCode:        '',
-      dispenseQuantity: '',
-      dosageInstruction:'',
-    };
-  },
+  buildEmpty: () => MedicamentProfilePZN.getValuesFromFHIR({}),
 
-  buildEmptyFHIR: (uuid) => MedicamentProfilePZN.buildFHIR(
-    MedicamentProfilePZN.buildEmpty(uuid)
-  ),
-
-  buildFHIR : ({uuid, normgroesseCode, pznCode, pznText, dformCode}) => {
+  buildFHIR : ({uuid, medicationText, pznCode, normgroesseCode,  dformCode}) => {
     return {
       fullUrl: 'http://pvs.praxis.local/fhir/Medication/'+uuid,
       resource: {
@@ -60,7 +42,7 @@ export const MedicamentProfilePZN = {
         code: {
           coding: [{ system: 'http://fhir.de/CodeSystem/ifa/pzn', 
                       code: pznCode }],
-          text: pznText
+          text: medicationText
         },
         form: {
           coding: [{ system: 'https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_KBV_DARREICHUNGSFORM',
@@ -80,26 +62,11 @@ export const MedicamentProfileFreeText = {
 
   getValuesFromFHIR: (medicationFHIR) =>{
     return {
-      profile:        MedicamentProfile.getProfileFromFHIR(medicationFHIR),
-      uuid:           medicationFHIR?.resource?.id,
-      medicationText: medicationFHIR?.resource?.code?.text,
+      medicationText: medicationFHIR?.resource?.code?.text ?? '',
     }
   },
 
-  buildEmpty: (index, uuid) => {
-    return {
-      index:            index,
-      profile:          MedicamentProfileFreeText.profile,      
-      uuid:             uuid, 
-      medicationText:   '',
-      dispenseQuantity: '',
-      dosageInstruction:'',
-    };
-  }, 
-
-  buildEmptyFHIR: (uuid) => MedicamentProfileFreeText.buildFHIR(
-    MedicamentProfileFreeText.buildEmpty(uuid)
-  ),
+  buildEmpty: () => MedicamentProfileFreeText.getValuesFromFHIR({}), 
 
   buildFHIR : function ({uuid, medicationText}) {
     return {
@@ -107,7 +74,7 @@ export const MedicamentProfileFreeText = {
       resource: {
         resourceType: 'Medication',
         id: uuid,
-        meta: {profile: [this.urlProfile]},
+        meta: {profile: [MedicamentProfileFreeText.urlProfile]},
         extension: [
           { url: 'https://fhir.kbv.de/StructureDefinition/KBV_EX_ERP_Medication_Category',
             valueCoding: {
@@ -137,32 +104,16 @@ export const MedicamentProfileIngredient = {
 
   getValuesFromFHIR: (medicationFHIR) =>{
     return {
-      profile:         MedicamentProfile.getProfileFromFHIR(medicationFHIR),
-      uuid:            MedicamentProfile.getUUIDfromFHIR(medicationFHIR),
       normgroesseCode: medicationFHIR?.resource?.extension
-                        ?.filter(object=>object.url==MedicamentProfile.urlNormgroesse)?.[0]
-                        ?.valueCode,
-      formText:        medicationFHIR?.resource?.form?.text,
+                        ?.filter(object=>object.url==MedicamentProfile.urlNormgroesse)
+                        ?.[0]
+                        ?.valueCode ?? '',
+      formText:        medicationFHIR?.resource?.form?.text ?? '',
       ingredients:     Ingredients.getValuesFromFHIR(medicationFHIR?.resource?.ingredient),
     }
   },
 
-  buildEmpty: (index, uuid) => {
-    return {
-      index:            index,
-      profile:          MedicamentProfileIngredient.profile,
-      uuid:             uuid, 
-      normgroesseCode:  '',
-      formText:         '',
-      dispenseQuantity: '',
-      dosageInstruction:'',
-      ingredients:      [{itemCode:'', itemText:'', ingredientForm:'', strengthText:'', numeratorValue:1, numeratorUnit:'', denominatorValue:1}]
-    };
-  },
-
-  buildEmptyFHIR: (uuid) => MedicamentProfileIngredient.buildFHIR(
-    MedicamentProfileIngredient.buildEmpty(uuid)
-  ),
+  buildEmpty: () => MedicamentProfileIngredient.getValuesFromFHIR({}),
 
   buildFHIR : ({uuid, normgroesseCode, formText, ingredients}) => {
     return {
@@ -205,12 +156,10 @@ export const MedicamentProfileCompounding = {
 
   getValuesFromFHIR: (medicationFHIR) =>{
     return {
-      profile:                MedicamentProfileCompounding.profile,
-      uuid:                   MedicamentProfile.getUUIDfromFHIR(medicationFHIR),
+      medicationText:         medicationFHIR?.resource?.code?.text,
       packagingText:          medicationFHIR?.resource?.extension
                                 ?.filter(object=>object.url==MedicamentProfile.urlPackaging)?.[0]
                                 ?.valueString,
-      medicationText:         medicationFHIR?.resource?.code?.text,
       formText:               medicationFHIR?.resource?.form?.text,
       amountNumeratorValue:   medicationFHIR?.resource?.amount?.numerator.value,
       amountNumeratorUnit:    medicationFHIR?.resource?.amount?.numerator.unit,
@@ -219,28 +168,9 @@ export const MedicamentProfileCompounding = {
     }
   },
 
-  buildEmpty: (index, uuid) => {
-    return {
-      index:                 index,
-      profile:               MedicamentProfileCompounding.profile,
-      uuid:                  uuid, 
-      packagingText:         '',
-      medicationText:        '',
-      formText:              '',
-      dispenseQuantity:      '',
-      dosageInstruction:     '',        
-      amountNumeratorValue:   1,
-      amountNumeratorUnit:   '',
-      amountDenominatorValue: 1,
-      ingredients: [{itemCode:'', itemText:'', formText:'', strengthText:'', numeratorValue:1, numeratorUnit:'', denominatorValue:1}]
-    }
-  },
+  buildEmpty: () => MedicamentProfileCompounding.getValuesFromFHIR({}),
 
-  buildEmptyFHIR: (uuid) => MedicamentProfileCompounding.buildFHIR(
-    MedicamentProfileCompounding.buildEmpty(uuid)
-  ),
-
-  buildFHIR : ({uuid, packagingText, medicationText, formText, 
+  buildFHIR : ({uuid, medicationText, packagingText, formText, 
                 amountNumeratorValue, amountNumeratorUnit, amountDenominatorValue,
                 ingredients}) => {
     return {
@@ -270,42 +200,55 @@ export const MedicamentProfileCompounding = {
         },
         form: { text: formText },
         amount: Amount.buildFHIR('', amountNumeratorValue, amountNumeratorUnit, amountDenominatorValue),
-        ingredient: Ingredients.buildFHIR(ingredients)
+        ingredient: Ingredients.buildFHIR(ingredients),
       }
     }
   },
 }
 
 const Ingredients = {
-  getValuesFromFHIR : (ingredientsFHIR) => ingredientsFHIR.map(ingredientFHIR=>Ingredient.getValuesFromFHIR(ingredientFHIR)),
-  buildFHIR : (ingredients) => ingredients.map(ingredientItem => Ingredient.buildFHIR(ingredientItem))
+  getValuesFromFHIR : (ingredientsFHIR) => ingredientsFHIR?.map(ingredientFHIR=>Ingredient.getValuesFromFHIR(ingredientFHIR)) ?? [],
+
+  buildEmpty: () => [Ingredient.getValuesFromFHIR({})],
+
+  buildFHIR : (ingredients) => ingredients?.map(ingredientItem => Ingredient.buildFHIR(ingredientItem)) ?? [],
 }
 
 const Ingredient = {
   getValuesFromFHIR : (ingredientFHIR) => {
-    return {
-      itemCode:         ingredientFHIR?.itemCodeableConcept?.coding?.[0]?.code,
-      itemText:         ingredientFHIR?.itemCodeableConcept?.text,
-      formText:         ingredientFHIR?.extension?.[0]?.valueString,
-      strengthText:     ingredientFHIR?.strength?.extension?.[0]?.valueString,
-      numeratorValue:   ingredientFHIR?.strength?.numerator?.value,
-      numeratorUnit:    ingredientFHIR?.strength?.numerator?.unit,
-      denominatorValue: ingredientFHIR?.strength?.denominator?.value,      
-    };
+    const values = ItemCodeableConcept.getValuesFromFHIR(ingredientFHIR?.itemCodeableConcept);
+    const formText = IngredientForm.getValuesFromFHIR(ingredientFHIR?.extension);
+    Object.assign(values, formText);
+    const strengthValues = Amount.getValuesFromFHIR(ingredientFHIR?.strength);
+    Object.assign(values, strengthValues);
+    return values;
   },
 
-  buildFHIR : ({itemCode, itemText, formText, strengthText, numeratorValue, numeratorUnit, denominatorValue}) => {
-    let fhir = {
+  buildEmpty: () => Ingredient.getValuesFromFHIR({}),
+
+  buildFHIR : ({itemCode, itemText, formText, amountText, numeratorValue, numeratorUnit, denominatorValue}) => {
+    const fhir = {
       itemCodeableConcept: ItemCodeableConcept.buildFHIR(itemCode, itemText),
-      strength: Amount.buildFHIR(strengthText, numeratorValue, numeratorUnit, denominatorValue),
+      strength:            Amount.buildFHIR(amountText, numeratorValue, numeratorUnit, denominatorValue),
     };
-    if (formText)
-      fhir["extension"] = IngredientForm.buildFHIR(formText);
+    if (formText) {
+      const extension = IngredientForm.buildFHIR(formText);
+      Object.assign(fhir, {extension}); 
+    }
     return fhir;
   }
 }
 
 const ItemCodeableConcept = {
+  getValuesFromFHIR : (itemCodeableConceptFHIR) => {
+    return {
+      itemCode: itemCodeableConceptFHIR?.coding?.[0]?.code ?? '',
+      itemText: itemCodeableConceptFHIR?.text ?? '',
+    };
+  },
+
+  buildEmpty: () => ItemCodeableConcept.getValuesFromFHIR({}),
+
   buildFHIR : (itemCode, itemText) => {
     if (itemCode)
       return {
@@ -318,6 +261,13 @@ const ItemCodeableConcept = {
 }
 
 const IngredientForm = {
+  getValuesFromFHIR : (ingredientFHIRextension) => {
+    const formText = ingredientFHIRextension?.[0]?.valueString ?? '';
+    return { formText };
+  },
+
+  buildEmpty : () => IngredientForm.getValuesFromFHIR({}),
+
   buildFHIR : (formText) => {
     return [
       { url: 'https://fhir.kbv.de/StructureDefinition/KBV_EX_ERP_Medication_Ingredient_Form',
@@ -326,14 +276,27 @@ const IngredientForm = {
     ]
   }
 }
-  
+
 const Amount = {
+  getValuesFromFHIR : (amountFHIR) => {
+    return {
+      amountText:       amountFHIR?.extension?.[0]?.valueString ?? '',
+      numeratorValue:   amountFHIR?.numerator?.value ?? 0,
+      numeratorUnit:    amountFHIR?.numerator?.unit ?? '',
+      denominatorValue: amountFHIR?.denominator?.value ?? 1,
+    };
+  },
+
+  buildEmpty : () => Amount.getValuesFromFHIR({}),
+
   buildFHIR : (amountText, numeratorValue, numeratorUnit, denominatorValue) => {
     if (amountText)
       return {
-        extension: [{ url: 'https://fhir.kbv.de/StructureDefinition/KBV_EX_ERP_Medication_Ingredient_Amount',
-                      valueString: amountText
-                    }]
+        extension: [
+          { url: 'https://fhir.kbv.de/StructureDefinition/KBV_EX_ERP_Medication_Ingredient_Amount',
+            valueString: amountText
+          }
+        ]
       }
     else
       return {
@@ -350,18 +313,12 @@ export const MedicationRequestPrescription = {
 
   getValuesFromFHIR: (medicationRequestFHIR) =>{
     return {
-      dispenseQuantity:  medicationRequestFHIR.resource.dispenseRequest.quantity.value,
-      dosageInstruction: medicationRequestFHIR.resource.dosageInstruction[0].text,
+      dispenseQuantity:  medicationRequestFHIR?.resource?.dispenseRequest?.quantity?.value ?? 0,
+      dosageInstruction: medicationRequestFHIR?.resource?.dosageInstruction?.[0]?.text ?? '',
     }
   },
 
-  buildEmpty: () => {
-    return {
-      dispenseQuantity:  0,
-      dosageInstruction: '',
-    }
-  },
-
+  buildEmpty: () => MedicationRequestPrescription.getValuesFromFHIR({}),
 }
 
 // MedicamentProfile
@@ -389,41 +346,31 @@ export const MedicamentProfile = {
     }
   },
 
-  buildEmpty: (profile, index, uuid) => {
-    let profileType = MedicamentProfile.getType(profile);
-    if (profileType) 
-        return profileType?.buildEmpty(index, uuid);
-    return {};
-  },
-
-  buildEmptyFHIR: (profile, uuid) => {
-    let profileType = MedicamentProfile.getType(profile);
-    if (profileType) 
-        return profileType?.buildEmptyFHIR(uuid);
-    return {};
+  buildEmpty: (profile) => {
+    const profileType = MedicamentProfile.getType(profile);
+    return profileType?.buildEmpty() ?? {};
   },
 
   buildFHIR: (medication) => {
-    let profileType = MedicamentProfile.getType(medication?.profile);
-    if (profileType) 
-        return profileType.buildFHIR(medication);
-    return {};
+    const profileType = MedicamentProfile.getType(medication?.profile);
+    return profileType.buildFHIR(medication) ?? {};
   },
 
   getProfileFromFHIR: (medicationFHIR) => {
-    return medicationFHIR?.resource?.meta?.profile?.[0]?.split('|')[0].split('_').pop();
-  },
-  getUUIDfromFHIR: (medicationFHIR) => {
-    return medicationFHIR?.resource?.id;
+    return medicationFHIR?.resource?.meta?.profile?.[0]?.split('|')?.[0]?.split('_')?.pop() ?? '';
   },
 
   getValuesFromFHIR: (medicationFHIR) =>{
+    const uuid = medicationFHIR?.resource?.id;
     const profile = MedicamentProfile.getProfileFromFHIR(medicationFHIR);
-    return MedicamentProfile.getType(profile).getValuesFromFHIR(medicationFHIR);
+    const profileType = MedicamentProfile.getType(profile);
+    const values = {profile, uuid};
+    Object.assign(values, profileType.getValuesFromFHIR(medicationFHIR));
+    return values;
   },
 
   setObjectAttribute: (object,path,value) => {
-    let parts = path.split(/\./);
+    const parts = path.split(/\./);
     for (let i=0; i<parts.length; i++){
         let actualElement = parts[i];
         if (Number.isInteger(actualElement)) actualElement = Number.parseInt(actualElement);
