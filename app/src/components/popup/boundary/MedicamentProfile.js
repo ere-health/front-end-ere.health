@@ -156,14 +156,15 @@ export const MedicamentProfileCompounding = {
 
   getValuesFromFHIR: (medicationFHIR) =>{
     return {
-      medicationText:         medicationFHIR?.resource?.code?.text,
+      medicationText:         medicationFHIR?.resource?.code?.text ?? '',
       packagingText:          medicationFHIR?.resource?.extension
-                                ?.filter(object=>object.url==MedicamentProfile.urlPackaging)?.[0]
-                                ?.valueString,
-      formText:               medicationFHIR?.resource?.form?.text,
-      amountNumeratorValue:   medicationFHIR?.resource?.amount?.numerator.value,
-      amountNumeratorUnit:    medicationFHIR?.resource?.amount?.numerator.unit,
-      amountDenominatorValue: medicationFHIR?.resource?.amount?.denominator.value,       
+                                ?.filter(object=>object.url==MedicamentProfile.urlPackaging)
+                                ?.[0]
+                                ?.valueString ?? '',
+      formText:               medicationFHIR?.resource?.form?.text ?? '',
+      amountNumeratorValue:   medicationFHIR?.resource?.amount?.numerator?.value ?? 0,
+      amountNumeratorUnit:    medicationFHIR?.resource?.amount?.numerator?.unit ?? '',
+      amountDenominatorValue: medicationFHIR?.resource?.amount?.denominator?.value ?? 1,       
       ingredients:            Ingredients.getValuesFromFHIR(medicationFHIR?.resource?.ingredient),
     }
   },
@@ -319,6 +320,19 @@ export const MedicationRequestPrescription = {
   },
 
   buildEmpty: () => MedicationRequestPrescription.getValuesFromFHIR({}),
+
+  modifyFHIR: (medicationRequestFHIR, {dosageInstruction, dispenseQuantity}) => {
+    const dispenseQuantityFHIR = medicationRequestFHIR?.resource?.dispenseRequest?.quantity;
+    if (dispenseQuantityFHIR) dispenseQuantityFHIR.value = Number(dispenseQuantity);
+    const dosage = medicationRequestFHIR.resource.dosageInstruction[0];
+    if (dosage){
+      if (dosageInstruction) 
+        dosage.text = dosageInstruction;
+      else 
+        delete dosage.text;
+      dosage.extension.filter(row=>row.url===MedicamentProfile.urlDosageFlag)[0].valueBoolean = Boolean(dosageInstruction);
+    }
+  },
 }
 
 // MedicamentProfile
@@ -331,6 +345,7 @@ export const MedicamentProfile = {
   ],
   urlNormgroesse : 'http://fhir.de/StructureDefinition/normgroesse',
   urlPackaging:    'https://fhir.kbv.de/StructureDefinition/KBV_EX_ERP_Medication_Packaging',
+  urlDosageFlag:   'https://fhir.kbv.de/StructureDefinition/KBV_EX_ERP_DosageFlag',
   
   getType: (profile) => {
     switch (profile){
@@ -348,7 +363,7 @@ export const MedicamentProfile = {
 
   buildEmpty: (profile) => {
     const profileType = MedicamentProfile.getType(profile);
-    return profileType?.buildEmpty() ?? {};
+    return profileType?.getValuesFromFHIR({}) ?? {};
   },
 
   buildFHIR: (medication) => {

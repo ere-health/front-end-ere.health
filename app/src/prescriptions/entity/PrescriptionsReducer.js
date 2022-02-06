@@ -618,36 +618,24 @@ export const prescriptions = createReducer(initialState, (builder) => {
   });
   // SAVE
   builder.addCase(savePopupEditMedikamentAction, (state) => {
-    const psp = new Mapper(state.selectedPrescription.prescriptions[state.MedikamentPopup.index]);
-    psp.write("entry[resource.resourceType=Medication].resource.code.text", state.MedikamentPopup.medicationText);
-    psp.write("entry[resource.resourceType=Medication].resource.code.coding[system?pzn].code", state.MedikamentPopup.pznCode);
-    psp.write("entry[resource.resourceType?MedicationRequest].resource.dispenseRequest.quantity.value", Number(state.MedikamentPopup.dispenseQuantity));
     try {
-      psp.write("entry[resource.resourceType=Medication].resource.extension[url?normgroesse].valueCode", state.MedikamentPopup.normgroesseCode);
+      // re-build Medication
+      const prescription = state.selectedPrescription.prescriptions[state.MedikamentPopup.index];
+      const medicationEntryIndex = prescription.entry.findIndex(row=>row.resource.resourceType=='Medication');
+      prescription.entry[medicationEntryIndex] = MedicamentProfile.buildFHIR(state.MedikamentPopup);
+      // update MedicationRequest (too complex to re-build)
+      const medicationRequest = prescription.entry.filter(row=>row.resource.resourceType=='MedicationRequest')[0];
+      MedicationRequestPrescription.modifyFHIR(medicationRequest, state.MedikamentPopup);
 
-    } catch (ex) {
-      let writer = psp.read("entry[resource.resourceType?Medication].resource.extension");
-      writer.push({
-        "url": "http://fhir.de/StructureDefinition/normgroesse",
-        "valueCode": state.MedikamentPopup.normgroesseCode
-      });
-    }
-    psp.write("entry[resource.resourceType=Medication].resource.form.coding[system?KBV_CS_SFHIR_KBV_DARREICHUNGSFORM].code", state.MedikamentPopup.dformCode);
-    if (state.MedikamentPopup.dosageInstruction) {
-      psp.write("entry[resource.resourceType?MedicationRequest].resource.dosageInstruction[0].extension[url?KBV_EX_ERP_DosageFlag].valueBoolean", true);
-      let dosage = psp.read("entry[resource.resourceType?MedicationRequest].resource.dosageInstruction[0]");
-      dosage.text = state.MedikamentPopup.dosageInstruction;
-    } else {
-      psp.write("entry[resource.resourceType?MedicationRequest].resource.dosageInstruction[0].extension[url?KBV_EX_ERP_DosageFlag].valueBoolean", false);
-      let dosage = psp.read("entry[resource.resourceType?MedicationRequest].resource.dosageInstruction[0]");
-      delete dosage.text;
-    }
-
-    const selectedPrescriptionId = state.selectedPrescription.prescriptions[0].id;
-    for (const prescriptionList of state.list) {
-      if (selectedPrescriptionId == prescriptionList[0].id) {
-        prescriptionList[state.MedikamentPopup.index] = state.selectedPrescription.prescriptions[state.MedikamentPopup.index];
+      // write selectedPrescription lines back to original list
+      const selectedPrescriptionId = state.selectedPrescription.prescriptions[0].id;
+      for (const prescriptionList of state.list) {
+        if (selectedPrescriptionId == prescriptionList[0].id) {
+          prescriptionList[state.MedikamentPopup.index] = state.selectedPrescription.prescriptions[state.MedikamentPopup.index];
+        }
       }
+    } catch(e) {
+      alert(e);
     }
     state.MedikamentPopup = {};
   });

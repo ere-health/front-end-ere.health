@@ -37,11 +37,11 @@ export class MedicamentEditPopup extends BElement {
         const mapKey = event.target.name;
         const saveButton = document.getElementById(`${this.popupName}-save-button`);
         
+        // import { Validator } from "../../../libs/validator.js";
         const data = new Object();
         data[id] = value;
         const rules = new Object();
         rules[id] = PopupRules[this.popupName][id] ?? [];
-        // import { Validator } from "../../../libs/validator.js";
         const validator =  new Validator(data, rules, PopupErrorMessages[this.popupName][id]);
         if (validator.passes()) {
           removeValidationErrorForCurrentPopup(id);
@@ -49,13 +49,13 @@ export class MedicamentEditPopup extends BElement {
           switch (mapKey){
             case 'pznCode':
                 row = FIELD_PZN_TYPE.filter(row=>row.value===value)?.[0];
-                if (row)
-                    this.updatePZNfields(row.value, row.label);
+                if (row) this.updatePZNfields(row.value, row.label);
+                else updatePrescription("", value, mapKey, this.statePath, true);
                 break;
             case 'medicationText':
                 row = FIELD_PZN_TYPE.filter(row=>row.label===value)?.[0];
-                if (row)
-                    this.updatePZNfields(row.value, row.label);
+                if (row) this.updatePZNfields(row.value, row.label);
+                else updatePrescription("", value, mapKey, this.statePath, true);
                 break;
             default:
                 updatePrescription("", value, mapKey, this.statePath, true);
@@ -83,6 +83,7 @@ export class MedicamentEditPopup extends BElement {
     
         return html`
         <div class="modal" id="${this.popupName}" style="max-width: 800px;text-align:left">
+            <form>
             <!-- Medikament -->
             <div class="modal-title" style="text-align:left">
                 <p><strong>Medikament</strong>
@@ -196,6 +197,7 @@ export class MedicamentEditPopup extends BElement {
             <div class="fieldRow"> 
                 <edit-field statePath="prescriptions.MedikamentPopup" mapKey="dosageInstruction" label="Dosierungsanweisung" id="medicEdit-dosageInstruction"</edit-field>
             </div>
+            </form>
             <div class="modal-buttons">
                 <button data-close-button 
                         class="cancel" 
