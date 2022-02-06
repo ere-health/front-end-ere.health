@@ -31,12 +31,6 @@ export const showPopupEditStatus = () => {
     store.dispatch(showPopupEditStatusAction());
 }
 
-export const showPopupEditMedicAction = createAction("showPopupEditMedicAction");
-export const showPopupEditMedic = () => {
-    store.dispatch(showPopupEditMedicAction());
-}
-
-
 // Clinic Popup
 export const showPopupEditClinicAction = createAction("showPopupEditClinic");
 export const showPopupEditClinic = () => {
@@ -73,12 +67,17 @@ export const savePopupEditPractId = () => {
 
 
 // Medikament Popup
-export const showPopupEditMedikamentAction = createAction("showPopupEditMedikament");
+export const showPopupEditMedikamentAction = createAction("showPopupEditMedikamentAction");
 export const showPopupEditMedikament = (index) => {
     store.dispatch(showPopupEditMedikamentAction(index));
 }
 
-export const changeProfilePopupEditMedikamentAction = createAction("changeprofileMedicationItemAction");
+export const testLoadMedikamentPopupAction = createAction("testLoadMedikamentPopupAction");
+export const testLoadMedikamentPopup = (medication) => {
+    store.dispatch(testLoadMedikamentPopupAction(medication));
+}
+
+export const changeProfilePopupEditMedikamentAction = createAction("changeprofilePopupEditMedikamentAction");
 export const changeProfilePopupEditMedikament = (profile) => {
     store.dispatch(changeProfilePopupEditMedikamentAction(profile));
 }
