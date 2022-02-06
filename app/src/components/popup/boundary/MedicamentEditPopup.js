@@ -80,7 +80,6 @@ export class MedicamentEditPopup extends BElement {
 
     view() {
         let name="";
-    
         return html`
         <div class="modal" id="${this.popupName}" style="max-width: 800px;text-align:left">
             <form>
@@ -102,100 +101,23 @@ export class MedicamentEditPopup extends BElement {
             <datalist id="pznCodes">
                 ${FIELD_PZN_TYPE.map(row=>html`<option value="${row.value}">${row.label}`)}
             </datalist>
-            <div class="fieldRow">
-                <!-- medicationText -->
-                <div style="display:flex; flex-direction:column;flex-grow: 1;padding: 7px;margin-top:5px"> 
-                    <label for="${this.popupName}-${name="medicationText"}">Handelsname</label>
-                    <input id="${this.popupName}-${name}"
-                        name="${name}"
-                        type="text" 
-                        .value="${this.state?.[name] ?? ""}"
-                        style="height        : 56px;     
-                                background    : #E4E4E44D;
-                                border-radius : 4px;      
-                                border        : none;     
-                                width         : 100%;"
-                        list="pznTexts"
-                        @change="${_ => this.onUserInputValidateAndStore(_)}"
-                    >
-                </div>
-            </div>
-            <div class="fieldRow">
-                <!-- pznCode -->
-                <div style="display:flex; flex-direction:column;flex-grow: 0.5;padding: 7px;margin-top:5px"> 
-                    <label for="${this.popupName}-${name="pznCode"}">PZN</label>
-                    <input id="${this.popupName}-${name}"
-                        name="${name}"
-                        type="text" 
-                        .value="${this.state?.[name] ?? ""}"
-                        style="height        : 56px;     
-                                background    : #E4E4E44D;
-                                border-radius : 4px;      
-                                border        : none;     
-                                width         : 100%;"
-                        list="pznCodes"
-                        @change="${_ => this.onUserInputValidateAndStore(_)}"
-                    >
-                </div>
-            </div>
-            <div class="fieldRow">
-                <!-- dispenseQuantity -->
-                <div style="display:flex; flex-direction:column;flex-grow: 1;padding: 7px;margin-top:5px"> 
-                    <label for="${this.popupName}-${name="dispenseQuantity"}">Menge</label>
-                    <input id="${this.popupName}-${name}"
-                        name="${name}"                        
-                        type="number" min="0" max="10000"
-                        .value="${this.state?.[name] ?? ""}"
-                        style="height        : 56px;     
-                                background    : #E4E4E44D;
-                                border-radius : 4px;      
-                                border        : none;     
-                                width         : 100%;"
-                        @change="${_ => this.onUserInputValidateAndStore(_)}"
-                    >
-                </div>
-                <!-- normgroesseCode -->
-                <div style="display:flex; flex-direction:column;flex-grow: 1;padding: 7px;margin-top:5px"> 
-                    <label for="${this.popupName}-${name="normgroesseCode"}">Normgröße</label>
-                    <select id="${this.popupName}-${name}"
-                            name="${name}"
-                            style="height        : 56px;
-                                    background    : #E4E4E44D;
-                                    border-radius : 4px;
-                                    border        : none;
-                                    width         : 100%;
-                                    font-family   : Quicksand;
-                                    font-style    : normal;
-                                    font-weight   : 500;
-                                    font-size     : 18px;
-                                    line-height   : 22px;"
-                            @change="${_ => this.onUserInputValidateAndStore(_)}"
-                    >
-                    ${FIELD_NORMGROESSE_TYPE.map(row=>html`<option value="${row.value}" ?selected=${this.state.normgroesseCode === row.value}>${row.label}</option>`)}
-                    </select>
-                </div>
-                <div style="display:flex; flex-direction:column;flex-grow: 1;padding: 7px;margin-top:5px"> 
-                    <label for="${this.popupName}-${name="dformCode"}">Darreichungsform</label>
-                    <select id="${this.popupName}-${name}"
-                            name="${name}"
-                            style="height        : 56px;
-                                    background    : #E4E4E44D;
-                                    border-radius : 4px;
-                                    border        : none;
-                                    width         : 100%;
-                                    font-family   : Quicksand;
-                                    font-style    : normal;
-                                    font-weight   : 500;
-                                    font-size     : 18px;
-                                    line-height   : 22px;"
-                            @change="${_ => this.onUserInputValidateAndStore(_)}"
-                    >
-                    ${FIELD_DARREICH_TYPE.map(row=>html`<option value="${row.value}" ?selected=${this.state.dformCode === row.value}>${row.label}</option>`)}
-                    </select>
-                </div>
-            </div>
+            ${this.getProfileForm(this.state.profile)}
             <div class="fieldRow"> 
-                <edit-field statePath="prescriptions.MedikamentPopup" mapKey="dosageInstruction" label="Dosierungsanweisung" id="medicEdit-dosageInstruction"</edit-field>
+                <!-- dosageInstruction -->
+                <div style="display:flex; flex-direction:column;flex-grow: 1;padding: 7px;margin-top:5px"> 
+                    <label for="${this.popupName}-${name="dosageInstruction"}">Dosierungsanweisung</label>
+                    <input id="${this.popupName}-${name}"
+                        name="${name}"
+                        type="text" 
+                        .value="${this.state?.[name] ?? ""}"
+                        style="height        : 56px;     
+                                background    : #E4E4E44D;
+                                border-radius : 4px;      
+                                border        : none;     
+                                width         : 100%;"
+                        @change="${_ => this.onUserInputValidateAndStore(_)}"
+                    >
+                </div>
             </div>
             </form>
             <div class="modal-buttons">
@@ -215,5 +137,160 @@ export class MedicamentEditPopup extends BElement {
         </div>
         `;
     }
+
+    getProfileForm(profile){
+        switch (profile){
+            case MedicamentProfilePZN.profile:
+                return this.getPZNform();
+            case MedicamentProfileFreeText.profile:
+                return this.getFreeTextForm();
+            case MedicamentProfileIngredient.profile:
+                return this.getIngredientForm();
+            case MedicamentProfileCompounding.profile:
+                return this.getCompoundingForm();
+        }
+    }
+
+    // FreeText form
+    getFreeTextForm(){
+        let name="";
+        return html`
+        <div class="fieldRow">
+            <!-- medicationText -->
+            <div style="display:flex; flex-direction:column;flex-grow: 1;padding: 7px;margin-top:5px"> 
+                <label for="${this.popupName}-${name="medicationText"}">Handelsname</label>
+                <input id="${this.popupName}-${name}"
+                    name="${name}"
+                    type="text" 
+                    .value="${this.state?.[name] ?? ""}"
+                    style="height        : 56px;     
+                            background    : #E4E4E44D;
+                            border-radius : 4px;      
+                            border        : none;     
+                            width         : 100%;"
+                    @change="${_ => this.onUserInputValidateAndStore(_)}"
+                >
+            </div>
+        </div>
+        `;
+    }
+
+    // PZN form
+    getPZNform(){
+        let name="";
+        return html`
+        <div class="fieldRow">
+            <!-- medicationText -->
+            <div style="display:flex; flex-direction:column;flex-grow: 1;padding: 7px;margin-top:5px"> 
+                <label for="${this.popupName}-${name="medicationText"}">Handelsname</label>
+                <input id="${this.popupName}-${name}"
+                    name="${name}"
+                    type="text" 
+                    .value="${this.state?.[name] ?? ""}"
+                    style="height        : 56px;     
+                            background    : #E4E4E44D;
+                            border-radius : 4px;      
+                            border        : none;     
+                            width         : 100%;"
+                    list="pznTexts"
+                    @change="${_ => this.onUserInputValidateAndStore(_)}"
+                >
+            </div>
+        </div>
+        <div class="fieldRow">
+            <!-- pznCode -->
+            <div style="display:flex; flex-direction:column;flex-grow: 0.5;padding: 7px;margin-top:5px"> 
+                <label for="${this.popupName}-${name="pznCode"}">PZN</label>
+                <input id="${this.popupName}-${name}"
+                    name="${name}"
+                    type="text" 
+                    .value="${this.state?.[name] ?? ""}"
+                    style="height        : 56px;     
+                            background    : #E4E4E44D;
+                            border-radius : 4px;      
+                            border        : none;     
+                            width         : 100%;"
+                    list="pznCodes"
+                    @change="${_ => this.onUserInputValidateAndStore(_)}"
+                >
+            </div>
+        </div>
+        <div class="fieldRow">
+            <!-- dispenseQuantity -->
+            <div style="display:flex; flex-direction:column;flex-grow: 1;padding: 7px;margin-top:5px"> 
+                <label for="${this.popupName}-${name="dispenseQuantity"}">Menge</label>
+                <input id="${this.popupName}-${name}"
+                    name="${name}"                        
+                    type="number" min="0" max="10000"
+                    .value="${this.state?.[name] ?? ""}"
+                    style="height        : 56px;     
+                            background    : #E4E4E44D;
+                            border-radius : 4px;      
+                            border        : none;     
+                            width         : 100%;"
+                    @change="${_ => this.onUserInputValidateAndStore(_)}"
+                >
+            </div>
+            <!-- normgroesseCode -->
+            <div style="display:flex; flex-direction:column;flex-grow: 1;padding: 7px;margin-top:5px"> 
+                <label for="${this.popupName}-${name="normgroesseCode"}">Normgröße</label>
+                <select id="${this.popupName}-${name}"
+                        name="${name}"
+                        style="height        : 56px;
+                                background    : #E4E4E44D;
+                                border-radius : 4px;
+                                border        : none;
+                                width         : 100%;
+                                font-family   : Quicksand;
+                                font-style    : normal;
+                                font-weight   : 500;
+                                font-size     : 18px;
+                                line-height   : 22px;"
+                        @change="${_ => this.onUserInputValidateAndStore(_)}"
+                >
+                ${FIELD_NORMGROESSE_TYPE.map(row=>html`<option value="${row.value}" ?selected=${this.state.normgroesseCode === row.value}>${row.label}</option>`)}
+                </select>
+            </div>
+            <div style="display:flex; flex-direction:column;flex-grow: 1;padding: 7px;margin-top:5px"> 
+                <label for="${this.popupName}-${name="dformCode"}">Darreichungsform</label>
+                <select id="${this.popupName}-${name}"
+                        name="${name}"
+                        style="height        : 56px;
+                                background    : #E4E4E44D;
+                                border-radius : 4px;
+                                border        : none;
+                                width         : 100%;
+                                font-family   : Quicksand;
+                                font-style    : normal;
+                                font-weight   : 500;
+                                font-size     : 18px;
+                                line-height   : 22px;"
+                        @change="${_ => this.onUserInputValidateAndStore(_)}"
+                >
+                ${FIELD_DARREICH_TYPE.map(row=>html`<option value="${row.value}" ?selected=${this.state.dformCode === row.value}>${row.label}</option>`)}
+                </select>
+            </div>
+        </div>
+        `;
+    }
+
+    getIngredientForm(){
+        let name="";
+        return html`
+        <div class="fieldRow">
+
+        </div>
+        `;
+    }
+
+    getCompoundingForm(){
+        let name="";
+        return html`
+        <div class="fieldRow">
+
+        </div>
+        `;
+    }
+
 }
 customElements.define("medicament-edit-popup", MedicamentEditPopup);
