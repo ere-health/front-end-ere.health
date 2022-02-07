@@ -330,17 +330,22 @@ export const MedicationRequestPrescription = {
   buildEmpty: () => MedicationRequestPrescription.getValuesFromFHIR({}),
 
   modifyFHIR: (medicationRequestFHIR, {dosageInstruction, dispenseQuantity}) => {
+    // dispenseQuantity
     const dispenseQuantityFHIR = medicationRequestFHIR?.resource?.dispenseRequest?.quantity;
     if (dispenseQuantityFHIR) dispenseQuantityFHIR.value = Number(dispenseQuantity);
-    const dosageFHIR = medicationRequestFHIR.resource.dosageInstruction[0];
-    if (dosageFHIR){
-      const propertyName = ('patientInstruction' in dosageFHIR) ? 'patientInstruction': 'text';
+    // dosageInstruction
+    const dosageFHIR = medicationRequestFHIR?.resource?.dosageInstruction?.[0];
+    if (dosageFHIR!==undefined){
+      const propertyName = 'patientInstruction';
+      if (! (propertyName in dosageFHIR)) propertyName = 'text';
       if (dosageInstruction) 
         dosageFHIR[propertyName] = dosageInstruction;
       else
         delete dosageFHIR[propertyName];
+      // DosageFlag
       const dosageFlagFHIR = dosageFHIR?.extension?.filter(row=>row.url===MedicamentProfile.urlDosageFlag)?.[0];
-      if (dosageFlagFHIR) dosageFlagFHIR.valueBoolean = Boolean(dosageInstruction);
+      if (dosageFlagFHIR!==undefined)
+        dosageFlagFHIR.valueBoolean = Boolean(dosageInstruction);
     }
   },
 }

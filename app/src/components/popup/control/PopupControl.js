@@ -82,6 +82,11 @@ export const changeProfilePopupEditMedikament = (profile) => {
     store.dispatch(changeProfilePopupEditMedikamentAction(profile));
 }
 
+export const updatePopupEditMedikamentAction = createAction("updatePopupEditMedikamentAction");
+export const updatePopupEditMedikament = ({collection,index,field},value) => {
+    store.dispatch(updatePopupEditMedikamentAction({collection,index,field,value}));
+}
+
 export const cancelPopupEditMedikamentAction = createAction("cancelPopupEditMedikamentAction");
 export const cancelPopupEditMedikament = () => {
     store.dispatch(cancelPopupEditMedikamentAction());

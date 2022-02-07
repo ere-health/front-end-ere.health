@@ -3,13 +3,13 @@ import { html } from "../../../libs/lit-html.js";
 import {
     _hidePopup,
     changeProfilePopupEditMedikament,
+    updatePopupEditMedikament,
     savePopupEditMedikament,
     cancelPopupEditMedikament,
     addValidationErrorForCurrentPopup,
     removeValidationErrorForCurrentPopup,
 } from "../control/PopupControl.js";
 import { PopupRules, PopupErrorMessages } from "../../../prescriptions/boundary/ValidationRules.js";
-import { updatePrescription } from "../../../prescriptions/control/UnsignedPrescriptionControl.js";
 import {
     FIELD_PZN_TYPE,
     FIELD_NORMGROESSE_TYPE, 
@@ -31,36 +31,50 @@ export class MedicamentEditPopup extends BElement {
         return medikamentPopupState;
     }
  
+    getIndexedName(collection, index, field){
+        if (collection) 
+            return collection+'-'+index+'-'+field;
+        return field;
+    }
+    getIndexFromName(name){
+        const fragments = name.split('-');
+        if (fragments.length==3)
+            return {
+                collection: fragments[0],
+                index: Number.parseInt(fragments[1]),
+                field: fragments[2],
+            }
+        return {collection:null, index:null, field};
+    }
+
     onUserInputValidateAndStore(event) {
         const value = event.target.value;
         const id = event.target.id;
-        const nameFragments = event.target.name.split('-');
-        const fieldName = nameFragments[0];
-        const rowIndex = nameFragments?.[1] ?? null;
+        const nameFragments = this.getIndexFromName(event.target.name);
         const saveButton = document.getElementById(`${this.popupName}-save-button`);
         
         // import { Validator } from "../../../libs/validator.js";
         const data = new Object();
-        data[fieldName] = value;
+        data[nameFragments.name] = value;
         const rules = new Object();
-        rules[fieldName] = PopupRules[this.popupName][fieldName] ?? [];
-        const validator =  new Validator(data, rules, PopupErrorMessages[this.popupName][fieldName]);
+        rules[nameFragments.name] = PopupRules[this.popupName][nameFragments.name] ?? [];
+        const validator =  new Validator(data, rules, PopupErrorMessages[this.popupName][nameFragments.name]);
         if (validator.passes()) {
           removeValidationErrorForCurrentPopup(id);
           let row=null;
-          switch (fieldName){
+          switch (nameFragments.name){
             case 'pznCode':
                 row = FIELD_PZN_TYPE.filter(row=>row.value===value)?.[0];
-                if (row) this.updatePZNfields(row.value, row.label, rowIndex);
-                else updatePrescription("", value, fieldName, this.statePath, true);
+                if (row) this.updatePZNfields(row.value, row.label, nameFragments);
+                else updatePopupEditMedikament(nameFragments, value);
                 break;
             case 'medicationText':
                 row = FIELD_PZN_TYPE.filter(row=>row.label===value)?.[0];
-                if (row) this.updatePZNfields(row.value, row.label, rowIndex);
-                else updatePrescription("", value, fieldName, this.statePath, true);
+                if (row) this.updatePZNfields(row.value, row.label, nameFragments);
+                else updatePopupEditMedikament(nameFragments, value);
                 break;
             default:
-                updatePrescription("", value, fieldName, this.statePath, true);
+                updatePopupEditMedikament(nameFragments, value);
           }
           if ((document.getElementById(`${this.popupName}-error-messages`).innerHTML.trim().length == 0)) {
             saveButton.disabled = false;
@@ -71,18 +85,16 @@ export class MedicamentEditPopup extends BElement {
         }
     }
 
-    getIndexedName = (field, index)=>field + ((index===null) ? '':'-'+index);
- 
-    // spread the pznText into medicationText, normgroesseCode, dformCode
-    updatePZNfields(pznCode, pznText, rowIndex){
-        updatePrescription("", pznCode, this.getIndexedName("pznCode", rowIndex), this.statePath, true);
-        const labelFragments = pznText.split(',');
+    // spread the pznLabel into medicationText, normgroesseCode, dformCode
+    updatePZNfields(pznCode, pznLabel, {collection,index}){
+        updatePopupEditMedikament({collection, index, field:"pznCode"}, pznCode);
+        const labelFragments = pznLabel.split(',');
         if (labelFragments.length<4)
-            updatePrescription("", pznText, this.getIndexedName("medicationText", rowIndex), this.statePath, true);
+            updatePopupEditMedikament({collection, index, field:"medicationText"}, pznLabel);
         else {
-            updatePrescription("", labelFragments[0]+" "+labelFragments[2], this.getIndexedName("medicationText", rowIndex), this.statePath, true);
-            updatePrescription("", labelFragments[1] ?? "", this.getIndexedName("normgroesseCode", rowIndex), this.statePath, true);
-            updatePrescription("", labelFragments[3] ?? "", this.getIndexedName("dformCode", rowIndex), this.statePath, true);
+            updatePopupEditMedikament({collection, index, field:"medicationText"}, labelFragments[0]+" "+labelFragments[2]);
+            updatePopupEditMedikament({collection, index, field:"normgroesseCode"}, labelFragments[1]);
+            updatePopupEditMedikament({collection, index, field:"dformCode"}, labelFragments[3]);
         }
     }
 
@@ -479,46 +491,47 @@ export class MedicamentEditPopup extends BElement {
                 >
             </div>
         </div>
-        ${this.state.ingredients.map((row,index,_)=>this.getItem(index))}
+        ${this.state.ingredients.map((row,rowIndex,_)=>this.getItemView(rowIndex))}
         `;
     }
 
-    getItem(index){
+    getItemView(index){
+        const collection = "ingredients";
         let name = "";
         return html`
         <div class="fieldRow">
             <!-- pznCode -->
             <div style="display:flex; flex-direction:column; flex-grow: 0.3; padding: 7px;margin-top:5px"> 
-                <input id="${this.popupName}-${name="pznCode"}-${index}"
-                    name="${name}-${index}"
+                <input id="${this.popupName}-${this.getIndexedName(collection,index,name="pznCode")}"
+                    name="${this.getIndexedName(collection,index,name)}"
                     placeholder="PZN"
                     type="text"
-                    .value="${this.state?.ingredients?.[index]?.[name] ?? ""}"
-                    style="height        : 56px;     
+                    .value="${this.state?.[collection]?.[index]?.[name] ?? ""}"
+                    style="height        : 56px;
                             background    : #E4E4E44D;
-                            border-radius : 4px;      
-                            border        : none;     
+                            border-radius : 4px;
+                            border        : none;
                             width         : 100%;
                             font-family   : Quicksand;
                             font-style    : normal;
                             font-weight   : 500;
                             font-size     : 18px;
-                            line-height   : 22px;"                            
+                            line-height   : 22px;"
                     list="pznCodes"
                     @change="${_ => this.onUserInputValidateAndStore(_)}"
                 >
             </div>            
             <!-- medicationText -->
             <div style="display:flex; flex-direction:column; flex-grow: 1; padding: 7px;margin-top:5px"> 
-                <input id="${this.popupName}-${name="medicationText"}-${index}"
+                <input id="${this.popupName}-${this.getIndexedName(collection,index,name="medicationText")}"
                     placeholder="%ItemText%"
-                    name="${name}-${index}"
+                    name="${this.getIndexedName(collection,index,name)}"
                     type="text"
-                    .value="${this.state?.ingredients?.[index]?.[name] ?? ""}"
-                    style="height        : 56px;     
+                    .value="${this.state?.[collection]?.[index]?.[name] ?? ""}"
+                    style="height        : 56px;
                             background    : #E4E4E44D;
-                            border-radius : 4px;      
-                            border        : none;     
+                            border-radius : 4px;
+                            border        : none;
                             width         : 100%;
                             font-family   : Quicksand;
                             font-style    : normal;

@@ -13,7 +13,8 @@ import {
   savePopupEditPractIdAction, 
   showPopupEditMedikamentAction,
   testLoadMedikamentPopupAction,
-  changeProfilePopupEditMedikamentAction, 
+  changeProfilePopupEditMedikamentAction,
+  updatePopupEditMedikamentAction,
   cancelPopupEditMedikamentAction, 
   savePopupEditMedikamentAction, 
 } from "../../components/popup/control/PopupControl.js";
@@ -618,6 +619,13 @@ export const prescriptions = createReducer(initialState, (builder) => {
     state.MedikamentPopup = {index, profile, uuid};
     Object.assign(state.MedikamentPopup, MedicamentProfile.buildEmpty(profile));
     Object.assign(state.MedikamentPopup, MedicationRequestPrescription.buildEmpty());
+  });
+  // UPDATE
+  builder.addCase(updatePopupEditMedikamentAction, (state, { payload:{collection,index,field,value} }) => {
+    if (collection)
+      state.MedikamentPopup[collection][index][field] = value;
+    else
+      state.MedikamentPopup.field = value;
   });
   // CANCEL
   builder.addCase(cancelPopupEditMedikamentAction, (state) => {
