@@ -12,10 +12,9 @@ import {
   cancelPopupEditPractIdAction,
   savePopupEditPractIdAction, 
   showPopupEditMedikamentAction,
-  testLoadMedikamentPopupAction,
+  initPopupEditMedikamentAction, 
   changeProfilePopupEditMedikamentAction,
   updatePopupEditMedikamentAction,
-  cancelPopupEditMedikamentAction, 
   savePopupEditMedikamentAction, 
 } from "../../components/popup/control/PopupControl.js";
 import { 
@@ -608,8 +607,8 @@ export const prescriptions = createReducer(initialState, (builder) => {
       Object.assign(state.MedikamentPopup, MedicationRequestPrescription.getValuesFromFHIR(medicationRequest));
     }
   });
-  // TEST LOAD
-  builder.addCase(testLoadMedikamentPopupAction, (state, { payload }) => {
+  // INIT
+  builder.addCase(initPopupEditMedikamentAction, (state, { payload }) => {
     state.MedikamentPopup = payload;
   });
   // CHANGE PROFILE
@@ -626,10 +625,6 @@ export const prescriptions = createReducer(initialState, (builder) => {
       state.MedikamentPopup[collection][index][field] = value;
     else
       state.MedikamentPopup.field = value;
-  });
-  // CANCEL
-  builder.addCase(cancelPopupEditMedikamentAction, (state) => {
-    state.MedikamentPopup = {};
   });
   // SAVE
   builder.addCase(savePopupEditMedikamentAction, (state) => {

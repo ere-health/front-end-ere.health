@@ -20,10 +20,10 @@
   <script type="module" src="../../../init.js"></script>
   <script type="module">
     import "../boundary/MedicamentEditPopup.js";
-    import { showPopupEditMedikament, testLoadMedikamentPopup } from "../control/PopupControl.js";
+    import { showPopupEditMedikament, initPopupEditMedikament } from "../control/PopupControl.js";
     import { MedicamentProfile } from "../boundary/MedicamentProfile.js";
     showPopupEditMedikament(-1);
-    testLoadMedikamentPopup({
+    initPopupEditMedikament({
         index:           -1,
         profile:         'PZN',
         uuid:            'f568397d-7ba2-46ac-904b-02caec933b42',

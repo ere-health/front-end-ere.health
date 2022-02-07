@@ -15,10 +15,9 @@ import {
   savePopupEditPractIdAction,
   cancelPopupEditPractIdAction,
   showPopupEditMedikamentAction,
-  testLoadMedikamentPopupAction,
+  initPopupEditMedikamentAction,
   changeProfilePopupEditMedikamentAction,
   savePopupEditMedikamentAction,
-  cancelPopupEditMedikamentAction,
   addValidationErrorForCurrentPopupAction,
   removeValidationErrorForCurrentPopupAction,
   cancelPopupEditPatientAction,
@@ -87,7 +86,7 @@ export const popupReducer = createReducer(initialState, (builder) => {
   builder.addCase(changeProfilePopupEditMedikamentAction, (state) => {
     state.currentValidationErrors = {};
   });  
-  builder.addCase(cancelPopupEditMedikamentAction, (state) => {
+  builder.addCase(initPopupEditMedikamentAction, (state) => {
     state.showPopup = "";
     state.currentValidationErrors = {};
   });

@@ -72,9 +72,9 @@ export const showPopupEditMedikament = (index) => {
     store.dispatch(showPopupEditMedikamentAction(index));
 }
 
-export const testLoadMedikamentPopupAction = createAction("testLoadMedikamentPopupAction");
-export const testLoadMedikamentPopup = (medication) => {
-    store.dispatch(testLoadMedikamentPopupAction(medication));
+export const initPopupEditMedikamentAction = createAction("initPopupEditMedikamentAction");
+export const initPopupEditMedikament = (medication) => {
+    store.dispatch(initPopupEditMedikamentAction(medication));
 }
 
 export const changeProfilePopupEditMedikamentAction = createAction("changeprofilePopupEditMedikamentAction");
@@ -85,11 +85,6 @@ export const changeProfilePopupEditMedikament = (profile) => {
 export const updatePopupEditMedikamentAction = createAction("updatePopupEditMedikamentAction");
 export const updatePopupEditMedikament = ({collection,index,field},value) => {
     store.dispatch(updatePopupEditMedikamentAction({collection,index,field,value}));
-}
-
-export const cancelPopupEditMedikamentAction = createAction("cancelPopupEditMedikamentAction");
-export const cancelPopupEditMedikament = () => {
-    store.dispatch(cancelPopupEditMedikamentAction());
 }
 
 export const savePopupEditMedikamentAction = createAction("savePopupEditMedikamentAction");

@@ -5,7 +5,7 @@ import {
     changeProfilePopupEditMedikament,
     updatePopupEditMedikament,
     savePopupEditMedikament,
-    cancelPopupEditMedikament,
+    initPopupEditMedikament,
     addValidationErrorForCurrentPopup,
     removeValidationErrorForCurrentPopup,
 } from "../control/PopupControl.js";
@@ -172,7 +172,7 @@ export class MedicamentEditPopup extends BElement {
             <div class="modal-buttons">
                 <button data-close-button 
                         class="cancel" 
-                        @click="${(_) => {cancelPopupEditMedikament(); }}">
+                        @click="${(_) => {initPopupEditMedikament({}); }}">
                     Abbrechen
                 </button>
                 <button data-modal-target-processing="#processing" 
