@@ -2,12 +2,7 @@
 
 export const MainWindowValidationRules = {
     //String
-    'coverage-payor-display': ['required', 'regex:/^.{1,50}$/'],
-    
-    'medicationText-0': ['required', 'regex:/^.{1,1048576}$/'],
-    'pznCode-0': ['required', 'regex:/((^[0-9]{6,8}$)|(^freitext$)|(^wirkstoff$))/'],
-    'dosageInstruction-0': ['regex:/^.{1,30}$/'],
-    
+    'coverage-payor-display': ['required', 'regex:/^.{1,50}$/'],  
     'full-patient-address': ['required',
         'regex:/^[a-z A-ZäöüÄÖÜß\\-\\.]{0,20} ?[a-z A-ZäöüÄÖÜß\'\\-]{1,50} [a-z A-ZäöüÄÖÜß\\-\\.]{1,50}, [a-z A-ZäöüÄÖÜß\\-\\.0-9]{1,50} [a-z A-ZäöüÄÖÜß\\-\\.0-9]{1,10}, [0-9]{5} [a-z A-ZäöüÄÖÜß\\-\\.]{1,32}$/'],
     'organization-summary': ['required', 
@@ -75,14 +70,11 @@ export const PractIdPopupValidationRules = {
     'practId-doctor-number': ['required', 'regex:/^[0-9]{9}$/']
 };
 
-export const MedicPopupValidationRules = {
-    //String, copy of MainWindows value
-    'medicEdit-medicationText': ['required', 'regex:/^.{1,50}$/'],
-    'medicEdit-pznCode': ['required', 'regex:/^[0-9]{6,8}$/'],
-    'medicEdit-dosageInstruction': ['regex:/^.{1,30}$/'],
-
-    //Number
-    'medicEdit-dispenseQuantity': ['regex:/^[0-9]{1,3}$/']
+export const MedicPopupValidationRules = {    
+    'medicationText':    ['required', 'regex:/^.{1,50}$/'],
+    'pznCode':           ['required', 'regex:/^[0-9]{6,8}$/'],
+    'dosageInstruction': ['regex:/^.{1,50}$/'],
+    'dispenseQuantity':  ['regex:/^[0-9]{1,3}$/']
 };
 
 export const PopupRules = {
@@ -233,18 +225,18 @@ export const PractIdErrorMessages = {
 };
 
 export const MedicPopupErrorMessages = {
-    'medicEdit-medicationText': {
+    'medicationText': {
         required: 'Der Medikamentenname muss angegeben werden',
         regex: 'Der Medikamentenname muss zwischen 1 bis 50 Buchstaben lang sein'
     },
-    'medicEdit-pznCode' : {
+    'pznCode' : {
         required: 'Die PZN muss vorhanden sein',
         regex: 'Die PZN muss zwischen 6 und 8 Ziffern land sein'
     },
-    'medicEdit-dosageInstruction' : {
-        regex: 'Die Dosierungsanweisung muss zwischen 1 bis 30 Buchstaben lang sein'
+    'dosageInstruction' : {
+        regex: 'Die Dosierungsanweisung muss zwischen 1 bis 50 Buchstaben lang sein'
     },
-    'medicEdit-dispenseQuantity': {
+    'dispenseQuantity': {
         regex: 'Die Anzahl des Medikaments muss zwischen 1 und 3 Ziffern lang sein'
     }
 };

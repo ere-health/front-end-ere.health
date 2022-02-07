@@ -7,7 +7,6 @@ import {
   showPopupEditStatus,
   showPopupEditOrga,
   showPopupEditClinic,
-  showPopupEditMedic,
   showPopupEditPractId,
   showPopupEditMedikament
 } from "../../components/popup/control/PopupControl.js";

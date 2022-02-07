@@ -109,13 +109,18 @@ export const MedicamentProfileIngredient = {
                         ?.[0]
                         ?.valueCode ?? '',
       formText:        medicationFHIR?.resource?.form?.text ?? '',
+      amountNumeratorValue:   medicationFHIR?.resource?.amount?.numerator?.value ?? 0,
+      amountNumeratorUnit:    medicationFHIR?.resource?.amount?.numerator?.unit ?? '',
+      amountDenominatorValue: medicationFHIR?.resource?.amount?.denominator?.value ?? 1,       
       ingredients:     Ingredients.getValuesFromFHIR(medicationFHIR?.resource?.ingredient),
     }
   },
 
   buildEmpty: () => MedicamentProfileIngredient.getValuesFromFHIR({}),
 
-  buildFHIR : ({uuid, normgroesseCode, formText, ingredients}) => {
+  buildFHIR : ({uuid, normgroesseCode, formText, 
+                amountNumeratorValue, amountNumeratorUnit, amountDenominatorValue,
+                ingredients}) => {
     return {
       fullUrl: 'http://pvs.praxis.local/fhir/Medication/'+uuid,
       resource: {
@@ -141,6 +146,7 @@ export const MedicamentProfileIngredient = {
                       code: 'wirkstoff' }]
         },
         form: { text: formText },
+        amount: Amount.buildFHIR('', amountNumeratorValue, amountNumeratorUnit, amountDenominatorValue),
         ingredient: Ingredients.buildFHIR(ingredients)
       }
     }
@@ -227,9 +233,9 @@ const Ingredient = {
 
   buildEmpty: () => Ingredient.getValuesFromFHIR({}),
 
-  buildFHIR : ({itemCode, itemText, formText, amountText, numeratorValue, numeratorUnit, denominatorValue}) => {
+  buildFHIR : ({pznCode, medicationText, formText, amountText, numeratorValue, numeratorUnit, denominatorValue}) => {
     const fhir = {
-      itemCodeableConcept: ItemCodeableConcept.buildFHIR(itemCode, itemText),
+      itemCodeableConcept: ItemCodeableConcept.buildFHIR(pznCode, medicationText),
       strength:            Amount.buildFHIR(amountText, numeratorValue, numeratorUnit, denominatorValue),
     };
     if (formText) {
@@ -243,21 +249,21 @@ const Ingredient = {
 const ItemCodeableConcept = {
   getValuesFromFHIR : (itemCodeableConceptFHIR) => {
     return {
-      itemCode: itemCodeableConceptFHIR?.coding?.[0]?.code ?? '',
-      itemText: itemCodeableConceptFHIR?.text ?? '',
+      pznCode: itemCodeableConceptFHIR?.coding?.[0]?.code ?? '',
+      medicationText: itemCodeableConceptFHIR?.text ?? '',
     };
   },
 
   buildEmpty: () => ItemCodeableConcept.getValuesFromFHIR({}),
 
-  buildFHIR : (itemCode, itemText) => {
-    if (itemCode)
+  buildFHIR : (pznCode, medicationText) => {
+    if (pznCode)
       return {
-        coding: [{ system: 'http://fhir.de/CodeSystem/ask', code: itemCode }],
-        text: itemText
+        coding: [{ system: 'http://fhir.de/CodeSystem/ask', code: pznCode }],
+        text: medicationText
       }
     else
-      return { text: itemText }
+      return { text: medicationText }
   }
 }
 
@@ -315,7 +321,9 @@ export const MedicationRequestPrescription = {
   getValuesFromFHIR: (medicationRequestFHIR) =>{
     return {
       dispenseQuantity:  medicationRequestFHIR?.resource?.dispenseRequest?.quantity?.value ?? 0,
-      dosageInstruction: medicationRequestFHIR?.resource?.dosageInstruction?.[0]?.text ?? '',
+      dosageInstruction: medicationRequestFHIR?.resource?.dosageInstruction?.[0]?.patientInstruction
+                      ?? medicationRequestFHIR?.resource?.dosageInstruction?.[0]?.text
+                      ?? '',
     }
   },
 
@@ -324,13 +332,15 @@ export const MedicationRequestPrescription = {
   modifyFHIR: (medicationRequestFHIR, {dosageInstruction, dispenseQuantity}) => {
     const dispenseQuantityFHIR = medicationRequestFHIR?.resource?.dispenseRequest?.quantity;
     if (dispenseQuantityFHIR) dispenseQuantityFHIR.value = Number(dispenseQuantity);
-    const dosage = medicationRequestFHIR.resource.dosageInstruction[0];
-    if (dosage){
+    const dosageFHIR = medicationRequestFHIR.resource.dosageInstruction[0];
+    if (dosageFHIR){
+      const propertyName = ('patientInstruction' in dosageFHIR) ? 'patientInstruction': 'text';
       if (dosageInstruction) 
-        dosage.text = dosageInstruction;
-      else 
-        delete dosage.text;
-      dosage.extension.filter(row=>row.url===MedicamentProfile.urlDosageFlag)[0].valueBoolean = Boolean(dosageInstruction);
+        dosageFHIR[propertyName] = dosageInstruction;
+      else
+        delete dosageFHIR[propertyName];
+      const dosageFlagFHIR = dosageFHIR?.extension?.filter(row=>row.url===MedicamentProfile.urlDosageFlag)?.[0];
+      if (dosageFlagFHIR) dosageFlagFHIR.valueBoolean = Boolean(dosageInstruction);
     }
   },
 }
