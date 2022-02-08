@@ -20,27 +20,28 @@
   <script type="module" src="../../../init.js"></script>
   <script type="module">
     import "../boundary/MedicamentEditPopup.js";
-    import { showPopupEditMedikament, initPopupEditMedikament } from "../control/PopupControl.js";
-    import { MedicamentProfile } from "../boundary/MedicamentProfile.js";
+    import { showPopupEditMedikament, updatePopupEditMedikament } from "../control/PopupControl.js";
     showPopupEditMedikament(-1);
-    initPopupEditMedikament({
-        index:           -1,
-        profile:       'Compounding',
-        uuid:          '619ad8c5-bc4b-4841-8a13-4162f51c06e7', 
-        packagingText: 'Deo-Roller',
-        typeText:      'Viskose Aluminiumchlorid-Hexahydrat-Lösung 20 % (NRF 11.132.)',
-        formText:      'Gel',
-        amountNumeratorValue: 100,
-        amountNumeratorUnit:  'ml',
+    updatePopupEditMedikament(
+      {collection:null, index:null, field:null},
+      { index:                -1,
+        profile:              'Compounding',
+        uuid:                 '619ad8c5-bc4b-4841-8a13-4162f51c06e7', 
+        packagingText:        'Deo-Roller',
+        typeText:             'Viskose Aluminiumchlorid-Hexahydrat-Lösung 20 % (NRF 11.132.)',
+        formText:             'Gel',
+        amountNumeratorValue:  100,
+        amountNumeratorUnit:   'ml',
         amountDenominatorValue: 1,
         ingredients: [
-          {pznCode:'10206346', medicationText:'Aluminiumchlorid-Hexahydrat', formText:null,     amountText:null, numeratorValue:20, numeratorUnit:'g', denominatorValue:1},
-          {pznCode: null,      medicationText:'Hydroxyethylcellulose 250',   formText:'Pulver', amountText:null, numeratorValue:2,  numeratorUnit:'g', denominatorValue:1},
-          {pznCode: null,      medicationText:'Gereinigtes Wasser',          formText:null,     amountText:'Ad 100 g', numeratorValue:null,  numeratorUnit:null, denominatorValue:null},
+          {pznCode:'10206346', medicationText:'Aluminiumchlorid-Hexahydrat', formText:null,     amountText:null, amountNumeratorValue:20, amountNumeratorUnit:'g', amountDenominatorValue:1},
+          {pznCode: null,      medicationText:'Hydroxyethylcellulose 250',   formText:'Pulver', amountText:null, amountNumeratorValue:2,  amountNumeratorUnit:'g', denominatoamountDenominatorValuerValue:1},
+          {pznCode: null,      medicationText:'Gereinigtes Wasser',          formText:null,     amountText:'Ad 100 g', amountNumeratorValue:null,  amountNumeratorUnit:null, amountDenominatorValue:null},
         ],
-        dispenseQuantity:  9,
-        dosageInstruction: '1mal',
-    });
+        dispenseQuantity:      7,
+        dosageInstruction:    '4mal monatlich',
+      }
+    );
   </script>
 </body>
 </html>

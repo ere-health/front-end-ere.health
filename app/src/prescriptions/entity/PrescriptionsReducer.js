@@ -12,7 +12,6 @@ import {
   cancelPopupEditPractIdAction,
   savePopupEditPractIdAction, 
   showPopupEditMedikamentAction,
-  initPopupEditMedikamentAction, 
   changeProfilePopupEditMedikamentAction,
   updatePopupEditMedikamentAction,
   savePopupEditMedikamentAction, 
@@ -607,10 +606,6 @@ export const prescriptions = createReducer(initialState, (builder) => {
       Object.assign(state.MedikamentPopup, MedicationRequestPrescription.getValuesFromFHIR(medicationRequest));
     }
   });
-  // INIT
-  builder.addCase(initPopupEditMedikamentAction, (state, { payload }) => {
-    state.MedikamentPopup = payload;
-  });
   // CHANGE PROFILE
   builder.addCase(changeProfilePopupEditMedikamentAction, (state, { payload: profile }) => {
     const index = state.MedikamentPopup.index;
@@ -621,14 +616,21 @@ export const prescriptions = createReducer(initialState, (builder) => {
   });
   // UPDATE
   builder.addCase(updatePopupEditMedikamentAction, (state, { payload:{collection,index,field,value} }) => {
-    if (collection)
-      state.MedikamentPopup[collection][index][field] = value;
+    if (collection && (index || index===0))
+      if (field)
+        state.MedikamentPopup[collection][index][field] = value;
+      else  
+        state.MedikamentPopup[collection][index] = value;
+    else if (collection)
+      state.MedikamentPopup[collection] = value;
+    else if (field)
+      state.MedikamentPopup[field] = value;
     else
-      state.MedikamentPopup.field = value;
+      state.MedikamentPopup = value;
   });
   // SAVE
   builder.addCase(savePopupEditMedikamentAction, (state) => {
-    try {
+    if (state.MedikamentPopup.index >= 0) {
       // re-build Medication
       const prescription = state.selectedPrescription.prescriptions[state.MedikamentPopup.index];
       const medicationEntryIndex = prescription.entry.findIndex(row=>row.resource.resourceType=='Medication');
@@ -644,8 +646,6 @@ export const prescriptions = createReducer(initialState, (builder) => {
           prescriptionList[state.MedikamentPopup.index] = state.selectedPrescription.prescriptions[state.MedikamentPopup.index];
         }
       }
-    } catch(e) {
-      alert(e);
     }
     state.MedikamentPopup = {};
   });

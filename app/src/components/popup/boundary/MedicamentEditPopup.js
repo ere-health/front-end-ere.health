@@ -5,7 +5,6 @@ import {
     changeProfilePopupEditMedikament,
     updatePopupEditMedikament,
     savePopupEditMedikament,
-    initPopupEditMedikament,
     addValidationErrorForCurrentPopup,
     removeValidationErrorForCurrentPopup,
 } from "../control/PopupControl.js";
@@ -37,14 +36,16 @@ export class MedicamentEditPopup extends BElement {
         return field;
     }
     getIndexFromName(name){
-        const fragments = name.split('-');
-        if (fragments.length==3)
+        const fragments = name?.split('-');
+        if (fragments && fragments.length===3) {
+            const indesAsInteger = Number.parseInt(fragments[1]);
             return {
                 collection: fragments[0],
-                index: Number.parseInt(fragments[1]),
+                index: (String(indesAsInteger)===fragments[1]) ? indesAsInteger:fragments[1],
                 field: fragments[2],
             }
-        return {collection:null, index:null, field};
+        };
+        return {collection:null, index:null, field:name};
     }
 
     onUserInputValidateAndStore(event) {
@@ -55,14 +56,14 @@ export class MedicamentEditPopup extends BElement {
         
         // import { Validator } from "../../../libs/validator.js";
         const data = new Object();
-        data[nameFragments.name] = value;
+        data[nameFragments.field] = value;
         const rules = new Object();
-        rules[nameFragments.name] = PopupRules[this.popupName][nameFragments.name] ?? [];
-        const validator =  new Validator(data, rules, PopupErrorMessages[this.popupName][nameFragments.name]);
+        rules[nameFragments.field] = PopupRules[this.popupName][nameFragments.field] ?? [];
+        const validator =  new Validator(data, rules, PopupErrorMessages[this.popupName][nameFragments.field]);
         if (validator.passes()) {
           removeValidationErrorForCurrentPopup(id);
           let row=null;
-          switch (nameFragments.name){
+          switch (nameFragments.field){
             case 'pznCode':
                 row = FIELD_PZN_TYPE.filter(row=>row.value===value)?.[0];
                 if (row) this.updatePZNfields(row.value, row.label, nameFragments);
@@ -80,7 +81,7 @@ export class MedicamentEditPopup extends BElement {
             saveButton.disabled = false;
           }
         } else {
-          addValidationErrorForCurrentPopup(id, validator.errors.get(id));
+          addValidationErrorForCurrentPopup(id, validator.errors.get(nameFragments.field));
           saveButton.disabled = true;
         }
     }
@@ -94,7 +95,10 @@ export class MedicamentEditPopup extends BElement {
         else {
             updatePopupEditMedikament({collection, index, field:"medicationText"}, labelFragments[0]+" "+labelFragments[2]);
             updatePopupEditMedikament({collection, index, field:"normgroesseCode"}, labelFragments[1]);
-            updatePopupEditMedikament({collection, index, field:"dformCode"}, labelFragments[3]);
+            const dformCode = labelFragments[3];
+            updatePopupEditMedikament({collection, index, field:"dformCode"}, dformCode);
+            const formText = FIELD_DARREICH_TYPE.filter(row=>row.value===dformCode)?.[0]?.label ?? "";
+            updatePopupEditMedikament({collection, index, field:"formText"}, formText);
         }
     }
 
@@ -125,7 +129,7 @@ export class MedicamentEditPopup extends BElement {
             <datalist id="dformCodes">
                 ${FIELD_DARREICH_TYPE.map(row=>html`<option value="${row.label}">`)}
             </datalist>
-            ${this.getProfileForm(this.state.profile)}
+            ${this.getProfileView(this.state.profile)}
             <div class="fieldRow">
                 <!-- dispenseQuantity -->
                 <div style="display:flex; flex-direction:column; flex-grow: 0.05; padding: 7px;margin-top:5px"> 
@@ -172,7 +176,7 @@ export class MedicamentEditPopup extends BElement {
             <div class="modal-buttons">
                 <button data-close-button 
                         class="cancel" 
-                        @click="${(_) => {initPopupEditMedikament({}); }}">
+                        @click="${(_) => updatePopupEditMedikament(this.getIndexFromName(""),{})}">
                     Abbrechen
                 </button>
                 <button data-modal-target-processing="#processing" 
@@ -182,32 +186,39 @@ export class MedicamentEditPopup extends BElement {
                     Speichern
                 </button>
             </div>
-            <div id="${this.popupName}-error-messages"/>
+            <div id="${this.popupName}-error-messages"
+                 style="width         : 100%;
+                        font-family   : Quicksand;
+                        font-style    : normal;
+                        font-weight   : 500;
+                        font-size     : 16px;
+                        color         : red;"
+            />
         </div>
         `;
     }
 
-    getProfileForm(profile){
+    getProfileView(profile){
         switch (profile){
             case MedicamentProfilePZN.profile:
-                return this.getPZNform();
+                return this.getPZNview();
             case MedicamentProfileFreeText.profile:
-                return this.getFreeTextForm();
+                return this.getFreeTextView();
             case MedicamentProfileIngredient.profile:
-                return this.getIngredientForm();
+                return this.getIngredientView();
             case MedicamentProfileCompounding.profile:
-                return this.getCompoundingForm();
+                return this.getCompoundingView();
         }
     }
 
     // FreeText form
-    getFreeTextForm(){
+    getFreeTextView(){
         let name="";
         return html`
         <div class="fieldRow">
             <!-- medicationText -->
             <div style="display:flex; flex-direction:column; flex-grow: 1; padding: 7px;margin-top:5px"> 
-                <label for="${this.popupName}-${name="medicationText"}">%Medication%</label>
+                <label for="${this.popupName}-${name="medicationText"}">Medikamentenname</label>
                 <input id="${this.popupName}-${name}"
                     name="${name}"
                     type="text" 
@@ -230,7 +241,7 @@ export class MedicamentEditPopup extends BElement {
     }
 
     // PZN form
-    getPZNform(){
+    getPZNview(){
         let name="";
         return html`
         <div class="fieldRow">
@@ -323,17 +334,17 @@ export class MedicamentEditPopup extends BElement {
         `;
     }
     // Ingredient
-    getIngredientForm(){
-        return this.getCompoundingForm();
+    getIngredientView(){
+        return this.getCompoundingView();
     }
 
-    getCompoundingForm(){
+    getCompoundingView(){
         let name="";
         return html`
         <div class="fieldRow">
             <!-- medicationText -->
             <div style="display:flex; flex-direction:column; flex-grow: 1; padding: 7px;margin-top:5px"> 
-                <label for="${this.popupName}-${name="medicationText"}">%Medication%</label>
+                <label for="${this.popupName}-${name="medicationText"}">Medikamentenname</label>
                 <input id="${this.popupName}-${name}"
                     name="${name}"
                     type="text" 
@@ -393,9 +404,10 @@ export class MedicamentEditPopup extends BElement {
                     @change="${_ => this.onUserInputValidateAndStore(_)}"
                 >                
             </div>
+            <!-- forward slash -->
             <div style="display:flex; flex-direction:column; flex-grow: 0.05; padding: 7px;margin-top:5px">
-                <label for="slash"amountDenominatorValue"}">&nbsp;</label>
-                <input id="slash" type="text" value="/" readonly
+                <label for="${this.popupName}-${name="slash"}">&nbsp;</label>
+                <input id="${this.popupName}-${name}" type="text" value="/" readonly
                        style="height        : 56px;     
                             background    : #E4E4E44D;
                             border-radius : 4px;      
@@ -491,12 +503,11 @@ export class MedicamentEditPopup extends BElement {
                 >
             </div>
         </div>
-        ${this.state.ingredients.map((row,rowIndex,_)=>this.getItemView(rowIndex))}
+        ${this.state.ingredients.map((row,rowIndex,_)=>this.getItemView("ingredients", rowIndex))}
         `;
     }
 
-    getItemView(index){
-        const collection = "ingredients";
+    getItemView(collection, index){
         let name = "";
         return html`
         <div class="fieldRow">

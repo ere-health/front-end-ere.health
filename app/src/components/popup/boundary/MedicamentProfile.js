@@ -1,3 +1,40 @@
+// MedicationRequest.Prescription: https://simplifier.net/erezept/kbvprerpprescription
+export const MedicationRequestPrescription = {
+  profile: 'Prescription',
+  urlProfile : 'https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Prescription|1.0.2',
+
+  getValuesFromFHIR: (medicationRequestFHIR) =>{
+    return {
+      dispenseQuantity:  medicationRequestFHIR?.resource?.dispenseRequest?.quantity?.value ?? 0,
+      dosageInstruction: medicationRequestFHIR?.resource?.dosageInstruction?.[0]?.patientInstruction
+                      ?? medicationRequestFHIR?.resource?.dosageInstruction?.[0]?.text
+                      ?? '',
+    }
+  },
+
+  buildEmpty: () => MedicationRequestPrescription.getValuesFromFHIR({}),
+
+  modifyFHIR: (medicationRequestFHIR, {dosageInstruction, dispenseQuantity}) => {
+    // dispenseQuantity
+    const dispenseQuantityFHIR = medicationRequestFHIR?.resource?.dispenseRequest?.quantity;
+    if (dispenseQuantityFHIR) dispenseQuantityFHIR.value = Number(dispenseQuantity);
+    // dosageInstruction
+    const dosageFHIR = medicationRequestFHIR?.resource?.dosageInstruction?.[0];
+    if (dosageFHIR!==undefined){
+      const propertyName = 'patientInstruction';
+      if (! (propertyName in dosageFHIR)) propertyName = 'text';
+      if (dosageInstruction) 
+        dosageFHIR[propertyName] = dosageInstruction;
+      else
+        delete dosageFHIR[propertyName];
+      // DosageFlag
+      const dosageFlagFHIR = dosageFHIR?.extension?.filter(row=>row.url===MedicamentProfile.urlDosageFlag)?.[0];
+      if (dosageFlagFHIR!==undefined)
+        dosageFlagFHIR.valueBoolean = Boolean(dosageInstruction);
+    }
+  },
+}
+
 // PZN: https://simplifier.net/erezept/kbvprerpmedicationpzn
 export const MedicamentProfilePZN = {
   profile: 'PZN',
@@ -213,6 +250,7 @@ export const MedicamentProfileCompounding = {
   },
 }
 
+// INGREDIENTS
 const Ingredients = {
   getValuesFromFHIR : (ingredientsFHIR) => ingredientsFHIR?.map(ingredientFHIR=>Ingredient.getValuesFromFHIR(ingredientFHIR)) ?? [],
 
@@ -221,6 +259,7 @@ const Ingredients = {
   buildFHIR : (ingredients) => ingredients?.map(ingredientItem => Ingredient.buildFHIR(ingredientItem)) ?? [],
 }
 
+// INGREDIENT
 const Ingredient = {
   getValuesFromFHIR : (ingredientFHIR) => {
     const values = ItemCodeableConcept.getValuesFromFHIR(ingredientFHIR?.itemCodeableConcept);
@@ -233,10 +272,10 @@ const Ingredient = {
 
   buildEmpty: () => Ingredient.getValuesFromFHIR({}),
 
-  buildFHIR : ({pznCode, medicationText, formText, amountText, numeratorValue, numeratorUnit, denominatorValue}) => {
+  buildFHIR : ({pznCode, medicationText, formText, amountText, amountNumeratorValue, amountNumeratorUnit, amountDenominatorValue}) => {
     const fhir = {
       itemCodeableConcept: ItemCodeableConcept.buildFHIR(pznCode, medicationText),
-      strength:            Amount.buildFHIR(amountText, numeratorValue, numeratorUnit, denominatorValue),
+      strength:            Amount.buildFHIR(amountText, amountNumeratorValue, amountNumeratorUnit, amountDenominatorValue),
     };
     if (formText) {
       const extension = IngredientForm.buildFHIR(formText);
@@ -246,6 +285,7 @@ const Ingredient = {
   }
 }
 
+// ITEM CODEABLE CONCEPT
 const ItemCodeableConcept = {
   getValuesFromFHIR : (itemCodeableConceptFHIR) => {
     return {
@@ -267,6 +307,7 @@ const ItemCodeableConcept = {
   }
 }
 
+// INGREDIENT FORM
 const IngredientForm = {
   getValuesFromFHIR : (ingredientFHIRextension) => {
     const formText = ingredientFHIRextension?.[0]?.valueString ?? '';
@@ -284,6 +325,7 @@ const IngredientForm = {
   }
 }
 
+// AMOUNT
 const Amount = {
   getValuesFromFHIR : (amountFHIR) => {
     return {
@@ -311,43 +353,6 @@ const Amount = {
         denominator: { value: denominatorValue }
       }
   }
-}
-
-// MedicationRequest.Prescription: https://simplifier.net/erezept/kbvprerpprescription
-export const MedicationRequestPrescription = {
-  profile: 'Prescription',
-  urlProfile : 'https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Prescription|1.0.2',
-
-  getValuesFromFHIR: (medicationRequestFHIR) =>{
-    return {
-      dispenseQuantity:  medicationRequestFHIR?.resource?.dispenseRequest?.quantity?.value ?? 0,
-      dosageInstruction: medicationRequestFHIR?.resource?.dosageInstruction?.[0]?.patientInstruction
-                      ?? medicationRequestFHIR?.resource?.dosageInstruction?.[0]?.text
-                      ?? '',
-    }
-  },
-
-  buildEmpty: () => MedicationRequestPrescription.getValuesFromFHIR({}),
-
-  modifyFHIR: (medicationRequestFHIR, {dosageInstruction, dispenseQuantity}) => {
-    // dispenseQuantity
-    const dispenseQuantityFHIR = medicationRequestFHIR?.resource?.dispenseRequest?.quantity;
-    if (dispenseQuantityFHIR) dispenseQuantityFHIR.value = Number(dispenseQuantity);
-    // dosageInstruction
-    const dosageFHIR = medicationRequestFHIR?.resource?.dosageInstruction?.[0];
-    if (dosageFHIR!==undefined){
-      const propertyName = 'patientInstruction';
-      if (! (propertyName in dosageFHIR)) propertyName = 'text';
-      if (dosageInstruction) 
-        dosageFHIR[propertyName] = dosageInstruction;
-      else
-        delete dosageFHIR[propertyName];
-      // DosageFlag
-      const dosageFlagFHIR = dosageFHIR?.extension?.filter(row=>row.url===MedicamentProfile.urlDosageFlag)?.[0];
-      if (dosageFlagFHIR!==undefined)
-        dosageFlagFHIR.valueBoolean = Boolean(dosageInstruction);
-    }
-  },
 }
 
 // MedicamentProfile

@@ -20,20 +20,21 @@
   <script type="module" src="../../../init.js"></script>
   <script type="module">
     import "../boundary/MedicamentEditPopup.js";
-    import { showPopupEditMedikament, initPopupEditMedikament } from "../control/PopupControl.js";
-    import { MedicamentProfile } from "../boundary/MedicamentProfile.js";
+    import { showPopupEditMedikament, updatePopupEditMedikament } from "../control/PopupControl.js";
     showPopupEditMedikament(-1);
-    initPopupEditMedikament({
-        index:           -1,
-        profile:         'PZN',
-        uuid:            'f568397d-7ba2-46ac-904b-02caec933b42',
-        medicationText:  'Prospan® Hustensaft 100ml N1',
-        pznCode:         '08585997',
-        normgroesseCode: 'N1',
-        dformCode:       'FLE',
+    updatePopupEditMedikament(
+      {collection:null, index:null, field:null},
+      { index:             -1,
+        profile:           'PZN',
+        uuid:              'f568397d-7ba2-46ac-904b-02caec933b42',
+        medicationText:    'Prospan® Hustensaft 100ml N1',
+        pznCode:           '08585997',
+        normgroesseCode:   'N1',
+        dformCode:         'FLE',
         dispenseQuantity:  9,
-        dosageInstruction: '1mal',
-    });
+        dosageInstruction: '3mal wochentlich',
+      }
+    );
   </script>
 </body>
 </html>

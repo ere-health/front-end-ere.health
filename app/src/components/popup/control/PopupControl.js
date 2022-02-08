@@ -72,11 +72,6 @@ export const showPopupEditMedikament = (index) => {
     store.dispatch(showPopupEditMedikamentAction(index));
 }
 
-export const initPopupEditMedikamentAction = createAction("initPopupEditMedikamentAction");
-export const initPopupEditMedikament = (medication) => {
-    store.dispatch(initPopupEditMedikamentAction(medication));
-}
-
 export const changeProfilePopupEditMedikamentAction = createAction("changeprofilePopupEditMedikamentAction");
 export const changeProfilePopupEditMedikament = (profile) => {
     store.dispatch(changeProfilePopupEditMedikamentAction(profile));

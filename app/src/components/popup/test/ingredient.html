@@ -20,19 +20,25 @@
   <script type="module" src="../../../init.js"></script>
   <script type="module">
     import "../boundary/MedicamentEditPopup.js";
-    import { showPopupEditMedikament, initPopupEditMedikament } from "../control/PopupControl.js";
-    import { MedicamentProfile } from "../boundary/MedicamentProfile.js";
+    import { showPopupEditMedikament, updatePopupEditMedikament } from "../control/PopupControl.js";
     showPopupEditMedikament(-1);
-    initPopupEditMedikament({
-        index:           -1,
-        profile:         'Ingredient',
-        uuid: '255b49de-6cd5-4ac1-b6fb-c8d0128cf1b3', 
-        normgroesseCode: 'N3',
-        formText: 'Tabletten',
-        ingredients: [{pznCode:'23816', medicationText:'Simvastatin', ingredientForm:null, amountText:null, numeratorValue:20, numeratorUnit:'mg', denominatorValue:1}],
-        dispenseQuantity:  9,
-        dosageInstruction: '1mal',
-    });
+    updatePopupEditMedikament(
+      {collection:null, index:null, field:null},
+      { index:                 -1,
+        profile:               'Ingredient',
+        uuid:                  '255b49de-6cd5-4ac1-b6fb-c8d0128cf1b3', 
+        normgroesseCode:       'N3',
+        formText:              'Tabletten',
+        amountNumeratorValue:   40,
+        amountNumeratorUnit:    "pce",
+        amountDenominatorValue: 1,
+        ingredients: [
+          {pznCode:'23816', medicationText:'Simvastatin', amountText:null, amountNumeratorValue:20, amountNumeratorUnit:'mg', amountDenominatorValue:1}
+        ],
+        dispenseQuantity:       8,
+        dosageInstruction:      '1mal yarlich',
+      }
+    );
   </script>
 </body>
 </html>

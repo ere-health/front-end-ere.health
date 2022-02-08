@@ -20,17 +20,18 @@
   <script type="module" src="../../../init.js"></script>
   <script type="module">
     import "../boundary/MedicamentEditPopup.js";
-    import { showPopupEditMedikament, initPopupEditMedikament } from "../control/PopupControl.js";
-    import { MedicamentProfile } from "../boundary/MedicamentProfile.js";
+    import { showPopupEditMedikament, updatePopupEditMedikament } from "../control/PopupControl.js";
     showPopupEditMedikament(-1);
-    initPopupEditMedikament({
-        index:           -1,
-        profile:         'FreeText',
-        uuid: '0d93504e-c6a7-47c1-8ad5-b0c5cf1b8920',
-        medicationText: 'Metformin 850mg Tabletten N3',
+    updatePopupEditMedikament(
+      {collection:null, index:null, field:null},
+      { index:            -1,
+        profile:          'FreeText',
+        uuid:             '0d93504e-c6a7-47c1-8ad5-b0c5cf1b8920',
+        medicationText:   'Metformin 850mg Tabletten N3',
         dispenseQuantity:  9,
-        dosageInstruction: '1mal',
-    });    
+        dosageInstruction: '2mal taglich',
+      }
+    );    
   </script>
 </body>
 </html>
