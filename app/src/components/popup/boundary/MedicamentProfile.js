@@ -256,7 +256,8 @@ const Ingredients = {
 
   buildEmpty: () => [Ingredient.getValuesFromFHIR({})],
 
-  buildFHIR : (ingredients) => ingredients?.map(ingredientItem => Ingredient.buildFHIR(ingredientItem)) ?? [],
+  buildFHIR : (ingredients) => ingredients?.map(ingredientItem => Ingredient.buildFHIR(ingredientItem))
+                               ?? [Ingredient.buildEmpty()],
 }
 
 // INGREDIENT
@@ -329,16 +330,16 @@ const IngredientForm = {
 const Amount = {
   getValuesFromFHIR : (amountFHIR) => {
     return {
-      amountText:       amountFHIR?.extension?.[0]?.valueString ?? '',
-      numeratorValue:   amountFHIR?.numerator?.value ?? 0,
-      numeratorUnit:    amountFHIR?.numerator?.unit ?? '',
-      denominatorValue: amountFHIR?.denominator?.value ?? 1,
+      amountText:             amountFHIR?.extension?.[0]?.valueString ?? '',
+      amountNumeratorValue:   amountFHIR?.numerator?.value ?? 0,
+      amountNumeratorUnit:    amountFHIR?.numerator?.unit ?? '',
+      amountDenominatorValue: amountFHIR?.denominator?.value ?? 1,
     };
   },
 
   buildEmpty : () => Amount.getValuesFromFHIR({}),
 
-  buildFHIR : (amountText, numeratorValue, numeratorUnit, denominatorValue) => {
+  buildFHIR : (amountText, amountNumeratorValue, amountNumeratorUnit, amountDenominatorValue) => {
     if (amountText)
       return {
         extension: [
@@ -349,8 +350,8 @@ const Amount = {
       }
     else
       return {
-        numerator:   { value: numeratorValue, unit: numeratorUnit },
-        denominator: { value: denominatorValue }
+        numerator:   { value: amountNumeratorValue, unit: amountNumeratorUnit },
+        denominator: { value: amountDenominatorValue }
       }
   }
 }
