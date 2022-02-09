@@ -21,7 +21,7 @@ export const MedicationRequestPrescription = {
     // dosageInstruction
     const dosageFHIR = medicationRequestFHIR?.resource?.dosageInstruction?.[0];
     if (dosageFHIR!==undefined){
-      const propertyName = 'patientInstruction';
+      let propertyName = 'patientInstruction';
       if (! (propertyName in dosageFHIR)) propertyName = 'text';
       if (dosageInstruction) 
         dosageFHIR[propertyName] = dosageInstruction;
@@ -149,7 +149,7 @@ export const MedicamentProfileIngredient = {
       amountNumeratorValue:   medicationFHIR?.resource?.amount?.numerator?.value ?? 0,
       amountNumeratorUnit:    medicationFHIR?.resource?.amount?.numerator?.unit ?? '',
       amountDenominatorValue: medicationFHIR?.resource?.amount?.denominator?.value ?? 1,       
-      ingredients:     Ingredients.getValuesFromFHIR(medicationFHIR?.resource?.ingredient),
+      ingredients:     IngredientItems.getValuesFromFHIR(medicationFHIR?.resource?.ingredient),
     }
   },
 
@@ -184,7 +184,7 @@ export const MedicamentProfileIngredient = {
         },
         form: { text: formText },
         amount: Amount.buildFHIR('', amountNumeratorValue, amountNumeratorUnit, amountDenominatorValue),
-        ingredient: Ingredients.buildFHIR(ingredients)
+        ingredient: IngredientItems.buildFHIR(ingredients)
       }
     }
   },
@@ -208,7 +208,7 @@ export const MedicamentProfileCompounding = {
       amountNumeratorValue:   medicationFHIR?.resource?.amount?.numerator?.value ?? 0,
       amountNumeratorUnit:    medicationFHIR?.resource?.amount?.numerator?.unit ?? '',
       amountDenominatorValue: medicationFHIR?.resource?.amount?.denominator?.value ?? 1,       
-      ingredients:            Ingredients.getValuesFromFHIR(medicationFHIR?.resource?.ingredient),
+      ingredients:            IngredientItems.getValuesFromFHIR(medicationFHIR?.resource?.ingredient),
     }
   },
 
@@ -244,24 +244,24 @@ export const MedicamentProfileCompounding = {
         },
         form: { text: formText },
         amount: Amount.buildFHIR('', amountNumeratorValue, amountNumeratorUnit, amountDenominatorValue),
-        ingredient: Ingredients.buildFHIR(ingredients),
+        ingredient: IngredientItems.buildFHIR(ingredients),
       }
     }
   },
 }
 
-// INGREDIENTS
-const Ingredients = {
-  getValuesFromFHIR : (ingredientsFHIR) => ingredientsFHIR?.map(ingredientFHIR=>Ingredient.getValuesFromFHIR(ingredientFHIR)) ?? [],
+// INGREDIENT ITEMS
+const IngredientItems = {
+  getValuesFromFHIR : (ingredientsFHIR) => ingredientsFHIR?.map(ingredientFHIR=>IngredientItem.getValuesFromFHIR(ingredientFHIR)) 
+                      ?? [IngredientItem.buildEmpty()],
 
-  buildEmpty: () => [Ingredient.getValuesFromFHIR({})],
+  buildEmpty: () => [IngredientItem.getValuesFromFHIR({})],
 
-  buildFHIR : (ingredients) => ingredients?.map(ingredientItem => Ingredient.buildFHIR(ingredientItem))
-                               ?? [Ingredient.buildEmpty()],
+  buildFHIR : (ingredients) => ingredients?.map(ingredientItem => IngredientItem.buildFHIR(ingredientItem)) ?? [],
 }
 
-// INGREDIENT
-const Ingredient = {
+// INGREDIENT ITEM
+const IngredientItem = {
   getValuesFromFHIR : (ingredientFHIR) => {
     const values = ItemCodeableConcept.getValuesFromFHIR(ingredientFHIR?.itemCodeableConcept);
     const formText = IngredientForm.getValuesFromFHIR(ingredientFHIR?.extension);
@@ -271,7 +271,7 @@ const Ingredient = {
     return values;
   },
 
-  buildEmpty: () => Ingredient.getValuesFromFHIR({}),
+  buildEmpty: () => IngredientItem.getValuesFromFHIR({}),
 
   buildFHIR : ({pznCode, medicationText, formText, amountText, amountNumeratorValue, amountNumeratorUnit, amountDenominatorValue}) => {
     const fhir = {
