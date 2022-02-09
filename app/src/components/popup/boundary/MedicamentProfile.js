@@ -149,7 +149,9 @@ export const MedicamentProfileIngredient = {
       amountNumeratorValue:   medicationFHIR?.resource?.amount?.numerator?.value ?? 0,
       amountNumeratorUnit:    medicationFHIR?.resource?.amount?.numerator?.unit ?? '',
       amountDenominatorValue: medicationFHIR?.resource?.amount?.denominator?.value ?? 1,       
-      ingredients:     IngredientItems.getValuesFromFHIR(medicationFHIR?.resource?.ingredient),
+      ingredients:            medicationFHIR?.resource?.ingredient
+                              ?.map(ingredientFHIR=>IngredientIngredientItem.getValuesFromFHIR(ingredientFHIR)) 
+                              ?? [IngredientIngredientItem.buildEmpty()],
     }
   },
 
@@ -162,8 +164,11 @@ export const MedicamentProfileIngredient = {
       fullUrl: 'http://pvs.praxis.local/fhir/Medication/'+uuid,
       resource: {
         resourceType: 'Medication',
+        // 1..1
         id: uuid,
+        // 1..1
         meta: { profile: [MedicamentProfileIngredient.urlProfile] },
+        // 0..*
         extension: [
           { url: 'https://fhir.kbv.de/StructureDefinition/KBV_EX_ERP_Medication_Category',
             valueCoding: {
@@ -178,17 +183,45 @@ export const MedicamentProfileIngredient = {
             valueCode: normgroesseCode
           }
         ],
+        // 1..1
         code: {
           coding: [{ system: 'https://fhir.kbv.de/CodeSystem/KBV_CS_ERP_Medication_Type', 
                       code: 'wirkstoff' }]
         },
+        // 1..1
         form: { text: formText },
+        // 0..1
         amount: Amount.buildFHIR('', amountNumeratorValue, amountNumeratorUnit, amountDenominatorValue),
-        ingredient: IngredientItems.buildFHIR(ingredients)
+        // 1..1
+        ingredient: ingredients?.map(ingredient => IngredientIngredientItem.buildFHIR(ingredient)) 
+                    ?? [],
       }
     }
   },
+}
 
+// INGREDIENT.INGREDIENT ITEM
+const IngredientIngredientItem = {
+  getValuesFromFHIR : (ingredientFHIR) => {
+    const values = {};
+    Object.assign(values, ItemCodeableConcept.getValuesFromFHIR(ingredientFHIR?.itemCodeableConcept));
+    Object.assign(values, Strength.getValuesFromFHIR(ingredientFHIR?.strength));
+    return values;
+  },
+
+  buildEmpty: () => IngredientIngredientItem.getValuesFromFHIR({}),
+
+  buildFHIR : ({pznCode, medicationText, formText, strengthText, strengthNumeratorValue, strengthNumeratorUnit, strengthDenominatorValue}) => {
+    const fhir = {
+      itemCodeableConcept: ItemCodeableConcept.buildFHIR(pznCode, medicationText),
+      strength:            Strength.buildFHIR(strengthText, strengthNumeratorValue, strengthNumeratorUnit, strengthDenominatorValue),
+    };
+    if (formText) {
+      const extension = IngredientForm.buildFHIR(formText);
+      Object.assign(fhir, {extension}); 
+    }
+    return fhir;
+  }
 }
   
 // COMPOUNDING: https://simplifier.net/erezept/kbvprerpmedicationcompounding
@@ -205,10 +238,12 @@ export const MedicamentProfileCompounding = {
                                 ?.[0]
                                 ?.valueString ?? '',
       formText:               medicationFHIR?.resource?.form?.text ?? '',
-      amountNumeratorValue:   medicationFHIR?.resource?.amount?.numerator?.value ?? 0,
+      strengthNumeratorValue:   medicationFHIR?.resource?.amount?.numerator?.value ?? 0,
       amountNumeratorUnit:    medicationFHIR?.resource?.amount?.numerator?.unit ?? '',
       amountDenominatorValue: medicationFHIR?.resource?.amount?.denominator?.value ?? 1,       
-      ingredients:            IngredientItems.getValuesFromFHIR(medicationFHIR?.resource?.ingredient),
+      ingredients:            medicationFHIR?.resource?.ingredient
+                              ?.map(ingredientFHIR=>CompoundingIngredientItem.getValuesFromFHIR(ingredientFHIR)) 
+                              ?? [CompoundingIngredientItem.buildEmpty()],
     }
   },
 
@@ -221,8 +256,11 @@ export const MedicamentProfileCompounding = {
       fullUrl: 'http://pvs.praxis.local/fhir/Medication/'+uuid,
       resource: {
         resourceType: 'Medication',
+        // 1..1
         id: uuid,
+        // 1..1
         meta: { profile: [MedicamentProfileCompounding.urlProfile] },
+        // 0..*
         extension: [
           { url: 'https://fhir.kbv.de/StructureDefinition/KBV_EX_ERP_Medication_Category',
             valueCoding: {
@@ -237,46 +275,39 @@ export const MedicamentProfileCompounding = {
             valueString: packagingText
           }
         ],
+        // 1..1
         code: {
           coding: [{ system: 'https://fhir.kbv.de/CodeSystem/KBV_CS_ERP_Medication_Type', 
                       code: 'rezeptur' }],
           text: medicationText
         },
+        // 1..1
         form: { text: formText },
+        // 1..1
         amount: Amount.buildFHIR('', amountNumeratorValue, amountNumeratorUnit, amountDenominatorValue),
-        ingredient: IngredientItems.buildFHIR(ingredients),
+
+        ingredient: ingredients?.map(ingredientItem => IngredientItem.buildFHIR(ingredientItem)) ?? [],
       }
     }
   },
 }
 
-// INGREDIENT ITEMS
-const IngredientItems = {
-  getValuesFromFHIR : (ingredientsFHIR) => ingredientsFHIR?.map(ingredientFHIR=>IngredientItem.getValuesFromFHIR(ingredientFHIR)) 
-                      ?? [IngredientItem.buildEmpty()],
-
-  buildEmpty: () => [IngredientItem.getValuesFromFHIR({})],
-
-  buildFHIR : (ingredients) => ingredients?.map(ingredientItem => IngredientItem.buildFHIR(ingredientItem)) ?? [],
-}
-
-// INGREDIENT ITEM
-const IngredientItem = {
+// COMPOUNDING.INGREDIENT ITEM
+const CompoundingIngredientItem = {
   getValuesFromFHIR : (ingredientFHIR) => {
-    const values = ItemCodeableConcept.getValuesFromFHIR(ingredientFHIR?.itemCodeableConcept);
-    const formText = IngredientForm.getValuesFromFHIR(ingredientFHIR?.extension);
-    Object.assign(values, formText);
-    const strengthValues = Amount.getValuesFromFHIR(ingredientFHIR?.strength);
-    Object.assign(values, strengthValues);
+    const values = {};
+    Object.assign(values, IngredientForm.getValuesFromFHIR(ingredientFHIR?.extension));
+    Object.assign(values, ItemCodeableConcept.getValuesFromFHIR(ingredientFHIR?.itemCodeableConcept));
+    Object.assign(values, Strength.getValuesFromFHIR(ingredientFHIR?.strength));
     return values;
   },
 
-  buildEmpty: () => IngredientItem.getValuesFromFHIR({}),
+  buildEmpty: () => CompoundingIngredientItem.getValuesFromFHIR({}),
 
-  buildFHIR : ({pznCode, medicationText, formText, amountText, amountNumeratorValue, amountNumeratorUnit, amountDenominatorValue}) => {
+  buildFHIR : ({pznCode, medicationText, formText, strengthText, strengthNumeratorValue, strengthNumeratorUnit, strengthDenominatorValue}) => {
     const fhir = {
       itemCodeableConcept: ItemCodeableConcept.buildFHIR(pznCode, medicationText),
-      strength:            Amount.buildFHIR(amountText, amountNumeratorValue, amountNumeratorUnit, amountDenominatorValue),
+      strength:            Strength.buildFHIR(strengthText, strengthNumeratorValue, strengthNumeratorUnit, strengthDenominatorValue),
     };
     if (formText) {
       const extension = IngredientForm.buildFHIR(formText);
@@ -339,19 +370,42 @@ const Amount = {
 
   buildEmpty : () => Amount.getValuesFromFHIR({}),
 
-  buildFHIR : (amountText, amountNumeratorValue, amountNumeratorUnit, amountDenominatorValue) => {
-    if (amountText)
+  buildFHIR : (amountNumeratorValue, amountNumeratorUnit, amountDenominatorValue) => {
+    return {
+      numerator:   { value: amountNumeratorValue, 
+                     unit:  amountNumeratorUnit },
+      denominator: { value: amountDenominatorValue }
+    }
+  }
+}
+
+// STRENGTH
+const Strength = {
+  getValuesFromFHIR : (strengthFHIR) => {
+    return {
+      strengthText:             strengthFHIR?.extension?.[0]?.valueString ?? '',
+      strengthNumeratorValue:   strengthFHIR?.numerator?.value ?? 0,
+      strengthNumeratorUnit:    strengthFHIR?.numerator?.unit ?? '',
+      strengthDenominatorValue: strengthFHIR?.denominator?.value ?? 1,
+    };
+  },
+
+  buildEmpty : () => Strength.getValuesFromFHIR({}),
+
+  buildFHIR : (strengthText, strengthNumeratorValue, strengthNumeratorUnit, strengthDenominatorValue) => {
+    if (strengthText)
       return {
         extension: [
-          { url: 'https://fhir.kbv.de/StructureDefinition/KBV_EX_ERP_Medication_Ingredient_Amount',
-            valueString: amountText
+          { url: 'https://fhir.kbv.de/StructureDefinition/KBV_EX_ERP_Medication_Ingredient_strength',
+            valueString: strengthText
           }
         ]
       }
     else
       return {
-        numerator:   { value: amountNumeratorValue, unit: amountNumeratorUnit },
-        denominator: { value: amountDenominatorValue }
+        numerator:   { value: strengthNumeratorValue, 
+                       unit:  strengthNumeratorUnit },
+        denominator: { value: strengthDenominatorValue }
       }
   }
 }
