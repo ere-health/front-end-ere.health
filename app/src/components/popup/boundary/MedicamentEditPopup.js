@@ -97,8 +97,8 @@ export class MedicamentEditPopup extends BElement {
             updatePopupEditMedikament({collection, index, field:"normgroesseCode"}, labelFragments[1]);
             const dformCode = labelFragments[3];
             updatePopupEditMedikament({collection, index, field:"dformCode"}, dformCode);
-            const formText = FIELD_DARREICH_TYPE.filter(row=>row.value===dformCode)?.[0]?.label ?? "";
-            updatePopupEditMedikament({collection, index, field:"formText"}, formText);
+            const dformText = FIELD_DARREICH_TYPE.filter(row=>row.value===dformCode)?.[0]?.label ?? "";
+            updatePopupEditMedikament({collection, index, field:"dformText"}, dformText);
         }
     }
 
@@ -129,7 +129,9 @@ export class MedicamentEditPopup extends BElement {
             <datalist id="dformCodes">
                 ${FIELD_DARREICH_TYPE.map(row=>html`<option value="${row.label}">`)}
             </datalist>
+
             ${this.getProfileView(this.state.profile)}
+
             <div class="fieldRow">
                 <!-- dispenseQuantity -->
                 <div style="display:flex; flex-direction:column; flex-grow: 0.05; padding: 7px;margin-top:5px"> 
@@ -201,13 +203,13 @@ export class MedicamentEditPopup extends BElement {
     getProfileView(profile){
         switch (profile){
             case MedicamentProfilePZN.profile:
-                return this.getPZNview();
+                return this.getPZNview(this.state);
             case MedicamentProfileFreeText.profile:
-                return this.getFreeTextView();
+                return this.getFreeTextView(this.state);
             case MedicamentProfileIngredient.profile:
-                return this.getIngredientView();
+                return this.getIngredientView(this.state);
             case MedicamentProfileCompounding.profile:
-                return this.getCompoundingView();
+                return this.getCompoundingView(this.state);
         }
     }
 
@@ -333,11 +335,12 @@ export class MedicamentEditPopup extends BElement {
         </div>
         `;
     }
-    // Ingredient
+    // INGREDIENT
     getIngredientView(){
         return this.getCompoundingView();
     }
 
+    // COMPOUNDING
     getCompoundingView(){
         let name="";
         return html`
@@ -386,7 +389,7 @@ export class MedicamentEditPopup extends BElement {
             </div>            
             <!-- amountNumeratorValue -->
             <div style="display:flex; flex-direction:column; flex-grow: 0.05; padding: 7px;margin-top:5px"> 
-                <label for="${this.popupName}-${name="amountNumeratorValue"}">%nomin.%</label>
+                <label for="${this.popupName}-${name="amountNumeratorValue"}">%numer.%</label>
                 <input id="${this.popupName}-${name}"
                     name="${name}"                        
                     type="number" min="0" max="10000"
@@ -409,10 +412,9 @@ export class MedicamentEditPopup extends BElement {
                 <label for="${this.popupName}-${name="slash"}">&nbsp;</label>
                 <input id="${this.popupName}-${name}" type="text" value="/" readonly
                        style="height        : 56px;     
-                            background    : #E4E4E44D;
                             border-radius : 4px;      
                             border        : none;     
-                            width         : 100%;
+                            width         : 22px;
                             font-family   : Quicksand;
                             font-style    : normal;
                             font-weight   : 500;
@@ -423,7 +425,7 @@ export class MedicamentEditPopup extends BElement {
             </div>
             <!-- amountDenominatorValue -->
             <div style="display:flex; flex-direction:column; flex-grow: 0.05; padding: 7px;margin-top:5px"> 
-                <label for="${this.popupName}-${name="amountDenominatorValue"}">%denomin.%</label>
+                <label for="${this.popupName}-${name="amountDenominatorValue"}">%den.%</label>
                 <input id="${this.popupName}-${name}"
                     name="${name}"                        
                     type="number" min="0" max="10000"
@@ -461,9 +463,9 @@ export class MedicamentEditPopup extends BElement {
                     @change="${_ => this.onUserInputValidateAndStore(_)}"
                 >                
             </div>
-            <!-- formText -->
+            <!-- dformText -->
             <div style="display:flex; flex-direction:column; flex-grow: 1; padding: 7px;margin-top:5px"> 
-                <label for="${this.popupName}-${name="formText"}">Darreichungsform</label>
+                <label for="${this.popupName}-${name="dformText"}">Darreichungsform</label>
                 <input id="${this.popupName}-${name}"
                     name="${name}"
                     type="text" 
@@ -484,7 +486,7 @@ export class MedicamentEditPopup extends BElement {
             </div>
             <!-- packagingText -->
             <div style="display:flex; flex-direction:column; flex-grow: 1; padding: 7px;margin-top:5px"> 
-                <label for="${this.popupName}-${name="packagingText"}">%Packaging%</label>
+                <label for="${this.popupName}-${name="packagingText"}">Verpackung</label>
                 <input id="${this.popupName}-${name}"
                     name="${name}"
                     type="text" 
@@ -503,11 +505,12 @@ export class MedicamentEditPopup extends BElement {
                 >
             </div>
         </div>
-        ${this.state.ingredients.map((row,rowIndex,_)=>this.getItemView("ingredients", rowIndex))}
+        ${this.state.ingredients.map((ingredient,rowIndex,_)=>this.getCompoundingItemView(ingredient, "ingredients", rowIndex))}
         `;
     }
 
-    getItemView(collection, index){
+    // COMPOUNDING ITEM
+    getCompoundingItemView(item, collection, index){
         let name = "";
         return html`
         <div class="fieldRow">
@@ -517,7 +520,7 @@ export class MedicamentEditPopup extends BElement {
                     name="${this.getIndexedName(collection,index,name)}"
                     placeholder="PZN"
                     type="text"
-                    .value="${this.state?.[collection]?.[index]?.[name] ?? ""}"
+                    .value="${item?.[name] ?? ""}"
                     style="height        : 56px;
                             background    : #E4E4E44D;
                             border-radius : 4px;
@@ -535,10 +538,10 @@ export class MedicamentEditPopup extends BElement {
             <!-- medicationText -->
             <div style="display:flex; flex-direction:column; flex-grow: 1; padding: 7px;margin-top:5px"> 
                 <input id="${this.popupName}-${this.getIndexedName(collection,index,name="medicationText")}"
-                    placeholder="%ItemText%"
+                    placeholder="Medikamentenname"
                     name="${this.getIndexedName(collection,index,name)}"
                     type="text"
-                    .value="${this.state?.[collection]?.[index]?.[name] ?? ""}"
+                    .value="${item?.[name] ?? ""}"
                     style="height        : 56px;
                             background    : #E4E4E44D;
                             border-radius : 4px;
@@ -552,6 +555,127 @@ export class MedicamentEditPopup extends BElement {
                     @change="${_ => this.onUserInputValidateAndStore(_)}"
                 >
             </div>
+        </div>
+        <div class="fieldRow">
+            <!-- dformText -->
+            <div style="display:flex; flex-direction:column; flex-grow: 0.3; padding: 7px;margin-top:5px"> 
+                <input id="${this.popupName}-${this.getIndexedName(collection,index,name="dformText")}"
+                    name="${this.getIndexedName(collection,index,name)}"
+                    placeholder="%dformText%"
+                    type="text"
+                    .value="${item?.[name] ?? ""}"
+                    style="height        : 56px;
+                            background    : #E4E4E44D;
+                            border-radius : 4px;
+                            border        : none;
+                            width         : 100%;
+                            font-family   : Quicksand;
+                            font-style    : normal;
+                            font-weight   : 500;
+                            font-size     : 18px;
+                            line-height   : 22px;"
+                    list="dformCodes"
+                    @change="${_ => this.onUserInputValidateAndStore(_)}"
+                >
+            </div>            
+            <!-- strengthText -->
+            <div style="display:flex; flex-direction:column; flex-grow: 0.5; padding: 7px;margin-top:5px"> 
+                <input id="${this.popupName}-${this.getIndexedName(collection,index,name="strengthText")}"
+                    placeholder="%strengthText%"
+                    name="${this.getIndexedName(collection,index,name)}"
+                    type="text"
+                    .value="${item?.[name] ?? ""}"
+                    style="height        : 56px;
+                            background    : #E4E4E44D;
+                            border-radius : 4px;
+                            border        : none;
+                            width         : 100%;
+                            font-family   : Quicksand;
+                            font-style    : normal;
+                            font-weight   : 500;
+                            font-size     : 18px;
+                            line-height   : 22px;"
+                    @change="${_ => this.onUserInputValidateAndStore(_)}"
+                >
+            </div>
+            <!-- strengthNumeratorValue -->
+            <div style="display:flex; flex-direction:column; flex-grow: 0.05; padding: 7px;margin-top:5px"> 
+                <input id="${this.popupName}-${this.getIndexedName(collection,index,name="strengthNumeratorValue")}"
+                    name="${this.getIndexedName(collection,index,name)}"                        
+                    type="number" min="0" max="10000"
+                    placeholder="%numerator%"
+                    .value="${item?.[name] ?? ""}"
+                    style="height        : 56px;     
+                            background    : #E4E4E44D;
+                            border-radius : 4px;      
+                            border        : none;     
+                            width         : 100%;
+                            font-family   : Quicksand;
+                            font-style    : normal;
+                            font-weight   : 500;
+                            font-size     : 18px;
+                            line-height   : 22px;"
+                    @change="${_ => this.onUserInputValidateAndStore(_)}"
+                >                
+            </div>
+            <!-- forward slash -->
+            <div style="display:flex; flex-direction:column; flex-grow: 0.05; padding: 7px;margin-top:5px">
+                <input id="${this.popupName}-${this.getIndexedName(collection,index,name="slash")}"
+                       type="text"
+                       value="/" 
+                       readonly
+                       style="height        : 56px;     
+                            border-radius : 4px;      
+                            border        : none;     
+                            width         : 22px;
+                            font-family   : Quicksand;
+                            font-style    : normal;
+                            font-weight   : 500;
+                            font-size     : 18px;
+                            line-height   : 22px;
+                            text-align    : center"
+                >
+            </div>
+            <!-- strengthDenominatorValue -->
+            <div style="display:flex; flex-direction:column; flex-grow: 0.05; padding: 7px;margin-top:5px"> 
+                <input id="${this.popupName}-${this.getIndexedName(collection,index,name="strengthDenominatorValue")}"
+                    name="${this.getIndexedName(collection,index,name)}"                        
+                    type="number" min="0" max="10000"
+                    placeholder="%denominator%"
+                    .value="${item?.[name] ?? ""}"
+                    style="height        : 56px;     
+                            background    : #E4E4E44D;
+                            border-radius : 4px;      
+                            border        : none;     
+                            width         : 100%;
+                            font-family   : Quicksand;
+                            font-style    : normal;
+                            font-weight   : 500;
+                            font-size     : 18px;
+                            line-height   : 22px;"
+                    @change="${_ => this.onUserInputValidateAndStore(_)}"
+                >                
+            </div>
+            <!-- strengthNumeratorUnit -->
+            <div style="display:flex; flex-direction:column; flex-grow: 0.1; padding: 7px;margin-top:5px"> 
+                <input id="${this.popupName}-${this.getIndexedName(collection,index,name="strengthNumeratorUnit")}"
+                    name="${this.getIndexedName(collection,index,name)}"                        
+                    type="text"
+                    placeholder="%unit%"
+                    .value="${item?.[name] ?? ""}"
+                    style="height        : 56px;     
+                            background    : #E4E4E44D;
+                            border-radius : 4px;      
+                            border        : none;     
+                            width         : 100%;
+                            font-family   : Quicksand;
+                            font-style    : normal;
+                            font-weight   : 500;
+                            font-size     : 18px;
+                            line-height   : 22px;"
+                    @change="${_ => this.onUserInputValidateAndStore(_)}"
+                >                
+            </div>            
         </div>
         `;
     }
