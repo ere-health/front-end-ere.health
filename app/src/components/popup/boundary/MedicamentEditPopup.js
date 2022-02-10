@@ -337,7 +337,259 @@ export class MedicamentEditPopup extends BElement {
     }
     // INGREDIENT
     getIngredientView(){
-        return this.getCompoundingView();
+        let name="";
+        return html`
+        <div class="fieldRow">
+            <!-- normgroesseCode -->
+            <div style="display:flex; flex-direction:column; flex-grow: 1; padding: 7px;margin-top:5px"> 
+                <label for="${this.popupName}-${name="normgroesseCode"}">Normgröße</label>
+                <select id="${this.popupName}-${name}"
+                        name="${name}"
+                        style="height        : 56px;
+                                background    : #E4E4E44D;
+                                border-radius : 4px;
+                                border        : none;
+                                width         : 100%;
+                                font-family   : Quicksand;
+                                font-style    : normal;
+                                font-weight   : 500;
+                                font-size     : 18px;
+                                line-height   : 22px;"
+                        @change="${_ => this.onUserInputValidateAndStore(_)}"
+                >
+                ${FIELD_NORMGROESSE_TYPE.map(row=>html`<option value="${row.value}" ?selected=${this.state.normgroesseCode === row.value}>${row.label}</option>`)}
+                </select>
+            </div>
+            <!-- dformText -->
+            <div style="display:flex; flex-direction:column; flex-grow: 1; padding: 7px;margin-top:5px"> 
+                <label for="${this.popupName}-${name="dformText"}">Darreichungsform</label>
+                <input id="${this.popupName}-${name}"
+                    name="${name}"
+                    type="text" 
+                    .value="${this.state?.[name] ?? ""}"
+                    list="dformCodes"
+                    style="height        : 56px;     
+                            background    : #E4E4E44D;
+                            border-radius : 4px;      
+                            border        : none;     
+                            width         : 100%;
+                            font-family   : Quicksand;
+                            font-style    : normal;
+                            font-weight   : 500;
+                            font-size     : 18px;
+                            line-height   : 22px;"
+                    @change="${_ => this.onUserInputValidateAndStore(_)}"
+                >
+            </div>
+            <!-- amountNumeratorValue -->
+            <div style="display:flex; flex-direction:column; flex-grow: 0.05; padding: 7px;margin-top:5px"> 
+                <label for="${this.popupName}-${name="amountNumeratorValue"}">%numer.%</label>
+                <input id="${this.popupName}-${name}"
+                    name="${name}"                        
+                    type="number" min="0" max="10000"
+                    .value="${this.state?.[name] ?? ""}"
+                    style="height        : 56px;     
+                            background    : #E4E4E44D;
+                            border-radius : 4px;      
+                            border        : none;     
+                            width         : 100%;
+                            font-family   : Quicksand;
+                            font-style    : normal;
+                            font-weight   : 500;
+                            font-size     : 18px;
+                            line-height   : 22px;"
+                    @change="${_ => this.onUserInputValidateAndStore(_)}"
+                >                
+            </div>
+            <!-- forward slash -->
+            <div style="display:flex; flex-direction:column; flex-grow: 0.05; padding: 7px;margin-top:5px">
+                <label for="${this.popupName}-${name="slash"}">&nbsp;</label>
+                <input id="${this.popupName}-${name}" type="text" value="/" readonly
+                       style="height        : 56px;     
+                            border-radius : 4px;      
+                            border        : none;     
+                            width         : 22px;
+                            font-family   : Quicksand;
+                            font-style    : normal;
+                            font-weight   : 500;
+                            font-size     : 18px;
+                            line-height   : 22px;
+                            text-align    : center"
+                >
+            </div>
+            <!-- amountDenominatorValue -->
+            <div style="display:flex; flex-direction:column; flex-grow: 0.05; padding: 7px;margin-top:5px"> 
+                <label for="${this.popupName}-${name="amountDenominatorValue"}">%den.%</label>
+                <input id="${this.popupName}-${name}"
+                    name="${name}"                        
+                    type="number" min="0" max="10000"
+                    .value="${this.state?.[name] ?? ""}"
+                    style="height        : 56px;     
+                            background    : #E4E4E44D;
+                            border-radius : 4px;      
+                            border        : none;     
+                            width         : 100%;
+                            font-family   : Quicksand;
+                            font-style    : normal;
+                            font-weight   : 500;
+                            font-size     : 18px;
+                            line-height   : 22px;"
+                    @change="${_ => this.onUserInputValidateAndStore(_)}"
+                >                
+            </div>
+            <!-- amountNumeratorUnit -->
+            <div style="display:flex; flex-direction:column; flex-grow: 0.1; padding: 7px;margin-top:5px"> 
+                <label for="${this.popupName}-${name="amountNumeratorUnit"}">%unit%</label>
+                <input id="${this.popupName}-${name}"
+                    name="${name}"                        
+                    type="text"
+                    .value="${this.state?.[name] ?? ""}"
+                    style="height        : 56px;     
+                            background    : #E4E4E44D;
+                            border-radius : 4px;      
+                            border        : none;     
+                            width         : 100%;
+                            font-family   : Quicksand;
+                            font-style    : normal;
+                            font-weight   : 500;
+                            font-size     : 18px;
+                            line-height   : 22px;"
+                    @change="${_ => this.onUserInputValidateAndStore(_)}"
+                >                
+            </div>
+        </div>
+        ${this.state.ingredients.map((ingredient,rowIndex,_)=>this.getIngredientItemView(ingredient, "ingredients", rowIndex))}
+        `;
+    }
+
+    // INGREDIENT ITEM
+    getIngredientItemView(item, collection, index){
+        let name = "";
+        return html`
+        <div class="fieldRow">
+            <!-- pznCode -->
+            <div style="display:flex; flex-direction:column; flex-grow: 0.3; padding: 7px;margin-top:5px"> 
+                <input id="${this.popupName}-${this.getIndexedName(collection,index,name="pznCode")}"
+                    name="${this.getIndexedName(collection,index,name)}"
+                    placeholder="PZN"
+                    type="text"
+                    .value="${item?.[name] ?? ""}"
+                    style="height        : 56px;
+                            background    : #E4E4E44D;
+                            border-radius : 4px;
+                            border        : none;
+                            width         : 100%;
+                            font-family   : Quicksand;
+                            font-style    : normal;
+                            font-weight   : 500;
+                            font-size     : 18px;
+                            line-height   : 22px;"
+                    list="pznCodes"
+                    @change="${_ => this.onUserInputValidateAndStore(_)}"
+                >
+            </div>            
+            <!-- medicationText -->
+            <div style="display:flex; flex-direction:column; flex-grow: 1; padding: 7px;margin-top:5px"> 
+                <input id="${this.popupName}-${this.getIndexedName(collection,index,name="medicationText")}"
+                    placeholder="Medikamentenname"
+                    name="${this.getIndexedName(collection,index,name)}"
+                    type="text"
+                    .value="${item?.[name] ?? ""}"
+                    style="height        : 56px;
+                            background    : #E4E4E44D;
+                            border-radius : 4px;
+                            border        : none;
+                            width         : 100%;
+                            font-family   : Quicksand;
+                            font-style    : normal;
+                            font-weight   : 500;
+                            font-size     : 18px;
+                            line-height   : 22px;"
+                    @change="${_ => this.onUserInputValidateAndStore(_)}"
+                >
+            </div>
+        </div>
+        <div class="fieldRow">
+            <!-- strengthNumeratorValue -->
+            <div style="display:flex; flex-direction:column; flex-grow: 0.05; padding: 7px;margin-top:5px"> 
+                <input id="${this.popupName}-${this.getIndexedName(collection,index,name="strengthNumeratorValue")}"
+                    name="${this.getIndexedName(collection,index,name)}"                        
+                    type="number" min="0" max="10000"
+                    placeholder="%numerator%"
+                    .value="${item?.[name] ?? ""}"
+                    style="height        : 56px;     
+                            background    : #E4E4E44D;
+                            border-radius : 4px;      
+                            border        : none;     
+                            width         : 100%;
+                            font-family   : Quicksand;
+                            font-style    : normal;
+                            font-weight   : 500;
+                            font-size     : 18px;
+                            line-height   : 22px;"
+                    @change="${_ => this.onUserInputValidateAndStore(_)}"
+                >                
+            </div>
+            <!-- forward slash -->
+            <div style="display:flex; flex-direction:column; flex-grow: 0.05; padding: 7px;margin-top:5px">
+                <input id="${this.popupName}-${this.getIndexedName(collection,index,name="slash")}"
+                       type="text"
+                       value="/" 
+                       readonly
+                       style="height        : 56px;     
+                            border-radius : 4px;      
+                            border        : none;     
+                            width         : 22px;
+                            font-family   : Quicksand;
+                            font-style    : normal;
+                            font-weight   : 500;
+                            font-size     : 18px;
+                            line-height   : 22px;
+                            text-align    : center"
+                >
+            </div>
+            <!-- strengthDenominatorValue -->
+            <div style="display:flex; flex-direction:column; flex-grow: 0.05; padding: 7px;margin-top:5px"> 
+                <input id="${this.popupName}-${this.getIndexedName(collection,index,name="strengthDenominatorValue")}"
+                    name="${this.getIndexedName(collection,index,name)}"                        
+                    type="number" min="0" max="10000"
+                    placeholder="%denominator%"
+                    .value="${item?.[name] ?? ""}"
+                    style="height        : 56px;     
+                            background    : #E4E4E44D;
+                            border-radius : 4px;      
+                            border        : none;     
+                            width         : 100%;
+                            font-family   : Quicksand;
+                            font-style    : normal;
+                            font-weight   : 500;
+                            font-size     : 18px;
+                            line-height   : 22px;"
+                    @change="${_ => this.onUserInputValidateAndStore(_)}"
+                >                
+            </div>
+            <!-- strengthNumeratorUnit -->
+            <div style="display:flex; flex-direction:column; flex-grow: 0.1; padding: 7px;margin-top:5px"> 
+                <input id="${this.popupName}-${this.getIndexedName(collection,index,name="strengthNumeratorUnit")}"
+                    name="${this.getIndexedName(collection,index,name)}"                        
+                    type="text"
+                    placeholder="%unit%"
+                    .value="${item?.[name] ?? ""}"
+                    style="height        : 56px;     
+                            background    : #E4E4E44D;
+                            border-radius : 4px;      
+                            border        : none;     
+                            width         : 100%;
+                            font-family   : Quicksand;
+                            font-style    : normal;
+                            font-weight   : 500;
+                            font-size     : 18px;
+                            line-height   : 22px;"
+                    @change="${_ => this.onUserInputValidateAndStore(_)}"
+                >                
+            </div>            
+        </div>
+        `;
     }
 
     // COMPOUNDING
@@ -367,26 +619,6 @@ export class MedicamentEditPopup extends BElement {
             </div>
         </div>
         <div class="fieldRow">
-            <!-- normgroesseCode -->
-            <div style="display:flex; flex-direction:column; flex-grow: 1; padding: 7px;margin-top:5px"> 
-                <label for="${this.popupName}-${name="normgroesseCode"}">Normgröße</label>
-                <select id="${this.popupName}-${name}"
-                        name="${name}"
-                        style="height        : 56px;
-                                background    : #E4E4E44D;
-                                border-radius : 4px;
-                                border        : none;
-                                width         : 100%;
-                                font-family   : Quicksand;
-                                font-style    : normal;
-                                font-weight   : 500;
-                                font-size     : 18px;
-                                line-height   : 22px;"
-                        @change="${_ => this.onUserInputValidateAndStore(_)}"
-                >
-                ${FIELD_NORMGROESSE_TYPE.map(row=>html`<option value="${row.value}" ?selected=${this.state.normgroesseCode === row.value}>${row.label}</option>`)}
-                </select>
-            </div>            
             <!-- amountNumeratorValue -->
             <div style="display:flex; flex-direction:column; flex-grow: 0.05; padding: 7px;margin-top:5px"> 
                 <label for="${this.popupName}-${name="amountNumeratorValue"}">%numer.%</label>

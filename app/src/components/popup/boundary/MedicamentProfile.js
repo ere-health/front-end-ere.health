@@ -160,7 +160,7 @@ export const MedicamentProfileIngredient = {
 
   buildEmpty: () => MedicamentProfileIngredient.getValuesFromFHIR({}),
 
-  buildFHIR : ({uuid, normgroesseCode, formText, 
+  buildFHIR : ({uuid, normgroesseCode, dformText, 
                 amountNumeratorValue, amountNumeratorUnit, amountDenominatorValue,
                 ingredients}) => {
     const fhir = {
@@ -184,6 +184,7 @@ export const MedicamentProfileIngredient = {
           { url: 'https://fhir.kbv.de/StructureDefinition/KBV_EX_ERP_Medication_Vaccine',
             valueBoolean: false
           },
+          // 0..1 normgroesseCode - see below
         ],
         // 1..1 code
         code: {
@@ -191,14 +192,16 @@ export const MedicamentProfileIngredient = {
                       code: 'wirkstoff' }]
         },
         // 1..1 form
-        form: { text: formText },
+        form: { text: dformText },
+
+        // 0..1 amount - see below
+
         // 1..1 ingredient
         ingredient: ingredients?.map(ingredient => IngredientIngredientItem.buildFHIR(ingredient)) 
                     ?? [],
       }
     };
-
-    // 0..1 extension.normgroesseCode
+    // 0..1 resource.extension.normgroesseCode
     if (normgroesseCode) {
       fhir.resource.extension.push(
         { url: 'http://fhir.de/StructureDefinition/normgroesse',
@@ -206,10 +209,9 @@ export const MedicamentProfileIngredient = {
         }
       );
     }
-
-    // 0..1 amount
+    // 0..1 resource.amount
     if (Number(amountNumeratorValue)>0) {
-      const amount = Amount.buildFHIR(amountNumeratorValue, amountNumeratorUnit, amountDenominatorValue);
+      const amount = Amount.buildFHIR({amountNumeratorValue, amountNumeratorUnit, amountDenominatorValue});
       Object.assign(fhir.resource, {amount});
     }
     return fhir;
@@ -230,7 +232,7 @@ const IngredientIngredientItem = {
   buildFHIR : ({pznCode, medicationText, strengthNumeratorValue, strengthNumeratorUnit, strengthDenominatorValue}) => {
     return {
       // 1..1
-      itemCodeableConcept: ItemCodeableConcept.buildFHIR(pznCode, medicationText),
+      itemCodeableConcept: ItemCodeableConcept.buildFHIR({pznCode, medicationText}),
       // 1..1
       strength: Strength.buildFHIR({strengthText:'', strengthNumeratorValue, strengthNumeratorUnit, strengthDenominatorValue}),
     };
@@ -298,7 +300,7 @@ export const MedicamentProfileCompounding = {
         // 1..1 form
         form: { text: dformText },
         // 1..1 amount
-        amount: Amount.buildFHIR(amountNumeratorValue, amountNumeratorUnit, amountDenominatorValue),
+        amount: Amount.buildFHIR({amountNumeratorValue, amountNumeratorUnit, amountDenominatorValue}),
         // 1..* ingredient
         ingredient: ingredients?.map(ingredientItem => CompoundingIngredientItem.buildFHIR(ingredientItem)) 
                     ?? [],
@@ -337,7 +339,7 @@ const CompoundingIngredientItem = {
       Object.assign(fhir, {extension}); 
     }
     // 1..1
-    const itemCodeableConcept = ItemCodeableConcept.buildFHIR(pznCode, medicationText);
+    const itemCodeableConcept = ItemCodeableConcept.buildFHIR({pznCode, medicationText});
     // 1..1
     const strength = Strength.buildFHIR({strengthText, strengthNumeratorValue, strengthNumeratorUnit, strengthDenominatorValue});
     Object.assign(fhir, {itemCodeableConcept, strength});
@@ -356,7 +358,7 @@ const ItemCodeableConcept = {
 
   buildEmpty: () => ItemCodeableConcept.getValuesFromFHIR({}),
 
-  buildFHIR : (pznCode, medicationText) => {
+  buildFHIR : ({pznCode, medicationText}) => {
     const fhir = {};
     if (pznCode) {
       // 0..1 coding
@@ -382,12 +384,15 @@ const IngredientExtension = {
   buildEmpty : () => IngredientExtension.getValuesFromFHIR({}),
 
   buildFHIR : ({dformText}) => {
-    return [
-      // 0..1 darreichungform
-      { url: MedicamentProfile.urlIngredientForm,
-        valueString: dformText,
-      }
-    ]
+    const extension = [];
+    if (dformText)
+      extension.push(
+        // 0..1 darreichungform
+        { url: MedicamentProfile.urlIngredientForm,
+          valueString: dformText,
+        }
+      );
+    return extension;
   }
 }
 
@@ -403,10 +408,12 @@ const Amount = {
 
   buildEmpty : () => Amount.getValuesFromFHIR({}),
 
-  buildFHIR : (amountNumeratorValue, amountNumeratorUnit, amountDenominatorValue) => {
+  buildFHIR : ({amountNumeratorValue, amountNumeratorUnit, amountDenominatorValue}) => {
     return {
+      // 1..1
       numerator:   { value: amountNumeratorValue, 
                      unit:  amountNumeratorUnit },
+      // 1..1
       denominator: { value: amountDenominatorValue }
     }
   }
