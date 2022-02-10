@@ -18,23 +18,31 @@ export const MedicationRequestPrescription = {
   buildEmpty: () => MedicationRequestPrescription.getValuesFromFHIR({}),
 
   modifyFHIR: (medicationRequestFHIR, {dosageInstruction, dispenseQuantity}) => {
-    // dispenseQuantity
+    // 1..1 dispenseRequest
+    //   1..1 dispenseQuantity
     const dispenseQuantityFHIR = medicationRequestFHIR?.resource?.dispenseRequest?.quantity;
-    if (dispenseQuantityFHIR) dispenseQuantityFHIR.value = Number(dispenseQuantity);
-    // dosageInstruction
+    if (dispenseQuantityFHIR) 
+      dispenseQuantityFHIR.value = Number(dispenseQuantity);
+
+    // 0..1 dosageInstruction
     const dosageFHIR = medicationRequestFHIR?.resource?.dosageInstruction?.[0];
-    if (dosageFHIR!==undefined){
+    if (dosageFHIR===undefined)
+      Object.assign(medicationRequestFHIR?.resource, { dosageInstruction: [{text:dosageInstruction}]});
+    else {
+      // 0..1 patientInstruction
       let propertyName = 'patientInstruction';
-      if (! (propertyName in dosageFHIR)) propertyName = 'text';
+      // 0..1 text
+      if (! (propertyName in dosageFHIR)) 
+        propertyName = 'text';
       if (dosageInstruction) 
         dosageFHIR[propertyName] = dosageInstruction;
       else
         delete dosageFHIR[propertyName];
-      // DosageFlag
+      // 0..1 dosierungskennzeichen
       const dosageFlagFHIR = dosageFHIR?.extension?.filter(row=>row.url===MedicamentProfile.urlDosageFlag)?.[0];
       if (dosageFlagFHIR!==undefined)
         dosageFlagFHIR.valueBoolean = Boolean(dosageInstruction);
-    }
+    };
   },
 }
 
@@ -234,7 +242,7 @@ const IngredientIngredientItem = {
       // 1..1
       itemCodeableConcept: ItemCodeableConcept.buildFHIR({pznCode, medicationText}),
       // 1..1
-      strength: Strength.buildFHIR({strengthText:'', strengthNumeratorValue, strengthNumeratorUnit, strengthDenominatorValue}),
+      strength: Strength.buildFHIR({strengthNumeratorValue, strengthNumeratorUnit, strengthDenominatorValue}),
     };
   }
 }
@@ -319,7 +327,7 @@ export const MedicamentProfileCompounding = {
 }
 
 // COMPOUNDING.INGREDIENT ITEM
-const CompoundingIngredientItem = {
+export const CompoundingIngredientItem = {
   getValuesFromFHIR : (ingredientFHIR) => {
     const values = {};
     Object.assign(values, IngredientExtension.getValuesFromFHIR(ingredientFHIR?.extension));
@@ -411,10 +419,10 @@ const Amount = {
   buildFHIR : ({amountNumeratorValue, amountNumeratorUnit, amountDenominatorValue}) => {
     return {
       // 1..1
-      numerator:   { value: amountNumeratorValue, 
+      numerator:   { value: Number(amountNumeratorValue), 
                      unit:  amountNumeratorUnit },
       // 1..1
-      denominator: { value: amountDenominatorValue }
+      denominator: { value: Number(amountDenominatorValue) }
     }
   }
 }
@@ -440,9 +448,9 @@ const Strength = {
             valueString: strengthText }]}
     else
       return {
-        numerator:   { value: strengthNumeratorValue, 
+        numerator:   { value: Number(strengthNumeratorValue), 
                        unit:  strengthNumeratorUnit },
-        denominator: { value: strengthDenominatorValue }
+        denominator: { value: Number(strengthDenominatorValue) }
       }
   }
 }

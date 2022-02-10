@@ -20,6 +20,7 @@ import {
     MedicamentProfilePZN,
     MedicamentProfileIngredient,
     MedicamentProfileCompounding,
+    CompoundingIngredientItem,
 } from "./MedicamentProfile.js"
 
 export class MedicamentEditPopup extends BElement {
@@ -106,8 +107,7 @@ export class MedicamentEditPopup extends BElement {
         let name="";
         return html`
         <div class="modal" id="${this.popupName}" style="max-width: 800px;text-align:left">
-            <form>
-            <!-- Medikament -->
+            <!-- title: Medikament -->
             <div class="modal-title" style="text-align:left">
                 <p><strong>Medikament</strong>
                     <span>
@@ -174,7 +174,6 @@ export class MedicamentEditPopup extends BElement {
                     >
                 </div>
             </div>
-            </form>
             <div class="modal-buttons">
                 <button data-close-button 
                         class="cancel" 
@@ -738,6 +737,10 @@ export class MedicamentEditPopup extends BElement {
             </div>
         </div>
         ${this.state.ingredients.map((ingredient,rowIndex,_)=>this.getCompoundingItemView(ingredient, "ingredients", rowIndex))}
+        <button @click="${_ => updatePopupEditMedikament({collection:"ingredients",index:this.state.ingredients.length}, CompoundingIngredientItem.buildEmpty())}" 
+                style="float: right;"
+        >+</button>
+
         `;
     }
 
@@ -911,6 +914,5 @@ export class MedicamentEditPopup extends BElement {
         </div>
         `;
     }
-
 }
 customElements.define("medicament-edit-popup", MedicamentEditPopup);
