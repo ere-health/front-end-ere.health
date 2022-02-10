@@ -310,7 +310,8 @@ export const MedicamentProfileCompounding = {
         // 1..1 amount
         amount: Amount.buildFHIR({amountNumeratorValue, amountNumeratorUnit, amountDenominatorValue}),
         // 1..* ingredient
-        ingredient: ingredients?.map(ingredientItem => CompoundingIngredientItem.buildFHIR(ingredientItem)) 
+        ingredient: ingredients?.filter(_=>_!==null)
+                    ?.map(ingredientItem => CompoundingIngredientItem.buildFHIR(ingredientItem)) 
                     ?? [],
       }
     };

@@ -21,7 +21,8 @@ import {
     MedicamentProfileIngredient,
     MedicamentProfileCompounding,
     CompoundingIngredientItem,
-} from "./MedicamentProfile.js"
+} from "./MedicamentProfile.js";
+import { initialPath } from "../../../libs/helper/helper.js";
 
 export class MedicamentEditPopup extends BElement {
     popupName = 'medicEdit';
@@ -102,6 +103,15 @@ export class MedicamentEditPopup extends BElement {
             updatePopupEditMedikament({collection, index, field:"dformText"}, dformText);
         }
     }
+
+    removeCompoundingIngredientItem(event) {
+        event.preventDefault();
+        event.stopPropagation()
+        const nameFragments = this.getIndexFromName(event.target.name);
+        nameFragments.field = null;
+        updatePopupEditMedikament(nameFragments, null);
+    }
+    
 
     view() {
         let name="";
@@ -740,12 +750,12 @@ export class MedicamentEditPopup extends BElement {
         <button @click="${_ => updatePopupEditMedikament({collection:"ingredients",index:this.state.ingredients.length}, CompoundingIngredientItem.buildEmpty())}" 
                 style="float: right;"
         >+</button>
-
         `;
     }
 
     // COMPOUNDING ITEM
     getCompoundingItemView(item, collection, index){
+        if (item === null) return "";
         let name = "";
         return html`
         <div class="fieldRow">
@@ -790,6 +800,16 @@ export class MedicamentEditPopup extends BElement {
                     @change="${_ => this.onUserInputValidateAndStore(_)}"
                 >
             </div>
+            <button name="${this.getIndexedName(collection,index,"removebtn")}"
+                    class="remove-meditem-btn" 
+                    style="height          : 48px;
+                           width           : 48px;
+                           padding         : 7px;
+                           margin-top      : 15px;
+                           background-image: url(${initialPath}/assets/images/remove-btn.png);
+                           ${(this.state?.[collection]?.length === 1 ? "display: none;" : "")};"
+                    @click="${_ => this.removeCompoundingIngredientItem(_)}">
+            </button>
         </div>
         <div class="fieldRow">
             <!-- dformText -->
