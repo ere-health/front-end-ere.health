@@ -51,7 +51,7 @@ class _ServerWebSocketActionForwarder {
                 } else if(eventData.type === "GetCardsResponse") {
                     updateCardsFromServer(eventData.payload.getCardsResponse.cards.card);
                 } else if(eventData.type === "SSHClientPortForwardEvent") {
-                    sshTunnelWorked();
+                    sshTunnelWorked(eventData.payload);
                 } else if(eventData.type === "BundlesValidationResult") {
                     alert(JSON.stringify(eventData.payload));
                 } else if(eventData.type === "ChangePinResponse") {

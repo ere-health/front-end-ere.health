@@ -58,14 +58,14 @@ class SetupWizard extends BElement {
   view() {
     return html`
     <section class="popup">
-        <div class="modal ${this.state.showWizard ? "active" : ""}" id="wizard-popup" .style="${this.state.showWizard ? "text-align: left; max-width: 100%;" : "display: none"}">
+        <div class="modal ${this.state.showWizard ? "active" : ""}" id="wizard-popup" .style="${this.state.showWizard ? "text-align: left; max-width: 100%; min-height: 57rem;" : "display: none"}">
             <div class="modal-title">
                 <h1>go.ere.health SetUp</h1>
             </div>
             <div id="step-1">
                 <h2>Konnektorverbindung</h2>
                 <fieldset id="connector" style="border: 0;border-radius: 1rem;background-color: white;padding: 1.5rem;"> 
-                    <div style="height: 42rem">
+                    <div>
                         <div style="display:flex; flex-direction:column;flex-grow: 1;padding: 7px;margin-top:5px"> 
                             <label for="--runtimeConfig-connector.ip">IP-Adresse des Konnektors*</label>
                             <input type="text" id="--runtimeConfig-connector.ip" .value="${this.state.runtimeConfig['connector.ip']}" style="
@@ -149,10 +149,10 @@ class SetupWizard extends BElement {
             <div id="step-2" style="display: none">
                 <h2>SSH Tunnel</h2>
                 <fieldset style="border: 0;border-radius: 1rem;background-color: white;padding: 1.5rem;">
-                    <div style="height: 42rem">
+                    <div>
                         <div style="background: black; color: white; padding: 1rem; font-family: Courier, monospace; border-radius: 1rem">
                         route ADD 100.102.0.0 MASK 255.255.0.0 ${this.state.runtimeConfig["connector.ip"]}<br />
-                        ssh -p 1049 -o StrictHostKeyChecking=no -o GlobalKnownHostsFile=/dev/null -o UserKnownHostsFile=/dev/null -R 127.0.0.1:1501:${this.state.runtimeConfig["connector.ip"]}:443 -R 127.0.0.1:1502:idp-ref.zentral.idp.splitdns.ti-dienste.de:443 -R 127.0.0.1:1503:erp-ref.zentral.erp.splitdns.ti-dienste.de:443 manuel@localhost
+                        ssh -p 1049 -o StrictHostKeyChecking=no -o GlobalKnownHostsFile=/dev/null -o UserKnownHostsFile=/dev/null -R 127.0.0.1:1501:${this.state.runtimeConfig["connector.ip"]}:443 -R 127.0.0.1:1502:idp-ref.zentral.idp.splitdns.ti-dienste.de:443 -R 127.0.0.1:1503:erp-ref.zentral.erp.splitdns.ti-dienste.de:443 manuel@${window.location.hostname}
                         </div>
                     </div>
                     <div class="modal-buttons" style="justify-content: right;">
@@ -164,63 +164,111 @@ class SetupWizard extends BElement {
             <div id="step-3" style="display: none">
                 <h2>Konnektorkontext</h2>
                 <fieldset style="border: 0;border-radius: 1rem;background-color: white;padding: 1.5rem;">
-                    <div style="height: 42rem">
-                        <div style="display:flex; flex-direction:row;flex-grow: 1;padding: 7px;margin-top:5px;"> 
-                            <div style="flex-grow: 1;">
-                                <label for="--runtimeConfig-connector.mandant-id">Mandant ID*</label><br />
-                                <input type="text" id="--runtimeConfig-connector.mandant-id" .value="${this.state.runtimeConfig['connector.mandant-id']}" style="
-                                    height        : 56px;     
-                                    background    : #E4E4E44D;
-                                    border-radius : 4px;      
-                                    border        : none;
-                                    width: 95%;
-                                "
-                                @keyup="${_ => this.onUpdateRuntimeConfig("connector.mandant-id", _.target.value)}"
-                                >
-                            </div>
-                            <div style="flex-grow: 1;">
-                                <label for="--runtimeConfig-connector.client-system-id">Client System ID*</label><br />
-                                <input type="text" id="--runtimeConfig-connector.client-system-id" .value="${this.state.runtimeConfig['connector.client-system-id']}" style="
-                                    height        : 56px;     
-                                    background    : #E4E4E44D;
-                                    border-radius : 4px;      
-                                    border        : none;
-                                    width: 95%;
-                                "
-                                @keyup="${_ => this.onUpdateRuntimeConfig("connector.client-system-id", _.target.value)}"
-                                >
-                            </div>
-                            <div style="flex-grow: 1;">
-                                <label for="--runtimeConfig-connector.workplace-id">Arbeitsplatz ID*</label><br />
-                                <input type="text" id="--runtimeConfig-connector.workplace-id" .value="${this.state.runtimeConfig['connector.workplace-id']}" style="
-                                    height        : 56px;     
-                                    background    : #E4E4E44D;
-                                    border-radius : 4px;      
-                                    border        : none;
-                                    width: 95%;
-                                "
-                                @keyup="${_ => this.onUpdateRuntimeConfig("connector.workplace-id", _.target.value)}"
-                                >
-                            </div>
-                            <div style="flex-grow: 1;">
-                                <label for="--runtimeConfig-connector.user-id">Nutzer ID*</label><br />
-                                <input type="text" id="--runtimeConfig-connector.user-id" .value="${this.state.runtimeConfig['connector.user-id']}" style="
-                                    height        : 56px;
-                                    background    : #E4E4E44D;
-                                    border-radius : 4px;
-                                    border        : none;
-                                    width: 95%;
-                                "
-                                @keyup="${_ => this.onUpdateRuntimeConfig("connector.user-id", _.target.value)}"
-                                >
-                            </div>
+                    <div style="display:flex; flex-direction:row;flex-grow: 1;padding: 7px;margin-top:5px;"> 
+                        <div style="flex-grow: 1;">
+                            <label for="--runtimeConfig-connector.mandant-id">Mandant ID*</label><br />
+                            <input type="text" id="--runtimeConfig-connector.mandant-id" .value="${this.state.runtimeConfig['connector.mandant-id']}" style="
+                                height        : 56px;     
+                                background    : #E4E4E44D;
+                                border-radius : 4px;      
+                                border        : none;
+                                width: 95%;
+                            "
+                            @keyup="${_ => this.onUpdateRuntimeConfig("connector.mandant-id", _.target.value)}"
+                            >
+                        </div>
+                        <div style="flex-grow: 1;">
+                            <label for="--runtimeConfig-connector.client-system-id">Client System ID*</label><br />
+                            <input type="text" id="--runtimeConfig-connector.client-system-id" .value="${this.state.runtimeConfig['connector.client-system-id']}" style="
+                                height        : 56px;     
+                                background    : #E4E4E44D;
+                                border-radius : 4px;      
+                                border        : none;
+                                width: 95%;
+                            "
+                            @keyup="${_ => this.onUpdateRuntimeConfig("connector.client-system-id", _.target.value)}"
+                            >
+                        </div>
+                        <div style="flex-grow: 1;">
+                            <label for="--runtimeConfig-connector.workplace-id">Arbeitsplatz ID*</label><br />
+                            <input type="text" id="--runtimeConfig-connector.workplace-id" .value="${this.state.runtimeConfig['connector.workplace-id']}" style="
+                                height        : 56px;     
+                                background    : #E4E4E44D;
+                                border-radius : 4px;      
+                                border        : none;
+                                width: 95%;
+                            "
+                            @keyup="${_ => this.onUpdateRuntimeConfig("connector.workplace-id", _.target.value)}"
+                            >
+                        </div>
+                        <div style="flex-grow: 1;">
+                            <label for="--runtimeConfig-connector.user-id">Nutzer ID</label><br />
+                            <input type="text" id="--runtimeConfig-connector.user-id" .value="${this.state.runtimeConfig['connector.user-id']}" style="
+                                height        : 56px;
+                                background    : #E4E4E44D;
+                                border-radius : 4px;
+                                border        : none;
+                                width: 95%;
+                            "
+                            @keyup="${_ => this.onUpdateRuntimeConfig("connector.user-id", _.target.value)}"
+                            >
                         </div>
                     </div>
-                    <div class="modal-buttons" style="justify-content: right;">
-                        <button @click="${() => this.back()}">Zurück</button>
-                        <button @click="${() => this.finish()}">Abschließen</button>
+                </fieldset>
+                <h2>Experteneinstellungen</h2>
+                <a href="#" @click="${(_) => {document.getElementById("wizard-expert").style.display='block'; return false;}}">Anzeigen</a>
+                <fieldset id="wizard-expert" style="display: none; border: 0;border-radius: 1rem;background-color: white;padding: 1.5rem;">
+                    <div style="display:flex; flex-direction:column;flex-grow: 1;padding: 7px;margin-top:5px;">
+                        <div style="display:flex; flex-direction:column;flex-grow: 1;padding: 7px;margin-top:5px;"> 
+                            <label for="--runtimeConfig-ere.workflow-service.prescription.server.url">E-Rezept Fachdienst</label><br />
+                            <input type="text" id="--runtimeConfig-ere.workflow-service.prescription.server.url" .value="${this.state.runtimeConfig['ere.workflow-service.prescription.server.url']}" style="
+                                height        : 56px;     
+                                background    : #E4E4E44D;
+                                border-radius : 4px;      
+                                border        : none;
+                            "
+                            @keyup="${_ => this.onUpdateRuntimeConfig("ere.workflow-service.prescription.server.url", _.target.value)}"
+                            >
+                        </div>
+                        <div style="display:flex; flex-direction:column;flex-grow: 1;padding: 7px;margin-top:5px;"> 
+                            <label for="--runtimeConfig-idp.base.url">Idp Base URL</label><br />
+                            <input type="text" id="--runtimeConfig-idp.base.url" .value="${this.state.runtimeConfig['idp.base.url']}" style="
+                                height        : 56px;     
+                                background    : #E4E4E44D;
+                                border-radius : 4px;      
+                                border        : none;
+                            "
+                            @keyup="${_ => this.onUpdateRuntimeConfig("idp.base.url", _.target.value)}"
+                            >
+                        </div>
+                        <div style="display:flex; flex-direction:column;flex-grow: 1;padding: 7px;margin-top:5px;"> 
+                            <label for="--runtimeConfig-idp.client.id">Idp Client Id</label><br />
+                            <input type="text" id="--runtimeConfig-idp.client.id" .value="${this.state.runtimeConfig['idp.client.id']}" style="
+                                height        : 56px;     
+                                background    : #E4E4E44D;
+                                border-radius : 4px;      
+                                border        : none;
+                            "
+                            @keyup="${_ => this.onUpdateRuntimeConfig("idp.client.id", _.target.value)}"
+                            >
+                        </div>
+                        <div style="display:flex; flex-direction:column;flex-grow: 1;padding: 7px;margin-top:5px;"> 
+                            <label for="--runtimeConfig-idp.auth.request.redirect.url">Idp Client Id</label><br />
+                            <input type="text" id="--runtimeConfig-idp.auth.request.redirect.url" .value="${this.state.runtimeConfig['idp.auth.request.redirect.url']}" style="
+                                height        : 56px;     
+                                background    : #E4E4E44D;
+                                border-radius : 4px;      
+                                border        : none;
+                            "
+                            @keyup="${_ => this.onUpdateRuntimeConfig("idp.auth.request.redirect.url", _.target.value)}"
+                            >
+                        </div>
                     </div>
                 </fieldset>
+                <div class="modal-buttons" style="justify-content: right;">
+                    <button @click="${() => this.back()}">Zurück</button>
+                    <button @click="${() => this.finish()}">Abschließen</button>
+                </div>
             </div>
         </div>
     </section>

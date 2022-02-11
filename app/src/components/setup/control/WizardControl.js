@@ -17,8 +17,8 @@ export const showWizard = () => {
 }
 
 export const sshTunnelWorkedAction = createAction("sshTunnelWorkedAction");
-export const sshTunnelWorked = () => {
-    store.dispatch(sshTunnelWorkedAction());
+export const sshTunnelWorked = (payload) => {
+    store.dispatch(sshTunnelWorkedAction(payload));
 }
 
 export const resetSshTunnelWorkedAction = createAction("resetSshTunnelWorkedAction");
