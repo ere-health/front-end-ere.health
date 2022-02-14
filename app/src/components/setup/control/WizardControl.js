@@ -25,3 +25,7 @@ export const resetSshTunnelWorkedAction = createAction("resetSshTunnelWorkedActi
 export const resetSshTunnelWorked = () => {
     store.dispatch(resetSshTunnelWorkedAction());
 }
+export const sshConnectionOfferingAction = createAction("sshConnectionOfferingAction");
+export const sshConnectionOffering = (payload) => {
+    store.dispatch(sshConnectionOfferingAction(payload));
+}

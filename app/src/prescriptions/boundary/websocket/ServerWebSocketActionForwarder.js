@@ -2,7 +2,7 @@ import { addPrescription, addSigned, abortTasksStatus, showHTMLBundles, showGetS
 import { updateSettingsFromServer } from "../../../components/settings/control/SettingsControl.js";
 import { updateStatusFromServer } from "../../../components/status/control/StatusControl.js";
 import { updateCardsFromServer } from "../../../components/cards/control/CardsControl.js";
-import { sshTunnelWorked } from "../../../components/setup/control/WizardControl.js";
+import { sshTunnelWorked, sshConnectionOffering } from "../../../components/setup/control/WizardControl.js";
 
 class _ServerWebSocketActionForwarder {
 	
@@ -50,6 +50,8 @@ class _ServerWebSocketActionForwarder {
                     showGetSignatureModeResponse(eventData.payload);
                 } else if(eventData.type === "GetCardsResponse") {
                     updateCardsFromServer(eventData.payload.getCardsResponse.cards.card);
+                } else if(eventData.type === "SSHConnectionOfferingEvent") {
+                    sshConnectionOffering(eventData.payload);
                 } else if(eventData.type === "SSHClientPortForwardEvent") {
                     sshTunnelWorked(eventData.payload);
                 } else if(eventData.type === "BundlesValidationResult") {
@@ -90,8 +92,8 @@ class _ServerWebSocketActionForwarder {
         return blob;
     }
     
-    runtimeConfig(runtimeConfig) {
-		this.runtimeConfig = runtimeConfig;
+    runtimeConfig(runtimeConfigData) {
+		this.runtimeConfigData = runtimeConfigData;
 	}
 
     uuidv4() {
@@ -105,8 +107,11 @@ class _ServerWebSocketActionForwarder {
         if(!("id" in message)) {
 	        message.id = this.uuidv4();
 		}
-		if(this.runtimeConfig) {
-			message.runtimeConfig = this.runtimeConfig;
+		if(this.runtimeConfigData) {
+			message.runtimeConfig = this.runtimeConfigData;
+            if(!message.runtimeConfig["connector.user-id"]) {
+                delete message.runtimeConfig["connector.user-id"];
+            }
 		}
         this.socket.send(JSON.stringify(message));
     }

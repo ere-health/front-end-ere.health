@@ -64,7 +64,7 @@ class SetupWizard extends BElement {
             </div>
             <div id="step-1">
                 <h2>Konnektorverbindung</h2>
-                <fieldset id="connector" style="border: 0;border-radius: 1rem;background-color: white;padding: 1.5rem;"> 
+                <fieldset style="border: 0;border-radius: 1rem;background-color: white;padding: 1.5rem;"> 
                     <div>
                         <div style="display:flex; flex-direction:column;flex-grow: 1;padding: 7px;margin-top:5px"> 
                             <label for="--runtimeConfig-connector.ip">IP-Adresse des Konnektors*</label>
@@ -141,10 +141,10 @@ class SetupWizard extends BElement {
                             </div>
                         </div>
                     </div>
-                    <div class="modal-buttons" style="justify-content: right;">
-                        <button @click="${() => this.next()}">Weiter</button>
-                    </div>
                 </fieldset>
+                <div class="modal-buttons" style="justify-content: right;">
+                    <button @click="${() => this.next()}">Weiter</button>
+                </div>
             </div>
             <div id="step-2" style="display: none">
                 <h2>SSH Tunnel</h2>
@@ -155,11 +155,11 @@ class SetupWizard extends BElement {
                         ssh -p 1049 -o StrictHostKeyChecking=no -o GlobalKnownHostsFile=/dev/null -o UserKnownHostsFile=/dev/null -R 127.0.0.1:1501:${this.state.runtimeConfig["connector.ip"]}:443 -R 127.0.0.1:1502:idp-ref.zentral.idp.splitdns.ti-dienste.de:443 -R 127.0.0.1:1503:erp-ref.zentral.erp.splitdns.ti-dienste.de:443 manuel@${window.location.hostname}
                         </div>
                     </div>
-                    <div class="modal-buttons" style="justify-content: right;">
-                        <button @click="${() => this.back()}">Zurück</button>
-                        <button class="jet-btn" @click="${() => this.next()}" ?disabled="${!this.state.sshTunnelWorked}">Weiter</button>
-                    </div>
                 </fieldset>
+                <div class="modal-buttons" style="justify-content: right;">
+                    <button @click="${() => this.back()}">Zurück</button>
+                    <button class="jet-btn" @click="${() => this.next()}" ?disabled="${!this.state.sshTunnelWorked}">Weiter</button>
+                </div>
             </div>
             <div id="step-3" style="display: none">
                 <h2>Konnektorkontext</h2>
@@ -215,8 +215,7 @@ class SetupWizard extends BElement {
                         </div>
                     </div>
                 </fieldset>
-                <h2>Experteneinstellungen</h2>
-                <a href="#" @click="${(_) => {document.getElementById("wizard-expert").style.display='block'; return false;}}">Anzeigen</a>
+                <h2>Experteneinstellungen <a href="#" @click="${(_) => {document.getElementById("wizard-expert").style.display='block'; return false;}}">Anzeigen</a></h2>
                 <fieldset id="wizard-expert" style="display: none; border: 0;border-radius: 1rem;background-color: white;padding: 1.5rem;">
                     <div style="display:flex; flex-direction:column;flex-grow: 1;padding: 7px;margin-top:5px;">
                         <div style="display:flex; flex-direction:column;flex-grow: 1;padding: 7px;margin-top:5px;"> 
