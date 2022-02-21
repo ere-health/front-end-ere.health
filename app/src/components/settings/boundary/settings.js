@@ -48,10 +48,12 @@ class Settings extends BElement {
     document.getElementById('cards').style.display = 'none';
     document.getElementById('connector').style.display = 'none';
     document.getElementById('document-service').style.display = 'none';
+    document.getElementById('kim').style.display = 'none';
     document.getElementById('kbv').style.display = 'none';
 
-    document.getElementById('reset-settings-button').style.display = (fieldset != "cards" && fieldset != "status") ? 'inline-block' : 'none';
-    document.getElementById('save-settings-button').style.display = (fieldset != "cards" && fieldset != "status") ? 'inline-block' : 'none';
+
+    document.getElementById('reset-settings-button').style.display = (fieldset != "cards" && fieldset != "status" && fieldset != "kim") ? 'inline-block' : 'none';
+    document.getElementById('save-settings-button').style.display = (fieldset != "cards" && fieldset != "status" && fieldset != "kim") ? 'inline-block' : 'none';
     
     document.getElementById(fieldset).style.display = 'block';    
   }
@@ -70,6 +72,8 @@ class Settings extends BElement {
                         @click="${_ => this.toggleFieldset(_, 'connector')}">Konnektor</button></li>
                     <li style="display: inline-block"><button style="background-color: #E4E4E4;"
                         @click="${_ => this.toggleFieldset(_, 'document-service')}">Dokumenterkennung</button></li>
+                        <li style="display: inline-block"><button style="background-color: #E4E4E4;"
+                        @click="${_ => this.toggleFieldset(_, 'kim')}">KIM für Direktzuweisung</button></li>
                     <li style="display: inline-block"><button style="background-color: #E4E4E4;"
                         @click="${_ => this.toggleFieldset(_, 'kbv')}">KBV Prüfnummer</button></li>
                 </ul>
@@ -229,6 +233,88 @@ class Settings extends BElement {
                         <option value="DENS" ?selected=${this.state['extractor.template.profile'] === 'DENS'}>DENS</option>
                         <option value="DENS_LANDSCAPE" ?selected=${this.state['extractor.template.profile'] === 'DENS_LANDSCAPE'}>DENS_LANDSCAPE</option>
                     </select>
+                </fieldset>
+                <fieldset id="kim"  style="display: none; border: 0;border-radius: 1rem;background-color: white;padding: 1.5rem;">
+                    <div style="display:flex; flex-direction:column;flex-grow: 1;padding: 7px;margin-top:5px"> 
+                        <label for="kim-fromKimAddress">Ihre KIM Adresse*</label>
+                        <input type="text" id="kim-fromKimAddress" .value="${this.state['kim.fromKimAddress']}" style="
+                            height        : 56px;     
+                            background    : #E4E4E44D;
+                            border-radius : 4px;      
+                            border        : none;     
+                            width         : 100%;
+                        "
+                        @keyup="${_ => this.onUpdateSetting("kim.fromKimAddress", _.target.value)}"
+                        >
+                        <label for="kim-smtp-server">KIM SMTP Server (Client Modul)*</label>
+                        <input type="text" id="kim-smtp-server" .value="${this.state['kim.smtpHostServer']}" style="
+                            height        : 56px;     
+                            background    : #E4E4E44D;
+                            border-radius : 4px;      
+                            border        : none;     
+                            width         : 100%;
+                        "
+                        @keyup="${_ => this.onUpdateSetting("kim.smtpHostServer", _.target.value)}"
+                        >
+                        <label for="kim-fd-server">KIM Fachdienst Server*</label>
+                        <input type="text" id="kim-fd-server" .value="${this.state['kim.smtpFdServer']}" style="
+                            height        : 56px;     
+                            background    : #E4E4E44D;
+                            border-radius : 4px;      
+                            border        : none;     
+                            width         : 100%;
+                        "
+                        @keyup="${_ => this.onUpdateSetting("kim.smtpFdServer", _.target.value)}"
+                        >
+                        <label for="kim-smtp-password">KIM Password*</label>
+                        <input type="text" id="kim-smtp-password" .value="${this.state['kim.smtpPassword']}" style="
+                            height        : 56px;     
+                            background    : #E4E4E44D;
+                            border-radius : 4px;      
+                            border        : none;     
+                            width         : 100%;
+                        "
+                        @keyup="${_ => this.onUpdateSetting("kim.smtpPassword", _.target.value)}"
+                        >
+                    </div>
+                    <div style="display:flex; flex-direction:row;flex-grow: 1;padding: 7px;margin-top:5px;"> 
+                        <div style="flex-grow: 1;">
+                            <label for="kim.mandant-id">Mandant ID*</label><br />
+                            <input type="text" id="kim.mandant-id" .value="${this.state['kim.mandant-id']}" style="
+                                height        : 56px;     
+                                background    : #E4E4E44D;
+                                border-radius : 4px;      
+                                border        : none;
+                                width: 95%;
+                            "
+                            @keyup="${_ => this.onUpdateSetting("kim.mandant-id", _.target.value)}"
+                            >
+                        </div>
+                        <div style="flex-grow: 1;">
+                            <label for="kim.client-system-id">Client System ID*</label><br />
+                            <input type="text" id="kim.client-system-id" .value="${this.state['kim.client-system-id']}" style="
+                                height        : 56px;     
+                                background    : #E4E4E44D;
+                                border-radius : 4px;      
+                                border        : none;
+                                width: 95%;
+                            "
+                            @keyup="${_ => this.onUpdateSetting("kim.client-system-id", _.target.value)}"
+                            >
+                        </div>
+                        <div style="flex-grow: 1;">
+                            <label for="kim.workplace-id">Arbeitsplatz ID*</label><br />
+                            <input type="text" id="kim.workplace-id" .value="${this.state['kim.workplace-id']}" style="
+                                height        : 56px;     
+                                background    : #E4E4E44D;
+                                border-radius : 4px;      
+                                border        : none;
+                                width: 95%;
+                            "
+                            @keyup="${_ => this.onUpdateSetting("kim.workplace-id", _.target.value)}"
+                            >
+                        </div>
+                    </div>
                 </fieldset>
                 <fieldset id="kbv"  style="display: none; border: 0;border-radius: 1rem;background-color: white;padding: 1.5rem;">
                     <div style="display:flex; flex-direction:column;flex-grow: 1;padding: 7px;margin-top:5px"> 

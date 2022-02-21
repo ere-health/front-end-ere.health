@@ -19,6 +19,14 @@ const initialState = {
     "connector.client-certificate-password": "",
     "connector.basic-auth-username": "",
     "connector.basic-auth-password": "",
+    "kim.fromKimAddress": "",
+    "kim.smtpHostServer": "",
+    "kim.smtpPassword": "",
+    "kim.smtpFdServer": "",
+    "kim.mandant-id": "",
+    "kim.client-system-id": "",
+    "kim.workplace-id": "",
+    "kim.user-id": ""
   }
 };
   
@@ -34,10 +42,17 @@ export const settingsReducer = createReducer(initialState, (builder) => {
         // Send a list of a list of a list    
         serverWebSocketActionForwarder.send({ type: "SaveSettings", payload: state.settings});
         setTimeout(() => serverWebSocketActionForwarder.send({ type: "RequestStatus", payload: {}}), 1000)
-        
-        
     });
     builder.addCase(updateSettingsFromServerAction,  (state, {payload: {settings}}) => {
+        let kim = {};
+        for(let p in state.settings) {
+            if(p.startsWith("kim")) {
+                kim[p] = state.settings[p];
+            }
+        }
         state.settings = settings;
+        for(let p in kim) {
+          state.settings[p] = kim[p];
+        }
     });
 });

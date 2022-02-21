@@ -19,7 +19,9 @@ import {
   removeMedicationLine,
   addValidationErrorForMainWindow,
   removeValidationErrorForMainWindow,
-  ValidateAllFieldsInMainWindow
+  ValidateAllFieldsInMainWindow,
+  updateDirectAssign,
+  signAndUploadKimBundles
 } from "../../prescriptions/control/UnsignedPrescriptionControl.js";
 import { initialPath } from "../../libs/helper/helper.js";
 import { Mapper } from "../../libs/helper/Mapper.js";
@@ -41,8 +43,14 @@ class Prescription extends BElement {
     super();
   }
 
-  extractState({ prescriptions: { selectedPrescription, isPrevious } }) {
-    return { selectedPrescription, isPrevious };
+  extractState({ prescriptions: { selectedPrescription, isPrevious, directAssign } }) {
+    if(!directAssign) {
+      directAssign = {
+        toKimAddress: "",
+        noteForPharmacy: ""
+      };
+    }
+    return { selectedPrescription, isPrevious, directAssign };
   }
 
   onUserCheckArt({ target: { name, checked } }) {
@@ -109,33 +117,33 @@ class Prescription extends BElement {
   }
   
   toggleAccident(unfallkennzeichen, boolean) {
-	if(boolean) {
-		let accidentExtension = {
-	        url: 'https://fhir.kbv.de/StructureDefinition/KBV_EX_ERP_Accident',
-	        extension: [
-	          {
-	            url: 'unfallkennzeichen',
-	            valueCoding: {
-	              system: 'https://fhir.kbv.de/CodeSystem/KBV_CS_FOR_Ursache_Type',
-	              code: unfallkennzeichen
-	            }
-	          },
-	          {
-	            url: 'unfalltag',
-	            valueDate: ''
-	          }
-	        ]
-	      };
-		if(unfallkennzeichen == "2") {
-			accidentExtension.extension.push({
-	            url: 'unfallbetrieb',
-	            valueString: ''
-	        });
-		}
-		updatePrescription("accident", accidentExtension, "entry[resource.resourceType?MedicationRequest].resource.extension", undefined, undefined, this.state.selectedPrescription.prescriptions.length);
-	} else {
-		updatePrescription("accident", false, "entry[resource.resourceType?MedicationRequest].resource.extension", undefined, undefined, this.state.selectedPrescription.prescriptions.length);
-	}
+    if(boolean) {
+      let accidentExtension = {
+            url: 'https://fhir.kbv.de/StructureDefinition/KBV_EX_ERP_Accident',
+            extension: [
+              {
+                url: 'unfallkennzeichen',
+                valueCoding: {
+                  system: 'https://fhir.kbv.de/CodeSystem/KBV_CS_FOR_Ursache_Type',
+                  code: unfallkennzeichen
+                }
+              },
+              {
+                url: 'unfalltag',
+                valueDate: ''
+              }
+            ]
+          };
+      if(unfallkennzeichen == "2") {
+        accidentExtension.extension.push({
+                url: 'unfallbetrieb',
+                valueString: ''
+            });
+      }
+      updatePrescription("accident", accidentExtension, "entry[resource.resourceType?MedicationRequest].resource.extension", undefined, undefined, this.state.selectedPrescription.prescriptions.length);
+    } else {
+      updatePrescription("accident", false, "entry[resource.resourceType?MedicationRequest].resource.extension", undefined, undefined, this.state.selectedPrescription.prescriptions.length);
+    }
   }
 
   extractDate(date) {
@@ -172,6 +180,29 @@ class Prescription extends BElement {
     removeMedicationLine(medIndex);
   }
 
+  onShowDirectAssign() {
+    ValidateAllFieldsInMainWindow();
+
+    if (document.getElementById("error-messages").innerHTML.trim().length == 0) {
+      let directAssignPopup = document.getElementById("direct-assign-popup");
+      directAssignPopup.classList.add("active");
+      directAssignPopup.style.display = "block";
+    } else {
+      alert('Bitte beheben Sie alle unten auf dieser Seite aufgeführten Fehler, bevor Sie das Rezept unterschreiben');
+    }
+  }
+
+  hideDirectAssignPopup() {
+    let directAssignPopup = document.getElementById("direct-assign-popup");
+    directAssignPopup.classList.remove("active");
+    directAssignPopup.style.display = "none";
+  }
+
+  sendDirectToPharmacy() {
+    signAndUploadKimBundles(this.state.selectedPrescription.prescriptions, this.state.directAssign);
+    this.hideDirectAssignPopup();
+  }
+
 
   view() {
     // get the first prescription of the bundle array
@@ -196,6 +227,12 @@ class Prescription extends BElement {
             Signaturformular zeigen
           </button>
           <button
+            id     = "direct-assign"
+            @click = "${() => this.onShowDirectAssign()}"
+            class  = "open-modal alternative-btn">
+            Direkt Apotheke zuweisen
+          </button>
+          <button
             id     = "check-errors-button"
             @click = "${() => ValidateAllFieldsInMainWindow()}"
             class  = "open-modal jet-btn">
@@ -210,7 +247,45 @@ class Prescription extends BElement {
             ${i18n("SignRecipe")}
           </button>
         </div>
-
+        <section class="popup">
+          <div class="modal" id="direct-assign-popup" style="display: none; text-align: left; max-width: 40%; min-height: 30rem">
+              <div class="modal-title">
+                  <h1>Direktzuweisung</h1>
+              </div>
+              <div>
+                  <fieldset style="border: 0;border-radius: 1rem;background-color: white;padding: 1.5rem;"> 
+                      <div>
+                          <div style="display:flex; flex-direction:column;flex-grow: 1;padding: 7px;margin-top:5px"> 
+                              <label for="toKimAddress">KIM Adresse der Apotheke*</label>
+                              <input type="email" id="toKimAddress" .value="${this.state.directAssign.toKimAddress}" style="
+                                  height        : 56px;     
+                                  background    : #E4E4E44D;
+                                  border-radius : 4px;      
+                                  border        : none;     
+                                  width         : 100%;
+                              "
+                              @keyup="${_ => updateDirectAssign("toKimAddress", _.target.value)}"
+                              >
+                          </div>
+                          <div style="display:flex; flex-direction:column;flex-grow: 1;padding: 7px;margin-top:5px;"> 
+                              <label for="noteToPharmacy">Notiz für Apotheke</label><br />
+                              <textarea id="noteToPharmacy" style="
+                                  height        : 10rem;
+                                  background    : #E4E4E44D;
+                                  border-radius : 4px;
+                                  border        : none;
+                              " @change="${_ => updateDirectAssign("noteToPharmacy", _.target.value)}"
+                              >${this.state.directAssign.noteToPharmacy}</textarea>
+                          </div>
+                      </div>
+                  </fieldset>
+                  <div class="modal-buttons" style="justify-content: right;">
+                    <button @click="${() => this.hideDirectAssignPopup()}">Abbrechen</button>
+                    <button @click="${() => this.sendDirectToPharmacy()}">Versenden</button>
+                  </div>
+              </div>
+          </div>
+      </section>
         <div class="art-info-form">
           <div class="art">
             <form action="" class="art-form">
