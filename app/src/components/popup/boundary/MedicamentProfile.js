@@ -26,8 +26,11 @@ export const MedicationRequestPrescription = {
 
     // 0..1 dosageInstruction
     const dosageFHIR = medicationRequestFHIR?.resource?.dosageInstruction?.[0];
-    if (dosageFHIR===undefined)
-      Object.assign(medicationRequestFHIR?.resource, { dosageInstruction: [{text:dosageInstruction}]});
+    if (dosageFHIR===undefined) {
+      if (dosageInstruction) {
+        Object.assign(medicationRequestFHIR?.resource, { dosageInstruction: [{text:dosageInstruction}]});
+      }
+    }
     else {
       // 0..1 patientInstruction
       let propertyName = 'patientInstruction';
@@ -61,13 +64,18 @@ export const MedicamentProfilePZN = {
                         ?.[0]
                         ?.valueCode ?? '',
       dformCode:       medicationFHIR?.resource?.form?.coding?.[0]?.code ?? '',
+      amountNumeratorValue:   medicationFHIR?.resource?.amount?.numerator?.value ?? 0,
+      amountNumeratorUnit:    medicationFHIR?.resource?.amount?.numerator?.unit ?? '',
+      amountNumUnitCode:      medicationFHIR?.resource?.amount?.numerator?.code ?? '',
+      amountDenominatorValue: medicationFHIR?.resource?.amount?.denominator?.value ?? 1,
     }
   },
 
   buildEmpty: () => MedicamentProfilePZN.getValuesFromFHIR({}),
 
-  buildFHIR : ({uuid, medicationText, pznCode, normgroesseCode,  dformCode}) => {
-    return {
+  buildFHIR : ({uuid, medicationText, pznCode, normgroesseCode,  dformCode,
+               amountNumeratorValue, amountNumeratorUnit, amountNumUnitCode, amountDenominatorValue }) => {
+    const fhir = {
       fullUrl: 'http://pvs.praxis.local/fhir/Medication/'+uuid,
       resource: {
         resourceType: 'Medication',
@@ -98,6 +106,12 @@ export const MedicamentProfilePZN = {
         }
       }
     }
+    // 0..1 resource.amount
+    if (Number(amountNumeratorValue)>0) {
+      const amount = Amount.buildFHIR({amountNumeratorValue, amountNumeratorUnit, amountNumUnitCode, amountDenominatorValue});
+      Object.assign(fhir.resource, {amount});
+    }
+    return fhir;    
   },
 
 }
@@ -159,6 +173,7 @@ export const MedicamentProfileIngredient = {
       dformText:       medicationFHIR?.resource?.form?.text ?? '',
       amountNumeratorValue:   medicationFHIR?.resource?.amount?.numerator?.value ?? 0,
       amountNumeratorUnit:    medicationFHIR?.resource?.amount?.numerator?.unit ?? '',
+      amountNumUnitCode:      medicationFHIR?.resource?.amount?.numerator?.code ?? '',
       amountDenominatorValue: medicationFHIR?.resource?.amount?.denominator?.value ?? 1,       
       ingredients:            medicationFHIR?.resource?.ingredient
                               ?.map(ingredientFHIR=>IngredientIngredientItem.getValuesFromFHIR(ingredientFHIR)) 
@@ -169,7 +184,7 @@ export const MedicamentProfileIngredient = {
   buildEmpty: () => MedicamentProfileIngredient.getValuesFromFHIR({}),
 
   buildFHIR : ({uuid, normgroesseCode, dformText, 
-                amountNumeratorValue, amountNumeratorUnit, amountDenominatorValue,
+                amountNumeratorValue, amountNumeratorUnit, amountNumUnitCode, amountDenominatorValue,
                 ingredients}) => {
     const fhir = {
       fullUrl: 'http://pvs.praxis.local/fhir/Medication/'+uuid,
@@ -219,7 +234,7 @@ export const MedicamentProfileIngredient = {
     }
     // 0..1 resource.amount
     if (Number(amountNumeratorValue)>0) {
-      const amount = Amount.buildFHIR({amountNumeratorValue, amountNumeratorUnit, amountDenominatorValue});
+      const amount = Amount.buildFHIR({amountNumeratorValue, amountNumeratorUnit, amountNumUnitCode, amountDenominatorValue});
       Object.assign(fhir.resource, {amount});
     }
     return fhir;
@@ -273,7 +288,7 @@ export const MedicamentProfileCompounding = {
   buildEmpty: () => MedicamentProfileCompounding.getValuesFromFHIR({}),
 
   buildFHIR : ({uuid, medicationText, packagingText, dformText, 
-                amountNumeratorValue, amountNumeratorUnit, amountDenominatorValue,
+                amountNumeratorValue, amountNumeratorUnit, amountNumUnitCode, amountDenominatorValue,
                 ingredients}) => {
     const fhir = {
       fullUrl: 'http://pvs.praxis.local/fhir/Medication/'+uuid,
@@ -308,7 +323,7 @@ export const MedicamentProfileCompounding = {
         // 1..1 form
         form: { text: dformText },
         // 1..1 amount
-        amount: Amount.buildFHIR({amountNumeratorValue, amountNumeratorUnit, amountDenominatorValue}),
+        amount: Amount.buildFHIR({amountNumeratorValue, amountNumeratorUnit, amountNumUnitCode, amountDenominatorValue}),
         // 1..* ingredient
         ingredient: ingredients?.filter(_=>_!==null)
                     ?.map(ingredientItem => CompoundingIngredientItem.buildFHIR(ingredientItem)) 
@@ -316,13 +331,17 @@ export const MedicamentProfileCompounding = {
       }
     };
     // 0..1 resource.extension.verpackung
-    fhir.resource.extension.push({
-      url: MedicamentProfile.urlPackaging,
-      valueString: packagingText
-    });
+    if (packagingText) {
+      fhir.resource.extension.push({
+        url: MedicamentProfile.urlPackaging,
+        valueString: packagingText
+      });
+    }
     // 0..1 resource.code.text
-    const text = medicationText;
-    Object.assign(fhir.resource.code, {text});    
+    if (medicationText) {
+      const text = medicationText;
+      Object.assign(fhir.resource.code, {text});
+    }
     return fhir;
   },
 }
@@ -411,20 +430,28 @@ const Amount = {
     return {
       amountNumeratorValue:   amountFHIR?.numerator?.value ?? 0,
       amountNumeratorUnit:    amountFHIR?.numerator?.unit ?? '',
+      amountNumUnitCode:      amountFHIR?.numerator?.code ?? '',
       amountDenominatorValue: amountFHIR?.denominator?.value ?? 1,
     };
   },
 
   buildEmpty : () => Amount.getValuesFromFHIR({}),
 
-  buildFHIR : ({amountNumeratorValue, amountNumeratorUnit, amountDenominatorValue}) => {
-    return {
+  buildFHIR : ({amountNumeratorValue, amountNumeratorUnit, amountNumUnitCode, amountDenominatorValue}) => {
+    const fhir = {
       // 1..1
       numerator:   { value: Number(amountNumeratorValue), 
                      unit:  amountNumeratorUnit },
       // 1..1
       denominator: { value: Number(amountDenominatorValue) }
     }
+    // 0..1 Amount unit system and code
+    if (amountNumUnitCode)
+      Object.assign(fhir.numerator, {
+        system: 'http://unitsofmeasure.org',
+        code: amountNumUnitCode,
+      })
+    return fhir;
   }
 }
 
@@ -445,7 +472,7 @@ const Strength = {
     if (strengthText)
       return { 
         extension: [
-          { url: 'https://fhir.kbv.de/StructureDefinition/KBV_EX_ERP_Medication_Ingredient_strength',
+          { url: 'https://fhir.kbv.de/StructureDefinition/KBV_EX_ERP_Medication_Ingredient_Amount',
             valueString: strengthText }]}
     else
       return {
