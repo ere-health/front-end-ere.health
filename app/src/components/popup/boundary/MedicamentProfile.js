@@ -64,6 +64,10 @@ export const MedicamentProfilePZN = {
                         ?.[0]
                         ?.valueCode ?? '',
       dformCode:       medicationFHIR?.resource?.form?.coding?.[0]?.code ?? '',
+      isVaccine:       medicationFHIR?.resource?.extension
+                        ?.filter(object=>object.url==MedicamentProfile.urlVaccine)
+                        ?.[0]
+                        ?.valueBoolean ?? false,
       amountNumeratorValue:   medicationFHIR?.resource?.amount?.numerator?.value ?? 0,
       amountNumeratorUnit:    medicationFHIR?.resource?.amount?.numerator?.unit ?? '',
       amountNumUnitCode:      medicationFHIR?.resource?.amount?.numerator?.code ?? '',
@@ -73,7 +77,7 @@ export const MedicamentProfilePZN = {
 
   buildEmpty: () => MedicamentProfilePZN.getValuesFromFHIR({}),
 
-  buildFHIR : ({uuid, medicationText, pznCode, normgroesseCode,  dformCode,
+  buildFHIR : ({uuid, medicationText, pznCode, normgroesseCode,  dformCode, isVaccine,
                amountNumeratorValue, amountNumeratorUnit, amountNumUnitCode, amountDenominatorValue }) => {
     const fhir = {
       fullUrl: 'http://pvs.praxis.local/fhir/Medication/'+uuid,
@@ -82,22 +86,22 @@ export const MedicamentProfilePZN = {
         id: uuid,
         meta: {profile: [MedicamentProfilePZN.urlProfile]},
         extension: [
+          // 1..1 Category
           { url: 'https://fhir.kbv.de/StructureDefinition/KBV_EX_ERP_Medication_Category',
             valueCoding: {
               system: 'https://fhir.kbv.de/CodeSystem/KBV_CS_ERP_Medication_Category',
               code: '00'
             }
           },
-          { url: 'https://fhir.kbv.de/StructureDefinition/KBV_EX_ERP_Medication_Vaccine',
-            valueBoolean: false
+          // 1..1 Vaccine
+          { url: MedicamentProfile.urlVaccine,
+            valueBoolean: isVaccine
           },
-          { url: 'http://fhir.de/StructureDefinition/normgroesse',
-            valueCode: normgroesseCode
-          }
+          // 0..1 normgroesseCode - see below
         ],
         code: {
           coding: [{ system: 'http://fhir.de/CodeSystem/ifa/pzn', 
-                      code: pznCode }],
+                     code: pznCode }],
           text: medicationText
         },
         form: {
@@ -106,6 +110,14 @@ export const MedicamentProfilePZN = {
         }
       }
     }
+    // 0..1 resource.extension.normgroesseCode
+    if (normgroesseCode) {
+      fhir.resource.extension.push(
+        { url: 'http://fhir.de/StructureDefinition/normgroesse',
+          valueCode: normgroesseCode
+        }
+      );
+    }    
     // 0..1 resource.amount
     if (Number(amountNumeratorValue)>0) {
       const amount = Amount.buildFHIR({amountNumeratorValue, amountNumeratorUnit, amountNumUnitCode, amountDenominatorValue});
@@ -125,12 +137,16 @@ export const MedicamentProfileFreeText = {
   getValuesFromFHIR: (medicationFHIR) =>{
     return {
       medicationText: medicationFHIR?.resource?.code?.text ?? '',
+      isVaccine:      medicationFHIR?.resource?.extension
+                        ?.filter(object=>object.url==MedicamentProfile.urlVaccine)
+                        ?.[0]
+                        ?.valueBoolean ?? false,
     }
   },
 
   buildEmpty: () => MedicamentProfileFreeText.getValuesFromFHIR({}), 
 
-  buildFHIR : function ({uuid, medicationText}) {
+  buildFHIR : function ({uuid, medicationText, isVaccine}) {
     return {
       fullUrl: 'http://pvs.praxis.local/fhir/Medication/'+uuid,
       resource: {
@@ -138,14 +154,16 @@ export const MedicamentProfileFreeText = {
         id: uuid,
         meta: {profile: [MedicamentProfileFreeText.urlProfile]},
         extension: [
+          // 1..1 Category
           { url: 'https://fhir.kbv.de/StructureDefinition/KBV_EX_ERP_Medication_Category',
             valueCoding: {
               system: 'https://fhir.kbv.de/CodeSystem/KBV_CS_ERP_Medication_Category',
               code: '00'
             }
           },
-          { url: 'https://fhir.kbv.de/StructureDefinition/KBV_EX_ERP_Medication_Vaccine',
-            valueBoolean: false
+          // 1..1 Vaccine
+          { url: MedicamentProfile.urlVaccine,
+            valueBoolean: isVaccine
           }
         ],
         code: {
@@ -171,6 +189,10 @@ export const MedicamentProfileIngredient = {
                         ?.[0]
                         ?.valueCode ?? '',
       dformText:       medicationFHIR?.resource?.form?.text ?? '',
+      isVaccine:       medicationFHIR?.resource?.extension
+                        ?.filter(object=>object.url==MedicamentProfile.urlVaccine)
+                        ?.[0]
+                        ?.valueBoolean ?? false,
       amountNumeratorValue:   medicationFHIR?.resource?.amount?.numerator?.value ?? 0,
       amountNumeratorUnit:    medicationFHIR?.resource?.amount?.numerator?.unit ?? '',
       amountNumUnitCode:      medicationFHIR?.resource?.amount?.numerator?.code ?? '',
@@ -183,7 +205,7 @@ export const MedicamentProfileIngredient = {
 
   buildEmpty: () => MedicamentProfileIngredient.getValuesFromFHIR({}),
 
-  buildFHIR : ({uuid, normgroesseCode, dformText, 
+  buildFHIR : ({uuid, normgroesseCode, dformText, isVaccine,
                 amountNumeratorValue, amountNumeratorUnit, amountNumUnitCode, amountDenominatorValue,
                 ingredients}) => {
     const fhir = {
@@ -204,8 +226,8 @@ export const MedicamentProfileIngredient = {
             }
           },
           // 1..1 Vaccine
-          { url: 'https://fhir.kbv.de/StructureDefinition/KBV_EX_ERP_Medication_Vaccine',
-            valueBoolean: false
+          { url: MedicamentProfile.urlVaccine,
+            valueBoolean: isVaccine
           },
           // 0..1 normgroesseCode - see below
         ],
@@ -276,6 +298,10 @@ export const MedicamentProfileCompounding = {
                                 ?.[0]
                                 ?.valueString ?? '',
       dformText:              medicationFHIR?.resource?.form?.text ?? '',
+      isVaccine:              medicationFHIR?.resource?.extension
+                                ?.filter(object=>object.url==MedicamentProfile.urlVaccine)
+                                ?.[0]
+                                ?.valueBoolean ?? false,
       amountNumeratorValue:   medicationFHIR?.resource?.amount?.numerator?.value ?? 0,
       amountNumeratorUnit:    medicationFHIR?.resource?.amount?.numerator?.unit ?? '',
       amountDenominatorValue: medicationFHIR?.resource?.amount?.denominator?.value ?? 1,       
@@ -287,7 +313,7 @@ export const MedicamentProfileCompounding = {
 
   buildEmpty: () => MedicamentProfileCompounding.getValuesFromFHIR({}),
 
-  buildFHIR : ({uuid, medicationText, packagingText, dformText, 
+  buildFHIR : ({uuid, medicationText, packagingText, dformText, isVaccine,
                 amountNumeratorValue, amountNumeratorUnit, amountNumUnitCode, amountDenominatorValue,
                 ingredients}) => {
     const fhir = {
@@ -300,16 +326,16 @@ export const MedicamentProfileCompounding = {
         meta: { profile: [MedicamentProfileCompounding.urlProfile] },
         // 0..* extension
         extension: [
-          // 1..1
+          // 1..1 Category
           { url: 'https://fhir.kbv.de/StructureDefinition/KBV_EX_ERP_Medication_Category',
             valueCoding: {
               system: 'https://fhir.kbv.de/CodeSystem/KBV_CS_ERP_Medication_Category',
               code: '00'
             }
           },
-          // 1..1
-          { url: 'https://fhir.kbv.de/StructureDefinition/KBV_EX_ERP_Medication_Vaccine',
-            valueBoolean: false
+          // 1..1 Vaccine
+          { url: MedicamentProfile.urlVaccine,
+            valueBoolean: isVaccine
           },
           // 0..1 verpackung - see below
         ],
@@ -495,6 +521,7 @@ export const MedicamentProfile = {
   urlPackaging:      'https://fhir.kbv.de/StructureDefinition/KBV_EX_ERP_Medication_Packaging',
   urlDosageFlag:     'https://fhir.kbv.de/StructureDefinition/KBV_EX_ERP_DosageFlag',
   urlIngredientForm: 'https://fhir.kbv.de/StructureDefinition/KBV_EX_ERP_Medication_Ingredient_Form',
+  urlVaccine:        'https://fhir.kbv.de/StructureDefinition/KBV_EX_ERP_Medication_Vaccine',
   
   getType: (profile) => {
     switch (profile){
