@@ -267,7 +267,7 @@ export const MedicamentProfileIngredient = {
 const IngredientIngredientItem = {
   getValuesFromFHIR : (ingredientFHIR) => {
     const values = {};
-    Object.assign(values, ItemCodeableConcept.getValuesFromFHIR(ingredientFHIR?.itemCodeableConcept));
+    Object.assign(values, IngredientIngredientItemCodeableConcept.getValuesFromFHIR(ingredientFHIR?.itemCodeableConcept));
     Object.assign(values, Strength.getValuesFromFHIR(ingredientFHIR?.strength));
     return values;
   },
@@ -277,10 +277,35 @@ const IngredientIngredientItem = {
   buildFHIR : ({pznCode, medicationText, strengthNumeratorValue, strengthNumeratorUnit, strengthDenominatorValue}) => {
     return {
       // 1..1
-      itemCodeableConcept: ItemCodeableConcept.buildFHIR({pznCode, medicationText}),
+      itemCodeableConcept: IngredientIngredientItemCodeableConcept.buildFHIR({pznCode, medicationText}),
       // 1..1
       strength: Strength.buildFHIR({strengthNumeratorValue, strengthNumeratorUnit, strengthDenominatorValue}),
     };
+  }
+}
+
+// INGREDIENT.INGREDIENT ITEM CODEABLE CONCEPT
+const IngredientIngredientItemCodeableConcept = {
+  getValuesFromFHIR : (itemCodeableConceptFHIR) => {
+    return {
+      pznCode: itemCodeableConceptFHIR?.coding?.[0]?.code ?? '',
+      medicationText: itemCodeableConceptFHIR?.text ?? '',
+    };
+  },
+
+  buildEmpty: () => IngredientIngredientItemCodeableConcept.getValuesFromFHIR({}),
+
+  buildFHIR : ({pznCode, medicationText}) => {
+    const fhir = {};
+    if (pznCode) {
+      // 0..1 coding
+      const coding = [{ system: 'http://fhir.de/CodeSystem/ask', code: pznCode }];
+      Object.assign(fhir, {coding});
+    }
+    // 1..1 text
+    const text = medicationText;
+    Object.assign(fhir, {text});
+    return fhir;
   }
 }
   
@@ -377,7 +402,7 @@ export const CompoundingIngredientItem = {
   getValuesFromFHIR : (ingredientFHIR) => {
     const values = {};
     Object.assign(values, IngredientExtension.getValuesFromFHIR(ingredientFHIR?.extension));
-    Object.assign(values, ItemCodeableConcept.getValuesFromFHIR(ingredientFHIR?.itemCodeableConcept));
+    Object.assign(values, CompoundingIngredientItemCodeableConcept.getValuesFromFHIR(ingredientFHIR?.itemCodeableConcept));
     Object.assign(values, Strength.getValuesFromFHIR(ingredientFHIR?.strength));
     return values;
   },
@@ -393,7 +418,7 @@ export const CompoundingIngredientItem = {
       Object.assign(fhir, {extension}); 
     }
     // 1..1
-    const itemCodeableConcept = ItemCodeableConcept.buildFHIR({pznCode, medicationText});
+    const itemCodeableConcept = CompoundingIngredientItemCodeableConcept.buildFHIR({pznCode, medicationText});
     // 1..1
     const strength = Strength.buildFHIR({strengthText, strengthNumeratorValue, strengthNumeratorUnit, strengthDenominatorValue});
     Object.assign(fhir, {itemCodeableConcept, strength});
@@ -401,8 +426,8 @@ export const CompoundingIngredientItem = {
   }
 }
 
-// ITEM CODEABLE CONCEPT
-const ItemCodeableConcept = {
+// COMPOUNDING.INGREDIENT ITEM CODEABLE CONCEPT
+const CompoundingIngredientItemCodeableConcept = {
   getValuesFromFHIR : (itemCodeableConceptFHIR) => {
     return {
       pznCode: itemCodeableConceptFHIR?.coding?.[0]?.code ?? '',
@@ -410,13 +435,13 @@ const ItemCodeableConcept = {
     };
   },
 
-  buildEmpty: () => ItemCodeableConcept.getValuesFromFHIR({}),
+  buildEmpty: () => CompoundingIngredientItemCodeableConcept.getValuesFromFHIR({}),
 
   buildFHIR : ({pznCode, medicationText}) => {
     const fhir = {};
     if (pznCode) {
       // 0..1 coding
-      const coding = [{ system: 'http://fhir.de/CodeSystem/ask', code: pznCode }];
+      const coding = [{ system: 'http://fhir.de/CodeSystem/ifa/pzn', code: pznCode }];
       Object.assign(fhir, {coding});
     }
     // 1..1 text
