@@ -519,7 +519,7 @@ export class MedicamentEditPopup extends BElement {
                     list="askCodes"
                     @change="${_ => this.onUserInputValidateAndStore(_)}"
                 >
-            </div>            
+            </div>
             <!-- askText -->
             <div style="display:flex; flex-direction:column; flex-grow: 1; padding: 7px;margin-top:5px"> 
                 <input id="${this.popupName}-${this.getIndexedName(collection,index,name="askText")}"
