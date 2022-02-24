@@ -14,7 +14,7 @@ class _ServerWebSocketActionForwarder {
             this.send({ type: "RequestSettings"});
             this.send({ type: "GetCards"});
             this.send({ type: "RequestStatus"});
-            // setInterval(() => this.send({ type: "GetSignatureMode"}), 10000);
+            setInterval(() => this.send({ type: "GetSignatureMode"}), 10000);
         };
 
         this.socket.onmessage = (event) => {

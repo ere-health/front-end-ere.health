@@ -71,7 +71,7 @@ export const PractIdPopupValidationRules = {
 };
 
 export const MedicPopupValidationRules = {    
-    'medicationText':    ['required', 'regex:/^.{1,50}$/'],
+    'pznText':           ['required', 'regex:/^.{1,50}$/'],
     'pznCode':           ['required', 'regex:/^[0-9]{6,8}$/'],
     'dosageInstruction': ['regex:/^.{1,50}$/'],
     'dispenseQuantity':  ['regex:/^[0-9]{1,3}$/']
@@ -225,7 +225,7 @@ export const PractIdErrorMessages = {
 };
 
 export const MedicPopupErrorMessages = {
-    'medicationText': {
+    'pznText': {
         required: 'Der Medikamentenname muss angegeben werden',
         regex: 'Der Medikamentenname muss zwischen 1 bis 50 Buchstaben lang sein'
     },

@@ -57,7 +57,7 @@ export const MedicamentProfilePZN = {
 
   getValuesFromFHIR: (medicationFHIR) =>{
     return {
-      medicationText:  medicationFHIR?.resource?.code?.text ?? '',
+      pznText:         medicationFHIR?.resource?.code?.text ?? '',
       pznCode:         medicationFHIR?.resource?.code?.coding?.[0]?.code ?? '',
       normgroesseCode: medicationFHIR?.resource?.extension
                         ?.filter(object=>object.url==MedicamentProfile.urlNormgroesse)
@@ -77,7 +77,7 @@ export const MedicamentProfilePZN = {
 
   buildEmpty: () => MedicamentProfilePZN.getValuesFromFHIR({}),
 
-  buildFHIR : ({uuid, medicationText, pznCode, normgroesseCode,  dformCode, isVaccine,
+  buildFHIR : ({uuid, pznText, pznCode, normgroesseCode,  dformCode, isVaccine,
                amountNumeratorValue, amountNumeratorUnit, amountNumUnitCode, amountDenominatorValue }) => {
     const fhir = {
       fullUrl: 'http://pvs.praxis.local/fhir/Medication/'+uuid,
@@ -102,7 +102,7 @@ export const MedicamentProfilePZN = {
         code: {
           coding: [{ system: 'http://fhir.de/CodeSystem/ifa/pzn', 
                      code: pznCode }],
-          text: medicationText
+          text: pznText
         },
         form: {
           coding: [{ system: 'https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_KBV_DARREICHUNGSFORM',
@@ -234,7 +234,7 @@ export const MedicamentProfileIngredient = {
         // 1..1 code
         code: {
           coding: [{ system: 'https://fhir.kbv.de/CodeSystem/KBV_CS_ERP_Medication_Type', 
-                      code: 'wirkstoff' }]
+                     code: 'wirkstoff' }]
         },
         // 1..1 form
         form: { text: dformText },
@@ -274,10 +274,10 @@ const IngredientIngredientItem = {
 
   buildEmpty: () => IngredientIngredientItem.getValuesFromFHIR({}),
 
-  buildFHIR : ({pznCode, medicationText, strengthNumeratorValue, strengthNumeratorUnit, strengthDenominatorValue}) => {
+  buildFHIR : ({askCode, askText, strengthNumeratorValue, strengthNumeratorUnit, strengthDenominatorValue}) => {
     return {
       // 1..1
-      itemCodeableConcept: IngredientIngredientItemCodeableConcept.buildFHIR({pznCode, medicationText}),
+      itemCodeableConcept: IngredientIngredientItemCodeableConcept.buildFHIR({askCode, askText}),
       // 1..1
       strength: Strength.buildFHIR({strengthNumeratorValue, strengthNumeratorUnit, strengthDenominatorValue}),
     };
@@ -288,22 +288,22 @@ const IngredientIngredientItem = {
 const IngredientIngredientItemCodeableConcept = {
   getValuesFromFHIR : (itemCodeableConceptFHIR) => {
     return {
-      pznCode: itemCodeableConceptFHIR?.coding?.[0]?.code ?? '',
-      medicationText: itemCodeableConceptFHIR?.text ?? '',
+      askCode: itemCodeableConceptFHIR?.coding?.[0]?.code ?? '',
+      askText: itemCodeableConceptFHIR?.text ?? '',
     };
   },
 
   buildEmpty: () => IngredientIngredientItemCodeableConcept.getValuesFromFHIR({}),
 
-  buildFHIR : ({pznCode, medicationText}) => {
+  buildFHIR : ({askCode, askText}) => {
     const fhir = {};
-    if (pznCode) {
+    if (askCode) {
       // 0..1 coding
-      const coding = [{ system: 'http://fhir.de/CodeSystem/ask', code: pznCode }];
+      const coding = [{ system: 'http://fhir.de/CodeSystem/ask', code: askCode }];
       Object.assign(fhir, {coding});
     }
     // 1..1 text
-    const text = medicationText;
+    const text = askText;
     Object.assign(fhir, {text});
     return fhir;
   }
@@ -409,7 +409,7 @@ export const CompoundingIngredientItem = {
 
   buildEmpty: () => CompoundingIngredientItem.getValuesFromFHIR({}),
 
-  buildFHIR : ({pznCode, medicationText, dformText, 
+  buildFHIR : ({pznCode, pznText, dformText, 
                 strengthText, strengthNumeratorValue, 
                 strengthNumeratorUnit, strengthDenominatorValue}) => {
     const fhir = {};
@@ -418,7 +418,7 @@ export const CompoundingIngredientItem = {
       Object.assign(fhir, {extension}); 
     }
     // 1..1
-    const itemCodeableConcept = CompoundingIngredientItemCodeableConcept.buildFHIR({pznCode, medicationText});
+    const itemCodeableConcept = CompoundingIngredientItemCodeableConcept.buildFHIR({pznCode, pznText});
     // 1..1
     const strength = Strength.buildFHIR({strengthText, strengthNumeratorValue, strengthNumeratorUnit, strengthDenominatorValue});
     Object.assign(fhir, {itemCodeableConcept, strength});
@@ -431,13 +431,13 @@ const CompoundingIngredientItemCodeableConcept = {
   getValuesFromFHIR : (itemCodeableConceptFHIR) => {
     return {
       pznCode: itemCodeableConceptFHIR?.coding?.[0]?.code ?? '',
-      medicationText: itemCodeableConceptFHIR?.text ?? '',
+      pznText: itemCodeableConceptFHIR?.text ?? '',
     };
   },
 
   buildEmpty: () => CompoundingIngredientItemCodeableConcept.getValuesFromFHIR({}),
 
-  buildFHIR : ({pznCode, medicationText}) => {
+  buildFHIR : ({pznCode, pznText}) => {
     const fhir = {};
     if (pznCode) {
       // 0..1 coding
@@ -445,7 +445,7 @@ const CompoundingIngredientItemCodeableConcept = {
       Object.assign(fhir, {coding});
     }
     // 1..1 text
-    const text = medicationText;
+    const text = pznText;
     Object.assign(fhir, {text});
     return fhir;
   }

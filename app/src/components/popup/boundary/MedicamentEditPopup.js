@@ -11,6 +11,7 @@ import {
 import { PopupRules, PopupErrorMessages } from "../../../prescriptions/boundary/ValidationRules.js";
 import {
     FIELD_PZN_TYPE,
+    FIELD_ASK_TYPE,
     FIELD_NORMGROESSE_TYPE, 
     FIELD_DARREICH_TYPE, 
 } from "./fieldselectoptions.js";
@@ -71,9 +72,19 @@ export class MedicamentEditPopup extends BElement {
                 if (row) this.updatePZNfields(row.value, row.label, nameFragments);
                 else updatePopupEditMedikament(nameFragments, value);
                 break;
-            case 'medicationText':
+            case 'pznText':
                 row = FIELD_PZN_TYPE.filter(row=>row.label===value)?.[0];
                 if (row) this.updatePZNfields(row.value, row.label, nameFragments);
+                else updatePopupEditMedikament(nameFragments, value);
+                break;
+            case 'askCode':
+                row = FIELD_ASK_TYPE.filter(row=>row.value===value)?.[0];
+                if (row) this.updateASKfields(row.value, row.label, nameFragments);
+                else updatePopupEditMedikament(nameFragments, value);
+                break;
+            case 'askText':
+                row = FIELD_ASK_TYPE.filter(row=>row.label===value)?.[0];
+                if (row) this.updateASKfields(row.value, row.label, nameFragments);
                 else updatePopupEditMedikament(nameFragments, value);
                 break;
             default:
@@ -88,14 +99,14 @@ export class MedicamentEditPopup extends BElement {
         }
     }
 
-    // spread the pznLabel into medicationText, normgroesseCode, dformCode
+    // spread the pznLabel into pznText, normgroesseCode, dformCode
     updatePZNfields(pznCode, pznLabel, {collection,index}){
         updatePopupEditMedikament({collection, index, field:"pznCode"}, pznCode);
         const labelFragments = pznLabel.split(',');
         if (labelFragments.length<4)
-            updatePopupEditMedikament({collection, index, field:"medicationText"}, pznLabel);
+            updatePopupEditMedikament({collection, index, field:"pznText"}, pznLabel);
         else {
-            updatePopupEditMedikament({collection, index, field:"medicationText"}, labelFragments[0]+" "+labelFragments[2]);
+            updatePopupEditMedikament({collection, index, field:"pznText"}, labelFragments[0]+" "+labelFragments[2]);
             updatePopupEditMedikament({collection, index, field:"normgroesseCode"}, labelFragments[1]);
             const dformCode = labelFragments[3];
             updatePopupEditMedikament({collection, index, field:"dformCode"}, dformCode);
@@ -103,6 +114,12 @@ export class MedicamentEditPopup extends BElement {
             updatePopupEditMedikament({collection, index, field:"dformText"}, dformText);
         }
     }
+
+    // spread the askLabel into askText
+    updateASKfields(askCode, askLabel, {collection,index}){
+        updatePopupEditMedikament({collection, index, field:"askCode"}, askCode);
+        updatePopupEditMedikament({collection, index, field:"askText"}, askLabel);
+    }    
 
     removeCompoundingIngredientItem(event) {
         event.preventDefault();
@@ -132,9 +149,15 @@ export class MedicamentEditPopup extends BElement {
 
             <datalist id="pznTexts">
                 ${FIELD_PZN_TYPE.map(row=>html`<option value="${row.label}">${row.value}`)}
-            </datalist>
+            </datalist>            
             <datalist id="pznCodes">
                 ${FIELD_PZN_TYPE.map(row=>html`<option value="${row.value}">${row.label}`)}
+            </datalist>
+            <datalist id="askTexts">
+                ${FIELD_ASK_TYPE.map(row=>html`<option value="${row.label}">${row.value}`)}
+            </datalist>
+            <datalist id="askCodes">
+                ${FIELD_ASK_TYPE.map(row=>html`<option value="${row.value}">${row.label}`)}
             </datalist>
             <datalist id="dformCodes">
                 ${FIELD_DARREICH_TYPE.map(row=>html`<option value="${row.label}">`)}
@@ -256,9 +279,9 @@ export class MedicamentEditPopup extends BElement {
         let name="";
         return html`
         <div class="fieldRow">
-            <!-- medicationText -->
+            <!-- pznText -->
             <div style="display:flex; flex-direction:column; flex-grow: 1; padding: 7px;margin-top:5px"> 
-                <label for="${this.popupName}-${name="medicationText"}">Handelsname</label>
+                <label for="${this.popupName}-${name="pznText"}">Handelsname</label>
                 <input id="${this.popupName}-${name}"
                     name="${name}"
                     type="text" 
@@ -476,11 +499,11 @@ export class MedicamentEditPopup extends BElement {
         let name = "";
         return html`
         <div class="fieldRow">
-            <!-- pznCode -->
+            <!-- askCode -->
             <div style="display:flex; flex-direction:column; flex-grow: 0.3; padding: 7px;margin-top:5px"> 
-                <input id="${this.popupName}-${this.getIndexedName(collection,index,name="pznCode")}"
+                <input id="${this.popupName}-${this.getIndexedName(collection,index,name="askCode")}"
                     name="${this.getIndexedName(collection,index,name)}"
-                    placeholder="PZN"
+                    placeholder="ASKP-Nr."
                     type="text"
                     .value="${item?.[name] ?? ""}"
                     style="height        : 56px;
@@ -493,14 +516,14 @@ export class MedicamentEditPopup extends BElement {
                             font-weight   : 500;
                             font-size     : 18px;
                             line-height   : 22px;"
-                    list="pznCodes"
+                    list="askCodes"
                     @change="${_ => this.onUserInputValidateAndStore(_)}"
                 >
             </div>            
-            <!-- medicationText -->
+            <!-- askText -->
             <div style="display:flex; flex-direction:column; flex-grow: 1; padding: 7px;margin-top:5px"> 
-                <input id="${this.popupName}-${this.getIndexedName(collection,index,name="medicationText")}"
-                    placeholder="Medikamentenname"
+                <input id="${this.popupName}-${this.getIndexedName(collection,index,name="askText")}"
+                    placeholder="Wirkstoffbezeichnung"
                     name="${this.getIndexedName(collection,index,name)}"
                     type="text"
                     .value="${item?.[name] ?? ""}"
@@ -514,6 +537,7 @@ export class MedicamentEditPopup extends BElement {
                             font-weight   : 500;
                             font-size     : 18px;
                             line-height   : 22px;"
+                    list="askTexts"                            
                     @change="${_ => this.onUserInputValidateAndStore(_)}"
                 >
             </div>
@@ -780,9 +804,9 @@ export class MedicamentEditPopup extends BElement {
                     @change="${_ => this.onUserInputValidateAndStore(_)}"
                 >
             </div>            
-            <!-- medicationText -->
+            <!-- pznText -->
             <div style="display:flex; flex-direction:column; flex-grow: 1; padding: 7px;margin-top:5px"> 
-                <input id="${this.popupName}-${this.getIndexedName(collection,index,name="medicationText")}"
+                <input id="${this.popupName}-${this.getIndexedName(collection,index,name="pznText")}"
                     placeholder="Medikamentenname"
                     name="${this.getIndexedName(collection,index,name)}"
                     type="text"
@@ -797,6 +821,7 @@ export class MedicamentEditPopup extends BElement {
                             font-weight   : 500;
                             font-size     : 18px;
                             line-height   : 22px;"
+                    list="pznTexts"                            
                     @change="${_ => this.onUserInputValidateAndStore(_)}"
                 >
             </div>
