@@ -537,23 +537,25 @@ const Strength = {
   buildEmpty : () => Strength.getValuesFromFHIR({}),
 
   buildFHIR : ({strengthText, strengthNumeratorValue, strengthNumeratorUnit, strengthNumUnitCode, strengthDenominatorValue}) => {
+    let fhir;
     if (strengthText)
-      return { 
+      fhir = { 
         extension: [
           { url: 'https://fhir.kbv.de/StructureDefinition/KBV_EX_ERP_Medication_Ingredient_Amount',
             valueString: strengthText }]}
-    else
-      const fhir = {
+    else {
+      fhir = {
         numerator:   { value: Number(strengthNumeratorValue), 
                        unit:  strengthNumeratorUnit },
         denominator: { value: Number(strengthDenominatorValue) }
       }
-    // 0..1 Strength unit system and code
-    if (strengthNumUnitCode)
-      Object.assign(fhir.numerator, {
-        system: 'http://unitsofmeasure.org',
-        code: strengthNumUnitCode,
-      });
+      // 0..1 Strength unit system and code
+      if (strengthNumUnitCode)
+        Object.assign(fhir.numerator, {
+          system: 'http://unitsofmeasure.org',
+          code: strengthNumUnitCode,
+        });
+    }
     return fhir;
   }
 }

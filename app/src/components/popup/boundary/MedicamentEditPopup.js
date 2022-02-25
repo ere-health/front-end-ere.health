@@ -214,9 +214,25 @@ export class MedicamentEditPopup extends BElement {
                                 font-style    : normal;
                                 font-weight   : 500;
                                 font-size     : 18px;
+                                line-height   : 22px;
+                                text-align    : right;"
+                    >
+                </div>
+                <!-- Paket (display only) -->
+                <div style="display:flex; flex-direction:column; flex-grow: 0; padding: 7px;margin-top:5px">
+                    <label for="${this.popupName}-${name="package"}">&nbsp;</label>
+                    <input id="${this.popupName}-${name}" type="text" value="Paket" readonly
+                        style="height        : 56px;     
+                                border-radius : 4px;      
+                                border        : none;     
+                                width         : 48px;
+                                font-family   : Quicksand;
+                                font-style    : normal;
+                                font-weight   : 500;
+                                font-size     : 18px;
                                 line-height   : 22px;"
                     >
-                </div>            
+                </div>                
                 <!-- dosageInstruction -->
                 <div style="display:flex; flex-direction:column; flex-grow: 1; padding: 7px;margin-top:5px"> 
                     <label for="${this.popupName}-${name="dosageInstruction"}">Dosierungsanweisung</label>
@@ -672,7 +688,7 @@ export class MedicamentEditPopup extends BElement {
             <!-- strengthText -->
             <div style="display:flex; flex-direction:column; flex-grow: 0.5; padding: 7px;margin-top:5px"> 
                 <input id="${this.popupName}-${this.getIndexedName(collection,index,name="strengthText")}"
-                    placeholder="%strengthText%"
+                    placeholder="Menge Freitext"
                     name="${this.getIndexedName(collection,index,name)}"
                     type="text"
                     .value="${item?.[name] ?? ""}"
@@ -700,7 +716,7 @@ export class MedicamentEditPopup extends BElement {
         return html`
         <!-- amountNumeratorValue -->
         <div style="display:flex; flex-direction:column; flex-grow: 0.05; padding: 7px;margin-top:5px"> 
-            <label for="${this.popupName}-${name="amountNumeratorValue"}">%amount%</label>
+            <label for="${this.popupName}-${name="amountNumeratorValue"}">Menge Bestandteils</label>
             <input id="${this.popupName}-${name}"
                 name="${name}"                        
                 type="number" min="0" max="10000"
@@ -720,7 +736,7 @@ export class MedicamentEditPopup extends BElement {
         </div>
         <!-- amountNumeratorUnit -->
         <div style="display:flex; flex-direction:column; flex-grow: 0.1; padding: 7px;margin-top:5px"> 
-            <label for="${this.popupName}-${name="amountNumeratorUnit"}">%unit%</label>
+            <label for="${this.popupName}-${name="amountNumeratorUnit"}">Einheit</label>
             <input id="${this.popupName}-${name}"
                 name="${name}"                        
                 type="text"
@@ -738,7 +754,7 @@ export class MedicamentEditPopup extends BElement {
                         font-size     : 18px;
                         line-height   : 22px;"
             >
-            <!-- amountNumUnitCode -->
+            <!-- amountNumUnitCode (hidden) -->
             <input id="${this.popupName}-${name="amountNumUnitCode"}"
                     name="${name}"
                     type="hidden"
@@ -790,7 +806,7 @@ export class MedicamentEditPopup extends BElement {
                         font-size     : 18px;
                         line-height   : 22px;"
             >
-            <!-- strengthNumUnitCode -->
+            <!-- strengthNumUnitCode (hidden) -->
             <input id="${this.popupName}-${this.getIndexedName(collection,index,name="strengthNumUnitCode")}"
                 name="${this.getIndexedName(collection,index,name)}" 
                 type="hidden"
