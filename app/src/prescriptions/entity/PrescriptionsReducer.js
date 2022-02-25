@@ -26,7 +26,9 @@ import {
   showGetSignatureModeResponseAction,
   activateComfortSignatureAction,
   deactivateComfortSignatureAction,
-  updateDirectAssignAction
+  updateDirectAssignAction,
+  searchVZDAndFillAutoSuggestionWithSettingsAction,
+  updateVZDSearchSuggetionsAction
 } from "../control/UnsignedPrescriptionControl.js";
 import {
   MainWindowValidationRules,
@@ -42,6 +44,7 @@ const initialState = {
     toKimAddress: "",
     noteForPharmacy: ""
   },
+  kimAddresses: [],
   isPrevious: false,
   currentValidationErrors: {},
 
@@ -283,6 +286,26 @@ export const prescriptions = createReducer(initialState, (builder) => {
       }
       // Send a list of a list of a list
       serverWebSocketActionForwarder.send(oMessage);
+    })
+    .addCase(searchVZDAndFillAutoSuggestionWithSettingsAction, (state, { payload: {search, settings} }) => {
+      let oMessage = {
+        type: "VZDSearch",
+        "runtimeConfig": {
+          "connector.base-url": settings["kim.vzd.base-url"],
+          "connector.client-certificate": settings["kim.vzd.client-certificate"],
+          "connector.client-certificate-password": settings["kim.vzd.client-certificate-password"]
+        },
+        search
+      };
+      // Send a list of a list of a list
+      serverWebSocketActionForwarder.send(oMessage);
+    })
+    .addCase(updateVZDSearchSuggetionsAction, (state, { payload: {results} }) => {
+      if(!state.kimAddresses) {
+        state.kimAddresses = [];
+      }
+      state.kimAddresses.length = 0;
+      state.kimAddresses.push(...results);
     })
     .addCase(showSignFormAction, (state, { payload: bundles }) => {
       // if bundles is already list of a list keep it, otherwise create one

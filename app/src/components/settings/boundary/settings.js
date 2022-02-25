@@ -26,11 +26,18 @@ class Settings extends BElement {
   }
 
   loadClientCertificateIntoTextarea(e) {
+    this.loadClientCertificateByNameIntoTextarea(e, "connector.client-certificate");
+  }
+  loadKimClientCertificateIntoTextarea(e) {
+    this.loadClientCertificateByNameIntoTextarea(e, "kim.vzd.client-certificate");
+  }
+
+  loadClientCertificateByNameIntoTextarea(e, s) {
     e.preventDefault();
     const reader = new FileReader();
 
     reader.onload = function (e2) {
-        updateSetting("connector.client-certificate", e2.target.result);
+        updateSetting(s, e2.target.result);
     }
     reader.readAsDataURL(e.target.files[0]);
   }
@@ -275,6 +282,44 @@ class Settings extends BElement {
                             width         : 100%;
                         "
                         @keyup="${_ => this.onUpdateSetting("kim.smtpPassword", _.target.value)}"
+                        >
+                    </div>
+                    <div style="display:flex; flex-direction:column;flex-grow: 1;padding: 7px;margin-top:5px"> 
+                        <label for="kim.vzd.base-url">Adresse des Konnektordienstverzeichnis*</label>
+                        <input type="text" id="kim.vzd.base-url" .value="${this.state['kim.vzd.base-url']}" style="
+                            height        : 56px;     
+                            background    : #E4E4E44D;
+                            border-radius : 4px;      
+                            border        : none;     
+                            width         : 100%;
+                        "
+                        @keyup="${_ => this.onUpdateSetting("kim.vzd.base-url", _.target.value)}"
+                        >
+                    </div>
+                    <div style="display:flex; flex-direction:column;flex-grow: 1;padding: 7px;margin-top:5px;"> 
+                        <label for="kim.vzd.client-certificate">PKCS12 VZD LDAPS Client Certificate</label><br />
+                        <textarea id="kim.vzd.client-certificate" .placeholder="${this.state['kim.vzd.client-certificate']?? ""}" style="
+                            height        : 10rem;
+                            background    : #E4E4E44D;
+                            border-radius : 4px;
+                            border        : none;
+                        " readonly="readonly"
+                        ></textarea>
+                        <input type="file" id="kim.vzd.client-certificate-file" @change="${_ => this.loadKimClientCertificateIntoTextarea(_)}" />
+                        <button 
+                            style="margin: 1rem 0; background: #FF0000;"                                                                  
+                            @click            = "${_ => this.onUpdateSetting("kim.vzd.client-certificate", "", _)}"  
+                            class             = "jet-btn">
+                        Zertifikat löschen
+                        </button>
+                        <label for="kim.vzd.client-certificate-password">PKCS12 VZD LDAPS Client Certificate Password</label><br />
+                        <input type="text" id="kim.vzd.client-certificate-password" .value="${this.state['kim.vzd.client-certificate-password']}" style="
+                            height        : 56px;     
+                            background    : #E4E4E44D;
+                            border-radius : 4px;      
+                            border        : none;
+                        "
+                        @keyup="${_ => this.onUpdateSetting("kim.vzd.client-certificate-password", _.target.value)}"
                         >
                     </div>
                     <div style="display:flex; flex-direction:row;flex-grow: 1;padding: 7px;margin-top:5px;"> 

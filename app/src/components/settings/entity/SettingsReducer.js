@@ -26,7 +26,10 @@ const initialState = {
     "kim.mandant-id": "",
     "kim.client-system-id": "",
     "kim.workplace-id": "",
-    "kim.user-id": ""
+    "kim.user-id": "",
+    "kim.vzd.base-url": "",
+    "kim.vzd.client-certificate": "",
+    "kim.vzd.client-certificate-password": "",
   }
 };
   

@@ -1,4 +1,4 @@
-import { addPrescription, addSigned, abortTasksStatus, showHTMLBundles, showGetSignatureModeResponse } from "../../control/UnsignedPrescriptionControl.js";
+import { addPrescription, addSigned, abortTasksStatus, showHTMLBundles, showGetSignatureModeResponse, updateVZDSearchSuggetions } from "../../control/UnsignedPrescriptionControl.js";
 import { updateSettingsFromServer } from "../../../components/settings/control/SettingsControl.js";
 import { updateStatusFromServer } from "../../../components/status/control/StatusControl.js";
 import { updateCardsFromServer } from "../../../components/cards/control/CardsControl.js";
@@ -49,6 +49,8 @@ class _ServerWebSocketActionForwarder {
                     showGetSignatureModeResponse(eventData.payload);
                 } else if(eventData.type === "GetCardsResponse") {
                     updateCardsFromServer(eventData.payload.getCardsResponse.cards.card);
+                } else if(eventData.type === "VZDSearchResult") {
+                    updateVZDSearchSuggetions(eventData.payload);
                 } else if(eventData.type === "BundlesValidationResult") {
                     alert(JSON.stringify(eventData.payload));
                 } else if(eventData.type === "ChangePinResponse") {

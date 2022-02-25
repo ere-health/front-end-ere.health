@@ -21,7 +21,8 @@ import {
   removeValidationErrorForMainWindow,
   ValidateAllFieldsInMainWindow,
   updateDirectAssign,
-  signAndUploadKimBundles
+  signAndUploadKimBundles,
+  searchVZDAndFillAutoSuggestion
 } from "../../prescriptions/control/UnsignedPrescriptionControl.js";
 import { initialPath } from "../../libs/helper/helper.js";
 import { Mapper } from "../../libs/helper/Mapper.js";
@@ -43,14 +44,17 @@ class Prescription extends BElement {
     super();
   }
 
-  extractState({ prescriptions: { selectedPrescription, isPrevious, directAssign } }) {
+  extractState({ prescriptions: { selectedPrescription, isPrevious, directAssign, kimAddresses } }) {
     if(!directAssign) {
       directAssign = {
         toKimAddress: "",
         noteForPharmacy: ""
       };
     }
-    return { selectedPrescription, isPrevious, directAssign };
+    if(!kimAddresses) {
+      kimAddresses = [];
+    }
+    return { selectedPrescription, isPrevious, directAssign, kimAddresses };
   }
 
   onUserCheckArt({ target: { name, checked } }) {
@@ -185,6 +189,7 @@ class Prescription extends BElement {
 
     if (document.getElementById("error-messages").innerHTML.trim().length == 0) {
       let directAssignPopup = document.getElementById("direct-assign-popup");
+      document.getElementById("overlay").classList.add("active");
       directAssignPopup.classList.add("active");
       directAssignPopup.style.display = "block";
     } else {
@@ -194,6 +199,7 @@ class Prescription extends BElement {
 
   hideDirectAssignPopup() {
     let directAssignPopup = document.getElementById("direct-assign-popup");
+    document.getElementById("overlay").classList.remove("active");
     directAssignPopup.classList.remove("active");
     directAssignPopup.style.display = "none";
   }
@@ -201,6 +207,11 @@ class Prescription extends BElement {
   sendDirectToPharmacy() {
     signAndUploadKimBundles(this.state.selectedPrescription.prescriptions, this.state.directAssign);
     this.hideDirectAssignPopup();
+  }
+
+  keyUpTimAddress(value) {
+    updateDirectAssign("toKimAddress", value);
+    searchVZDAndFillAutoSuggestion(value);
   }
 
 
@@ -257,16 +268,19 @@ class Prescription extends BElement {
                       <div>
                           <div style="display:flex; flex-direction:column;flex-grow: 1;padding: 7px;margin-top:5px"> 
                               <label for="toKimAddress">KIM Adresse der Apotheke*</label>
-                              <input type="email" id="toKimAddress" .value="${this.state.directAssign.toKimAddress}" style="
+                              <input type="email" id="toKimAddress" list="kimAddresses" .value="${this.state.directAssign.toKimAddress}" style="
                                   height        : 56px;     
                                   background    : #E4E4E44D;
                                   border-radius : 4px;      
                                   border        : none;     
                                   width         : 100%;
                               "
-                              @keyup="${_ => updateDirectAssign("toKimAddress", _.target.value)}"
+                              @keyup="${_ => this.keyUpTimAddress(_.target.value)}"
                               >
                           </div>
+                          <datalist id="kimAddresses">
+                             ${this.state.kimAddresses.map(row=>html`<option value="${row.mail}">${row.displayName}</option>`)}
+                          </datalist>
                           <div style="display:flex; flex-direction:column;flex-grow: 1;padding: 7px;margin-top:5px;"> 
                               <label for="noteToPharmacy">Notiz für Apotheke</label><br />
                               <textarea id="noteToPharmacy" style="
