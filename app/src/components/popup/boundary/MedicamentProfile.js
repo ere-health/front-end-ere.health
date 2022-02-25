@@ -64,6 +64,11 @@ export const MedicamentProfilePZN = {
                         ?.[0]
                         ?.valueCode ?? '',
       dformCode:       medicationFHIR?.resource?.form?.coding?.[0]?.code ?? '',
+      medCatCode:      medicationFHIR?.resource?.extension
+                        ?.filter(object=>object.url==MedicamentProfile.urlMedicationCategory)
+                        ?.[0]
+                        ?.valueCoding
+                        ?.code ?? '',
       isVaccine:       medicationFHIR?.resource?.extension
                         ?.filter(object=>object.url==MedicamentProfile.urlVaccine)
                         ?.[0]
@@ -77,7 +82,7 @@ export const MedicamentProfilePZN = {
 
   buildEmpty: () => MedicamentProfilePZN.getValuesFromFHIR({}),
 
-  buildFHIR : ({uuid, pznText, pznCode, normgroesseCode,  dformCode, isVaccine,
+  buildFHIR : ({uuid, pznText, pznCode, normgroesseCode,  dformCode, medCatCode, isVaccine,
                amountNumeratorValue, amountNumeratorUnit, amountNumUnitCode, amountDenominatorValue }) => {
     const fhir = {
       fullUrl: 'http://pvs.praxis.local/fhir/Medication/'+uuid,
@@ -86,11 +91,11 @@ export const MedicamentProfilePZN = {
         id: uuid,
         meta: {profile: [MedicamentProfilePZN.urlProfile]},
         extension: [
-          // 1..1 Category
-          { url: 'https://fhir.kbv.de/StructureDefinition/KBV_EX_ERP_Medication_Category',
+          // 1..1 Medication Category
+          { url: MedicamentProfile.urlMedicationCategory,
             valueCoding: {
               system: 'https://fhir.kbv.de/CodeSystem/KBV_CS_ERP_Medication_Category',
-              code: '00'
+              code: medCatCode,
             }
           },
           // 1..1 Vaccine
@@ -137,6 +142,11 @@ export const MedicamentProfileFreeText = {
   getValuesFromFHIR: (medicationFHIR) =>{
     return {
       medicationText: medicationFHIR?.resource?.code?.text ?? '',
+      medCatCode:     medicationFHIR?.resource?.extension
+                        ?.filter(object=>object.url==MedicamentProfile.urlMedicationCategory)
+                        ?.[0]
+                        ?.valueCoding
+                        ?.code ?? '',
       isVaccine:      medicationFHIR?.resource?.extension
                         ?.filter(object=>object.url==MedicamentProfile.urlVaccine)
                         ?.[0]
@@ -146,19 +156,20 @@ export const MedicamentProfileFreeText = {
 
   buildEmpty: () => MedicamentProfileFreeText.getValuesFromFHIR({}), 
 
-  buildFHIR : function ({uuid, medicationText, isVaccine}) {
+  buildFHIR : function ({uuid, medicationText, medCatCode, isVaccine}) {
     return {
       fullUrl: 'http://pvs.praxis.local/fhir/Medication/'+uuid,
       resource: {
         resourceType: 'Medication',
         id: uuid,
         meta: {profile: [MedicamentProfileFreeText.urlProfile]},
+        // 0..1
         extension: [
-          // 1..1 Category
-          { url: 'https://fhir.kbv.de/StructureDefinition/KBV_EX_ERP_Medication_Category',
+          // 1..1 Medication Category
+          { url: MedicamentProfile.urlMedicationCategory,
             valueCoding: {
               system: 'https://fhir.kbv.de/CodeSystem/KBV_CS_ERP_Medication_Category',
-              code: '00'
+              code: medCatCode,
             }
           },
           // 1..1 Vaccine
@@ -189,6 +200,11 @@ export const MedicamentProfileIngredient = {
                         ?.[0]
                         ?.valueCode ?? '',
       dformText:       medicationFHIR?.resource?.form?.text ?? '',
+      medCatCode:     medicationFHIR?.resource?.extension
+                        ?.filter(object=>object.url==MedicamentProfile.urlMedicationCategory)
+                        ?.[0]
+                        ?.valueCoding
+                        ?.code ?? '',
       isVaccine:       medicationFHIR?.resource?.extension
                         ?.filter(object=>object.url==MedicamentProfile.urlVaccine)
                         ?.[0]
@@ -205,7 +221,7 @@ export const MedicamentProfileIngredient = {
 
   buildEmpty: () => MedicamentProfileIngredient.getValuesFromFHIR({}),
 
-  buildFHIR : ({uuid, normgroesseCode, dformText, isVaccine,
+  buildFHIR : ({uuid, normgroesseCode, dformText, medCatCode, isVaccine,
                 amountNumeratorValue, amountNumeratorUnit, amountNumUnitCode, amountDenominatorValue,
                 ingredients}) => {
     const fhir = {
@@ -218,11 +234,11 @@ export const MedicamentProfileIngredient = {
         meta: { profile: [MedicamentProfileIngredient.urlProfile] },
         // 0..* extension
         extension: [
-          // 1..1 Category
-          { url: 'https://fhir.kbv.de/StructureDefinition/KBV_EX_ERP_Medication_Category',
+          // 1..1 Medication Category
+          { url: MedicamentProfile.urlMedicationCategory,
             valueCoding: {
               system: 'https://fhir.kbv.de/CodeSystem/KBV_CS_ERP_Medication_Category',
-              code: '00'
+              code: medCatCode,
             }
           },
           // 1..1 Vaccine
@@ -323,6 +339,11 @@ export const MedicamentProfileCompounding = {
                                 ?.[0]
                                 ?.valueString ?? '',
       dformText:              medicationFHIR?.resource?.form?.text ?? '',
+      medCatCode:             medicationFHIR?.resource?.extension
+                                ?.filter(object=>object.url==MedicamentProfile.urlMedicationCategory)
+                                ?.[0]
+                                ?.valueCoding
+                                ?.code ?? '',
       isVaccine:              medicationFHIR?.resource?.extension
                                 ?.filter(object=>object.url==MedicamentProfile.urlVaccine)
                                 ?.[0]
@@ -338,7 +359,7 @@ export const MedicamentProfileCompounding = {
 
   buildEmpty: () => MedicamentProfileCompounding.getValuesFromFHIR({}),
 
-  buildFHIR : ({uuid, medicationText, packagingText, dformText, isVaccine,
+  buildFHIR : ({uuid, medicationText, packagingText, dformText, medCatCode, isVaccine,
                 amountNumeratorValue, amountNumeratorUnit, amountNumUnitCode, amountDenominatorValue,
                 ingredients}) => {
     const fhir = {
@@ -351,11 +372,11 @@ export const MedicamentProfileCompounding = {
         meta: { profile: [MedicamentProfileCompounding.urlProfile] },
         // 0..* extension
         extension: [
-          // 1..1 Category
-          { url: 'https://fhir.kbv.de/StructureDefinition/KBV_EX_ERP_Medication_Category',
+          // 1..1 Medication Category
+          { url: MedicamentProfile.urlMedicationCategory,
             valueCoding: {
               system: 'https://fhir.kbv.de/CodeSystem/KBV_CS_ERP_Medication_Category',
-              code: '00'
+              code: medCatCode,
             }
           },
           // 1..1 Vaccine
@@ -542,11 +563,12 @@ export const MedicamentProfile = {
     { value: MedicamentProfileIngredient.profile,  label: MedicamentProfileIngredient.label},
     { value: MedicamentProfileCompounding.profile, label: MedicamentProfileCompounding.label},
   ],
-  urlNormgroesse :   'http://fhir.de/StructureDefinition/normgroesse',
-  urlPackaging:      'https://fhir.kbv.de/StructureDefinition/KBV_EX_ERP_Medication_Packaging',
-  urlDosageFlag:     'https://fhir.kbv.de/StructureDefinition/KBV_EX_ERP_DosageFlag',
-  urlIngredientForm: 'https://fhir.kbv.de/StructureDefinition/KBV_EX_ERP_Medication_Ingredient_Form',
-  urlVaccine:        'https://fhir.kbv.de/StructureDefinition/KBV_EX_ERP_Medication_Vaccine',
+  urlNormgroesse :       'http://fhir.de/StructureDefinition/normgroesse',
+  urlPackaging:          'https://fhir.kbv.de/StructureDefinition/KBV_EX_ERP_Medication_Packaging',
+  urlDosageFlag:         'https://fhir.kbv.de/StructureDefinition/KBV_EX_ERP_DosageFlag',
+  urlIngredientForm:     'https://fhir.kbv.de/StructureDefinition/KBV_EX_ERP_Medication_Ingredient_Form',
+  urlMedicationCategory: 'https://fhir.kbv.de/StructureDefinition/KBV_EX_ERP_Medication_Category',
+  urlVaccine:            'https://fhir.kbv.de/StructureDefinition/KBV_EX_ERP_Medication_Vaccine',
   
   getType: (profile) => {
     switch (profile){

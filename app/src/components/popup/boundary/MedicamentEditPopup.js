@@ -10,6 +10,7 @@ import {
 } from "../control/PopupControl.js";
 import { PopupRules, PopupErrorMessages } from "../../../prescriptions/boundary/ValidationRules.js";
 import {
+    FIELD_MEDICATION_CATEGORY,
     FIELD_PZN_TYPE,
     FIELD_ASK_TYPE,
     FIELD_NORMGROESSE_TYPE, 
@@ -143,6 +144,14 @@ export class MedicamentEditPopup extends BElement {
                             @change="${_ => changeProfilePopupEditMedikament(_.target.value)}">
                         ${MedicamentProfile.profiles.map(row=>html`<option value="${row.value}" ?selected=${this.state.profile === row.value}>${row.label}</option>`)}
                     </select>
+                    </span>
+                    <span>
+                    <select id="${this.popupName}-${name="medCatCode"}"
+                            name="${name}"
+                            @change="${_ => this.onUserInputValidateAndStore(_)}"
+                    >
+                    ${FIELD_MEDICATION_CATEGORY.map(row=>html`<option value="${row.value}" ?selected=${this.state?.[name] === row.value}>${row.label}</option>`)}
+                    </select>                    
                     </span>
                 </p>
             </div>
