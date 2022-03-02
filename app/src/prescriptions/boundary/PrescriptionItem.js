@@ -44,17 +44,11 @@ class Prescription extends BElement {
     super();
   }
 
-  extractState({ prescriptions: { selectedPrescription, isPrevious, directAssign, kimAddresses } }) {
-    if(!directAssign) {
-      directAssign = {
-        toKimAddress: "",
-        noteForPharmacy: ""
-      };
-    }
+  extractState({ prescriptions: { selectedPrescription, isPrevious, kimAddresses } }) {
     if(!kimAddresses) {
       kimAddresses = [];
     }
-    return { selectedPrescription, isPrevious, directAssign, kimAddresses };
+    return { selectedPrescription, isPrevious, kimAddresses };
   }
 
   onUserCheckArt({ target: { name, checked } }) {
@@ -205,7 +199,7 @@ class Prescription extends BElement {
   }
 
   sendDirectToPharmacy() {
-    signAndUploadKimBundles(this.state.selectedPrescription.prescriptions, this.state.directAssign);
+    signAndUploadKimBundles(this.state.selectedPrescription.prescriptions, this.state.selectedPrescription.directAssign);
     this.hideDirectAssignPopup();
   }
 
@@ -268,7 +262,7 @@ class Prescription extends BElement {
                       <div>
                           <div style="display:flex; flex-direction:column;flex-grow: 1;padding: 7px;margin-top:5px"> 
                               <label for="toKimAddress">KIM Adresse der Apotheke*</label>
-                              <input type="email" id="toKimAddress" list="kimAddresses" .value="${this.state.directAssign.toKimAddress}" style="
+                              <input type="email" id="toKimAddress" list="kimAddresses" .value="${this.state.selectedPrescription.directAssign?.toKimAddress ?? ""}" style="
                                   height        : 56px;     
                                   background    : #E4E4E44D;
                                   border-radius : 4px;      
@@ -289,7 +283,7 @@ class Prescription extends BElement {
                                   border-radius : 4px;
                                   border        : none;
                               " @change="${_ => updateDirectAssign("noteToPharmacy", _.target.value)}"
-                              >${this.state.directAssign.noteToPharmacy}</textarea>
+                              >${this.state.selectedPrescription.directAssign?.noteToPharmacy ?? ""}</textarea>
                           </div>
                       </div>
                   </fieldset>

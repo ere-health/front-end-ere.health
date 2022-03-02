@@ -39,10 +39,11 @@ import { NewPrescriptionTemplate } from "../../../../template/NewPrescriptionTem
 const initialState = {
   list: [],
   signedList: [], // Demo Erixa
-  selectedPrescription: {},
-  directAssign: {
-    toKimAddress: "",
-    noteForPharmacy: ""
+  selectedPrescription: {
+    directAssign: {
+      toKimAddress: "",
+      noteForPharmacy: ""
+    },
   },
   kimAddresses: [],
   isPrevious: false,
