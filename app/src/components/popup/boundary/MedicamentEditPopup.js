@@ -153,7 +153,7 @@ export class MedicamentEditPopup extends BElement {
     view() {
         let name="";
         return html`
-        <div class="modal" id="${this.popupName}" style="max-width: 800px;text-align:left">
+        <div class="modal" id="${this.popupName}" style="max-width: 800px;text-align:left; max-height: 1000px; overflow: auto;">
             <!-- title: Medikament -->
             <div class="modal-title" style="text-align:left">
                 <p><strong>Medikament</strong>
@@ -422,7 +422,7 @@ export class MedicamentEditPopup extends BElement {
         let name="";
         return html`
         ${this.state.ingredients.map((ingredient,rowIndex,_)=>this.getIngredientItemView(ingredient, "ingredients", rowIndex))}
-        <div class="fieldRow">
+        <div class="fieldRow" style="align-items: flex-end">
             <!-- normgroesseCode -->
             <div style="display:flex; flex-direction:column; flex-grow: 1; padding: 7px;margin-top:5px"> 
                 <label for="${this.popupName}-${name="normgroesseCode"}">Normgröße</label>
@@ -555,7 +555,7 @@ export class MedicamentEditPopup extends BElement {
         <button @click="${_ => updatePopupEditMedikament({collection:"ingredients",index:this.state.ingredients.length}, CompoundingIngredientItem.buildEmpty())}" 
                 style="float: right;"
         >+</button>
-        <div class="fieldRow">
+        <div class="fieldRow" style="align-items: flex-end">
             <!-- packagingText -->
             <div style="display:flex; flex-direction:column; flex-grow: 1; padding: 7px;margin-top:5px"> 
                 <label for="${this.popupName}-${name="packagingText"}">Verpackung</label>
@@ -668,7 +668,7 @@ export class MedicamentEditPopup extends BElement {
             <div style="display:flex; flex-direction:column; flex-grow: 0.3; padding: 7px;margin-top:5px"> 
                 <input id="${this.popupName}-${this.getIndexedName(collection,index,name="dformText")}"
                     name="${this.getIndexedName(collection,index,name)}"
-                    placeholder="%dformText%"
+                    placeholder="Darreichungsform"
                     type="text"
                     .value="${item?.[name] ?? ""}"
                     list="dformCodes"
