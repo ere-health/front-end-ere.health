@@ -1,0 +1,37 @@
+<!-- serve this test page by:
+  start terminal from project folder ere-ps-app
+  > cd src/main/resources/META-INF/resources/frontend
+  > python3 -m http.server 9000
+  in Google Chrome start this page: http://localhost:9000/app/src/components/popup/test/freetext.html 
+-->
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>ere.health E-Rezept signieren, hinterlegen und drucken</title>
+    <link rel="stylesheet" href="../../../assets/css/main-style.css">
+    <script src="../../../libs/reconnecting-websocket.js"></script>
+    <script src="../../../libs/validator.js"></script>
+</head>
+<body class="home-page">
+  <div id="error-messages"></div>
+  <medicament-edit-popup>
+  <script type="module" src="../../../init.js"></script>
+  <script type="module">
+    import "../boundary/MedicamentEditPopup.js";
+    import { showPopupEditMedikament, updatePopupEditMedikament } from "../control/PopupControl.js";
+    showPopupEditMedikament(-1);
+    updatePopupEditMedikament(
+      {collection:null, index:null, field:null},
+      { index:            -1,
+        profile:          'FreeText',
+        uuid:             '0d93504e-c6a7-47c1-8ad5-b0c5cf1b8920',
+        medicationText:   'Metformin 850mg Tabletten N3',
+        dispenseQuantity:  9,
+        dosageInstruction: '2mal taglich',
+      }
+    );    
+  </script>
+</body>
+</html>

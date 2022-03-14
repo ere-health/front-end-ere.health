@@ -7,7 +7,6 @@ import {
   showPopupEditStatus,
   showPopupEditOrga,
   showPopupEditClinic,
-  showPopupEditMedic,
   showPopupEditPractId,
   showPopupEditMedikament
 } from "../../components/popup/control/PopupControl.js";
@@ -546,7 +545,7 @@ class Prescription extends BElement {
                     <li class="art-list-item">
                       <div class="edit-btn" @click="${() => showPopupEditMedikament(medIndex)}" style="left: 40px; background-image: url(${initialPath}/assets/images/edit-btn.png);">
                       <button class="remove-meditem-btn" 
-                          style="background-image: url(${initialPath}/assets/images/remove-btn.png);${(this.state.selectedPrescription.prescriptions.length == 1 ? "display: none;" : "")}" 
+                          style="background-image: url(${initialPath}/assets/images/remove-btn.png);${(this.state.selectedPrescription.prescriptions.length == 1 ? "display: none;" : "")};"
                           @click="${(_) => this.removeMedicationLine(_, medIndex)}">
                       </button>
                       </div>

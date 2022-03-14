@@ -1,0 +1,44 @@
+<!-- serve this test page by:
+  start terminal from project folder ere-ps-app
+  > cd src/main/resources/META-INF/resources/frontend
+  > python3 -m http.server 9000
+  in Google Chrome start this page: http://localhost:9000/app/src/components/popup/test/ingredient.html 
+-->
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>ere.health E-Rezept signieren, hinterlegen und drucken</title>
+    <link rel="stylesheet" href="../../../assets/css/main-style.css">
+    <script src="../../../libs/reconnecting-websocket.js"></script>
+    <script src="../../../libs/validator.js"></script>
+</head>
+<body class="home-page">
+  <div id="error-messages"></div>
+  <medicament-edit-popup>
+  <script type="module" src="../../../init.js"></script>
+  <script type="module">
+    import "../boundary/MedicamentEditPopup.js";
+    import { showPopupEditMedikament, updatePopupEditMedikament } from "../control/PopupControl.js";
+    showPopupEditMedikament(-1);
+    updatePopupEditMedikament(
+      {collection:null, index:null, field:null},
+      { index:                 -1,
+        profile:               'Ingredient',
+        uuid:                  '255b49de-6cd5-4ac1-b6fb-c8d0128cf1b3', 
+        normgroesseCode:       'N3',
+        formText:              'Tabletten',
+        amountNumeratorValue:   40,
+        amountNumeratorUnit:    "pce",
+        amountDenominatorValue: 1,
+        ingredients: [
+          {askCode:'23816', askText:'Simvastatin', strengthText:null, strengthNumeratorValue:20, strengthNumeratorUnit:'mg', strengthDenominatorValue:1}
+        ],
+        dispenseQuantity:       8,
+        dosageInstruction:      '1mal yarlich',
+      }
+    );
+  </script>
+</body>
+</html>

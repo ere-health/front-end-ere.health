@@ -14,7 +14,7 @@ const reducer = {
   settingsReducer,
   mainReducer,
   statusReducer,
-  cardsReducer
+  cardsReducer,
 };
 
 const preloadedState = load();
