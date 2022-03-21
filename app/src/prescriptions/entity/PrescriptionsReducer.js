@@ -1,6 +1,28 @@
-import { cancelPopupEditClinicAction, cancelPopupEditMedikamentAction, cancelPopupEditOrgaAction, cancelPopupEditPatient, cancelPopupEditPatientAction, cancelPopupEditPractIdAction, savePopupEditClinicAction, savePopupEditMedikamentAction, savePopupEditOrgaAction, savePopupEditPatient, savePopupEditPatientAction, savePopupEditPractIdAction, showPopupEditClinicAction, showPopupEditMedikamentAction, showPopupEditOrgaAction, showPopupEditPatientAction, showPopupEditPractIdAction } from "../../components/popup/control/PopupControl.js";
+import { 
+  showPopupEditClinicAction, 
+  cancelPopupEditClinicAction, 
+  savePopupEditClinicAction,
+  showPopupEditOrgaAction, 
+  cancelPopupEditOrgaAction, 
+  savePopupEditOrgaAction, 
+  showPopupEditPatientAction,
+  cancelPopupEditPatientAction, 
+  savePopupEditPatientAction, 
+  showPopupEditPractIdAction,
+  cancelPopupEditPractIdAction,
+  savePopupEditPractIdAction, 
+  showPopupEditMedikamentAction,
+  changeProfilePopupEditMedikamentAction,
+  updatePopupEditMedikamentAction,
+  savePopupEditMedikamentAction, 
+} from "../../components/popup/control/PopupControl.js";
+import { 
+  MedicamentProfile,
+  MedicationRequestPrescription,
+} from "../../components/popup/boundary/MedicamentProfile.js"
 import { Mapper } from "../../libs/helper/Mapper.js";
 import { createReducer } from "../../libs/redux-toolkit.esm.js"
+import { settingsReducer }   from "../../components/settings/entity/SettingsReducer.js";
 import serverWebSocketActionForwarder from "../../prescriptions/boundary/websocket/ServerWebSocketActionForwarder.js";
 import {
   addPrescription,
@@ -24,7 +46,10 @@ import {
   removeMedicationLineAction,
   showGetSignatureModeResponseAction,
   activateComfortSignatureAction,
-  deactivateComfortSignatureAction
+  deactivateComfortSignatureAction,
+  updateDirectAssignAction,
+  searchVZDAndFillAutoSuggestionWithSettingsAction,
+  updateVZDSearchSuggetionsAction
 } from "../control/UnsignedPrescriptionControl.js";
 import {
   MainWindowValidationRules,
@@ -35,7 +60,13 @@ import { NewPrescriptionTemplate } from "../../../../template/NewPrescriptionTem
 const initialState = {
   list: [],
   signedList: [], // Demo Erixa
-  selectedPrescription: {},
+  selectedPrescription: {
+    directAssign: {
+      toKimAddress: "",
+      noteForPharmacy: ""
+    },
+  },
+  kimAddresses: [],
   isPrevious: false,
   currentValidationErrors: {},
 
@@ -204,12 +235,12 @@ export const prescriptions = createReducer(initialState, (builder) => {
             setWop(psp, value);
 
           } else if(name === 'accident') {
-			const medicationRequest = psp.read("entry[resource.resourceType?MedicationRequest].resource");
-			// Remove accident extension
-			medicationRequest.extension = medicationRequest.extension.filter(e => e.url != "https://fhir.kbv.de/StructureDefinition/KBV_EX_ERP_Accident");
-			if(value) {
-				medicationRequest.extension.push(value);
-			}
+            const medicationRequest = psp.read("entry[resource.resourceType?MedicationRequest].resource");
+            // Remove accident extension
+            medicationRequest.extension = medicationRequest.extension.filter(e => e.url != "https://fhir.kbv.de/StructureDefinition/KBV_EX_ERP_Accident");
+            if(value) {
+              medicationRequest.extension.push(value);
+            }
             // Required values
           } else {
             if (key) {
@@ -220,7 +251,7 @@ export const prescriptions = createReducer(initialState, (builder) => {
           setPrescriptionInState(state, prescription);
         }
 
-        //Popup values, some code could be cleaned here
+      //Popup values, some code could be cleaned here
       } else {
         index = index ?? 0;
         if (statePath?.indexOf("prescriptions") === 0) {
@@ -252,11 +283,51 @@ export const prescriptions = createReducer(initialState, (builder) => {
         }
       }
     })
-    .addCase(signAndUploadBundlesAction, (state, { payload: bundles }) => {
+    .addCase(signAndUploadBundlesAction, (state, { payload: {bundles, directAssign, settings} }) => {
       // if bundles is already list of a list keep it, otherwise create one
       const payload = "length" in bundles[0] ? bundles : [bundles];
+      let oMessage = {
+        type: "SignAndUploadBundles",
+        bearerToken: window.bearerToken,
+        payload
+      };
+      if(directAssign) {
+        oMessage.flowtype = "169";
+        for(let p in directAssign) {
+          oMessage[p] = directAssign[p];
+        }
+        oMessage.kimConfig = {};
+        if(settings) {
+          for(let p in settings) {
+            let m = p.match(/^kim\.(.*)/);
+            if(m) {
+              oMessage.kimConfig[m[1]] = settings[p];
+            }
+          }
+        }
+      }
       // Send a list of a list of a list
-      serverWebSocketActionForwarder.send({ type: "SignAndUploadBundles", bearerToken: window.bearerToken, payload });
+      serverWebSocketActionForwarder.send(oMessage);
+    })
+    .addCase(searchVZDAndFillAutoSuggestionWithSettingsAction, (state, { payload: {search, settings} }) => {
+      let oMessage = {
+        type: "VZDSearch",
+        "runtimeConfig": {
+          "connector.base-url": settings["kim.vzd.base-url"],
+          "connector.client-certificate": settings["kim.vzd.client-certificate"],
+          "connector.client-certificate-password": settings["kim.vzd.client-certificate-password"]
+        },
+        search
+      };
+      // Send a list of a list of a list
+      serverWebSocketActionForwarder.send(oMessage);
+    })
+    .addCase(updateVZDSearchSuggetionsAction, (state, { payload: {results} }) => {
+      if(!state.kimAddresses) {
+        state.kimAddresses = [];
+      }
+      state.kimAddresses.length = 0;
+      state.kimAddresses.push(...results);
     })
     .addCase(showSignFormAction, (state, { payload: bundles }) => {
       // if bundles is already list of a list keep it, otherwise create one
@@ -573,66 +644,65 @@ export const prescriptions = createReducer(initialState, (builder) => {
   });
 
   // MedicEdit Popup
+  // SHOW
   builder.addCase(showPopupEditMedikamentAction, (state, { payload: index }) => {
-    const psp = new Mapper(state.selectedPrescription.prescriptions[index]);
-    state.MedikamentPopup = {
-      index,
-      medicationText: psp.read("entry[resource.resourceType=Medication].resource.code.text"),
-      pzn: psp.read("entry[resource.resourceType=Medication].resource.code.coding[system?pzn].code"),
-      quantityValue: psp.read("entry[resource.resourceType?MedicationRequest].resource.dispenseRequest.quantity.value"),
-      norm: psp.read("entry[resource.resourceType=Medication].resource.extension[url?normgroesse].valueCode"),
-      form: psp.read("entry[resource.resourceType=Medication].resource.form.coding[system?KBV_CS_SFHIR_KBV_DARREICHUNGSFORM].code"),
-      dosageInstruction: psp.read("entry[resource.resourceType?MedicationRequest].resource.dosageInstruction[0].text")
-    };
     resetErrorsInMainWindow(state);
-  });
-  builder.addCase(cancelPopupEditMedikamentAction, (state) => {
-
-    const psp = new Mapper(state.selectedPrescription.prescriptions[state.MedikamentPopup.index]);
-    state.MedikamentPopup = {
-      index: state.MedikamentPopup.index,
-      medicationText: psp.read("entry[resource.resourceType=Medication].resource.code.text"),
-      pzn: psp.read("entry[resource.resourceType=Medication].resource.code.coding[system?pzn].code"),
-      quantityValue: psp.read("entry[resource.resourceType?MedicationRequest].resource.dispenseRequest.quantity.value"),
-      norm: psp.read("entry[resource.resourceType=Medication].resource.extension[url?normgroesse].valueCode"),
-      form: psp.read("entry[resource.resourceType=Medication].resource.form.coding[system?KBV_CS_SFHIR_KBV_DARREICHUNGSFORM].code"),
-      dosageInstruction: psp.read("entry[resource.resourceType?MedicationRequest].resource.dosageInstruction[0].text")
+    if (index>=0) {
+      state.MedikamentPopup = {index};
+      const prescription = state.selectedPrescription.prescriptions[index];
+      const medication = prescription.entry.filter(row=>row.resource.resourceType=='Medication')[0];
+      Object.assign(state.MedikamentPopup, MedicamentProfile.getValuesFromFHIR(medication));
+      const medicationRequest = prescription.entry.filter(row=>row.resource.resourceType=='MedicationRequest')[0];
+      Object.assign(state.MedikamentPopup, MedicationRequestPrescription.getValuesFromFHIR(medicationRequest));
     }
   });
+  // CHANGE PROFILE
+  builder.addCase(changeProfilePopupEditMedikamentAction, (state, { payload: profile }) => {
+    const index = state.MedikamentPopup.index;
+    const uuid  = state.MedikamentPopup.uuid;
+    state.MedikamentPopup = {index, profile, uuid};
+    Object.assign(state.MedikamentPopup, MedicamentProfile.buildEmpty(profile));
+    Object.assign(state.MedikamentPopup, MedicationRequestPrescription.buildEmpty());
+  });
+  // UPDATE
+  builder.addCase(updatePopupEditMedikamentAction, (state, { payload:{collection,index,field,value} }) => {
+    if (collection && (index || index===0))
+      if (field)
+        state.MedikamentPopup[collection][index][field] = value;
+      else  
+        state.MedikamentPopup[collection][index] = value;
+    else if (collection)
+      state.MedikamentPopup[collection] = value;
+    else if (field)
+      state.MedikamentPopup[field] = value;
+    else
+      state.MedikamentPopup = value;
+  });
+  // SAVE
   builder.addCase(savePopupEditMedikamentAction, (state) => {
-    const psp = new Mapper(state.selectedPrescription.prescriptions[state.MedikamentPopup.index]);
-    psp.write("entry[resource.resourceType=Medication].resource.code.text", state.MedikamentPopup.medicationText);
-    psp.write("entry[resource.resourceType=Medication].resource.code.coding[system?pzn].code", state.MedikamentPopup.pzn);
-    psp.write("entry[resource.resourceType?MedicationRequest].resource.dispenseRequest.quantity.value", Number(state.MedikamentPopup.quantityValue));
-    try {
-      psp.write("entry[resource.resourceType=Medication].resource.extension[url?normgroesse].valueCode", state.MedikamentPopup.norm);
+    if (state.MedikamentPopup.index >= 0) {
+      // re-build Medication
+      const prescription = state.selectedPrescription.prescriptions[state.MedikamentPopup.index];
+      const medicationEntryIndex = prescription.entry.findIndex(row=>row.resource.resourceType=='Medication');
+      prescription.entry[medicationEntryIndex] = MedicamentProfile.buildFHIR(state.MedikamentPopup);
+      // update MedicationRequest (too complex to re-build)
+      const medicationRequest = prescription.entry.filter(row=>row.resource.resourceType=='MedicationRequest')[0];
+      MedicationRequestPrescription.modifyFHIR(medicationRequest, state.MedikamentPopup);
 
-    } catch (ex) {
-      let writer = psp.read("entry[resource.resourceType?Medication].resource.extension");
-      writer.push({
-        "url": "http://fhir.de/StructureDefinition/normgroesse",
-        "valueCode": state.MedikamentPopup.norm
-      });
-    }
-    psp.write("entry[resource.resourceType=Medication].resource.form.coding[system?KBV_CS_SFHIR_KBV_DARREICHUNGSFORM].code", state.MedikamentPopup.form);
-    if (state.MedikamentPopup.dosageInstruction) {
-      psp.write("entry[resource.resourceType?MedicationRequest].resource.dosageInstruction[0].extension[url?KBV_EX_ERP_DosageFlag].valueBoolean", true);
-      let dosage = psp.read("entry[resource.resourceType?MedicationRequest].resource.dosageInstruction[0]");
-      dosage.text = state.MedikamentPopup.dosageInstruction;
-    } else {
-      psp.write("entry[resource.resourceType?MedicationRequest].resource.dosageInstruction[0].extension[url?KBV_EX_ERP_DosageFlag].valueBoolean", false);
-      let dosage = psp.read("entry[resource.resourceType?MedicationRequest].resource.dosageInstruction[0]");
-      delete dosage.text;
-    }
-
-    const selectedPrescriptionId = state.selectedPrescription.prescriptions[0].id;
-    for (const prescriptionList of state.list) {
-      if (selectedPrescriptionId == prescriptionList[0].id) {
-        prescriptionList[state.MedikamentPopup.index] = state.selectedPrescription.prescriptions[state.MedikamentPopup.index];
+      // write selectedPrescription lines back to original list
+      const selectedPrescriptionId = state.selectedPrescription.prescriptions[0].id;
+      for (const prescriptionList of state.list) {
+        if (selectedPrescriptionId == prescriptionList[0].id) {
+          prescriptionList[state.MedikamentPopup.index] = state.selectedPrescription.prescriptions[state.MedikamentPopup.index];
+        }
       }
     }
+    state.MedikamentPopup = {};
   });
+  // Medication Line (prescription)
+  // ADD
   builder.addCase(addMedicationLineAction, (state) => {
+    // clone medication line (first prescription)
     const bundle = JSON.parse(JSON.stringify(state.selectedPrescription.prescriptions[0]));
     try {
       const medicationRequest = bundle.entry.filter(e => e.resource.resourceType == "MedicationRequest")[0];
@@ -653,6 +723,7 @@ export const prescriptions = createReducer(initialState, (builder) => {
       alert(e);
     }
   });
+  // REMOVE
   builder.addCase(removeMedicationLineAction, (state, { payload: index }) => {
     try {
       let bundle = state.selectedPrescription.prescriptions[index];
@@ -765,6 +836,13 @@ export const prescriptions = createReducer(initialState, (builder) => {
     } catch(e) {
       alert("Konnte server socket Nachricht nicht erstellen "+e);
     }
+  });
+
+  builder.addCase(updateDirectAssignAction, (state, {payload: {key, value}}) => {
+    if(!("directAssign" in state.selectedPrescription)) {
+      state.selectedPrescription.directAssign = {};
+    }
+    state.selectedPrescription.directAssign[key] = value;
   });
 
   const validateInput = (name, value, ValidationRules) => {

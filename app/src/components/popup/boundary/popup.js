@@ -8,8 +8,6 @@ import { i18n } from "../../../libs/i18n/i18n.js";
 import { signedPrescription } from "../../../prescriptions/control/UnsignedPrescriptionControl.js";
 import { _hidePopup, showPopupId, showPopupFatig, showPopupProgress } from "../control/PopupControl.js";
 import { initialPath } from "../../../libs/helper/helper.js";
-import { PatientEditPopup } from "./PrescriptionEditPopup.js";
-
 
 class Popup extends BElement {
   showPopup(key) {

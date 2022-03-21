@@ -1,0 +1,47 @@
+<!-- serve this test page by:
+  start terminal from project folder ere-ps-app
+  > cd src/main/resources/META-INF/resources/frontend
+  > python3 -m http.server 9000
+  in Google Chrome start this page: http://localhost:9000/app/src/components/popup/test/compounding.html 
+-->
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>ere.health E-Rezept signieren, hinterlegen und drucken</title>
+    <link rel="stylesheet" href="../../../assets/css/main-style.css">
+    <script src="../../../libs/reconnecting-websocket.js"></script>
+    <script src="../../../libs/validator.js"></script>
+</head>
+<body class="home-page">
+  <div id="error-messages"></div>
+  <medicament-edit-popup>
+  <script type="module" src="../../../init.js"></script>
+  <script type="module">
+    import "../boundary/MedicamentEditPopup.js";
+    import { showPopupEditMedikament, updatePopupEditMedikament } from "../control/PopupControl.js";
+    showPopupEditMedikament(-1);
+    updatePopupEditMedikament(
+      {collection:null, index:null, field:null},
+      { index:                -1,
+        profile:              'Compounding',
+        uuid:                 '619ad8c5-bc4b-4841-8a13-4162f51c06e7', 
+        packagingText:        'Deo-Roller',
+        typeText:             'Viskose Aluminiumchlorid-Hexahydrat-Lösung 20 % (NRF 11.132.)',
+        formText:             'Gel',
+        amountNumeratorValue:  100,
+        amountNumeratorUnit:   'ml',
+        amountDenominatorValue: 1,
+        ingredients: [
+          {pznCode:'10206346', pznText:'Aluminiumchlorid-Hexahydrat', formText:null,     strengthText:null, strengthNumeratorValue:20, strengthNumeratorUnit:'g', strengthDenominatorValue:1},
+          {pznCode: null,      pznText:'Hydroxyethylcellulose 250',   formText:'Pulver', strengthText:null, strengthNumeratorValue:2,  strengthNumeratorUnit:'g', strengthDenominatorValue:1},
+          {pznCode: null,      pznText:'Gereinigtes Wasser',          formText:null,     strengthText:'Ad 100 g', strengthNumeratorValue:null,  strengthNumeratorUnit:null, strengthDenominatorValue:null},
+        ],
+        dispenseQuantity:      7,
+        dosageInstruction:    '4mal monatlich',
+      }
+    );
+  </script>
+</body>
+</html>

@@ -1,13 +1,13 @@
-import { addPrescription, addSigned, abortTasksStatus, showHTMLBundles, showGetSignatureModeResponse } from "../../control/UnsignedPrescriptionControl.js";
+import { addPrescription, addSigned, abortTasksStatus, showHTMLBundles, showGetSignatureModeResponse, updateVZDSearchSuggetions } from "../../control/UnsignedPrescriptionControl.js";
 import { updateSettingsFromServer } from "../../../components/settings/control/SettingsControl.js";
 import { updateStatusFromServer } from "../../../components/status/control/StatusControl.js";
 import { updateCardsFromServer } from "../../../components/cards/control/CardsControl.js";
 import { sshTunnelWorked, sshConnectionOffering } from "../../../components/setup/control/WizardControl.js";
 
 class _ServerWebSocketActionForwarder {
-	
+    
     constructor() {
-		this.errorHandlerForMessage = {};
+        this.errorHandlerForMessage = {};
         this.socket = new ReconnectingWebSocket("ws"+(window.location.protocol === "https:" ? "s" : "")+"://"+window.location.host+"/websocket");
         window.__socket = this.socket;
 
@@ -54,17 +54,19 @@ class _ServerWebSocketActionForwarder {
                     sshConnectionOffering(eventData.payload);
                 } else if(eventData.type === "SSHClientPortForwardEvent") {
                     sshTunnelWorked(eventData.payload);
+                } else if(eventData.type === "VZDSearchResult") {
+                    updateVZDSearchSuggetions(eventData.payload);
                 } else if(eventData.type === "BundlesValidationResult") {
                     alert(JSON.stringify(eventData.payload));
                 } else if(eventData.type === "ChangePinResponse") {
                     alert(JSON.stringify(eventData.payload));
                 } else if(eventData.type === "Exception") {
-					if(eventData.replyToMessageId in this.errorHandlerForMessage) {
-						this.errorHandlerForMessage[eventData.replyToMessageId](eventData);
-						delete this.errorHandlerForMessage[eventData.replyToMessageId];
-					} else {						
-                    	alert(JSON.stringify(eventData.payload));
-					}
+                    if(eventData.replyToMessageId in this.errorHandlerForMessage) {
+                        this.errorHandlerForMessage[eventData.replyToMessageId](eventData);
+                        delete this.errorHandlerForMessage[eventData.replyToMessageId];
+                    } else {                        
+                        alert(JSON.stringify(eventData.payload));
+                    }
                 }
             } catch(e) {
                 alert("Could not process message. "+e);
@@ -93,8 +95,8 @@ class _ServerWebSocketActionForwarder {
     }
     
     runtimeConfig(runtimeConfigData) {
-		this.runtimeConfigData = runtimeConfigData;
-	}
+        this.runtimeConfigData = runtimeConfigData;
+    }
 
     uuidv4() {
         return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
@@ -105,20 +107,20 @@ class _ServerWebSocketActionForwarder {
 
     send(message) {
         if(!("id" in message)) {
-	        message.id = this.uuidv4();
-		}
-		if(this.runtimeConfigData) {
-			message.runtimeConfig = this.runtimeConfigData;
+            message.id = this.uuidv4();
+        }
+        if(this.runtimeConfigData) {
+            message.runtimeConfig = this.runtimeConfigData;
             if(!message.runtimeConfig["connector.user-id"]) {
                 delete message.runtimeConfig["connector.user-id"];
             }
-		}
+        }
         this.socket.send(JSON.stringify(message));
     }
     
     registerErrorHandlerForMessage(messageId, fn) {
-		this.errorHandlerForMessage[messageId] = fn;
-	}
+        this.errorHandlerForMessage[messageId] = fn;
+    }
 }
 
 const ServerWebSocketActionForwarder = new _ServerWebSocketActionForwarder();

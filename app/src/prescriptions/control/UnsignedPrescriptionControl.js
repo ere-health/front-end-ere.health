@@ -54,9 +54,29 @@ export const addSigned = (bundles) => {
 }
 
 export const signAndUploadBundlesAction = createAction("signAndUploadBundlesAction");
-export const signAndUploadBundles = (bundles) => {
-    store.dispatch(signAndUploadBundlesAction(bundles));
+export const signAndUploadBundles = (bundles, directAssign) => {
+    store.dispatch(signAndUploadBundlesAction({bundles, directAssign}));
 }
+export const signAndUploadKimBundlesAction = (bundles, directAssign) =>
+    (dispatch, getState) => {
+        const settings = getState().settingsReducer.settings;
+        dispatch({ type: "signAndUploadBundlesAction", payload: {bundles, directAssign, settings} });
+    };
+export const signAndUploadKimBundles = (bundles, directAssign) => {
+    store.dispatch(signAndUploadKimBundlesAction(bundles, directAssign));
+}
+
+export const searchVZDAndFillAutoSuggestionWithSettingsAction = createAction("searchVZDAndFillAutoSuggestionWithSettingsAction");
+
+export const searchVZDAndFillAutoSuggestionAction = (search) =>
+(dispatch, getState) => {
+    const settings = getState().settingsReducer.settings;
+    dispatch({ type: "searchVZDAndFillAutoSuggestionWithSettingsAction", payload: {search, settings} });
+};
+
+export const searchVZDAndFillAutoSuggestion = (search) => {
+    store.dispatch(searchVZDAndFillAutoSuggestionAction(search));
+};
 
 export const showSignFormAction = createAction("showSignFormAction");
 export const showSignForm = (bundles) => {
@@ -111,4 +131,14 @@ export const activateComfortSignature = () => {
 export const deactivateComfortSignatureAction = createAction("deactivateComfortSignatureAction");
 export const deactivateComfortSignature = () => {
     store.dispatch(deactivateComfortSignatureAction());
+}
+
+export const updateDirectAssignAction = createAction("updateDirectAssignAction");
+export const updateDirectAssign = (key, value) => {
+    store.dispatch(updateDirectAssignAction({key, value}));
+}
+
+export const updateVZDSearchSuggetionsAction = createAction("updateVZDSearchSuggetionsAction");
+export const updateVZDSearchSuggetions = (results) => {
+    store.dispatch(updateVZDSearchSuggetionsAction({results}));
 }
