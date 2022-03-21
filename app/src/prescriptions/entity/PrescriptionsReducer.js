@@ -22,6 +22,7 @@ import {
 } from "../../components/popup/boundary/MedicamentProfile.js"
 import { Mapper } from "../../libs/helper/Mapper.js";
 import { createReducer } from "../../libs/redux-toolkit.esm.js"
+import { settingsReducer }   from "../../components/settings/entity/SettingsReducer.js";
 import serverWebSocketActionForwarder from "../../prescriptions/boundary/websocket/ServerWebSocketActionForwarder.js";
 import {
   addPrescription,
@@ -45,7 +46,10 @@ import {
   removeMedicationLineAction,
   showGetSignatureModeResponseAction,
   activateComfortSignatureAction,
-  deactivateComfortSignatureAction
+  deactivateComfortSignatureAction,
+  updateDirectAssignAction,
+  searchVZDAndFillAutoSuggestionWithSettingsAction,
+  updateVZDSearchSuggetionsAction
 } from "../control/UnsignedPrescriptionControl.js";
 import {
   MainWindowValidationRules,
@@ -56,7 +60,13 @@ import { NewPrescriptionTemplate } from "../../../../template/NewPrescriptionTem
 const initialState = {
   list: [],
   signedList: [], // Demo Erixa
-  selectedPrescription: {},
+  selectedPrescription: {
+    directAssign: {
+      toKimAddress: "",
+      noteForPharmacy: ""
+    },
+  },
+  kimAddresses: [],
   isPrevious: false,
   currentValidationErrors: {},
 
@@ -273,11 +283,51 @@ export const prescriptions = createReducer(initialState, (builder) => {
         }
       }
     })
-    .addCase(signAndUploadBundlesAction, (state, { payload: bundles }) => {
+    .addCase(signAndUploadBundlesAction, (state, { payload: {bundles, directAssign, settings} }) => {
       // if bundles is already list of a list keep it, otherwise create one
       const payload = "length" in bundles[0] ? bundles : [bundles];
+      let oMessage = {
+        type: "SignAndUploadBundles",
+        bearerToken: window.bearerToken,
+        payload
+      };
+      if(directAssign) {
+        oMessage.flowtype = "169";
+        for(let p in directAssign) {
+          oMessage[p] = directAssign[p];
+        }
+        oMessage.kimConfig = {};
+        if(settings) {
+          for(let p in settings) {
+            let m = p.match(/^kim\.(.*)/);
+            if(m) {
+              oMessage.kimConfig[m[1]] = settings[p];
+            }
+          }
+        }
+      }
       // Send a list of a list of a list
-      serverWebSocketActionForwarder.send({ type: "SignAndUploadBundles", bearerToken: window.bearerToken, payload });
+      serverWebSocketActionForwarder.send(oMessage);
+    })
+    .addCase(searchVZDAndFillAutoSuggestionWithSettingsAction, (state, { payload: {search, settings} }) => {
+      let oMessage = {
+        type: "VZDSearch",
+        "runtimeConfig": {
+          "connector.base-url": settings["kim.vzd.base-url"],
+          "connector.client-certificate": settings["kim.vzd.client-certificate"],
+          "connector.client-certificate-password": settings["kim.vzd.client-certificate-password"]
+        },
+        search
+      };
+      // Send a list of a list of a list
+      serverWebSocketActionForwarder.send(oMessage);
+    })
+    .addCase(updateVZDSearchSuggetionsAction, (state, { payload: {results} }) => {
+      if(!state.kimAddresses) {
+        state.kimAddresses = [];
+      }
+      state.kimAddresses.length = 0;
+      state.kimAddresses.push(...results);
     })
     .addCase(showSignFormAction, (state, { payload: bundles }) => {
       // if bundles is already list of a list keep it, otherwise create one
@@ -786,6 +836,13 @@ export const prescriptions = createReducer(initialState, (builder) => {
     } catch(e) {
       alert("Konnte server socket Nachricht nicht erstellen "+e);
     }
+  });
+
+  builder.addCase(updateDirectAssignAction, (state, {payload: {key, value}}) => {
+    if(!("directAssign" in state.selectedPrescription)) {
+      state.selectedPrescription.directAssign = {};
+    }
+    state.selectedPrescription.directAssign[key] = value;
   });
 
   const validateInput = (name, value, ValidationRules) => {
