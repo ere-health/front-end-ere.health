@@ -19,4 +19,9 @@ export const saveSettings = () => {
 export const updateSettingsFromServerAction = createAction("updateSettingsFromServerAction");
 export const updateSettingsFromServer = (settings) => {
     store.dispatch(updateSettingsFromServerAction({settings}));
-} 
+}
+
+export const addDefaultFieldsToBundleAction = createAction("addDefaultFieldsToBundleAction");
+export const addDefaultFieldsToBundle = (bundles) => {
+    store.dispatch(addDefaultFieldsToBundleAction({bundles}));
+}

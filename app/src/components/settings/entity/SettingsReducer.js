@@ -4,12 +4,16 @@ import {
     updateSettingAction,
     saveSettingsAction,
     resetSettingsAction,
-    updateSettingsFromServerAction
+    updateSettingsFromServerAction,
+    addDefaultFieldsToBundleAction
 } from "../control/SettingsControl.js";
 
 
 const initialState = {
   settings: {
+    "practitioner.lanr": "",
+    "organization.bsnr": "",
+    "organization.phone": "",
     "connector.base-url": "",
     "connector.mandant-id": "",
     "connector.client-system-id": "",
@@ -58,4 +62,46 @@ export const settingsReducer = createReducer(initialState, (builder) => {
           state.settings[p] = kim[p];
         }
     });
+    builder.addCase(addDefaultFieldsToBundleAction,  (state, {payload: {bundles}})) {
+        for(let bundleList of bundles) {
+            for(let bundle of bundleList) {
+                try {
+                    if(bundle.entry.length == 0) {
+                        continue;
+                    }
+                    let aPractitioner = bundle.entry.filter(o => o.resource.resourceType == "Practitioner");
+                    if(aPractitioner.length == 0) {
+                        continue;
+                    }
+                    let oPractitioner = aPractitioner[0].resource;
+                    if(!oPractitioner.identifier || oPractitioner.identifier.length == 0) {
+                        continue;
+                    }
+                    if(!oPractitioner.identifier[0].value) {
+                        oPractitioner.identifier[0].value = state.settings["practitioner.lanr"];
+                    }
+
+                    let aOrganization = bundle.entry.filter(o => o.resource.resourceType == "Organization");
+                    if(aOrganization.length == 0) {
+                        continue;
+                    }
+                    let oOrganization = aOrganization[0].resource;
+                    if(!oOrganization.identifier || oOrganization.identifier.length == 0) {
+                        continue;
+                    }
+                    if(!oOrganization.identifier[0].value) {
+                        oOrganization.identifier[0].value = state.settings["organization.bsnr"];
+                    }
+                    if(!oOrganization.telecom || oOrganization.telecom.length == 0) {
+                        continue;
+                    }
+                    if(!oOrganization.telecom[0].value) {
+                        oOrganization.telecom[0].value = state.settings["organization.phone"];
+                    }
+                } catch(e) {
+                    console.error(e);
+                }
+            }
+        }
+    }
 });

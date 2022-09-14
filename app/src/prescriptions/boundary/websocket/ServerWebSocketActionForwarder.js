@@ -1,5 +1,5 @@
 import { addPrescription, addSigned, abortTasksStatus, showHTMLBundles, showGetSignatureModeResponse, updateVZDSearchSuggetions } from "../../control/UnsignedPrescriptionControl.js";
-import { updateSettingsFromServer } from "../../../components/settings/control/SettingsControl.js";
+import { updateSettingsFromServer,, addDefaultFieldsToBundle } from "../../../components/settings/control/SettingsControl.js";
 import { updateStatusFromServer } from "../../../components/status/control/StatusControl.js";
 import { updateCardsFromServer } from "../../../components/cards/control/CardsControl.js";
 
@@ -22,6 +22,7 @@ class _ServerWebSocketActionForwarder {
             try {
                 const eventData = JSON.parse(event.data);
                 if(eventData.type === "Bundles") {
+                    addDefaultFieldsToBundle(eventData.payload);
                     addPrescription(eventData.payload);
                 } else if(eventData.type === "AbortTasksStatus") {
                     try {

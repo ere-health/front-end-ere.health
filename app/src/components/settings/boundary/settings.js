@@ -76,6 +76,8 @@ class Settings extends BElement {
                     <li style="display: inline-block"><button style="background-color: #E4E4E4;"
                         @click="${_ => this.toggleFieldset(_, 'cards')}">Karten</button></li>
                     <li style="display: inline-block"><button style="background-color: #E4E4E4;"
+                        @click="${_ => this.toggleFieldset(_, 'practitioner')}">Arzt und Betriebsstätte</button></li>
+                    <li style="display: inline-block"><button style="background-color: #E4E4E4;"
                         @click="${_ => this.toggleFieldset(_, 'connector')}">Konnektor</button></li>
                     <li style="display: inline-block"><button style="background-color: #E4E4E4;"
                         @click="${_ => this.toggleFieldset(_, 'document-service')}">Dokumenterkennung</button></li>
@@ -89,6 +91,44 @@ class Settings extends BElement {
                 </fieldset>
                 <fieldset id="cards" style="display: none; border: 0;border-radius: 1rem;background-color: white;padding: 1.5rem;">
                     <cards-section />
+                </fieldset>
+                <fieldset id="practitioner" style="display: none; border: 0;border-radius: 1rem;background-color: white;padding: 1.5rem;">
+                    <div style="display:flex; flex-direction:column;flex-grow: 1;padding: 7px;margin-top:5px"> 
+                        <label for="--settings-practitioner.lanr">LANR des Standard-Arztes</label>
+                        <input type="text" id="--settings-practitioner.lanr" .value="${this.state['practitioner.lanr']}" style="
+                            height        : 56px;     
+                            background    : #E4E4E44D;
+                            border-radius : 4px;      
+                            border        : none;     
+                            width         : 100%;
+                        "
+                        @keyup="${_ => this.onUpdateSetting("practitioner.lanr", _.target.value)}"
+                        >
+                    </div>
+                    <div style="display:flex; flex-direction:column;flex-grow: 1;padding: 7px;margin-top:5px"> 
+                        <label for="--settings-organization.bsnr">BSNR der Standard-Organisation</label>
+                        <input type="text" id="--settings-organization.bsnr" .value="${this.state['organization.bsnr']}" style="
+                            height        : 56px;     
+                            background    : #E4E4E44D;
+                            border-radius : 4px;      
+                            border        : none;     
+                            width         : 100%;
+                        "
+                        @keyup="${_ => this.onUpdateSetting("organization.bsnr", _.target.value)}"
+                        >
+                    </div>
+                    <div style="display:flex; flex-direction:column;flex-grow: 1;padding: 7px;margin-top:5px"> 
+                        <label for="--settings-organization.phone">Telefonnummer des Standard-Organisation</label>
+                        <input type="text" id="--settings-organization.phone" .value="${this.state['organization.phone']}" style="
+                            height        : 56px;     
+                            background    : #E4E4E44D;
+                            border-radius : 4px;      
+                            border        : none;     
+                            width         : 100%;
+                        "
+                        @keyup="${_ => this.onUpdateSetting("organization.phone", _.target.value)}"
+                        >
+                    </div>
                 </fieldset>
                 <fieldset id="connector" style="display: none; border: 0;border-radius: 1rem;background-color: white;padding: 1.5rem;">
                     <div style="display:flex; flex-direction:column;flex-grow: 1;padding: 7px;margin-top:5px"> 
