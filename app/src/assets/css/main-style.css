@@ -604,7 +604,7 @@ button.active, button:hover, button:focus, .link-button.active, .link-button:hov
 .recipe-body {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: left;
   align-items: stretch;
   overflow-y: hidden;
 }
@@ -889,6 +889,11 @@ settings-layout {
 .status td {
   padding: 1rem;
 }
+
+table td:nth-child(3) {
+  word-break: break-all;
+}
+
 
 @media only screen and (max-width: 1394px) {
   .header-wrapper .header {
