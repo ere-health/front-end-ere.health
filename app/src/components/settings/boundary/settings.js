@@ -93,7 +93,7 @@ class Settings extends BElement {
                 <fieldset id="connector" style="display: none; border: 0;border-radius: 1rem;background-color: white;padding: 1.5rem;">
                     <div style="display:flex; flex-direction:column;flex-grow: 1;padding: 7px;margin-top:5px"> 
                         <label for="--settings-connector.base-url">Adresse des Konnektordienstverzeichnis*</label>
-                        <input type="text" id="--settings-connector.base-url" .value="${this.state['connector.base-url']}" style="
+                        <input type="text" id="--settings-connector.base-url" .value="${this.state['connector.base-url']}" placeholder="https://192.168.178.42" style="
                             height        : 56px;     
                             background    : #E4E4E44D;
                             border-radius : 4px;      
