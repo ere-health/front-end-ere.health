@@ -9,7 +9,7 @@ export const NewPrescriptionTemplate = `
     ]
   },
   "identifier": {
-    "system": "https://gematik.de/fhir/NamingSystem/PrescriptionID",
+    "system": "https://gematik.de/fhir/erp/NamingSystem/GEM_ERP_NS_PrescriptionId",
     "value": "$PRESCRIPTION_ID"
   },
   "type": "document",
@@ -110,9 +110,9 @@ export const NewPrescriptionTemplate = `
         },
         "extension": [
           {
-            "url": "https://fhir.kbv.de/StructureDefinition/KBV_EX_ERP_StatusCoPayment",
+            "url": "https://fhir.kbv.de/StructureDefinition/KBV_EX_FOR_StatusCoPayment",
             "valueCoding": {
-              "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_ERP_StatusCoPayment",
+              "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_FOR_StatusCoPayment",
               "code": "0"
             }
           },
@@ -186,6 +186,17 @@ export const NewPrescriptionTemplate = `
         },
         "extension": [
           {
+            "url": "https://fhir.kbv.de/StructureDefinition/KBV_EX_Base_Medication_Type",
+            "valueCodeableConcept": {
+              "coding": [ {
+                "system": "http://snomed.info/sct",
+                "version": "http://snomed.info/sct/900000000000207008/version/20220331",
+                "code": "763158003",
+                "display": "Medicinal product (product)"
+              } ]
+            }
+          },
+          {
             "url": "https://fhir.kbv.de/StructureDefinition/KBV_EX_ERP_Medication_Category",
             "valueCoding": {
               "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_ERP_Medication_Category",
@@ -240,7 +251,7 @@ export const NewPrescriptionTemplate = `
                 }
               ]
             },
-            "system": "http://fhir.de/NamingSystem/gkv/kvid-10",
+            "system": "http://fhir.de/sid/gkv/kvid-10",
             "value": ""
           }
         ],
@@ -341,6 +352,10 @@ export const NewPrescriptionTemplate = `
           },
           {
             "code": {
+              "coding": [ {
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_FOR_Berufsbezeichnung",
+                "code": "Berufsbezeichnung"
+              } ],
               "text": "Arzt"
             }
           }
@@ -450,7 +465,7 @@ export const NewPrescriptionTemplate = `
         "payor": [
           {
             "identifier": {
-              "system": "http://fhir.de/NamingSystem/arge-ik/iknr",
+              "system": "http://fhir.de/sid/arge-ik/iknr",
               "value": ""
             },
             "display": ""

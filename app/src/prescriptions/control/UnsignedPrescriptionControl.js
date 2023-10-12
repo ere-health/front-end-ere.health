@@ -2,8 +2,12 @@ import { createAction } from "../../libs/redux-toolkit.esm.js";
 import store from "../../store.js";
 
 export const addPrescriptionAction = createAction("addPrescriptionAction");
+export const addPrescriptionActionWithSettingsAction = (prescription) => (dispatch, getState) => {
+    const settings = getState().settingsReducer.settings;
+    dispatch({ type: "addPrescriptionAction", payload: {prescription, settings} });
+};
 export const addPrescription = (prescription) => {
-    store.dispatch(addPrescriptionAction(prescription));
+    store.dispatch(addPrescriptionActionWithSettingsAction(prescription));
 }
 
 export const deletePrescriptionAction = createAction("deletePrescriptionAction");

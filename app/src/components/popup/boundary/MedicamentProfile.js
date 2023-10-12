@@ -68,7 +68,7 @@ export const MedicamentProfilePZN = {
                         ?.filter(object=>object.url==MedicamentProfile.urlMedicationCategory)
                         ?.[0]
                         ?.valueCoding
-                        ?.code ?? '',
+                        ?.code ?? '00',
       isVaccine:       medicationFHIR?.resource?.extension
                         ?.filter(object=>object.url==MedicamentProfile.urlVaccine)
                         ?.[0]
@@ -88,12 +88,22 @@ export const MedicamentProfilePZN = {
         resourceType: 'Medication',
         id: uuid,
         meta: {profile: [MedicamentProfilePZN.urlProfile]},
-        extension: [
+        extension: [{
+            "url": "https://fhir.kbv.de/StructureDefinition/KBV_EX_Base_Medication_Type",
+            "valueCodeableConcept": {
+              "coding": [ {
+                "system": "http://snomed.info/sct",
+                "version": "http://snomed.info/sct/900000000000207008/version/20220331",
+                "code": "763158003",
+                "display": "Medicinal product (product)"
+              } ]
+            }
+          },
           // 1..1 Medication Category
           { url: MedicamentProfile.urlMedicationCategory,
             valueCoding: {
               system: 'https://fhir.kbv.de/CodeSystem/KBV_CS_ERP_Medication_Category',
-              code: medCatCode,
+              code: medCatCode ?? '00',
             }
           },
           // 1..1 Vaccine
@@ -144,7 +154,7 @@ export const MedicamentProfileFreeText = {
                         ?.filter(object=>object.url==MedicamentProfile.urlMedicationCategory)
                         ?.[0]
                         ?.valueCoding
-                        ?.code ?? '',
+                        ?.code ?? '00',
       isVaccine:      medicationFHIR?.resource?.extension
                         ?.filter(object=>object.url==MedicamentProfile.urlVaccine)
                         ?.[0]
@@ -167,7 +177,7 @@ export const MedicamentProfileFreeText = {
           { url: MedicamentProfile.urlMedicationCategory,
             valueCoding: {
               system: 'https://fhir.kbv.de/CodeSystem/KBV_CS_ERP_Medication_Category',
-              code: medCatCode,
+              code: medCatCode ?? '00',
             }
           },
           // 1..1 Vaccine
@@ -234,7 +244,7 @@ export const MedicamentProfileIngredient = {
           { url: MedicamentProfile.urlMedicationCategory,
             valueCoding: {
               system: 'https://fhir.kbv.de/CodeSystem/KBV_CS_ERP_Medication_Category',
-              code: medCatCode,
+              code: medCatCode ?? '00',
             }
           },
           // 1..1 Vaccine
@@ -339,7 +349,7 @@ export const MedicamentProfileCompounding = {
                                 ?.filter(object=>object.url==MedicamentProfile.urlMedicationCategory)
                                 ?.[0]
                                 ?.valueCoding
-                                ?.code ?? '',
+                                ?.code ?? '00',
       isVaccine:              medicationFHIR?.resource?.extension
                                 ?.filter(object=>object.url==MedicamentProfile.urlVaccine)
                                 ?.[0]
@@ -371,7 +381,7 @@ export const MedicamentProfileCompounding = {
           { url: MedicamentProfile.urlMedicationCategory,
             valueCoding: {
               system: 'https://fhir.kbv.de/CodeSystem/KBV_CS_ERP_Medication_Category',
-              code: medCatCode,
+              code: medCatCode ?? '00',
             }
           },
           // 1..1 Vaccine
@@ -495,7 +505,7 @@ const IngredientExtension = {
 const Amount = {
   getValuesFromFHIR : (amountFHIR) => {
     return {
-      amountNumeratorValue:   amountFHIR?.numerator?.value ?? '',
+      amountNumeratorValue:   amountFHIR?.numerator?.extension[0]?.valueString ?? '',
       amountNumeratorUnit:    amountFHIR?.numerator?.unit ?? '',
       amountNumUnitCode:      amountFHIR?.numerator?.code ?? '',
       amountDenominatorValue: amountFHIR?.denominator?.value ?? 1,
@@ -507,7 +517,10 @@ const Amount = {
   buildFHIR : ({amountNumeratorValue, amountNumeratorUnit, amountNumUnitCode, amountDenominatorValue}) => {
     const fhir = {
       // 1..1
-      numerator:   { value: Number(amountNumeratorValue), 
+      numerator:   {
+        extension: [
+          { url: 'https://fhir.kbv.de/StructureDefinition/KBV_EX_ERP_Medication_PackagingSize',
+            valueString: amountNumeratorValue.toString()}],
                      unit:  amountNumeratorUnit },
       // 1..1
       denominator: { value: Number(amountDenominatorValue) }

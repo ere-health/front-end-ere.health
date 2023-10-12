@@ -30,6 +30,9 @@ const initialState = {
     "kim.vzd.base-url": "",
     "kim.vzd.client-certificate": "",
     "kim.vzd.client-certificate-password": "",
+    "prefill.bsnr":"",
+    "prefill.lanr":"",
+    "prefill.phone":""
   }
 };
   
@@ -47,15 +50,15 @@ export const settingsReducer = createReducer(initialState, (builder) => {
         setTimeout(() => serverWebSocketActionForwarder.send({ type: "RequestStatus", payload: {}}), 1000)
     });
     builder.addCase(updateSettingsFromServerAction,  (state, {payload: {settings}}) => {
-        let kim = {};
+        let clientOnlySettings = {};
         for(let p in state.settings) {
-            if(p.startsWith("kim")) {
-                kim[p] = state.settings[p];
+            if(p.startsWith("kim") || p.startsWith("prefill")) {
+                clientOnlySettings[p] = state.settings[p];
             }
         }
         state.settings = settings;
-        for(let p in kim) {
-          state.settings[p] = kim[p];
+        for(let p in clientOnlySettings) {
+          state.settings[p] = clientOnlySettings[p];
         }
     });
 });

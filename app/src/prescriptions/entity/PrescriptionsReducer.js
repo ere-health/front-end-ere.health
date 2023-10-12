@@ -111,7 +111,7 @@ function removePrescriptionFromState(state, prescription) {
 
 export const prescriptions = createReducer(initialState, (builder) => {
   //Add prescription to the unsigned list
-  builder.addCase(addPrescriptionAction, (state, { payload: prescription }) => {
+  builder.addCase(addPrescriptionAction, (state, { payload: {prescription, settings} }) => {
     if (prescription.length == 0) {
       console.warn("Try to add prescriptions with empty array. Ignoring.");
       return;
@@ -119,29 +119,23 @@ export const prescriptions = createReducer(initialState, (builder) => {
     // remove values without length property
     state.list = state.list.filter(p => ("length" in p));
     if (!state.list.filter(_ => _[0].id === prescription[0].id).length) {
-
-      /*//Check if need to be merged
-      const psp = new Mapper(prescription[0]);
-      const id = `${psp.read("entry[resource.resourceType?Patient].resource.name[0].given[0]")}-${psp.read("entry[resource.resourceType?Patient].resource.name[0].family")}-${psp.read("entry[resource.resourceType?Patient].resource.birthDate", "")}`
-      console.info("MERGE", id, prescription);
-      let merged = false;
-
-      state.list.forEach(p => {
-        const psp = new Mapper(p[0]);
-        const _id = `${psp.read("entry[resource.resourceType?Patient].resource.name[0].given[0]")}-${psp.read("entry[resource.resourceType?Patient].resource.name[0].family")}-${psp.read("entry[resource.resourceType?Patient].resource.birthDate", "")}`
-        
-        if (id === _id) {
-          //Founded
-          console.info("Added")
-          p.push(prescription[0]);
-          merged = true;
+      for(let p of prescription) {
+        const psp = new Mapper(p);
+        const practitioner = psp.read("entry[resource.resourceType=Practitioner].resource");
+        if(!practitioner.identifier[0].value) {
+          practitioner.identifier[0].value = settings["prefill.lanr"];
         }
-        
-        console.info("MERGE LIST", id);
-      })
 
-
-      !merged &&*/ (state.list = [prescription].concat(state.list));
+        const organization = psp.read("entry[resource.resourceType=Organization].resource");
+        if(!organization.identifier[0].value) {
+          organization.identifier[0].value = settings["prefill.bsnr"];
+        }
+        if(!organization.telecom[0].value) {
+          organization.telecom[0].value = settings["prefill.phone"];
+        }
+            
+      }
+      (state.list = [prescription].concat(state.list));
     }
   })
   builder.addCase(addSignedAction, (state, { payload: prescription }) => {

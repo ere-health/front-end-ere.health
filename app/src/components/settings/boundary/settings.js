@@ -57,10 +57,11 @@ class Settings extends BElement {
     document.getElementById('document-service').style.display = 'none';
     document.getElementById('kim').style.display = 'none';
     document.getElementById('kbv').style.display = 'none';
+    document.getElementById('prefill').style.display = 'none';
 
 
-    document.getElementById('reset-settings-button').style.display = (fieldset != "cards" && fieldset != "status" && fieldset != "kim") ? 'inline-block' : 'none';
-    document.getElementById('save-settings-button').style.display = (fieldset != "cards" && fieldset != "status" && fieldset != "kim") ? 'inline-block' : 'none';
+    document.getElementById('reset-settings-button').style.display = (fieldset != "cards" && fieldset != "status" && fieldset != "kim" && fieldset != "prefill") ? 'inline-block' : 'none';
+    document.getElementById('save-settings-button').style.display = (fieldset != "cards" && fieldset != "status" && fieldset != "kim" && fieldset != "prefill") ? 'inline-block' : 'none';
     
     document.getElementById(fieldset).style.display = 'block';    
   }
@@ -83,6 +84,8 @@ class Settings extends BElement {
                         @click="${_ => this.toggleFieldset(_, 'kim')}">KIM für Direktzuweisung</button></li>
                     <li style="display: inline-block"><button style="background-color: #E4E4E4;"
                         @click="${_ => this.toggleFieldset(_, 'kbv')}">KBV Prüfnummer</button></li>
+                    <li style="display: inline-block"><button style="background-color: #E4E4E4;"
+                        @click="${_ => this.toggleFieldset(_, 'prefill')}">Arztdaten</button></li>
                 </ul>
                 <fieldset id="status" style="border: 0;border-radius: 1rem;background-color: white;padding: 1.5rem;">
                     <status-report />
@@ -373,6 +376,44 @@ class Settings extends BElement {
                             width         : 100%;
                         "
                         @keyup="${_ => this.onUpdateSetting("kbv.pruefnummer", _.target.value)}"
+                        >
+                    </div>
+                </fieldset>
+                <fieldset id="prefill"  style="display: none; border: 0;border-radius: 1rem;background-color: white;padding: 1.5rem;">
+                    <div style="display:flex; flex-direction:column;flex-grow: 1;padding: 7px;margin-top:5px"> 
+                        <label for="--settings-prefill.bsnr">BSNR*</label>
+                        <input type="text" id="--settings-prefill.bsnr" .value="${this.state['prefill.bsnr']}" style="
+                            height        : 56px;     
+                            background    : #E4E4E44D;
+                            border-radius : 4px;      
+                            border        : none;     
+                            width         : 100%;
+                        "
+                        @keyup="${_ => this.onUpdateSetting("prefill.bsnr", _.target.value)}"
+                        >
+                    </div>
+                    <div style="display:flex; flex-direction:column;flex-grow: 1;padding: 7px;margin-top:5px"> 
+                        <label for="--settings-prefill.lanr">LANR*</label>
+                        <input type="text" id="--settings-prefill.lanr" .value="${this.state['prefill.lanr']}" style="
+                            height        : 56px;     
+                            background    : #E4E4E44D;
+                            border-radius : 4px;      
+                            border        : none;     
+                            width         : 100%;
+                        "
+                        @keyup="${_ => this.onUpdateSetting("prefill.lanr", _.target.value)}"
+                        >
+                    </div>
+                    <div style="display:flex; flex-direction:column;flex-grow: 1;padding: 7px;margin-top:5px"> 
+                        <label for="--settings-prefill.phone">Telefon*</label>
+                        <input type="text" id="--settings-prefill.phone" .value="${this.state['prefill.phone']}" style="
+                            height        : 56px;     
+                            background    : #E4E4E44D;
+                            border-radius : 4px;      
+                            border        : none;     
+                            width         : 100%;
+                        "
+                        @keyup="${_ => this.onUpdateSetting("prefill.phone", _.target.value)}"
                         >
                     </div>
                 </fieldset>
