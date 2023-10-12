@@ -1,10 +1,10 @@
-// load KBV eRP v1.0.2 examples into the app issuing this command into the browser's console:
-// > window.__socket.send(JSON.stringify({"type": "AllKBVExamples", "folder": "../KBV_FHIR_eRP_V1_0_2/examples"}))
+// load KBV eRP v1.1.0 examples into the app issuing this command into the browser's console:
+// > window.__socket.send(JSON.stringify({"type": "AllKBVExamples", "folder": "../KBV_FHIR_eRP_V1_1_0/examples"}))
 
 // MedicationRequest.Prescription: https://simplifier.net/erezept/kbvprerpprescription
 export const MedicationRequestPrescription = {
   profile: 'Prescription',
-  urlProfile : 'https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Prescription|1.0.2',
+  urlProfile : 'https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Prescription|1.1.0',
 
   getValuesFromFHIR: (medicationRequestFHIR) =>{
     return {
@@ -53,7 +53,7 @@ export const MedicationRequestPrescription = {
 export const MedicamentProfilePZN = {
   profile: 'PZN',
   label:   'PZN',
-  urlProfile : 'https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Medication_PZN|1.0.2',
+  urlProfile : 'https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Medication_PZN|1.1.0',
 
   getValuesFromFHIR: (medicationFHIR) =>{
     const values = {
@@ -135,7 +135,7 @@ export const MedicamentProfilePZN = {
 export const MedicamentProfileFreeText = {
   profile: 'FreeText',
   label:   'Freitext',
-  urlProfile : 'https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Medication_FreeText|1.0.2',
+  urlProfile : 'https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Medication_FreeText|1.1.0',
 
   getValuesFromFHIR: (medicationFHIR) =>{
     return {
@@ -189,7 +189,7 @@ export const MedicamentProfileFreeText = {
 export const MedicamentProfileIngredient = {
   profile: 'Ingredient',
   label:   'Wirkstoff',
-  urlProfile : 'https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Medication_Ingredient|1.0.2',
+  urlProfile : 'https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Medication_Ingredient|1.1.0',
 
   getValuesFromFHIR: (medicationFHIR) =>{
     const values = {
@@ -325,7 +325,7 @@ const IngredientIngredientItemCodeableConcept = {
 export const MedicamentProfileCompounding = {
   profile: 'Compounding',
   label:   'Rezeptur',
-  urlProfile : 'https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Medication_Compounding|1.0.2',
+  urlProfile : 'https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Medication_Compounding|1.1.0',
 
   getValuesFromFHIR: (medicationFHIR) =>{
     const values = {

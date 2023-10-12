@@ -139,6 +139,7 @@ class Settings extends BElement {
                             border        : none;
                         "
                         @keyup="${_ => this.onUpdateSetting("connector.client-certificate-password", _.target.value)}"
+                        @blur="${_ => this.onUpdateSetting("connector.client-certificate-password", _.target.value)}"
                         >
                     </div>
                     <div style="display:flex; flex-direction:row;flex-grow: 1;padding: 7px;margin-top:5px;"> 
