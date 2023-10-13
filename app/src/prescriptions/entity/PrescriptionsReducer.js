@@ -279,7 +279,20 @@ export const prescriptions = createReducer(initialState, (builder) => {
     })
     .addCase(signAndUploadBundlesAction, (state, { payload: {bundles, directAssign, settings} }) => {
       // if bundles is already list of a list keep it, otherwise create one
-      const payload = "length" in bundles[0] ? bundles : [bundles];
+      let payload = "length" in bundles[0] ? bundles : [bundles];
+      payload = structuredClone(payload)
+
+      for(let list of payload) {
+        for(let prescription of list) {
+          const medication = prescription.entry.filter(row=>row.resource.resourceType=='Medication')[0];
+          const medicationRequest = prescription.entry.filter(row=>row.resource.resourceType=='MedicationRequest')[0];
+          // delete substitution for ingredient prescriptions
+          if(medication.resource.meta.profile[0].startsWith("https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Medication_Ingredient")) {
+            delete medicationRequest.resource.substitution;
+          }
+        }
+      }
+
       let oMessage = {
         type: "SignAndUploadBundles",
         bearerToken: window.bearerToken,

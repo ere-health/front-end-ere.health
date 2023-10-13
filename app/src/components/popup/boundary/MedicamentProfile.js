@@ -212,7 +212,7 @@ export const MedicamentProfileIngredient = {
                         ?.filter(object=>object.url==MedicamentProfile.urlMedicationCategory)
                         ?.[0]
                         ?.valueCoding
-                        ?.code ?? '',
+                        ?.code ?? '00',
       isVaccine:       medicationFHIR?.resource?.extension
                         ?.filter(object=>object.url==MedicamentProfile.urlVaccine)
                         ?.[0]
