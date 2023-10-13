@@ -694,7 +694,8 @@ export const prescriptions = createReducer(initialState, (builder) => {
       prescription.entry[medicationEntryIndex] = MedicamentProfile.buildFHIR(state.MedikamentPopup);
       // update MedicationRequest (too complex to re-build)
       const medicationRequest = prescription.entry.filter(row=>row.resource.resourceType=='MedicationRequest')[0];
-      MedicationRequestPrescription.modifyFHIR(medicationRequest, state.MedikamentPopup);
+      const medication = prescription.entry.filter(row=>row.resource.resourceType=='Medication')[0];
+      MedicationRequestPrescription.modifyFHIR(medicationRequest, state.MedikamentPopup, medication.resource.code.coding[0].code);
 
       // write selectedPrescription lines back to original list
       const selectedPrescriptionId = state.selectedPrescription.prescriptions[0].id;

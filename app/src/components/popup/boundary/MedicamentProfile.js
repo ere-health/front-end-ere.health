@@ -17,7 +17,7 @@ export const MedicationRequestPrescription = {
 
   buildEmpty: () => MedicationRequestPrescription.getValuesFromFHIR({}),
 
-  modifyFHIR: (medicationRequestFHIR, {dosageInstruction, dispenseQuantity}) => {
+  modifyFHIR: (medicationRequestFHIR, {dosageInstruction, dispenseQuantity}, medicationType) => {
     // 1..1 dispenseRequest
     //   1..1 dispenseQuantity
     const dispenseQuantityFHIR = medicationRequestFHIR?.resource?.dispenseRequest?.quantity;
@@ -45,6 +45,18 @@ export const MedicationRequestPrescription = {
       const dosageFlagFHIR = dosageFHIR?.extension?.filter(row=>row.url===MedicamentProfile.urlDosageFlag)?.[0];
       if (dosageFlagFHIR!==undefined)
         dosageFlagFHIR.valueBoolean = Boolean(dosageInstruction);
+      // ERROR - Bundle - Regel -erp-angabeDosierungRezepturVerbot: 'Bei einer Rezepturverordnung dürfen Dosierkennzeichen und Dosieranweisung nicht angegeben werden.'
+      // ERROR - Bundle - Regel -erp-angabeGebrauchsanweisungRezeptur: 'Die Gebrauchsanweisung (dosageInstruction.patientInstruction) fehlt, muss bei einer Rezepturverordnung aber angegeben werden'
+      if(medicationType === "rezeptur") {
+        // Remove dosage flag extension 
+        dosageFHIR.extension = dosageFHIR?.extension?.filter(row=>row.url!=MedicamentProfile.urlDosageFlag);
+        if(dosageFHIR.extension.length == 0) {
+          delete dosageFHIR.extension;
+        }
+        // Remove dosage text
+        delete dosageFHIR?.text;
+        dosageFHIR.patientInstruction = dosageInstruction;
+      }
     };
   },
 }
@@ -376,7 +388,17 @@ export const MedicamentProfileCompounding = {
         // 1..1 meta
         meta: { profile: [MedicamentProfileCompounding.urlProfile] },
         // 0..* extension
-        extension: [
+        extension: [{
+            "url": "https://fhir.kbv.de/StructureDefinition/KBV_EX_Base_Medication_Type",
+            "valueCodeableConcept": {
+              "coding": [ {
+                "system": "http://snomed.info/sct",
+                "version": "http://snomed.info/sct/900000000000207008/version/20220331",
+                "code": "373873005:860781008=362943005",
+                "display": "Pharmaceutical / biologic product (product) : Has product characteristic (attribute) = Manual method (qualifier value)"
+              } ]
+            }
+          },
           // 1..1 Medication Category
           { url: MedicamentProfile.urlMedicationCategory,
             valueCoding: {
