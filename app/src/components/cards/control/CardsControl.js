@@ -26,6 +26,11 @@ export const verifyPin = () => {
     store.dispatch(verifyPinAction());
 }
 
+export const unblockPinAction = createAction("unblockPinAction");
+export const unblockPin = () => {
+    store.dispatch(unblockPinAction());
+}
+
 export const updateCardsFromServerAction = createAction("updateCardsFromServerAction");
 export const updateCardsFromServer = (cards) => {
     store.dispatch(updateCardsFromServerAction(cards));

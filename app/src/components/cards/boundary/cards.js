@@ -6,7 +6,8 @@ import {
     selectPin,
     loadCards,
     changePin,
-    verifyPin
+    verifyPin,
+    unblockPin
 } from "../control/CardsControl.js";
 
 class CardsSection extends BElement {
@@ -37,6 +38,11 @@ class CardsSection extends BElement {
   onChangePin(e) {
     e.preventDefault();
     changePin();
+  }
+
+  onUnblockPin(e) {
+    e.preventDefault();
+    unblockPin();
   }
 
   onVerifyPin(e) {
@@ -101,6 +107,12 @@ class CardsSection extends BElement {
             @click            = "${_ => this.onChangePin(_)}"  
             class             = "jet-btn">
         PIN für gewählte Karte ändern
+        </button>
+        <button 
+            style="margin: 1rem 0;"                                                                  
+            @click            = "${_ => this.onUnblockPin(_)}"  
+            class             = "jet-btn">
+        PIN für gewählte Karte unblocken
         </button>
     </div>
     `;

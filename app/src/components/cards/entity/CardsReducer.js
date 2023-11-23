@@ -1,5 +1,5 @@
 import { createReducer } from "../../../libs/redux-toolkit.esm.js"
-import {selectCardAction,selectPinAction,loadCardsAction,changePinAction,verifyPinAction,updateCardsFromServerAction} from "../control/CardsControl.js";
+import {selectCardAction,selectPinAction,loadCardsAction,changePinAction,verifyPinAction,unblockPinAction,updateCardsFromServerAction} from "../control/CardsControl.js";
 import serverWebSocketActionForwarder from "../../../prescriptions/boundary/websocket/ServerWebSocketActionForwarder.js";
 
 const initialState = {
@@ -34,6 +34,15 @@ export const cardsReducer = createReducer(initialState, (builder) => {
             cardHandle: state.selectedCard.cardHandle}
         });
     });
+    builder.addCase(unblockPinAction, (state) => {
+        serverWebSocketActionForwarder.send({ type: "UnblockPin", payload: {
+            cardHandle: state.selectedCard.cardHandle,
+            pinType: state.pinType,
+            setNewPin: false
+        }
+        });
+    });
+
     builder.addCase(updateCardsFromServerAction, (state, {payload: cards}) => {
         if(cards.length > 0) {
             state.cards = cards;
