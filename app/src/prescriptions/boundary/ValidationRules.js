@@ -3,6 +3,7 @@
 export const MainWindowValidationRules = {
     //String
     'coverage-payor-display': ['required', 'regex:/^.{1,50}$/'],  
+    'coverage-payor-type': ['required', 'regex:/^((GKV)|(PKV)|(BG)|(SEL)|(SOZ)|(GPV)|(PPV)|(BEI))$/'],  
     // 'full-patient-address': ['required',
     //     'regex:/^[a-z A-ZäöüÄÖÜß\\-\\.]{0,20} ?[a-z A-ZäöüÄÖÜß\'\\-]{1,50} [a-z A-ZäöüÄÖÜß\\-\\.]{1,50}, [a-z A-ZäöüÄÖÜß\\-\\.0-9]{1,50} [a-z A-ZäöüÄÖÜß\\-\\.0-9]{1,10}, [0-9]{5} [a-z A-ZäöüÄÖÜß\\-\\.]{1,32}$/'],
     'organization-summary': ['required', 
@@ -11,7 +12,7 @@ export const MainWindowValidationRules = {
 
     //Numbers
     'betriebsstätten': ['required', 'regex:/^[0-9]{8,9}$/'],
-    'kvid': ['required', 'regex:/^[a-zA-Z0-9]{10}$/'],
+    'kvid': ['required', 'regex:/^[a-zA-Z0-9]{8,10}$/'],
     'coverage-payor-iknr': ['required', 'regex:/^[0-9]{9}$/'],
     'doctor-number': ['required', 'regex:/^[0-9]{9}$/'],
     'wop': ['regex:/^[0-9]{1,2}$/'],
@@ -20,7 +21,7 @@ export const MainWindowValidationRules = {
     'birthdate': ['required', 'regex:/^[0-9]{4}\\-[0-9]{1,2}\\-[0-9]{1,2}$/'],
     'authoredOn': ['required', 'regex:/^[0-9]{4}\\-[0-9]{1,2}\\-[0-9]{1,2}$/'],
 
-    'unfalltag': ['regex:/^[0-9]{4}\\-[0-9]{1,2}\\-[0-9]{1,2}$/'],
+    'Unfalltag': ['regex:/^[0-9]{4}\\-[0-9]{1,2}\\-[0-9]{1,2}$/'],
     'noctu': [],
     'unfallbetrieb': [],
 
@@ -91,6 +92,10 @@ export const MainWindowErrorMessages = {
         required: 'Es muss eine Versicherung angegeben werden',
         regex: 'Der Name der Versicherung muss zwischen 1 und 50 Zeichen lang sein'
     },
+    'coverage-payor-type': {
+        required: 'Es muss ein Typ der Versicherung angegeben werden',
+        regex: 'Der Typ muss aus den folgenden Werten bestehen: GKV, PKV, BG, SEL, SOZ, GPV, PPV, BEI'
+    },
     'medicationText': {
         required: 'Es muss ein Medikamentenname angegeben werden',
         regex: 'Der Medikamentenname muss zwischen 1 bis 50 Zeichen lang sein'
@@ -116,7 +121,7 @@ export const MainWindowErrorMessages = {
     },
     'kvid': {
         required: 'Es muss eine Krankenkassennummer angegeben werden',
-        regex: 'Die Krankenkassennummer muss 10 Zeichen lang sein long und besteht aus einem Buchstaben und Ziffern'
+        regex: 'Die Krankenkassennummer muss 8 oder 10 Zeichen lang sein und besteht aus einem Buchstaben und Ziffern'
     },
     'coverage-payor-iknr': {
         required: 'Die IK Nummer der Versucherung muss angegeben werden',

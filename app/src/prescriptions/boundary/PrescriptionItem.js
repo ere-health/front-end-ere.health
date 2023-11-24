@@ -59,7 +59,7 @@ class Prescription extends BElement {
       value = this.convertGermanDateToFhirFormat(value);
     } else if (name === 'authoredOn') {
       value = this.convertGermanDateToFhirFormat(value);
-    } else if (name === 'unfalltag') {
+    } else if (name === 'Unfalltag') {
       value = this.convertGermanDateToFhirFormat(value);
     }
 
@@ -116,17 +116,17 @@ class Prescription extends BElement {
   toggleAccident(unfallkennzeichen, boolean) {
     if(boolean) {
       let accidentExtension = {
-            url: 'https://fhir.kbv.de/StructureDefinition/KBV_EX_ERP_Accident',
+            url: 'https://fhir.kbv.de/StructureDefinition/KBV_EX_FOR_Accident',
             extension: [
               {
-                url: 'unfallkennzeichen',
+                url: 'Unfallkennzeichen',
                 valueCoding: {
                   system: 'https://fhir.kbv.de/CodeSystem/KBV_CS_FOR_Ursache_Type',
                   code: unfallkennzeichen
                 }
               },
               {
-                url: 'unfalltag',
+                url: 'Unfalltag',
                 valueDate: ''
               }
             ]
@@ -341,7 +341,7 @@ class Prescription extends BElement {
                     id       = "unfall"
                     value    = "Unfall"
                     name     = "accident"
-                    .checked = "${_psp.read("entry[resource.resourceType?MedicationRequest].resource.extension[url?KBV_EX_ERP_Accident]") && _psp.read("entry[resource.resourceType?MedicationRequest].resource.extension[url?KBV_EX_ERP_Accident].extension[url?unfallkennzeichen].valueCoding.code") == "1"}"
+                    .checked = "${_psp.read("entry[resource.resourceType?MedicationRequest].resource.extension[url?KBV_EX_FOR_Accident]") && _psp.read("entry[resource.resourceType?MedicationRequest].resource.extension[url?KBV_EX_FOR_Accident].extension[url?Unfallkennzeichen].valueCoding.code") == "1"}"
                     @change  = "${(_) => this.toggleAccident("1", _.target.checked)}"
                   />
                   <label for="unfall">${i18n("Accident")}</label>
@@ -353,7 +353,7 @@ class Prescription extends BElement {
                     id       = "arbeitsunfall"
                     value    = "Arbeitsunfall"
                     name     = "industrialAccident"
-                    .checked = "${_psp.read("entry[resource.resourceType?MedicationRequest].resource.extension[url?KBV_EX_ERP_Accident]") && _psp.read("entry[resource.resourceType?MedicationRequest].resource.extension[url?KBV_EX_ERP_Accident].extension[url?unfallkennzeichen].valueCoding.code") == "2"}"
+                    .checked = "${_psp.read("entry[resource.resourceType?MedicationRequest].resource.extension[url?KBV_EX_FOR_Accident]") && _psp.read("entry[resource.resourceType?MedicationRequest].resource.extension[url?KBV_EX_FOR_Accident].extension[url?Unfallkennzeichen].valueCoding.code") == "2"}"
                     @change  = "${(_) => this.toggleAccident("2", _.target.checked)}"
                   />
                   <label for="arbeitsunfall">${i18n("IndustrialAccident")}</label>
@@ -371,6 +371,16 @@ class Prescription extends BElement {
                       id     = "coverage-payor-display"
                       value  = "${_psp.read("entry[resource.resourceType?Coverage].resource.payor[0].display", "")}"
                       @keyup = "${_ => this.onUserInput(_, "entry[resource.resourceType?Coverage].resource.payor[0].display")}"
+                      style="width: 80%;"
+                    />
+                    <input
+                      type   = "text"
+                      name   = "coverage-payor-type"
+                      id     = "coverage-payor-type"
+                      value  = "${_psp.read("entry[resource.resourceType?Coverage].resource.type.coding[0].code", "")}"
+                      @keyup = "${_ => this.onUserInput(_, "entry[resource.resourceType?Coverage].resource.type.coding[0].code")}"
+                      style  = "width: 18%;"
+                      placehoder="GKV, PKV, BG, SEL, SOZ, GPV, PPV, BEI"
                     />
                   </div>
 
@@ -466,10 +476,10 @@ class Prescription extends BElement {
                         id          = "status"
                         class       = "bright"
                         value  = "${_psp.read("entry[resource.resourceType?Coverage].resource.extension[url?versichertenart].valueCoding.code", "") + "-" +
-      _psp.read("entry[resource.resourceType?Coverage].resource.extension[url?personengruppe].valueCoding.code", "") + "-" +
-      _psp.read("entry[resource.resourceType?Coverage].resource.extension[url?dmp].valueCoding.code", "") + "-" +
-      _psp.read("entry[resource.resourceType?Composition].resource.extension[url?KBV_EX_FOR_Legal_basis].valueCoding.code", "")
-      }"/>
+                          _psp.read("entry[resource.resourceType?Coverage].resource.extension[url?personengruppe].valueCoding.code", "") + "-" +
+                          _psp.read("entry[resource.resourceType?Coverage].resource.extension[url?dmp].valueCoding.code", "") + "-" +
+                          _psp.read("entry[resource.resourceType?Composition].resource.extension[url?KBV_EX_FOR_Legal_basis].valueCoding.code", "")
+                          }"/>
                     </div>
                   </div>
                 </div>
@@ -519,8 +529,8 @@ class Prescription extends BElement {
                         name   = "authoredOn"
                         value  = "${this.extractDate(_psp.read("entry[resource.resourceType?MedicationRequest].resource.authoredOn", ""))}"
                         @keyup = "${_ => {
-        this.onUserInput({ target: { name: "authoredOn", value: _.target.value} }, "entry[resource.resourceType?MedicationRequest].resource.authoredOn")
-      }}"/>
+                          this.onUserInput({ target: { name: "authoredOn", value: _.target.value} }, "entry[resource.resourceType?MedicationRequest].resource.authoredOn")
+                        }}"/>
                     </div>
                   </div>
                 </div>
@@ -528,14 +538,14 @@ class Prescription extends BElement {
                 <div class="column-2 col-reverse">
                   <div class="form-group">
                     <div class="input-wrapper">
-                      <label for="unfalltag">${i18n("AccidentDay")}</label>
+                      <label for="Unfalltag">${i18n("AccidentDay")}</label>
                       <input
-                        ?disabled="${_psp.read("entry[resource.resourceType?MedicationRequest].resource.extension[url?KBV_EX_ERP_Accident].extension[url?unfalltag].valueDate") === undefined}"
+                        ?disabled="${_psp.read("entry[resource.resourceType?MedicationRequest].resource.extension[url?KBV_EX_FOR_Accident].extension[url?Unfalltag].valueDate") === undefined}"
                         type   = "text"
-                        name   = "unfalltag"
-                        id     = "unfalltag"
-                        value  = "${this.extractDate(_psp.read("entry[resource.resourceType?MedicationRequest].resource.extension[url?KBV_EX_ERP_Accident].extension[url?unfalltag].valueDate", ""))}"
-                        @keyup = "${_ => this.onUserInput(_, "entry[resource.resourceType?MedicationRequest].resource.extension[url?KBV_EX_ERP_Accident].extension[url?unfalltag].valueDate")}"
+                        name   = "Unfalltag"
+                        id     = "Unfalltag"
+                        value  = "${this.extractDate(_psp.read("entry[resource.resourceType?MedicationRequest].resource.extension[url?KBV_EX_FOR_Accident].extension[url?Unfalltag].valueDate", ""))}"
+                        @keyup = "${_ => this.onUserInput(_, "entry[resource.resourceType?MedicationRequest].resource.extension[url?KBV_EX_FOR_Accident].extension[url?Unfalltag].valueDate")}"
                            />
                       <span class="long-border"></span>
                     </div>
@@ -547,12 +557,12 @@ class Prescription extends BElement {
                         >${i18n("AccidentCompanyNum")}</label
                       >
                       <input
-                        ?disabled="${_psp.read("entry[resource.resourceType?MedicationRequest].resource.extension[url?KBV_EX_ERP_Accident].extension[url?unfallbetrieb].valueString") === undefined}"
+                        ?disabled="${_psp.read("entry[resource.resourceType?MedicationRequest].resource.extension[url?KBV_EX_FOR_Accident].extension[url?unfallbetrieb].valueString") === undefined}"
                         type   = "text"
                         id     = "unfallbetrieb"
                         name   = "unfallbetrieb"
-                        value  = "${_psp.read("entry[resource.resourceType?MedicationRequest].resource.extension[url?KBV_EX_ERP_Accident].extension[url?unfallbetrieb].valueString", "")}"
-                        @keyup = "${_ => this.onUserInput(_, "entry[resource.resourceType?MedicationRequest].resource.extension[url?KBV_EX_ERP_Accident].extension[url?unfallbetrieb].valueString")}"
+                        value  = "${_psp.read("entry[resource.resourceType?MedicationRequest].resource.extension[url?KBV_EX_FOR_Accident].extension[url?unfallbetrieb].valueString", "")}"
+                        @keyup = "${_ => this.onUserInput(_, "entry[resource.resourceType?MedicationRequest].resource.extension[url?KBV_EX_FOR_Accident].extension[url?unfallbetrieb].valueString")}"
                        />
                     </div>
                   </div>

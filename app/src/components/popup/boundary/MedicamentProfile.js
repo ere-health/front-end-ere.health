@@ -50,7 +50,7 @@ export const MedicationRequestPrescription = {
       if(medicationType === "rezeptur") {
         // Remove dosage flag extension 
         dosageFHIR.extension = dosageFHIR?.extension?.filter(row=>row.url!=MedicamentProfile.urlDosageFlag);
-        if(dosageFHIR.extension.length == 0) {
+        if(dosageFHIR.extension && dosageFHIR.extension.length == 0) {
           delete dosageFHIR.extension;
         }
         // Remove dosage text

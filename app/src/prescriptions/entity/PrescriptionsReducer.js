@@ -231,7 +231,7 @@ export const prescriptions = createReducer(initialState, (builder) => {
           } else if(name === 'accident') {
             const medicationRequest = psp.read("entry[resource.resourceType?MedicationRequest].resource");
             // Remove accident extension
-            medicationRequest.extension = medicationRequest.extension.filter(e => e.url != "https://fhir.kbv.de/StructureDefinition/KBV_EX_ERP_Accident");
+            medicationRequest.extension = medicationRequest.extension.filter(e => e.url != "https://fhir.kbv.de/StructureDefinition/KBV_EX_FOR_Accident");
             if(value) {
               medicationRequest.extension.push(value);
             }
@@ -766,8 +766,8 @@ export const prescriptions = createReducer(initialState, (builder) => {
           currentValue = psp.read("entry[resource.resourceType?Patient].resource.birthDate", "");
         } else if (key === 'authoredOn') {
           currentValue = psp.read("entry[resource.resourceType?MedicationRequest].resource.authoredOn", "");
-        } else if (key === 'unfalltag') {
-          currentValue = psp.read("entry[resource.resourceType?MedicationRequest].resource.extension[url?KBV_EX_ERP_Accident].extension[url?unfalltag].valueDate", "");
+        } else if (key === 'Unfalltag') {
+          currentValue = psp.read("entry[resource.resourceType?MedicationRequest].resource.extension[url?KBV_EX_FOR_Accident].extension[url?Unfalltag].valueDate", "");
         }
 
         let validation = validateInput(key, currentValue, MainWindowValidationRules);
