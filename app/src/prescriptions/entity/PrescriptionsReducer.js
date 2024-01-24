@@ -33,7 +33,7 @@ import {
   abortTasksStatusAction,
   updatePrescriptionAction,
   selectPrescriptionAction,
-  signAndUploadBundlesAction,
+  signAndUploadBundlesActionWithParams,
   addSignedAction,
   deletePrescriptionAction,
   addValidationErrorForMainWindowAction,
@@ -277,7 +277,7 @@ export const prescriptions = createReducer(initialState, (builder) => {
         }
       }
     })
-    .addCase(signAndUploadBundlesAction, (state, { payload: {bundles, directAssign, settings} }) => {
+    .addCase(signAndUploadBundlesActionWithParams, (state, { payload: {bundles, directAssign, settings, selectedCardSMCB, selectedCardEHBA} }) => {
       // if bundles is already list of a list keep it, otherwise create one
       let payload = "length" in bundles[0] ? bundles : [bundles];
       payload = structuredClone(payload)
@@ -296,8 +296,15 @@ export const prescriptions = createReducer(initialState, (builder) => {
       let oMessage = {
         type: "SignAndUploadBundles",
         bearerToken: window.bearerToken,
+        runtimeConfig: {},
         payload
       };
+      if(selectedCardSMCB) {
+        oMessage.runtimeConfig.SMCBHandle = selectedCardSMCB;
+      }
+      if(selectedCardEHBA) {
+        oMessage.runtimeConfig.eHBAHandle = selectedCardEHBA;
+      }
       if(directAssign) {
         oMessage.flowtype = "169";
         for(let p in directAssign) {
@@ -313,6 +320,7 @@ export const prescriptions = createReducer(initialState, (builder) => {
           }
         }
       }
+      
       // Send a list of a list of a list
       serverWebSocketActionForwarder.send(oMessage);
     })

@@ -1,6 +1,16 @@
 import { createAction } from "../../../libs/redux-toolkit.esm.js";
 import store from "../../../store.js";
 
+export const selectCardSMCBAction = createAction("selectCardSMCBAction");
+export const selectCardSMCB = (card) => {
+    store.dispatch(selectCardSMCBAction(card));
+}
+
+export const selectCardEHBAAction = createAction("selectCardEHBAAction");
+export const selectCardEHBA = (card) => {
+    store.dispatch(selectCardEHBAAction(card));
+}
+
 export const selectCardAction = createAction("selectCardAction");
 export const selectCard = (card) => {
     store.dispatch(selectCardAction(card));

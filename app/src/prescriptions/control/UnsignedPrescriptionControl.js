@@ -57,14 +57,22 @@ export const addSigned = (bundles) => {
     store.dispatch(addSignedAction(bundles));
 }
 
-export const signAndUploadBundlesAction = createAction("signAndUploadBundlesAction");
+export const signAndUploadBundlesActionWithParams = createAction("signAndUploadBundlesActionWithParams");
+
+export const signAndUploadBundlesAction = (bundles, directAssign) =>
+(dispatch, getState) => {
+    const selectedCardEHBA = getState().cardsReducer.selectedCardEHBA;
+    const selectedCardSMCB = getState().cardsReducer.selectedCardSMCB;
+    const settings = getState().settingsReducer.settings;
+    dispatch({ type: "signAndUploadBundlesActionWithParams", payload: {bundles, directAssign, settings, selectedCardSMCB, selectedCardEHBA} });
+};
 export const signAndUploadBundles = (bundles, directAssign) => {
-    store.dispatch(signAndUploadBundlesAction({bundles, directAssign}));
+    store.dispatch(signAndUploadBundlesAction(bundles, directAssign));
 }
 export const signAndUploadKimBundlesAction = (bundles, directAssign) =>
     (dispatch, getState) => {
         const settings = getState().settingsReducer.settings;
-        dispatch({ type: "signAndUploadBundlesAction", payload: {bundles, directAssign, settings} });
+        dispatch({ type: "signAndUploadBundlesActionWithParams", payload: {bundles, directAssign, settings} });
     };
 export const signAndUploadKimBundles = (bundles, directAssign) => {
     store.dispatch(signAndUploadKimBundlesAction(bundles, directAssign));

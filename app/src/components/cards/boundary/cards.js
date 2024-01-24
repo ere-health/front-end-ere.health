@@ -3,6 +3,8 @@ import { html } from "../../../libs/lit-html.js";
 
 import {
     selectCard,
+    selectCardEHBA,
+    selectCardSMCB,
     selectPin,
     loadCards,
     changePin,
@@ -24,6 +26,14 @@ class CardsSection extends BElement {
 
   onSelectCard(cardHandle) {
     selectCard(this.state.cards.filter(c => c.cardHandle === cardHandle)[0]);
+  }
+
+  onSelectCardSMCB(cardHandle) {
+    selectCardSMCB(cardHandle);
+  }
+
+  onSelectCardEHBA(cardHandle) {
+    selectCardEHBA(cardHandle);
   }
 
   onSelectPin(pin) {
@@ -52,7 +62,45 @@ class CardsSection extends BElement {
 
   view() {
     return html`
-    <div style="display:flex; flex-direction:column;flex-grow: 1;padding: 7px;margin-top:5px;"> 
+    <div style="display:flex; flex-direction:column;flex-grow: 1;padding: 7px;margin-top:5px;">
+        <label for="current-ehba">eHBA zum Signieren</label><br />
+        <select id="current-ehba" style="
+            height        : 56px;
+            border-radius : 4px;
+            border        : none;
+            width         : 100%;
+            font-family   : Quicksand;
+            font-style    : normal;
+            font-weight   : 500;
+            font-size     : 18px;
+            line-height   : 22px;
+        "
+        @change="${_ => this.onSelectCardEHBA(_.target.value)}"
+        >
+        <option value="" ?selected=${!this.state.selectedCardEHBA || this.state.selectedCardEHBA === ""}>Beliebigen EHBA</option>
+        ${this.state.cards.filter(card => card.cardType == "HBA").map(card => {
+            return html`<option value="${card.cardHandle}" ?selected=${this.state.selectedCardEHBA && this.state.selectedCardEHBA === card.cardHandle}>${card.cardType} ${card.cardHandle} ${card.cardHolderName}</option>`;
+        })}
+        </select>
+        <label for="current-smc-b">SMC-B für den Fachdienstzugriff</label><br />
+        <select id="current-smc-b" style="
+            height        : 56px;
+            border-radius : 4px;
+            border        : none;
+            width         : 100%;
+            font-family   : Quicksand;
+            font-style    : normal;
+            font-weight   : 500;
+            font-size     : 18px;
+            line-height   : 22px;
+        "
+        @change="${_ => this.onSelectCardSMCB(_.target.value)}"
+        >
+        <option value="" ?selected=${!this.state.selectedCardSMCB || this.state.selectedCardSMCB === ""}>Beliebige SMC-B</option>
+        ${this.state.cards.filter(card => card.cardType == "SMC_B").map(card => {
+            return html`<option value="${card.cardHandle}" ?selected=${this.state.selectedCardSMCB && this.state.selectedCardSMCB === card.cardHandle}>${card.cardType} ${card.cardHandle} ${card.cardHolderName}</option>`;
+        })}
+        </select>
         <label for="current-cards">Karten</label><br />
         <select id="current-cards" style="
             height        : 56px;

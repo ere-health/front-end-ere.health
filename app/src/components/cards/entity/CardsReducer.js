@@ -1,9 +1,11 @@
 import { createReducer } from "../../../libs/redux-toolkit.esm.js"
-import {selectCardAction,selectPinAction,loadCardsAction,changePinAction,verifyPinAction,unblockPinAction,updateCardsFromServerAction} from "../control/CardsControl.js";
+import {selectCardSMCBAction, selectCardEHBAAction, selectCardAction,selectPinAction,loadCardsAction,changePinAction,verifyPinAction,unblockPinAction,updateCardsFromServerAction} from "../control/CardsControl.js";
 import serverWebSocketActionForwarder from "../../../prescriptions/boundary/websocket/ServerWebSocketActionForwarder.js";
 
 const initialState = {
     cards  : [],
+    selectCardEHBA: "",
+    selectCardSMCB: "",
     selectedCard: {
         cardHandle: ""
     },
@@ -16,6 +18,18 @@ export const cardsReducer = createReducer(initialState, (builder) => {
             state.selectedCard = {};
         }
         state.selectedCard = card;
+    });
+    builder.addCase(selectCardSMCBAction, (state, {payload: card}) => {
+        if(!state.selectedCardSMCB) {
+            state.selectedCardSMCB = {};
+        }
+        state.selectedCardSMCB = card;
+    });
+    builder.addCase(selectCardEHBAAction, (state, {payload: card}) => {
+        if(!state.selectedCardEHBA) {
+            state.selectedCardEHBA = {};
+        }
+        state.selectedCardEHBA = card;
     });
     builder.addCase(selectPinAction, (state, {payload: pinType}) => {
         state.pinType = pinType;
