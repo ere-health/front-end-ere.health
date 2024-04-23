@@ -3,7 +3,7 @@
 export const MainWindowValidationRules = {
     //String
     'coverage-payor-display': ['required', 'regex:/^.{1,50}$/'],  
-    'coverage-payor-type': ['required', 'regex:/^((GKV)|(PKV)|(BG)|(SEL)|(SOZ)|(GPV)|(PPV)|(BEI))$/'],  
+    'coverage-payor-type': ['required', 'regex:/^((GKV)|(PKV)|(BG)|(SEL)|(SOZ)|(GPV)|(PPV)|(BEI)|(UK))$/'],  
     // 'full-patient-address': ['required',
     //     'regex:/^[a-z A-ZäöüÄÖÜß\\-\\.]{0,20} ?[a-z A-ZäöüÄÖÜß\'\\-]{1,50} [a-z A-ZäöüÄÖÜß\\-\\.]{1,50}, [a-z A-ZäöüÄÖÜß\\-\\.0-9]{1,50} [a-z A-ZäöüÄÖÜß\\-\\.0-9]{1,10}, [0-9]{5} [a-z A-ZäöüÄÖÜß\\-\\.]{1,32}$/'],
     'organization-summary': ['required', 
@@ -94,7 +94,7 @@ export const MainWindowErrorMessages = {
     },
     'coverage-payor-type': {
         required: 'Es muss ein Typ der Versicherung angegeben werden',
-        regex: 'Der Typ muss aus den folgenden Werten bestehen: GKV, PKV, BG, SEL, SOZ, GPV, PPV, BEI'
+        regex: 'Der Typ muss aus den folgenden Werten bestehen: GKV, PKV, BG, SEL, SOZ, GPV, PPV, BEI, UK'
     },
     'medicationText': {
         required: 'Es muss ein Medikamentenname angegeben werden',

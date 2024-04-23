@@ -380,7 +380,7 @@ class Prescription extends BElement {
                       value  = "${_psp.read("entry[resource.resourceType?Coverage].resource.type.coding[0].code", "")}"
                       @keyup = "${_ => this.onUserInput(_, "entry[resource.resourceType?Coverage].resource.type.coding[0].code")}"
                       style  = "width: 18%;"
-                      placehoder="GKV, PKV, BG, SEL, SOZ, GPV, PPV, BEI"
+                      placehoder="GKV, PKV, BG, SEL, SOZ, GPV, PPV, BEI, UK"
                     />
                   </div>
 
