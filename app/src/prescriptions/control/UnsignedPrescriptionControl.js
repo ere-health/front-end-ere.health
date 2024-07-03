@@ -71,8 +71,10 @@ export const signAndUploadBundles = (bundles, directAssign) => {
 }
 export const signAndUploadKimBundlesAction = (bundles, directAssign) =>
     (dispatch, getState) => {
+        const selectedCardEHBA = getState().cardsReducer.selectedCardEHBA;
+        const selectedCardSMCB = getState().cardsReducer.selectedCardSMCB;
         const settings = getState().settingsReducer.settings;
-        dispatch({ type: "signAndUploadBundlesActionWithParams", payload: {bundles, directAssign, settings} });
+        dispatch({ type: "signAndUploadBundlesActionWithParams", payload: {bundles, directAssign, settings, selectedCardSMCB, selectedCardEHBA} });
     };
 export const signAndUploadKimBundles = (bundles, directAssign) => {
     store.dispatch(signAndUploadKimBundlesAction(bundles, directAssign));
