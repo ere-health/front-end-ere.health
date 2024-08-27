@@ -41,6 +41,12 @@ export const unblockPin = () => {
     store.dispatch(unblockPinAction());
 }
 
+
+export const statusPinAction = createAction("statusPinAction");
+export const statusPin = () => {
+    store.dispatch(statusPinAction());
+}
+
 export const updateCardsFromServerAction = createAction("updateCardsFromServerAction");
 export const updateCardsFromServer = (cards) => {
     store.dispatch(updateCardsFromServerAction(cards));

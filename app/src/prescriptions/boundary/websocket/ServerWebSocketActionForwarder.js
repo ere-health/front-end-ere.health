@@ -55,6 +55,8 @@ class _ServerWebSocketActionForwarder {
                     alert(JSON.stringify(eventData.payload));
                 } else if(eventData.type === "ChangePinResponse") {
                     alert(JSON.stringify(eventData.payload));
+                } else if(eventData.type === "GetPinStatusResponse") {
+                    alert(JSON.stringify(eventData.payload));
                 } else if(eventData.type === "Exception") {
 					if(eventData.replyToMessageId in this.errorHandlerForMessage) {
 						this.errorHandlerForMessage[eventData.replyToMessageId](eventData);

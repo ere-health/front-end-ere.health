@@ -9,7 +9,8 @@ import {
     loadCards,
     changePin,
     verifyPin,
-    unblockPin
+    unblockPin,
+    statusPin
 } from "../control/CardsControl.js";
 
 class CardsSection extends BElement {
@@ -58,6 +59,11 @@ class CardsSection extends BElement {
   onVerifyPin(e) {
     e.preventDefault();
     verifyPin();
+  }
+
+  onStatusPin(e) {
+    e.preventDefault();
+    statusPin();
   }
 
   view() {
@@ -161,6 +167,12 @@ class CardsSection extends BElement {
             @click            = "${_ => this.onUnblockPin(_)}"  
             class             = "jet-btn">
         PIN für gewählte Karte unblocken
+        </button>
+        <button 
+            style="margin: 1rem 0;"                                                                  
+            @click            = "${_ => this.onStatusPin(_)}"  
+            class             = "jet-btn">
+        PIN Status für gewählte Karte abfragen
         </button>
     </div>
     `;

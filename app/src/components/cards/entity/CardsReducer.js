@@ -1,5 +1,16 @@
 import { createReducer } from "../../../libs/redux-toolkit.esm.js"
-import {selectCardSMCBAction, selectCardEHBAAction, selectCardAction,selectPinAction,loadCardsAction,changePinAction,verifyPinAction,unblockPinAction,updateCardsFromServerAction} from "../control/CardsControl.js";
+import {
+    selectCardSMCBAction,
+    selectCardEHBAAction,
+    selectCardAction,
+    selectPinAction,
+    loadCardsAction,
+    changePinAction,
+    verifyPinAction,
+    unblockPinAction,
+    statusPinAction,
+    updateCardsFromServerAction
+} from "../control/CardsControl.js";
 import serverWebSocketActionForwarder from "../../../prescriptions/boundary/websocket/ServerWebSocketActionForwarder.js";
 
 const initialState = {
@@ -53,6 +64,13 @@ export const cardsReducer = createReducer(initialState, (builder) => {
             cardHandle: state.selectedCard.cardHandle,
             pinType: state.pinType,
             setNewPin: false
+        }
+        });
+    });
+    builder.addCase(statusPinAction, (state) => {
+        serverWebSocketActionForwarder.send({ type: "GetPinStatus", payload: {
+            cardHandle: state.selectedCard.cardHandle,
+            pinType: state.pinType
         }
         });
     });
