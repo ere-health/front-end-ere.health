@@ -5,6 +5,7 @@ import {
     selectCard,
     selectCardEHBA,
     selectCardSMCB,
+    selectCardEGK,
     selectPin,
     loadCards,
     changePin,
@@ -35,6 +36,10 @@ class CardsSection extends BElement {
 
   onSelectCardEHBA(cardHandle) {
     selectCardEHBA(cardHandle);
+  }
+
+  onSelectCardEGK(cardHandle) {
+    selectCardEGK(cardHandle);
   }
 
   onSelectPin(pin) {
@@ -105,6 +110,25 @@ class CardsSection extends BElement {
         <option value="" ?selected=${!this.state.selectedCardSMCB || this.state.selectedCardSMCB === ""}>Beliebige SMC-B</option>
         ${this.state.cards.filter(card => card.cardType == "SMC_B").map(card => {
             return html`<option value="${card.cardHandle}" ?selected=${this.state.selectedCardSMCB && this.state.selectedCardSMCB === card.cardHandle}>${card.cardType} ${card.cardHandle} ${card.cardHolderName}</option>`;
+        })}
+        </select>
+        <label for="current-egk">eGK um neue Rezepte zu erstellen</label><br />
+        <select id="current-egk" style="
+            height        : 56px;
+            border-radius : 4px;
+            border        : none;
+            width         : 100%;
+            font-family   : Quicksand;
+            font-style    : normal;
+            font-weight   : 500;
+            font-size     : 18px;
+            line-height   : 22px;
+        "
+        @change="${_ => this.onSelectCardEGK(_.target.value)}"
+        >
+        <option value="" ?selected=${!this.state.selectedCardEGK || this.state.selectedCardEGK === ""}>Beliebige EGK</option>
+        ${this.state.cards.filter(card => card.cardType == "EGK").map(card => {
+            return html`<option value="${card.cardHandle}" ?selected=${this.state.selectedCardEGK && this.state.selectedCardEGK === card.cardHandle}>${card.cardType} ${card.cardHandle} ${card.cardHolderName}</option>`;
         })}
         </select>
         <label for="current-cards">Karten</label><br />

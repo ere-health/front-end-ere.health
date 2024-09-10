@@ -31,10 +31,17 @@ export const abortTasksStatus = (abortTasksStatus) => {
 }
 
 
-export const createNewPrescriptionAction = createAction("createNewPrescriptionAction");
+export const createNewPrescriptionWithEgkAction = createAction("createNewPrescriptionWithEgkAction");
+
+export const createNewPrescriptionAction = (bundles, directAssign) =>
+    (dispatch, getState) => {
+        const selectedCardEGK = getState().cardsReducer.selectedCardEGK;
+        dispatch({ type: "createNewPrescriptionWithEgkAction", payload: {selectedCardEGK} });
+    };
 export const createNewPrescription = () => {
     store.dispatch(createNewPrescriptionAction());
-}
+} 
+
 
 export const signedPrescriptionAction = createAction("signedPrescriptionAction");
 export const signedPrescription = (prescription) => {

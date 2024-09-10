@@ -2,6 +2,7 @@ import { createReducer } from "../../../libs/redux-toolkit.esm.js"
 import {
     selectCardSMCBAction,
     selectCardEHBAAction,
+    selectCardEGKAction,
     selectCardAction,
     selectPinAction,
     loadCardsAction,
@@ -17,6 +18,7 @@ const initialState = {
     cards  : [],
     selectCardEHBA: "",
     selectCardSMCB: "",
+    selectCardEGK: "",
     selectedCard: {
         cardHandle: ""
     },
@@ -41,6 +43,12 @@ export const cardsReducer = createReducer(initialState, (builder) => {
             state.selectedCardEHBA = {};
         }
         state.selectedCardEHBA = card;
+    });
+    builder.addCase(selectCardEGKAction, (state, {payload: card}) => {
+        if(!state.selectedCardEGK) {
+            state.selectedCardEGK = {};
+        }
+        state.selectedCardEGK = card;
     });
     builder.addCase(selectPinAction, (state, {payload: pinType}) => {
         state.pinType = pinType;
@@ -79,6 +87,17 @@ export const cardsReducer = createReducer(initialState, (builder) => {
         if(cards.length > 0) {
             state.cards = cards;
             state.selectedCard = cards[0];
+        }
+        for(let card of cards) {
+            if(card.cardType === "SMC_B") {
+                state.selectedCardSMCB = card.cardHandle;
+            }
+            else if(card.cardType === "HBA") {
+                state.selectedCardEHBA = card.cardHandle;
+            }
+            else if(card.cardType === "EGK") {
+                state.selectedCardEGK = card.cardHandle;
+            }
         }
         if(!state.pinType) {
 			state.pinType = "PIN.CH";

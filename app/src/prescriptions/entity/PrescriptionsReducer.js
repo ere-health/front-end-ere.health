@@ -38,7 +38,7 @@ import {
   deletePrescriptionAction,
   addValidationErrorForMainWindowAction,
   removeValidationErrorForMainWindowAction,
-  createNewPrescriptionAction,
+  createNewPrescriptionWithEgkAction,
   ValidateAllFieldsInMainWindowAction,
   showHTMLBundlesAction,
   sendToPharmacyAction,
@@ -185,11 +185,12 @@ export const prescriptions = createReducer(initialState, (builder) => {
       });
     })
     //Create an empty prescription
-    .addCase(createNewPrescriptionAction, (state) => {
+    .addCase(createNewPrescriptionWithEgkAction, (state, {payload: {selectedCardEGK}}) => {
 	  let id = uuidv4();
 	  serverWebSocketActionForwarder.send({
         id: id,
-        type: "PrefillBundle"
+        type: "PrefillBundle",
+        egkHandle: selectedCardEGK ? selectedCardEGK.cardHandle : null
       });
       
       serverWebSocketActionForwarder.registerErrorHandlerForMessage(id, function(exceptionMessage) {

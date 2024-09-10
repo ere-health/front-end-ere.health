@@ -11,6 +11,11 @@ export const selectCardEHBA = (card) => {
     store.dispatch(selectCardEHBAAction(card));
 }
 
+export const selectCardEGKAction = createAction("selectCardEGKAction");
+export const selectCardEGK = (card) => {
+    store.dispatch(selectCardEGKAction(card));
+}
+
 export const selectCardAction = createAction("selectCardAction");
 export const selectCard = (card) => {
     store.dispatch(selectCardAction(card));
