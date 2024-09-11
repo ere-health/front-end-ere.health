@@ -190,7 +190,7 @@ export const prescriptions = createReducer(initialState, (builder) => {
 	  serverWebSocketActionForwarder.send({
         id: id,
         type: "PrefillBundle",
-        egkHandle: selectedCardEGK ? selectedCardEGK.cardHandle : null
+        egkHandle: selectedCardEGK
       });
       
       serverWebSocketActionForwarder.registerErrorHandlerForMessage(id, function(exceptionMessage) {
