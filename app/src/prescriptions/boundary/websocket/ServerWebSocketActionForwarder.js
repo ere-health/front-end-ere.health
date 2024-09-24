@@ -31,13 +31,24 @@ class _ServerWebSocketActionForwarder {
                     }
                     abortTasksStatus(eventData.payload);
                 } else if(eventData.type === "ERezeptWithDocuments") {
-                    if("pdfDocument" in eventData.payload[0]) {
+                    if(eventData.payload && eventData.payload.length > 0 && eventData.payload[0] && "pdfDocument" in eventData.payload[0]) {
                         const blob = this.b64toBlob(eventData.payload[0].pdfDocument.content, "application/pdf");
                         const blobUrl = URL.createObjectURL(blob);
                         window.open(blobUrl);
                         addSigned(eventData.payload);
                     } else {
-                        alert("Could not process e prescription");
+                        try {
+                            for(let i = 0; i < eventData.payload.length; i++) {
+                                for(let j = 0; j < eventData.payload[i].bundleWithAccessCodeOrThrowables.length; j++) {
+                                    let bundle = eventData.payload[i].bundleWithAccessCodeOrThrowables[j];
+                                    if(bundle && bundle.throwable) {
+                                        alert(JSON.stringify(bundle.throwable));
+                                    }
+                                }
+                            }
+                        } catch(e) {
+                            alert("Could not process e prescription "+e);
+                        }
                     }
                 } else if(eventData.type === "Settings") {
                     updateSettingsFromServer(eventData.payload);
