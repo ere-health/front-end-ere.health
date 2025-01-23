@@ -185,12 +185,14 @@ export const prescriptions = createReducer(initialState, (builder) => {
       });
     })
     //Create an empty prescription
-    .addCase(createNewPrescriptionWithEgkAction, (state, {payload: {selectedCardEGK}}) => {
+    .addCase(createNewPrescriptionWithEgkAction, (state, {payload: {selectedCardEGK, selectedCardSMCB, selectedCardEHBA}}) => {
 	  let id = uuidv4();
 	  serverWebSocketActionForwarder.send({
         id: id,
         type: "PrefillBundle",
-        egkHandle: selectedCardEGK
+        egkHandle: selectedCardEGK,
+        smcbHandle: selectedCardSMCB,
+        hbaHandle: selectedCardEHBA
       });
       
       serverWebSocketActionForwarder.registerErrorHandlerForMessage(id, function(exceptionMessage) {

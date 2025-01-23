@@ -36,7 +36,9 @@ export const createNewPrescriptionWithEgkAction = createAction("createNewPrescri
 export const createNewPrescriptionAction = (bundles, directAssign) =>
     (dispatch, getState) => {
         const selectedCardEGK = getState().cardsReducer.selectedCardEGK;
-        dispatch({ type: "createNewPrescriptionWithEgkAction", payload: {selectedCardEGK} });
+        const selectedCardSMCB = getState().cardsReducer.selectedCardSMCB;
+        const selectedCardEHBA = getState().cardsReducer.selectedCardEHBA;
+        dispatch({ type: "createNewPrescriptionWithEgkAction", payload: {selectedCardEGK, selectedCardSMCB, selectedCardEHBA} });
     };
 export const createNewPrescription = () => {
     store.dispatch(createNewPrescriptionAction());
