@@ -566,13 +566,14 @@ const Amount = {
                      unit:  amountNumeratorUnit },
       // 1..1
       denominator: { value: Number(amountDenominatorValue) }
-    }
+    };
+
     // 0..1 Amount unit system and code
-    if (amountNumUnitCode)
-      Object.assign(fhir.numerator, {
-        system: 'http://unitsofmeasure.org',
-        code: amountNumUnitCode,
-      })
+    //if (amountNumUnitCode)
+    //  Object.assign(fhir.numerator, {
+    //    system: 'http://unitsofmeasure.org',
+    //    code: amountNumUnitCode,
+    //  })
     return fhir;
   }
 }
@@ -602,14 +603,14 @@ const Strength = {
       fhir = {
         numerator:   { value: Number(strengthNumeratorValue), 
                        unit:  strengthNumeratorUnit },
-        denominator: { value: Number(strengthDenominatorValue) }
+        denominator: { value: Number(strengthDenominatorValue), unit: strengthNumeratorUnit }
       }
       // 0..1 Strength unit system and code
-      if (strengthNumUnitCode)
-        Object.assign(fhir.numerator, {
-          system: 'http://unitsofmeasure.org',
-          code: strengthNumUnitCode,
-        });
+      // if (strengthNumUnitCode)
+      //  Object.assign(fhir.numerator, {
+      //    system: 'http://unitsofmeasure.org',
+      //    code: strengthNumUnitCode,
+      //  });
     }
     return fhir;
   }
