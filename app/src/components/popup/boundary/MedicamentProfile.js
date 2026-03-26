@@ -4,7 +4,7 @@
 // MedicationRequest.Prescription: https://simplifier.net/erezept/kbvprerpprescription
 export const MedicationRequestPrescription = {
   profile: 'Prescription',
-  urlProfile : 'https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Prescription|1.1.0',
+  urlProfile : 'https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Prescription|1.3',
 
   getValuesFromFHIR: (medicationRequestFHIR) =>{
     return {
@@ -65,7 +65,7 @@ export const MedicationRequestPrescription = {
 export const MedicamentProfilePZN = {
   profile: 'PZN',
   label:   'PZN',
-  urlProfile : 'https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Medication_PZN|1.1.0',
+  urlProfile : 'https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Medication_PZN|1.3',
 
   getValuesFromFHIR: (medicationFHIR) =>{
     const values = {
@@ -105,7 +105,7 @@ export const MedicamentProfilePZN = {
             "valueCodeableConcept": {
               "coding": [ {
                 "system": "http://snomed.info/sct",
-                "version": "http://snomed.info/sct/900000000000207008/version/20220331",
+                "version": "http://snomed.info/sct/11000274103/version/20240515",
                 "code": "763158003",
                 "display": "Medicinal product (product)"
               } ]
@@ -145,9 +145,29 @@ export const MedicamentProfilePZN = {
     }    
     // 0..1 resource.amount
     if (Number(amountNumeratorValue)>0) {
-      const amount = Amount.buildFHIR({amountNumeratorValue, amountNumeratorUnit, amountNumUnitCode, amountDenominatorValue});
+      const amount = Amount.buildFHIR({amountNumeratorValue, amountNumeratorUnit, /*amountNumUnitCode*/ undefined, amountDenominatorValue});
       Object.assign(fhir.resource, {amount});
     }
+
+    Object.assign(fhir.resource, {ingredient: [{
+        "itemCodeableConcept": {
+            "coding": [{
+              "system": "http://fhir.de/CodeSystem/ask",
+              "code": "0000"
+            }],
+            "text": "Unknown ingredient"
+          },
+          "strength": {
+            "numerator": {
+              "value": 1,
+              "unit": "mg"
+            },
+            "denominator": {
+              "value": 1,
+              "unit": "Tbl."
+            }
+          }
+    }]}); // required by profile but not used for PZN medication
     return fhir;    
   },
 
@@ -157,7 +177,7 @@ export const MedicamentProfilePZN = {
 export const MedicamentProfileFreeText = {
   profile: 'FreeText',
   label:   'Freitext',
-  urlProfile : 'https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Medication_FreeText|1.1.0',
+  urlProfile : 'https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Medication_FreeText|1.3',
 
   getValuesFromFHIR: (medicationFHIR) =>{
     return {
@@ -211,7 +231,7 @@ export const MedicamentProfileFreeText = {
 export const MedicamentProfileIngredient = {
   profile: 'Ingredient',
   label:   'Wirkstoff',
-  urlProfile : 'https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Medication_Ingredient|1.1.0',
+  urlProfile : 'https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Medication_Ingredient|1.3',
 
   getValuesFromFHIR: (medicationFHIR) =>{
     const values = {
@@ -347,7 +367,7 @@ const IngredientIngredientItemCodeableConcept = {
 export const MedicamentProfileCompounding = {
   profile: 'Compounding',
   label:   'Rezeptur',
-  urlProfile : 'https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Medication_Compounding|1.1.0',
+  urlProfile : 'https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Medication_Compounding|1.3',
 
   getValuesFromFHIR: (medicationFHIR) =>{
     const values = {
@@ -393,7 +413,7 @@ export const MedicamentProfileCompounding = {
             "valueCodeableConcept": {
               "coding": [ {
                 "system": "http://snomed.info/sct",
-                "version": "http://snomed.info/sct/900000000000207008/version/20220331",
+                "version": "http://snomed.info/sct/11000274103/version/20240515",
                 "code": "373873005:860781008=362943005",
                 "display": "Pharmaceutical / biologic product (product) : Has product characteristic (attribute) = Manual method (qualifier value)"
               } ]

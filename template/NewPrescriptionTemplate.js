@@ -5,7 +5,7 @@ export const NewPrescriptionTemplate = `
   "meta": {
     "lastUpdated": "$LAST_UPDATED",
     "profile": [
-      "https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Bundle|1.1.0"
+      "https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Bundle|1.3"
     ]
   },
   "identifier": {
@@ -22,7 +22,7 @@ export const NewPrescriptionTemplate = `
         "id": "$COMPOSITION_ID",
         "meta": {
           "profile": [
-            "https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Composition|1.1.0"
+            "https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Composition|1.3"
           ]
         },
         "extension": [
@@ -105,7 +105,7 @@ export const NewPrescriptionTemplate = `
         "id": "$MEDICATION_REQUEST_ID",
         "meta": {
           "profile": [
-            "https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Prescription|1.1.0"
+            "https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Prescription|1.3"
           ]
         },
         "extension": [
@@ -121,7 +121,7 @@ export const NewPrescriptionTemplate = `
             "valueBoolean": false
           },
           {
-            "url": "https://fhir.kbv.de/StructureDefinition/KBV_EX_ERP_BVG",
+            "url": "https://fhir.kbv.de/StructureDefinition/KBV_EX_FOR_SER",
             "valueBoolean": false
           },
           {
@@ -181,7 +181,7 @@ export const NewPrescriptionTemplate = `
         "id": "$MEDICATION_ID",
         "meta": {
           "profile": [
-            "https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Medication_PZN|1.1.0"
+            "https://fhir.kbv.de/StructureDefinition/KBV_PR_ERP_Medication_PZN|1.3"
           ]
         },
         "extension": [
@@ -190,7 +190,7 @@ export const NewPrescriptionTemplate = `
             "valueCodeableConcept": {
               "coding": [ {
                 "system": "http://snomed.info/sct",
-                "version": "http://snomed.info/sct/900000000000207008/version/20220331",
+                "version": "http://snomed.info/sct/11000274103/version/20240515",
                 "code": "763158003",
                 "display": "Medicinal product (product)"
               } ]

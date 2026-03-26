@@ -120,7 +120,7 @@ export const validBundle = {
               "valueBoolean": false
             },
             {
-              "url": "https://fhir.kbv.de/StructureDefinition/KBV_EX_ERP_BVG",
+              "url": "https://fhir.kbv.de/StructureDefinition/KBV_EX_FOR_SER",
               "valueBoolean": false
             },
             {
@@ -606,7 +606,7 @@ export const json01 = {
                         "valueBoolean": false
                     },
                     {
-                        "url": "https://fhir.kbv.de/StructureDefinition/KBV_EX_ERP_BVG",
+                        "url": "https://fhir.kbv.de/StructureDefinition/KBV_EX_FOR_SER",
                         "valueBoolean": false
                     },
                     {
@@ -1117,7 +1117,7 @@ export const json02 = {
                         "valueBoolean": false
                     },
                     {
-                        "url": "https://fhir.kbv.de/StructureDefinition/KBV_EX_ERP_BVG",
+                        "url": "https://fhir.kbv.de/StructureDefinition/KBV_EX_FOR_SER",
                         "valueBoolean": false
                     },
                     {
@@ -1633,7 +1633,7 @@ export const json03 = {
                         "valueBoolean": false
                     },
                     {
-                        "url": "https://fhir.kbv.de/StructureDefinition/KBV_EX_ERP_BVG",
+                        "url": "https://fhir.kbv.de/StructureDefinition/KBV_EX_FOR_SER",
                         "valueBoolean": false
                     },
                     {
